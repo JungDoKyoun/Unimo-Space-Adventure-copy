@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 1232623111}
   - component: {fileID: 1232623113}
   - component: {fileID: 1232623112}
+  - component: {fileID: 1232623114}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -208,6 +209,8 @@ MonoBehaviour:
   moveSpeed: 4
   pushSpeed: 3
   rotateSpeed: 3
+  isGathering: 0
+  isStunning: 0
 --- !u!82 &1232623111
 AudioSource:
   m_ObjectHideFlags: 0
@@ -219,10 +222,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: c4ef33583abe07741ab9b30329cfd6b5, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -315,10 +318,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 9905203c5143b45d7bc152f03566d872, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -414,8 +417,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemDetectionRange: 5
   gatheringSpeed: 4
+  gatheringDelay: 0.5
   gatheringAudioClip: {fileID: 8300000, guid: 9905203c5143b45d7bc152f03566d872, type: 3}
   gatheringAudioSource: {fileID: 1232623112}
+--- !u!114 &1232623114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232623107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c180452cbc5998d4f8370e1728ad93bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerMoveManager: {fileID: 1232623110}
+  playerActionManager: {fileID: 1232623113}
+  playerAnimationManager: {fileID: 0}
 --- !u!1 &1239398748
 GameObject:
   m_ObjectHideFlags: 0

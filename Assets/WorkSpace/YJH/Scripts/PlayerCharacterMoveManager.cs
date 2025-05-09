@@ -8,7 +8,7 @@ using Unity.XR;
 using Unity.VisualScripting;
 
 
-public class PlayerCharacterMoveManager : MonoBehaviour
+public partial class PlayerManager : MonoBehaviour
 {
     private Rigidbody playerCharacterBody;
     private Vector3 playerMoveDirection;
@@ -25,20 +25,23 @@ public class PlayerCharacterMoveManager : MonoBehaviour
     [SerializeField] float pushSpeed = 3f;
     [SerializeField] float rotateSpeed = 10f;
 
+    public bool isGathering = false;
+    public bool isStunning = false;
 
 
-
-    // Start is called before the first frame update
-    void Start()
+   
+    
+    public void MoveStart()
     {
-        
+        moveSoundSource.clip = moveSoundClip;
     }
-
-    // Update is called once per frame
-    void Update()
+    public void MoveUpdate()
     {
         PlayerMoveBySpeed();
     }
+
+    
+    
 
     public void PlayerMoveBySpeed()
     {
@@ -63,6 +66,7 @@ public class PlayerCharacterMoveManager : MonoBehaviour
         {
             moveSoundSource?.Stop();
         }
+        //  Ref ¹öÀü
         //playerTransform.position += moveSpeed * Time.deltaTime * moveDir + pushSpeed * Time.deltaTime * pushDir;
         //moveSoundClip.volume = moveSoundMax * Mathf.Clamp01(moveDir.magnitude);
         //moveSoundClip.volume = Sound_Manager.instance._audioSources[1].volume;
@@ -104,15 +108,20 @@ public class PlayerCharacterMoveManager : MonoBehaviour
 
     public void GetRotate(Vector2 headDirection)
     {
-        //Debug.Log("rot");
+        
         Vector3 headingVector3 = new Vector3(headDirection.x, 0, headDirection.y);
-        //Debug.Log(headingVector3);
+        
         Quaternion nextRotation=Quaternion.LookRotation(headingVector3);
         Quaternion firstRotation = Quaternion.LookRotation(new Vector3(transform.forward.x,0,transform.forward.z));
-        //Debug.Log(nextRotation);
-        //transform.rotation = Quaternion.Slerp(firstRotation, nextRotation, Time.deltaTime*rotateSpeed);
-        //transform.rotation = Quaternion.RotateTowards(firstRotation, nextRotation,Time.deltaTime*rotateSpeed);
-        transform.rotation=nextRotation;
+        
+        if (isGathering == true)
+        {
+            transform.LookAt(transform);
+        }
+        else
+        {
+            transform.rotation = nextRotation;
+        }
     }
 
 
