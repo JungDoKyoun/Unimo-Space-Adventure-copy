@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class PlayerActionManager : MonoBehaviour
 {
-    public float itemDetectionRange = 5f;//temp value
+    [SerializeField] float itemDetectionRange = 5f;//temp value
+    [SerializeField] float gatheringSpeed = 4f;
+    [SerializeField] AudioClip gatheringAudioClip;
+    [SerializeField] AudioSource gatheringAudioSource;
+    
     private LayerMask itemLayerMask;
     private GameObject targetObject;
     // Start is called before the first frame update
     void Start()
     {
-        
+        gatheringAudioSource.clip = gatheringAudioClip;
     }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -46,8 +50,8 @@ public class PlayerActionManager : MonoBehaviour
                 float distance=float.MaxValue;
                 foreach(Collider collider in detectedColliders)
                 {
-                    float distanceBetween= Vector3.Distance(transform.position, collider.transform.position);
-                    if (distance> distanceBetween)
+                    float distanceBetween= Vector3.Distance(transform.position, collider.transform.position);//감지된 콜라이더와의 거리
+                    if (distance> distanceBetween)//1.거리 비교 조건
                     {
                         distance = distanceBetween;
                         targetObject=collider.gameObject;
@@ -56,11 +60,11 @@ public class PlayerActionManager : MonoBehaviour
                     {
                         if (targetObject!=null)
                         {
-                            if (true)
+                            if (true)//2. 체력 비교 조건
                             {
 
                             }
-                            else
+                            else if(true)//3. 등급 비교 조건
                             {
 
                             }

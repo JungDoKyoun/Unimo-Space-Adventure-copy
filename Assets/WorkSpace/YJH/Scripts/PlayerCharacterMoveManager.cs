@@ -14,13 +14,16 @@ public class PlayerCharacterMoveManager : MonoBehaviour
     private Vector3 playerMoveDirection;
     private Vector3 playerPushDirection;
     private Transform playerTransform;
-    [SerializeField] AudioSource moveSoundClip;
+
+    [Header("家府 包访")]
+    [SerializeField] AudioSource moveSoundSource;
+    [SerializeField] AudioClip moveSoundClip;
     [SerializeField] bool isMoveSoundPlay=false;
 
     [Header("加档甸")]
     [SerializeField] float moveSpeed = 4f;
     [SerializeField] float pushSpeed = 3f;
-    [SerializeField] float rotateSpeed = 10000f;
+    [SerializeField] float rotateSpeed = 10f;
 
 
 
@@ -54,11 +57,11 @@ public class PlayerCharacterMoveManager : MonoBehaviour
 
         if (isMoveSoundPlay)
         {
-            moveSoundClip?.Play();
+            moveSoundSource?.Play();
         }
         else
         {
-            moveSoundClip?.Stop();
+            moveSoundSource?.Stop();
         }
         //playerTransform.position += moveSpeed * Time.deltaTime * moveDir + pushSpeed * Time.deltaTime * pushDir;
         //moveSoundClip.volume = moveSoundMax * Mathf.Clamp01(moveDir.magnitude);
@@ -108,6 +111,7 @@ public class PlayerCharacterMoveManager : MonoBehaviour
         Quaternion firstRotation = Quaternion.LookRotation(new Vector3(transform.forward.x,0,transform.forward.z));
         //Debug.Log(nextRotation);
         //transform.rotation = Quaternion.Slerp(firstRotation, nextRotation, Time.deltaTime*rotateSpeed);
+        //transform.rotation = Quaternion.RotateTowards(firstRotation, nextRotation,Time.deltaTime*rotateSpeed);
         transform.rotation=nextRotation;
     }
 
