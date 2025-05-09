@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace JDG
 {
+    //6각형을 이루는 각 면의 구조체
     public struct Face
     {
         public List<Vector3> Vertices { get; private set; }
@@ -18,18 +19,27 @@ namespace JDG
         }
     }
 
+    //시야
+    public enum TileVisibility
+    {
+        Hidden,
+        Visible,
+        Visited
+    }
+
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
     public class HexRenderer : MonoBehaviour
     {
-        [SerializeField] Material _material;
+        private Material _material; //육각형의 머테리얼
         private Mesh _mesh;
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
-        private List<Face> _faces;
-        [SerializeField] float _innerSize;
-        [SerializeField] float _outerSize;
-        [SerializeField] float _height;
+        private List<Face> _faces; //면들의 목록
+        private TileVisibility _tileVisibility;
+        private float _innerSize; //내부 반지름
+        private float _outerSize; //바깥 반지름
+        private float _height; //높이
 
         private void Awake()
         {
@@ -70,33 +80,40 @@ namespace JDG
         {
             _faces = new List<Face>();
 
+            //육각타일의 윗면
             for(int point = 0; point < 6; point++)
             {
                 _faces.Add(CreateFace(_innerSize, _outerSize, _height / 2f, _height / 2f, point));
             }
 
+            //아랫면
             for (int point = 0; point < 6; point++)
             {
                 _faces.Add(CreateFace(_innerSize, _outerSize, -_height / 2f, -_height / 2f, point, true));
             }
 
+            //옆면의 바깥부분
             for (int point = 0; point < 6; point++)
             {
                 _faces.Add(CreateFace(_outerSize, _outerSize, _height / 2f, -_height / 2f, point, true));
             }
 
+
+            //옆면의 안쪽부분
             for (int point = 0; point < 6; point++)
             {
                 _faces.Add(CreateFace(_innerSize, _innerSize, _height / 2f, -_height / 2f, point));
             }
         }
 
+        //만든 각면을 합침
         private void CombineFaces()
         {
             List<Vector3> vertices = new List<Vector3>();
             List<int> tris = new List<int>();
             List<Vector2> uvs = new List<Vector2>();
 
+            //면에있는 각 항목 분리해서 구분
             for(int i = 0; i < _faces.Count; i++)
             {
                 vertices.AddRange(_faces[i].Vertices);
@@ -110,12 +127,14 @@ namespace JDG
                 }
             }
 
+            //각 항목 합쳐서 그려내기
             _mesh.vertices = vertices.ToArray();
             _mesh.triangles = tris.ToArray();
             _mesh.uv = uvs.ToArray();
             _mesh.RecalculateNormals();
         }
 
+        //면만들기
         private Face CreateFace(float innerRad, float outerRad, float heightA, float heightB, int point, bool reverse = false)
         {
             Vector3 pointA = GetPoint(innerRad, heightB, point);
@@ -135,18 +154,47 @@ namespace JDG
             return new Face(vertices, triangels, uvs);
         }
 
-        protected Vector3 GetPoint(float size, float height, int index)
+        private Vector3 GetPoint(float size, float height, int index)
         {
-            float angle_deg = 60 * index;
+            float angle_deg = 60 * index - 30;
             float angle_rad = Mathf.PI / 180f * angle_deg;
             return new Vector3((size * Mathf.Cos(angle_rad)), height, size * Mathf.Sin(angle_rad));
         }
 
         public void SetMaterial(Material material)
         {
-            _material = material;
+            _material = new Material(material);
             if (_meshRenderer != null)
                 _meshRenderer.material = _material;
+        }
+
+        public void SetVisibility(TileVisibility visibility)
+        {
+            _tileVisibility = visibility;
+
+            Color color = Color.gray;
+
+            switch(_tileVisibility)
+            {
+                case TileVisibility.Hidden:
+                    color = Color.black;
+                    break;
+
+                case TileVisibility.Visible:
+                    color = Color.white;
+                    break;
+
+                case TileVisibility.Visited:
+                    color = Color.gray;
+                    break;
+            }
+
+            _meshRenderer.material.SetColor("_Color", color);
+        }
+
+        public TileVisibility GetTileVisibility()
+        {
+            return _tileVisibility;
         }
     }
 }
