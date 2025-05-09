@@ -16,8 +16,10 @@ public partial class PlayerManager : MonoBehaviour
     [Header("소리")]
     [SerializeField] AudioClip gatheringAudioClip;
     [SerializeField] AudioSource gatheringAudioSource;
-    
-    private LayerMask itemLayerMask;
+
+    [Header("탐지할 오브젝트의 레이어")]
+    [SerializeField] LayerMask itemLayerMask;
+
     private GameObject targetObject;
     // Start is called before the first frame update
     
@@ -38,13 +40,32 @@ public partial class PlayerManager : MonoBehaviour
 
     public void GetItem(/*아이템 변수형 넣기*/)
     {
-
+        if (true)//공격 아이템을 채취했다면
+        {
+            UseItem();//아이템 변수
+        }
+        else//재화 아이템을 채취했다면
+        {
+            GetHoney(1f);
+        }
     }
 
-    public void UseItem()//아이템 사용 아마 코루틴을 통해서 아이템을 사용할듯 
+    public void GetHoney(float earnHoney)
     {
 
     }
+
+
+
+    public void UseItem()//아이템 사용 아마 코루틴을 통해서 아이템을 사용할듯 인터페이스를 통해서 작용
+    {
+        
+    }
+    
+
+
+
+
 
     public void GatheringItem()
     {
@@ -92,7 +113,7 @@ public partial class PlayerManager : MonoBehaviour
             }
             else
             {
-
+                isGathering = false;
             }
 
         }

@@ -133,11 +133,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1232623109}
   - component: {fileID: 1232623108}
-  - component: {fileID: 1232623110}
-  - component: {fileID: 1232623111}
-  - component: {fileID: 1232623113}
-  - component: {fileID: 1232623112}
   - component: {fileID: 1232623114}
+  - component: {fileID: 1232623111}
+  - component: {fileID: 1232623112}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -191,26 +189,6 @@ Transform:
   - {fileID: 1264072742}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1232623110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1232623107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d213d225a58c46498057ca1338d4ff3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSoundSource: {fileID: 1232623111}
-  moveSoundClip: {fileID: 8300000, guid: c4ef33583abe07741ab9b30329cfd6b5, type: 3}
-  isMoveSoundPlay: 0
-  moveSpeed: 4
-  pushSpeed: 3
-  rotateSpeed: 3
-  isGathering: 0
-  isStunning: 0
 --- !u!82 &1232623111
 AudioSource:
   m_ObjectHideFlags: 0
@@ -403,23 +381,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1232623113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1232623107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c4628ee0a9a9754191cbb891d431f11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemDetectionRange: 5
-  gatheringSpeed: 4
-  gatheringDelay: 0.5
-  gatheringAudioClip: {fileID: 8300000, guid: 9905203c5143b45d7bc152f03566d872, type: 3}
-  gatheringAudioSource: {fileID: 1232623112}
 --- !u!114 &1232623114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,9 +393,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c180452cbc5998d4f8370e1728ad93bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMoveManager: {fileID: 1232623110}
-  playerActionManager: {fileID: 1232623113}
-  playerAnimationManager: {fileID: 0}
+  itemDetectionRange: 5
+  gatheringSpeed: 4
+  gatheringDelay: 0.5
+  gatheringAudioClip: {fileID: 8300000, guid: 9905203c5143b45d7bc152f03566d872, type: 3}
+  gatheringAudioSource: {fileID: 1232623112}
+  itemLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  moveSoundSource: {fileID: 1232623111}
+  moveSoundClip: {fileID: 8300000, guid: c4ef33583abe07741ab9b30329cfd6b5, type: 3}
+  isMoveSoundPlay: 0
+  moveSpeed: 4
+  pushSpeed: 3
+  rotateSpeed: 10
+  isGathering: 0
+  isStunning: 0
 --- !u!1 &1239398748
 GameObject:
   m_ObjectHideFlags: 0
