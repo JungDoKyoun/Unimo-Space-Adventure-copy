@@ -8,6 +8,10 @@ public partial class PlayerManager
     bool isOnHit = false;//맞았는지?
     [SerializeField] float onHitTime = 1f;//무적시간
     [SerializeField] float onHitBlinkTime = 0.5f;// 무적시간동안 깜빡이는 간격
+    [SerializeField] SkinnedMeshRenderer cartRenderer;
+    [SerializeField] SkinnedMeshRenderer bodyRenderer;
+    [SerializeField] SkinnedMeshRenderer faceRenderer;
+
     public float PlayerHP
     {
         get {  return playerHP; }
@@ -25,16 +29,78 @@ public partial class PlayerManager
     }
     public void PlayerGetDemage(float dmg)
     {
-        playerHP -= dmg;
-        if(playerHP < 0)
+        if (isOnHit == false)// 피격중이 아닐때 데미지 함수 호출 방식에 따라서 이 문항 지워야 할 수도 있음 
         {
-            playerHP = 0;
+            
+            playerHP -= dmg;//데미지 입음
 
+            if (playerHP < 0)
+            {
+                playerHP = 0;
+
+            }
+            else
+            {
+                StartCoroutine(PlayerBlink());
+            }
+        }
+        else
+        {
+            return;//피격중일 때
         }
     }
+    IEnumerator PlayerBlink()
+    {
+        BlinkRenderer();
+        yield return new WaitForSeconds(onHitBlinkTime);
+        BlinkRenderer();
+        yield return new WaitForSeconds(onHitBlinkTime);
+        BlinkRenderer();
+        yield break;
+    }
+    public void BlinkRenderer()
+    {
+        if(bodyRenderer.enabled == false)
+        {
+            bodyRenderer.enabled = true;
+        }
+        else
+        {
+            bodyRenderer.enabled = false;
+        }
+
+        if (faceRenderer.enabled == false)
+        {
+            faceRenderer.enabled = true;
+        }
+        else
+        {
+            faceRenderer.enabled = false;
+        }
+
+        if (cartRenderer.enabled == false)
+        {
+            cartRenderer.enabled = true;
+        }
+        else
+        {
+            cartRenderer.enabled = false;
+        }
+    }
+    
     private void OnTriggerEnter(Collider other)
     {
-        
+        float tempdmg = 1f;
+        if (false&&isOnHit==false)//적에게 피격시 
+        {
+            isOnHit = true;
+            PlayerGetDemage(tempdmg);
+        }
+        else
+        {
+
+        }
+            
     }
 
 
