@@ -41,7 +41,7 @@ public class tempGathering : MonoBehaviour,IGatheringObject
         return this;
     }
 
-    public void UseItem()
+    public void UseItem()//임시 채집물이라 별거 없음
     {
         
     }

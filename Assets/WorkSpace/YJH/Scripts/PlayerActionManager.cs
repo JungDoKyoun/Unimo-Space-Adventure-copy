@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public partial class PlayerManager : MonoBehaviour
@@ -20,7 +21,13 @@ public partial class PlayerManager : MonoBehaviour
     [Header("탐지할 오브젝트의 레이어")]
     [SerializeField] LayerMask itemLayerMask;
 
+    [SerializeField] IAttackType playerAttackType;
+    [SerializeField] ISpellType playerSpellType;
+
+    [SerializeField] LayerMask enemyLayerMask;
+    private int playerOwnEnergy=0;
     private GameObject targetObject;
+    private GameObject targetEnemyObject;
     // Start is called before the first frame update
 
     private bool isGatheringCoroutineWork = false;
@@ -28,12 +35,15 @@ public partial class PlayerManager : MonoBehaviour
     public delegate void OnTargetSet();
     public event OnTargetSet OnTargetObjectSet;
 
+    private Vector3 firePos;
     
     public void ActionStart()
     {
         gatheringAudioSource.clip = gatheringAudioClip;
         StartDetectItem();
+        StartFindEnemy();
         OnTargetObjectSet += GatheringItem;
+        SetAttackType(new EnergyBolt());
     }
     // Update is called once per frame
     
@@ -47,12 +57,39 @@ public partial class PlayerManager : MonoBehaviour
         
         StartCoroutine(FindItem());
     }
-
+    public void StartFindEnemy()
+    {
+        StartCoroutine (FindEnemy());
+    }
+    public void SetAttackType(IAttackType attackType)
+    {
+        playerAttackType = attackType;
+    }
+    public void SetSpellType(ISpellType spellType)
+    {
+        playerSpellType=spellType;
+    }
     public void GetItem(IGatheringObject temp)
     {
         temp.UseItem();
     }
-
+    public void GetEnergy(int energyNum)
+    {
+        playerOwnEnergy += energyNum;
+        if(playerOwnEnergy >= playerAttackType.EnergyCost)
+        {
+            playerOwnEnergy -= playerAttackType.EnergyCost;
+            if(targetEnemyObject != null)
+            {
+                firePos=transform.position+(targetEnemyObject.transform.position.normalized)*1.5f;
+            }
+            else
+            {
+                firePos = transform.forward;
+            }
+                playerAttackType.Shoot(firePos);
+        }
+    }
     
 
     public void GatheringItem()
@@ -68,6 +105,34 @@ public partial class PlayerManager : MonoBehaviour
             return;
         }
     }
+    IEnumerator FindEnemy()
+    {
+
+        while (targetEnemyObject==null)
+        {
+            yield return new WaitForSeconds(0.5f);
+            Collider[] targetEnemies = Physics.OverlapSphere(transform.position, 100f, enemyLayerMask);
+            float distance = float.MaxValue;
+            if (targetEnemies.Length > 0)
+            {
+                foreach (Collider collider in targetEnemies)
+                {
+
+                    float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);//감지된 콜라이더와의 거리
+                    if (distance > distanceBetween)//1.거리 비교 조건
+                    {
+                        distance = distanceBetween;
+                        targetEnemyObject = collider.gameObject;
+                        //Debug.Log("detected");
+                        //Debug.Log(targetObject.name);
+
+                    }
+                }
+            }
+        }
+    }
+
+
     IEnumerator FindItem()
     {
         while (true)
@@ -149,7 +214,7 @@ public partial class PlayerManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("no target");
+                    //Debug.Log("no target");
                     isGathering = false;
                 }
 
@@ -191,6 +256,10 @@ public partial class PlayerManager : MonoBehaviour
 
         
     }
+    
+
+
+
 
 
 }

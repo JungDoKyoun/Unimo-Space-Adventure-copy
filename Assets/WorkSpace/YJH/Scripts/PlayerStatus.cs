@@ -56,6 +56,7 @@ public partial class PlayerManager
         BlinkRenderer();
         yield return new WaitForSeconds(onHitBlinkTime);
         BlinkRenderer();
+        isOnHit = false;
         yield break;
     }
     public void BlinkRenderer()
@@ -88,20 +89,7 @@ public partial class PlayerManager
         }
     }
     
-    private void OnTriggerEnter(Collider other)
-    {
-        float tempdmg = 1f;
-        if (false&&isOnHit==false)//적에게 피격시 
-        {
-            isOnHit = true;
-            PlayerGetDemage(tempdmg);
-        }
-        else
-        {
-
-        }
-            
-    }
+    
 
 
 
