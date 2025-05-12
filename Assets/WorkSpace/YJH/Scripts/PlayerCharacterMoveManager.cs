@@ -66,20 +66,9 @@ public partial class PlayerManager : MonoBehaviour
         {
             moveSoundSource?.Stop();
         }
-        //  Ref ¹öÀü
-        //playerTransform.position += moveSpeed * Time.deltaTime * moveDir + pushSpeed * Time.deltaTime * pushDir;
-        //moveSoundClip.volume = moveSoundMax * Mathf.Clamp01(moveDir.magnitude);
-        //moveSoundClip.volume = Sound_Manager.instance._audioSources[1].volume;
-        //
-        //if (mapSetter.IsInMap(playerTransform.position) == false)
-        //{
-        //    playerTransform.position = mapSetter.FindNearestPoint(playerTransform.position);
-        //}
-        //auraCtrl.transform.position = playerTransform.position + new Vector3(0f, auraOffset, 0f);
-        //if (pushDir.magnitude < 0.01f)
-        //{
-        //    changeRotation(moveDir);
-        //}
+        Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
+        GetRotate(headDirection);
+
     }
     public void SetMoveSoundPlayOn()
     {
@@ -130,7 +119,7 @@ public partial class PlayerManager : MonoBehaviour
     {
         
         Vector2 inputVector = value.Get<Vector2>();
-        GetRotate(inputVector);
+        
         playerMoveDirection = new Vector3(inputVector.x,0,inputVector.y);
     }
     
