@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Firebase;
 using Firebase.Auth;
+using Firebase.Database;
 using System.Threading.Tasks;
 
 public class FirebaseAuthMgr : MonoBehaviour
@@ -13,6 +14,8 @@ public class FirebaseAuthMgr : MonoBehaviour
     private Button startButton;
 
     public static FirebaseUser user; // 인증된 유저 정보
+
+    public static DatabaseReference dbRef; // DB 추가
 
     public FirebaseAuth auth; // 인증 진행을 위한 정보
 
@@ -40,6 +43,8 @@ public class FirebaseAuthMgr : MonoBehaviour
             if (dependencyStatus == DependencyStatus.Available)
             {
                 auth = FirebaseAuth.DefaultInstance;
+
+                dbRef = FirebaseDatabase.DefaultInstance.RootReference;
             }
 
             else
