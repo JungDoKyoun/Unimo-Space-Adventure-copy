@@ -6,29 +6,70 @@ using TMPro;
 
 public class ButtonToInputField : MonoBehaviour
 {
-    [Header("E-mail")]
-    [SerializeField]
-    private TextMeshProUGUI savedEmail;
-
     [SerializeField]
     private TMP_InputField email;
-
-    [Header("Password")]
-    [SerializeField]
-    private TextMeshProUGUI savedPassword;
 
     [SerializeField]
     private TMP_InputField password;
 
+    [SerializeField]
+    private TMP_InputField nickname;
 
+    [SerializeField]
+    private TextMeshProUGUI num;
 
-    public void SetEmail()
+    private int i;
+
+    private void Start()
     {
-        email.text = savedEmail.text;
+        i = 0;
+
+        num.text = $"{i}";
     }
 
-    public void SetPassword()
+    public void ClearText()
     {
-        password.text = savedPassword.text;
+        num.text = null;
+
+        email.text = null;
+
+        password.text = null;
+
+        nickname.text = null;
+    }
+
+    public void IncreaseI()
+    {
+        i++;
+
+        num.text = $"{i}";
+    }
+
+    public void DecreaseI()
+    {
+        i--;
+
+        if (i < 0)
+        {
+            i = 0;
+        }
+
+        num.text = $"{i}";
+    }
+
+    public void SetAcount_qwe()
+    {
+        email.text = "qwe@qwe.com";
+
+        password.text = "qweqwe";
+    }
+
+    public void CreateAcount()
+    {
+        email.text = "qwe" + i + "@qwe.com";
+
+        password.text = "qweqwe";
+
+        nickname.text = "user" + i;
     }
 }
