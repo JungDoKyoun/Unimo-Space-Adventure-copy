@@ -110,7 +110,8 @@ public partial class PlayerManager : MonoBehaviour
         }
         else
         {
-            transform.rotation = nextRotation;
+            transform.rotation = Quaternion.SlerpUnclamped(firstRotation,nextRotation,rotateSpeed*Time.deltaTime);
+            //transform.rotation = nextRotation;
         }
     }
 

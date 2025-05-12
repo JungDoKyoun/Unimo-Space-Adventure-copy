@@ -32,6 +32,7 @@ public class tempGathering : MonoBehaviour,IGatheringObject
 
     public void OnGatheringEnd()
     {
+        UseItem();
         Destroy(gameObject);
     }
 
