@@ -4,25 +4,27 @@ using UnityEngine;
 
 public interface IGatheringObject 
 {
+    public float NowHP
+    {
+        get;
+        set;
+    }
+    public float MaxHP
+    {
+        get;
+
+    }
     public int ActiveCount
     {
         get; set;
     }
-    public void UseItem()
-    {
+    public void UseItem();
 
-    }
-    public void BeGathering()
-    {
+    public void BeGathering();
 
-    }
-    public IGatheringObject ReturnSelf()
-    {
-        return this;
-    }
+    public IGatheringObject ReturnSelf();
 
-    public void OnGatheringEnd()
-    {
 
-    }
+    public void OnGatheringEnd();
+    
 }

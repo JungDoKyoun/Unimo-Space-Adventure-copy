@@ -26,6 +26,7 @@ public partial class PlayerManager : MonoBehaviour
     public void ActionStart()
     {
         gatheringAudioSource.clip = gatheringAudioClip;
+        StartDetectItem();
     }
     // Update is called once per frame
     
@@ -38,34 +39,12 @@ public partial class PlayerManager : MonoBehaviour
         StartCoroutine(FindItem());
     }
 
-    public void GetItem(/*아이템 변수형 넣기*/)
+    public void GetItem(IGatheringObject temp)
     {
-        if (true)//공격 아이템을 채취했다면
-        {
-            UseItem();//아이템 변수
-        }
-        else//재화 아이템을 채취했다면
-        {
-            GetHoney(1f);
-        }
+        temp.UseItem();
     }
 
-    public void GetHoney(float earnHoney)
-    {
-
-    }
-
-
-
-    public void UseItem()//아이템 사용 아마 코루틴을 통해서 아이템을 사용할듯 인터페이스를 통해서 작용
-    {
-        
-    }
     
-
-
-
-
 
     public void GatheringItem()
     {
@@ -75,40 +54,61 @@ public partial class PlayerManager : MonoBehaviour
     {
         while (true)
         {
-            
-            yield return new WaitForSeconds(0.01f);
+            //if (isGathering==true)
+            //{
+            //    continue;
+            //}
+            yield return new WaitForSeconds(0.1f);
             Collider[] detectedColliders = Physics.OverlapSphere(transform.position, itemDetectionRange, itemLayerMask);
-            if(detectedColliders.Length > 0)
+
+
+
+            if (detectedColliders.Length > 0)
             {
-                float distance=float.MaxValue;
-                foreach(Collider collider in detectedColliders)
+                float distance = float.MaxValue;
+                foreach (Collider collider in detectedColliders)
                 {
-                    float distanceBetween= Vector3.Distance(transform.position, collider.transform.position);//감지된 콜라이더와의 거리
-                    if (distance> distanceBetween)//1.거리 비교 조건
+
+                    float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);//감지된 콜라이더와의 거리
+                    if (distance > distanceBetween)//1.거리 비교 조건
                     {
                         distance = distanceBetween;
-                        targetObject=collider.gameObject;
+                        targetObject = collider.gameObject;
+                        Debug.Log("detected");
+                        Debug.Log(targetObject.name);
+
                     }
-                    else if(distance==distanceBetween)
+                    else if (distance == distanceBetween)
                     {
-                        if (targetObject!=null)
+                        if (targetObject != null)
                         {
-                            if (true)//2. 체력 비교 조건
+                            var targetScript = targetObject.GetComponent<IGatheringObject>();
+                            var colliderScript = collider.GetComponent<IGatheringObject>();
+
+
+                            if (targetScript.NowHP > colliderScript.NowHP)//2. 체력 비교 조건
                             {
+                                targetObject = collider.gameObject;
 
                             }
-                            else if(true)//3. 등급 비교 조건
+                            else if (targetScript.NowHP == colliderScript.NowHP)//3. 등급 비교 조건
                             {
+                                if (targetScript.MaxHP < colliderScript.MaxHP)
+                                {
+                                    targetObject = collider.gameObject;
+
+                                }
 
                             }
                         }
-                        
 
-                        
+
+
                     }
                 }
 
 
+                isGathering = true;
 
             }
             else
@@ -120,10 +120,14 @@ public partial class PlayerManager : MonoBehaviour
     }
     IEnumerator GatheringCoroutine()// 아이템 채집중 사용할 코로틴
     {
-       
-        while (targetObject != null)
+        if (targetObject != null)
+        {
+            var targetScript= targetObject.GetComponent<IGatheringObject>();
+        }
+        while (true)
         {
             yield return new WaitForSeconds(gatheringDelay);
+            
             //타겟 오브젝트의 스크립트를 가져와서 타겟 스크립트에 저장
             //타겟 스크립트의 체력을 gatheringSpeed에 비례하게 감소 -> 정확하게 gatheringSpeed만큼 감소할 필요는 없기 때문
             //만약 타겟 스크립트의 체력이 0보다 아래로 내려가면

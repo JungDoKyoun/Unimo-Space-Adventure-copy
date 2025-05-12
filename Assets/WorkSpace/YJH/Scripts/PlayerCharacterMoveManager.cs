@@ -116,7 +116,7 @@ public partial class PlayerManager : MonoBehaviour
         
         if (isGathering == true)
         {
-            transform.LookAt(targetObject.transform);
+            transform.LookAt(targetObject?.transform);
         }
         else
         {
