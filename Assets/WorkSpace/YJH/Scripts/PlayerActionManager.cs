@@ -54,68 +54,88 @@ public partial class PlayerManager : MonoBehaviour
     {
         while (true)
         {
-            //if (isGathering==true)
-            //{
-            //    continue;
-            //}
             yield return new WaitForSeconds(0.1f);
-            Collider[] detectedColliders = Physics.OverlapSphere(transform.position, itemDetectionRange, itemLayerMask);
-
-
-
-            if (detectedColliders.Length > 0)
+            if (targetObject == null)
             {
-                float distance = float.MaxValue;
-                foreach (Collider collider in detectedColliders)
+                Debug.Log("null");
+                isGathering = false;
+            }
+            else
+            {
+                Debug.Log(Vector3.Distance(transform.position, targetObject.transform.position));
+                if (Vector3.Distance(transform.position, targetObject.transform.position) > itemDetectionRange)
                 {
 
-                    float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);//감지된 콜라이더와의 거리
-                    if (distance > distanceBetween)//1.거리 비교 조건
-                    {
-                        distance = distanceBetween;
-                        targetObject = collider.gameObject;
-                        Debug.Log("detected");
-                        Debug.Log(targetObject.name);
+                    isGathering = false;
+                    targetObject = null;
+                }
+            }
 
-                    }
-                    else if (distance == distanceBetween)
+            while (isGathering == false)
+            {
+                Debug.Log("enterwhile");
+                yield return new WaitForSeconds(0.1f);
+                Collider[] detectedColliders = Physics.OverlapSphere(transform.position, itemDetectionRange, itemLayerMask);
+
+
+
+                if (detectedColliders.Length > 0)
+                {
+                    Debug.Log("detected more than 1");
+                    Debug.Log(detectedColliders[0].gameObject.name);
+                    float distance = float.MaxValue;
+                    foreach (Collider collider in detectedColliders)
                     {
-                        if (targetObject != null)
+
+                        float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);//감지된 콜라이더와의 거리
+                        if (distance > distanceBetween)//1.거리 비교 조건
                         {
-                            var targetScript = targetObject.GetComponent<IGatheringObject>();
-                            var colliderScript = collider.GetComponent<IGatheringObject>();
+                            distance = distanceBetween;
+                            targetObject = collider.gameObject;
+                            //Debug.Log("detected");
+                            //Debug.Log(targetObject.name);
 
-
-                            if (targetScript.NowHP > colliderScript.NowHP)//2. 체력 비교 조건
+                        }
+                        else if (distance == distanceBetween)
+                        {
+                            if (targetObject != null)
                             {
-                                targetObject = collider.gameObject;
+                                var targetScript = targetObject.GetComponent<IGatheringObject>();
+                                var colliderScript = collider.GetComponent<IGatheringObject>();
 
-                            }
-                            else if (targetScript.NowHP == colliderScript.NowHP)//3. 등급 비교 조건
-                            {
-                                if (targetScript.MaxHP < colliderScript.MaxHP)
+
+                                if (targetScript.NowHP > colliderScript.NowHP)//2. 체력 비교 조건
                                 {
                                     targetObject = collider.gameObject;
 
                                 }
+                                else if (targetScript.NowHP == colliderScript.NowHP)//3. 등급 비교 조건
+                                {
+                                    if (targetScript.MaxHP < colliderScript.MaxHP)
+                                    {
+                                        targetObject = collider.gameObject;
 
+                                    }
+
+                                }
                             }
+
+
+
                         }
-
-
-
                     }
+
+
+                    isGathering = true;
+
+                }
+                else
+                {
+                    Debug.Log("no target");
+                    isGathering = false;
                 }
 
-
-                isGathering = true;
-
             }
-            else
-            {
-                isGathering = false;
-            }
-
         }
     }
     IEnumerator GatheringCoroutine()// 아이템 채집중 사용할 코로틴

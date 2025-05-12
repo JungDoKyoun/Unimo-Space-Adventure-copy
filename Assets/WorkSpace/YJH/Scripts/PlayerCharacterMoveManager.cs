@@ -48,6 +48,8 @@ public partial class PlayerManager : MonoBehaviour
         if (playerMoveDirection.magnitude>float.Epsilon)
         {
             isMoveSoundPlay = true;
+            Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
+            GetRotate(headDirection);
         }
         else
         {
@@ -66,8 +68,7 @@ public partial class PlayerManager : MonoBehaviour
         {
             moveSoundSource?.Stop();
         }
-        Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
-        GetRotate(headDirection);
+        
 
     }
     public void SetMoveSoundPlayOn()
