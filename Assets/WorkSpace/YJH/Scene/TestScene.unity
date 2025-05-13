@@ -123,11 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &158496339 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7960359065341660635, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
+--- !u!114 &158496350 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2642926704503865842, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
   m_PrefabInstance: {fileID: 1142388260243371801}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c180452cbc5998d4f8370e1728ad93bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &338002862
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -446,7 +452,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.36, y: 1.272, z: 0.5899999}
-  m_LocalScale: {x: 1.2162, y: 1.2162, z: 1.2162}
+  m_LocalScale: {x: 1.216, y: 1.216, z: 1.216}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1744828682}
@@ -514,7 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e6b8e69dd9ca0c468d32ca5bba15eb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 158496339}
+  player: {fileID: 158496350}
 --- !u!1 &1532805282
 GameObject:
   m_ObjectHideFlags: 0
@@ -1055,6 +1061,10 @@ PrefabInstance:
       propertyPath: attackPrefab
       value: 
       objectReference: {fileID: 7503936081269918129, guid: 07c22d31208dbd6418c693b8554433d7, type: 3}
+    - target: {fileID: 2642926704503865842, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
+      propertyPath: gatheringAuraPlane
+      value: 
+      objectReference: {fileID: 1253353161}
     - target: {fileID: 4422947281353344660, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.36

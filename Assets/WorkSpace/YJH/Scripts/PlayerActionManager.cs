@@ -12,8 +12,10 @@ public partial class PlayerManager : MonoBehaviour
     [SerializeField] float itemDetectionRange = 5f;//temp value
     [SerializeField] float gatheringSpeed = 4f;
     [SerializeField] float gatheringDelay = 0.5f;
-    [SerializeField] GameObject auraPlane;
+    [SerializeField] GameObject gatheringAuraPlane;
+    [SerializeField] GameObject gatheringEffect;
 
+    public float ItemDetectionRange {  get { return itemDetectionRange; } }
 
     [Header("¼Ò¸®")]
     [SerializeField] AudioClip gatheringAudioClip;
@@ -252,7 +254,7 @@ public partial class PlayerManager : MonoBehaviour
 
             }
 
-            Debug.Log("gathering");
+            //Debug.Log("gathering");
             yield return new WaitForSeconds(gatheringDelay);
             targetScript.NowHP -= gatheringSpeed;
             if(targetScript.NowHP < 0)
