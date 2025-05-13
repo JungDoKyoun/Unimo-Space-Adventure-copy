@@ -156,6 +156,7 @@ public partial class PlayerManager : MonoBehaviour
             {
                 //Debug.Log("null");
                 isGathering = false;
+                gatheringEffect.SetActive(false);
             }
             else
             {
@@ -165,6 +166,7 @@ public partial class PlayerManager : MonoBehaviour
 
                     isGathering = false;
                     targetObject = null;
+                    gatheringEffect.SetActive(false);
                 }
             }
 
@@ -224,13 +226,14 @@ public partial class PlayerManager : MonoBehaviour
 
 
                     isGathering = true;
+                    gatheringEffect.SetActive(true);
                     OnTargetObjectSet?.Invoke();
                 }
                 else
                 {
                     //Debug.Log("no target");
                     isGathering = false;
-                    
+                    gatheringEffect.SetActive(false);
                     targetObject = null;
                 }
 
