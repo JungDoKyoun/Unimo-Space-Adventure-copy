@@ -12,12 +12,13 @@ public class EnergyBolt : MonoBehaviour,IAttackType
     [SerializeField] Transform firePos;
     [SerializeField] GameObject hitEffect;
     [SerializeField] AudioClip hitSound;
+    [SerializeField] GameObject selfPrefab;
     private Vector3 initialFirePos;
 
 
 
 
-
+    public GameObject SelfPrefab { get { return selfPrefab; } set { selfPrefab = value; } }
     public float Speed
     {
         get { return speed; } set { speed = value; }
@@ -37,6 +38,7 @@ public class EnergyBolt : MonoBehaviour,IAttackType
         energyCost = 1;
         damage = 1;
         canPierce = false;
+        
     }
 
 

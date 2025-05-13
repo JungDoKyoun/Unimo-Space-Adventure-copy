@@ -21,7 +21,9 @@ public partial class PlayerManager : MonoBehaviour
     [Header("탐지할 오브젝트의 레이어")]
     [SerializeField] LayerMask itemLayerMask;
 
+    [SerializeField] GameObject attackPrefab;
     [SerializeField] IAttackType playerAttackType;
+    [SerializeField] GameObject spellPrefab;
     [SerializeField] ISpellType playerSpellType;
 
     [SerializeField] LayerMask enemyLayerMask;
@@ -43,7 +45,7 @@ public partial class PlayerManager : MonoBehaviour
         StartDetectItem();
         StartFindEnemy();
         OnTargetObjectSet += GatheringItem;
-        SetAttackType(new EnergyBolt());
+        //SetAttackType(new EnergyBolt());
     }
     // Update is called once per frame
     
@@ -61,13 +63,15 @@ public partial class PlayerManager : MonoBehaviour
     {
         StartCoroutine (FindEnemy());
     }
-    public void SetAttackType(IAttackType attackType)
+    public void SetAttackType(GameObject attackType)
     {
-        playerAttackType = attackType;
+        attackPrefab=attackType;
+        playerAttackType = attackPrefab.GetComponent<IAttackType>();
     }
-    public void SetSpellType(ISpellType spellType)
+    public void SetSpellType(GameObject spellType)
     {
-        playerSpellType=spellType;
+        spellPrefab=spellType;
+        playerSpellType = spellType.GetComponent<ISpellType>();
     }
     public void GetItem(IGatheringObject temp)
     {
@@ -87,7 +91,7 @@ public partial class PlayerManager : MonoBehaviour
             {
                 firePos = transform.forward;
             }
-                playerAttackType.Shoot(firePos);
+            Instantiate(attackPrefab, firePos, Quaternion.identity);
         }
     }
     
