@@ -36,10 +36,10 @@ public class EnergyBolt : MonoBehaviour,IAttackType
     public void Shoot(Vector3 fireDirection)
     {
         //transform.LookAt(fireDirection);
-        Vector3 tempVelocity = fireDirection.normalized * speed;
+        Vector3 tempVelocity = new Vector3(fireDirection.x, 0, fireDirection.z); //fireDirection.normalized * speed;
         firePos = transform;
-        selfBody.velocity = tempVelocity;
-        Debug.Log(tempVelocity);
+        selfBody.velocity = tempVelocity.normalized*speed;
+        Debug.Log(selfBody.velocity);
        // Destroy(gameObject, maxRange / speed);
         //Debug.Log(transform.forward*speed);
         //Debug.Log(selfBody.velocity);
