@@ -37,6 +37,8 @@ namespace JDG
         private MeshRenderer _meshRenderer;
         private List<Face> _faces; //면들의 목록
         private TileVisibility _tileVisibility;
+        private TileType _tileType;
+        private string _modeName = string.Empty;
         private float _innerSize; //내부 반지름
         private float _outerSize; //바깥 반지름
         private float _height; //높이
@@ -52,6 +54,9 @@ namespace JDG
                 _meshRenderer.material = _material;
         }
 
+        public TileVisibility TileVisibility { get { return _tileVisibility; } }
+        public TileType TileType { get { return _tileType; } set { _tileType = value; } }
+        public string ModeName { get { return _modeName;} set { _modeName = value; } }
         public float InnerSize { get { return _innerSize; } set { _innerSize = value; } }
         public float OuterSize { get { return _outerSize; } set { _outerSize = value; } }
         public float Height { get { return _height; } set { _height = value; } }
@@ -171,30 +176,59 @@ namespace JDG
         public void SetVisibility(TileVisibility visibility)
         {
             _tileVisibility = visibility;
-
-            Color color = Color.gray;
-
-            switch(_tileVisibility)
-            {
-                case TileVisibility.Hidden:
-                    color = Color.black;
-                    break;
-
-                case TileVisibility.Visible:
-                    color = Color.white;
-                    break;
-
-                case TileVisibility.Visited:
-                    color = Color.gray;
-                    break;
-            }
-
-            _meshRenderer.material.SetColor("_Color", color);
+            SetDebugColorByType();
         }
 
         public TileVisibility GetTileVisibility()
         {
             return _tileVisibility;
+        }
+
+        public void SetDebugColorByType()
+        {
+            if (_meshRenderer == null || _meshRenderer.material == null)
+                return;
+
+            Color color = Color.white;
+
+            switch(_tileType)
+            {
+                case TileType.Base:
+                    color = Color.blue;
+                    break;
+                case TileType.Boss:
+                    color = Color.red;
+                    break;
+                case TileType.Event:
+                    color = Color.yellow;
+                    break;
+                case TileType.Mode:
+                    if (_modeName == "Explore")
+                        color = Color.cyan;
+                    else if (_modeName == "Gather")
+                        color = Color.green;
+                    else
+                        color = Color.magenta;
+                    break;
+                case TileType.None:
+                default:
+                    color = Color.white;
+                    break;
+            }
+
+            switch (_tileVisibility)
+            {
+                case TileVisibility.Hidden:
+                    color = Color.black;
+                    break;
+                case TileVisibility.Visited: 
+                    color *= 0.5f; 
+                    break;
+                case TileVisibility.Visible: 
+                    break;
+            }
+
+            _meshRenderer.material.SetColor("_BaseColor", color);
         }
     }
 }

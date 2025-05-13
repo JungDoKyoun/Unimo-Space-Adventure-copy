@@ -13,7 +13,6 @@ namespace JDG
 
         [Header("입력 버튼")]
         [SerializeField] private ActionBasedController _inputController;
-        [SerializeField] private InputHelpers.Button _inputButton = InputHelpers.Button.TriggerButton;
         [SerializeField] private float _inputThreshold = 0.1f;
 
         private PlayerController _playerController;
@@ -21,7 +20,7 @@ namespace JDG
 
         private void Update()
         {
-            
+            TryMovePlayer();
         }
 
         public void Init(PlayerController playerController, HexGridLayout hexGridLayout)
@@ -37,6 +36,33 @@ namespace JDG
 
             float triggerValue = _inputController.selectAction.action.ReadValue<float>();
             return triggerValue > _inputThreshold;
+        }
+
+        private void TryMovePlayer()
+        {
+            if (_rayInteractor == null || _inputController == null || _hexGridLayout == null)
+                return;
+
+            RaycastHit hit;
+
+            if(_rayInteractor.TryGetCurrent3DRaycastHit(out hit))
+            {
+                Vector3 hitPos = hit.point;
+                Vector2Int hitcoord = _hexGridLayout.GetCoordinateFromPosition(hitPos);
+
+                if (_hexGridLayout.TryGetTile(hitcoord, out var tile))
+                {
+                    Debug.Log(tile.TileVisibility);
+                    if (IsTriggerPressed())
+                    {
+                        if (tile.TileVisibility == TileVisibility.Visible)
+                        {
+                            Vector3 target = _hexGridLayout.GetPositionForHexFromCoordinate(hitcoord);
+                            _playerController.MoveTo(target + Vector3.up * 1f);
+                        }
+                    }
+                }
+            }
         }
     }
 }

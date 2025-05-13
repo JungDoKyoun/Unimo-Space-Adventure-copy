@@ -4,6 +4,15 @@ using UnityEngine;
 
 namespace JDG
 {
+    public enum TileType
+    {
+        None,
+        Base,
+        Boss,
+        Event,
+        Mode
+    }
+
     public class HexGridLayout : MonoBehaviour
     {
         [Header("그리드 세팅")]
@@ -16,29 +25,29 @@ namespace JDG
         [SerializeField] private float _height = 1f;
         [SerializeField] private Material _material;
 
+        [Header("타일 역할 배치 변수")]
+        [SerializeField] private List<ModeRatioEntry> _modeRatio = new List<ModeRatioEntry>();
+        [SerializeField] private int[] _bossDistance;
+        [SerializeField] private int _bossCountPerCircle;
+        [SerializeField] private int[] _bossMinGapByDistance;
+        [SerializeField] private float _eventTileRatio;
+        [SerializeField] private int _eventMinDistance;
+
+
         [Header("플레이어 관련")]
         [SerializeField] private VRPlayerInput _vRPlayerInput;
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private int _viewRange = 1;
         private GameObject _playerInstance;
 
-        private List<Vector2Int> _tileCoords = new List<Vector2Int>();
+        private List<Vector2Int> _tileCoords = new List<Vector2Int>(); //타일 좌표 리스트
         private Vector2Int _playerCoord;
-        private Dictionary<Vector2Int, HexRenderer> _hexMap = new Dictionary<Vector2Int, HexRenderer>();
+        private Dictionary<Vector2Int, HexRenderer> _hexMap = new Dictionary<Vector2Int, HexRenderer>(); //타일 오브젝트 정보
 
         private void OnEnable()
         {
             GenerateConnectedMap();
             LayoutGrid();
-        }
-
-        private void OnValidate()
-        {
-            if (Application.isPlaying)
-            {
-                GenerateConnectedMap();
-                LayoutGrid();
-            }
         }
 
         private void GenerateConnectedMap()
@@ -116,7 +125,9 @@ namespace JDG
                 hexRenderer.Height = _height;
                 hexRenderer.SetMaterial(_material);
                 hexRenderer.DrawMesh();
-                hexRenderer.SetVisibility(TileVisibility.Hidden);
+                MeshCollider collider = tile.AddComponent<MeshCollider>();
+                collider.sharedMesh = tile.GetComponent<MeshFilter>().mesh;
+                //hexRenderer.SetVisibility(TileVisibility.Hidden);
                 _hexMap.Add(coord, hexRenderer);
 
                 tile.transform.SetParent(transform, true);
@@ -132,14 +143,15 @@ namespace JDG
             {
                 _vRPlayerInput.Init(player, this);
             }
-            
+
+            AssignTileRoles();
             UpdateFog();
         }
 
-        public Vector3 GetPositionForHexFromCoordinate(Vector2Int coordinate)
+        public Vector3 GetPositionForHexFromCoordinate(Vector2Int coord)
         {
-            int column = coordinate.x;
-            int row = coordinate.y;
+            int column = coord.x;
+            int row = coord.y;
             float width;
             float height;
             float xPosition;
@@ -180,7 +192,6 @@ namespace JDG
 
         public void UpdateFog()
         {
-            Debug.Log("안개 실행");
             foreach(var pair in _hexMap)
             {
                 Vector2Int coord = pair.Key;
@@ -204,7 +215,7 @@ namespace JDG
             float size = _outerSize;
             float width = Mathf.Sqrt(3) * size;
             float height = 2f * size;
-            float verticalDistance = height * (3 / 4);
+            float verticalDistance = height * (3f / 4f);
 
             int row = Mathf.RoundToInt(-pos.z / verticalDistance);
             float offset = (row % 2 == 0) ? 0 : width / 2;
@@ -220,7 +231,91 @@ namespace JDG
 
         public bool TryGetTile(Vector2Int coord, out HexRenderer hex)
         {
+            Debug.Log(_hexMap.TryGetValue(coord, out hex));
             return _hexMap.TryGetValue(coord, out hex);
+        }
+
+        private void AssignBossTiles(List<Vector2Int> candidateCoords)
+        {
+            List<Vector2Int> placedBosses = new List<Vector2Int>();
+
+            for(int i = 0; i < _bossCountPerCircle; i++)
+            {
+                if (i >= _bossDistance.Length || i >= _bossMinGapByDistance.Length)
+                    break;
+
+                int distance = _bossDistance[i];
+                int minGap = _bossMinGapByDistance[i];
+
+                List<Vector2Int> valid = candidateCoords.FindAll(coord =>
+                HexDistance(_playerCoord, coord) >= distance &&
+                !placedBosses.Exists(b => HexDistance(b, coord) < minGap));
+                Debug.Log($"[보스 배치] 거리 {distance}에서 후보 {valid.Count}개");
+
+                if (valid.Count > 0)
+                {
+                    int randomIndex = Random.Range(0, valid.Count);
+                    var chosen = valid[randomIndex];
+                    _hexMap[chosen].TileType = TileType.Boss;
+                    placedBosses.Add(chosen);
+                    candidateCoords.Remove(chosen);
+                }
+
+                else
+                {
+                    Debug.LogWarning($"[보스 배치 실패] 거리 {distance}에 유효한 후보가 없음");
+                }
+            }
+        }
+
+        private void AssignEventTiles(List<Vector2Int> candidateCoords)
+        {
+            int eventCount = Mathf.Max(_eventMinDistance, Mathf.RoundToInt(candidateCoords.Count * _eventTileRatio));
+
+            for(int i = 0; i < eventCount && candidateCoords.Count > 0; i++)
+            {
+                var randomIndex = Random.Range(0, candidateCoords.Count);
+                var chosen = candidateCoords[randomIndex];
+                _hexMap[chosen].TileType = TileType.Event;
+                candidateCoords.RemoveAt(randomIndex);
+            }
+        }
+
+        private void AssignModeTiles(List<Vector2Int> candidateCoords)
+        {
+            int totalCount = candidateCoords.Count;
+
+            foreach(var entry in _modeRatio)
+            {
+                string modeName = entry.modeName;
+                float ratio = entry.ratio;
+                int count = Mathf.RoundToInt(totalCount * ratio);
+
+                for(int i = 0; i < count && candidateCoords.Count > 0; i++)
+                {
+                    int randomIndex = Random.Range(0, candidateCoords.Count);
+                    var chosen = candidateCoords[randomIndex];
+                    _hexMap[chosen].TileType = TileType.Mode;
+                    _hexMap[chosen].ModeName = modeName;
+                    candidateCoords.RemoveAt(randomIndex);
+                }
+            }
+        }
+
+        private void AssignTileRoles()
+        {
+            List<Vector2Int> candidateCoords = new List<Vector2Int>(_tileCoords);
+            _hexMap[_playerCoord].TileType = TileType.Base;
+            candidateCoords.Remove(_playerCoord);
+
+            AssignBossTiles(candidateCoords);
+            AssignEventTiles(candidateCoords);
+            AssignModeTiles(candidateCoords);
+
+            foreach(var hex in _hexMap.Values)
+            {
+                hex.SetDebugColorByType();
+            }
         }
     }
 }
