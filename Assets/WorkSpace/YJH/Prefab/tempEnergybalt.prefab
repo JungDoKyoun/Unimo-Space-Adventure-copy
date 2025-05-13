@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7319230206555337068}
   - component: {fileID: 2260456582567339998}
   - component: {fileID: 8936600331893529272}
+  - component: {fileID: 8745932903724638958}
   m_Layer: 0
   m_Name: tempEnergybalt
   m_TagString: Untagged
@@ -118,3 +119,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7d18ed5c4ba4f967086e0cd44332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 5
+  maxRange: 5
+  energyCost: 1
+  damage: 5
+  canPierce: 0
+  firePos: {fileID: 0}
+  hitEffect: {fileID: 0}
+  hitSound: {fileID: 0}
+  selfPrefab: {fileID: 0}
+  hitSoundSource: {fileID: 0}
+  selfBody: {fileID: 8745932903724638958}
+--- !u!54 &8745932903724638958
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7503936081269918129}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 120
+  m_CollisionDetection: 0

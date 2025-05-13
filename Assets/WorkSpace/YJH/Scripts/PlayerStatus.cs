@@ -11,6 +11,7 @@ public partial class PlayerManager
     [SerializeField] SkinnedMeshRenderer cartRenderer;
     [SerializeField] SkinnedMeshRenderer bodyRenderer;
     [SerializeField] SkinnedMeshRenderer faceRenderer;
+    [SerializeField] float playerDamage=5f;
 
     public float PlayerHP
     {

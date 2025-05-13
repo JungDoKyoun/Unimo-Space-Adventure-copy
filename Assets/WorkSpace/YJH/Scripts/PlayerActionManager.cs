@@ -45,6 +45,7 @@ public partial class PlayerManager : MonoBehaviour
         StartDetectItem();
         StartFindEnemy();
         OnTargetObjectSet += GatheringItem;
+        SetAttackType(attackPrefab);
         //SetAttackType(new EnergyBolt());
     }
     // Update is called once per frame
@@ -67,6 +68,7 @@ public partial class PlayerManager : MonoBehaviour
     {
         attackPrefab=attackType;
         playerAttackType = attackPrefab.GetComponent<IAttackType>();
+        playerAttackType.Damage = playerDamage;
     }
     public void SetSpellType(GameObject spellType)
     {
@@ -85,13 +87,18 @@ public partial class PlayerManager : MonoBehaviour
             playerOwnEnergy -= playerAttackType.EnergyCost;
             if(targetEnemyObject != null)
             {
-                firePos=transform.position+(targetEnemyObject.transform.position.normalized)*1.5f;
+                Vector3 tempDirection = new Vector3();
+                tempDirection=targetEnemyObject.transform.position- transform.position;
+                firePos=transform.position+(tempDirection).normalized*1.5f;
+
             }
             else
             {
-                firePos = transform.forward;
+                firePos = transform.forward*1.5f;
             }
-            Instantiate(attackPrefab, firePos, Quaternion.identity);
+            var bullet=Instantiate(attackPrefab, firePos, Quaternion.identity);
+            //bullet.transform.LookAt(targetEnemyObject.transform);
+            bullet.GetComponent<IAttackType>().Shoot(targetEnemyObject.transform.position-firePos);
         }
     }
     
@@ -220,6 +227,8 @@ public partial class PlayerManager : MonoBehaviour
                 {
                     //Debug.Log("no target");
                     isGathering = false;
+                    
+                    targetObject = null;
                 }
 
             }
@@ -234,6 +243,14 @@ public partial class PlayerManager : MonoBehaviour
         }
         while (true)
         {
+            if (targetObject == null)
+            {
+                targetScript = null;
+                isGatheringCoroutineWork = false;
+                yield break;
+
+            }
+
             Debug.Log("gathering");
             yield return new WaitForSeconds(gatheringDelay);
             targetScript.NowHP -= gatheringSpeed;
