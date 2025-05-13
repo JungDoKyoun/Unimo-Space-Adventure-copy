@@ -4,9 +4,7 @@ using UnityEngine;
 using Firebase;
 using Firebase.Database;
 using Firebase.Auth;
-using System.Threading.Tasks;
 using TMPro;
-using UnityEngine.UIElements;
 
 public class FirebaseDataBaseMgr : MonoBehaviour
 {
@@ -20,14 +18,22 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     [SerializeField]
     private TMP_InputField rewardMetaCurrencyField;
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return new WaitUntil(() => FirebaseAuthMgr.IsFirebaseReady == true);
+
+        Debug.Log("user 대기중");
+
+        yield return new WaitUntil(() => FirebaseAuthMgr.user != null);
+
+        Debug.Log(FirebaseAuthMgr.IsFirebaseReady);
+
         this.dbRef = FirebaseAuthMgr.dbRef;
 
         this.user = FirebaseAuthMgr.user;
     }
 
-    public void SaveCurrencyInDataBase() // ingame, meta 재화 저장
+    public void SaveCurrencyInDataBase() // 재화 저장
     {
         StartCoroutine(UpdateRewardIngameCurrency(int.Parse(rewardIngameCurrencyField.text))); // reward를 인자값으로 주면 해당 값을 더하게 해야됨.
 
@@ -75,7 +81,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     {
         int tempMetaCurrency = 0;
 
-        var getTask = dbRef.Child("user").Child(user.UserId).Child("rewardMetaCurrency").GetValueAsync(); // 현재 메타 재화 불러오기
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardMetaCurrency").GetValueAsync(); // 현재 메타 재화 불러오기
 
         yield return new WaitUntil(predicate: () => getTask.IsCompleted);
 

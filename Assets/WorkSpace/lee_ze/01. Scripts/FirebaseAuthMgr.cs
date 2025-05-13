@@ -17,6 +17,8 @@ public class FirebaseAuthMgr : MonoBehaviour
 
     public static DatabaseReference dbRef; // DB 추가
 
+    public static bool IsFirebaseReady { get; private set; } = false;
+
     public FirebaseAuth auth; // 인증 진행을 위한 정보
 
     [SerializeField]
@@ -45,6 +47,8 @@ public class FirebaseAuthMgr : MonoBehaviour
                 auth = FirebaseAuth.DefaultInstance;
 
                 dbRef = FirebaseDatabase.DefaultInstance.RootReference;
+
+                IsFirebaseReady = true;
             }
 
             else
@@ -219,6 +223,8 @@ public class FirebaseAuthMgr : MonoBehaviour
 
                 if (user != null)
                 {
+                    yield return StartCoroutine(InitPlayerCurrency());
+
                     UserProfile profile = new UserProfile { DisplayName = username };
 
                     Task ProfileTask = user.UpdateUserProfileAsync(profile);
@@ -249,4 +255,17 @@ public class FirebaseAuthMgr : MonoBehaviour
     }
 
     #endregion
+
+    private IEnumerator InitPlayerCurrency() // 회원가입 시 재화 초기값 설정
+    {
+        // 초기 인게임 재화 생성
+        var DBTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").SetValueAsync(0);
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+        // 초기 메타 재화 생성
+        DBTask = dbRef.Child("users").Child(user.UserId).Child("rewardMetaCurrency").SetValueAsync(0);
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+    }
 }
