@@ -12,6 +12,7 @@ public partial class PlayerManager : MonoBehaviour
     [SerializeField] float itemDetectionRange = 5f;//temp value
     [SerializeField] float gatheringSpeed = 4f;
     [SerializeField] float gatheringDelay = 0.5f;
+    [SerializeField] GameObject auraPlane;
 
 
     [Header("¼Ò¸®")]
@@ -105,7 +106,7 @@ public partial class PlayerManager : MonoBehaviour
 
     public void GatheringItem()
     {
-        Debug.Log("gathering2");
+        //Debug.Log("gathering2");
         if (isGatheringCoroutineWork == false)
         {
             isGatheringCoroutineWork = true;
@@ -277,8 +278,13 @@ public partial class PlayerManager : MonoBehaviour
 
         
     }
-    
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position,itemDetectionRange);
+        
+    }
 
 
 

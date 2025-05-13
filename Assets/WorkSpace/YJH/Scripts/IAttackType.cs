@@ -37,11 +37,7 @@ public interface IAttackType
         get; set;
     }
 
-    public GameObject SelfPrefab
-    {
-        get; set;
-    }
-
+   
 
     public void Shoot(Vector3 firePos);
     
