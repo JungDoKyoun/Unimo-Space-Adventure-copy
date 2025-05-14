@@ -46,7 +46,7 @@ public partial class PlayerManager : MonoBehaviour
     {
         gatheringAudioSource.clip = gatheringAudioClip;
         StartDetectItem();
-        StartFindEnemy();
+        //StartFindEnemy();
         OnTargetObjectSet += GatheringItem;
         SetAttackType(attackPrefab);
         //SetAttackType(new EnergyBolt());
@@ -63,10 +63,10 @@ public partial class PlayerManager : MonoBehaviour
         
         StartCoroutine(FindItem());
     }
-    public void StartFindEnemy()
-    {
-        StartCoroutine (FindEnemy());
-    }
+    //public void StartFindEnemy()
+    //{
+    //    //StartCoroutine (FindEnemy());
+    //}
     public void SetAttackType(GameObject attackType)
     {
         attackPrefab=attackType;
@@ -87,6 +87,7 @@ public partial class PlayerManager : MonoBehaviour
         playerOwnEnergy += energyNum;
         if(playerOwnEnergy >= playerAttackType.EnergyCost)
         {
+            FindEnemy();
             playerOwnEnergy -= playerAttackType.EnergyCost;
             if(targetEnemyObject != null)
             {
@@ -119,32 +120,55 @@ public partial class PlayerManager : MonoBehaviour
             return;
         }
     }
-    IEnumerator FindEnemy()
+    //IEnumerator FindEnemy()
+    //{
+    //
+    //    while (targetEnemyObject==null)
+    //    {
+    //        yield return new WaitForSeconds(0.5f);
+    //        Collider[] targetEnemies = Physics.OverlapSphere(transform.position, 100f, enemyLayerMask);
+    //        float distance = float.MaxValue;
+    //        if (targetEnemies.Length > 0)
+    //        {
+    //            foreach (Collider collider in targetEnemies)
+    //            {
+    //
+    //                float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);//감지된 콜라이더와의 거리
+    //                if (distance > distanceBetween)//1.거리 비교 조건
+    //                {
+    //                    distance = distanceBetween;
+    //                    targetEnemyObject = collider.gameObject;
+    //                    //Debug.Log("detected");
+    //                    //Debug.Log(targetObject.name);
+    //
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
+
+    public void FindEnemy()
     {
-
-        while (targetEnemyObject==null)
+        Collider[] targetEnemies = Physics.OverlapSphere(transform.position, 100f, enemyLayerMask);
+        float distance = float.MaxValue;
+        if (targetEnemies.Length > 0)
         {
-            yield return new WaitForSeconds(0.5f);
-            Collider[] targetEnemies = Physics.OverlapSphere(transform.position, 100f, enemyLayerMask);
-            float distance = float.MaxValue;
-            if (targetEnemies.Length > 0)
+            foreach (Collider collider in targetEnemies)
             {
-                foreach (Collider collider in targetEnemies)
+
+                float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);//감지된 콜라이더와의 거리
+                if (distance > distanceBetween)//1.거리 비교 조건
                 {
+                    distance = distanceBetween;
+                    targetEnemyObject = collider.gameObject;
+                    //Debug.Log("detected");
+                    //Debug.Log(targetObject.name);
 
-                    float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);//감지된 콜라이더와의 거리
-                    if (distance > distanceBetween)//1.거리 비교 조건
-                    {
-                        distance = distanceBetween;
-                        targetEnemyObject = collider.gameObject;
-                        //Debug.Log("detected");
-                        //Debug.Log(targetObject.name);
-
-                    }
                 }
             }
         }
     }
+
 
 
     IEnumerator FindItem()
@@ -156,7 +180,7 @@ public partial class PlayerManager : MonoBehaviour
             {
                 //Debug.Log("null");
                 isGathering = false;
-                gatheringEffect.SetActive(false);
+                //gatheringEffect.SetActive(false);
             }
             else
             {
@@ -166,7 +190,7 @@ public partial class PlayerManager : MonoBehaviour
 
                     isGathering = false;
                     targetObject = null;
-                    gatheringEffect.SetActive(false);
+                    //gatheringEffect.SetActive(false);
                 }
             }
 

@@ -106,7 +106,9 @@ public partial class PlayerManager : MonoBehaviour
         
         if (isGathering == true)
         {
-            transform.LookAt(targetObject?.transform);
+            Vector3 headDir = new Vector3(targetObject.transform.position.x,transform.position.y, targetObject.transform.position.z);
+            transform.LookAt(headDir);
+            
         }
         else
         {
