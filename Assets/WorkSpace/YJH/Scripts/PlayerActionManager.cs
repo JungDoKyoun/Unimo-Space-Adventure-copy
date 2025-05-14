@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public partial class PlayerManager : MonoBehaviour
+public partial class PlayerManager 
 {
 
 

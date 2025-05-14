@@ -6,9 +6,10 @@ using UnityEngine.InputSystem.XR;
 using UnityEngine.Windows;
 using Unity.XR;
 using Unity.VisualScripting;
+using Photon.Pun;
 
 
-public partial class PlayerManager : MonoBehaviour
+public partial class PlayerManager : MonoBehaviourPun
 {
     private Rigidbody playerCharacterBody;
     private Vector3 playerMoveDirection;
@@ -45,29 +46,31 @@ public partial class PlayerManager : MonoBehaviour
 
     public void PlayerMoveBySpeed()
     {
-        if (playerMoveDirection.magnitude>float.Epsilon)
+        if (PhotonNetwork.IsConnected == false)
         {
-            isMoveSoundPlay = true;
-            Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
-            GetRotate(headDirection);
+            if (playerMoveDirection.magnitude > float.Epsilon)
+            {
+                isMoveSoundPlay = true;
+                Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
+                GetRotate(headDirection);
+            }
+            else
+            {
+                isMoveSoundPlay = false;
+            }
+            transform.position += moveSpeed * Time.deltaTime * playerMoveDirection + pushSpeed * Time.deltaTime * playerPushDirection;
+            if (isMoveSoundPlay)
+            {
+                moveSoundSource?.Play();
+            }
+            else
+            {
+                moveSoundSource?.Stop();
+            }
         }
-        else
-        {
-            isMoveSoundPlay = false;
-        }
-        transform.position += moveSpeed * Time.deltaTime * playerMoveDirection + pushSpeed * Time.deltaTime * playerPushDirection;
+
+
         
-
-
-
-        if (isMoveSoundPlay)
-        {
-            moveSoundSource?.Play();
-        }
-        else
-        {
-            moveSoundSource?.Stop();
-        }
         
 
     }
