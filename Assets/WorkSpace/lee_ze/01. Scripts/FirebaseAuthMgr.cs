@@ -7,6 +7,7 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
 using System.Threading.Tasks;
+using ZL.Unity;
 
 public class FirebaseAuthMgr : MonoBehaviour
 {
@@ -35,6 +36,9 @@ public class FirebaseAuthMgr : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI confirmText;
+
+    [SerializeField]
+    private GameObject laser;
 
     private void Awake()
     {
@@ -150,6 +154,8 @@ public class FirebaseAuthMgr : MonoBehaviour
             confirmText.text = "nickname: " + user.DisplayName;
 
             startButton.interactable = true;
+
+            laser.Destroy();
         }
     }
 
@@ -248,6 +254,8 @@ public class FirebaseAuthMgr : MonoBehaviour
                         confirmText.text = "nickname: " + user.DisplayName;
 
                         startButton.interactable = true;
+
+                        laser.Destroy();
                     }
                 }
             }
