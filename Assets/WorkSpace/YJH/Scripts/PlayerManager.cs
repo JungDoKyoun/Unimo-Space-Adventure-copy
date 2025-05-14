@@ -23,18 +23,25 @@ public partial class PlayerManager : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        float tempdmg = 1f;
-        if (false && isOnHit == false)//적에게 피격시 
-        {
-            isOnHit = true;
-            PlayerGetDemage(tempdmg);
-        }
-        else if(other.gameObject.layer==LayerMask.NameToLayer("Energy"))
+        
+        
+        if(other.gameObject.layer==LayerMask.NameToLayer("Energy"))
         {
             GetEnergy(1);
             Destroy(other.gameObject);
         }
 
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        float tempdmg = 1f;
+        if (collision.gameObject.layer==enemyLayerMask && isOnHit == false)//적에게 피격시 
+        {
+            isOnHit = true;
+            PlayerGetDemage(tempdmg);
+
+
+        }
     }
 
 }
