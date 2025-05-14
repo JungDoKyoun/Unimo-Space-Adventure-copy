@@ -581,6 +581,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2163061155770630284, guid: e3b218510abac36428b39fb7d9c1580f, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 26a20a7e6ad7eb242b944f127539c9d3, type: 2}
     - target: {fileID: 8980549144392899874, guid: e3b218510abac36428b39fb7d9c1580f, type: 3}
       propertyPath: m_Name
       value: gatheringbeam
@@ -807,7 +811,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1627568607
 Transform:
   m_ObjectHideFlags: 0
@@ -1180,17 +1184,21 @@ PrefabInstance:
       propertyPath: gatheringAuraPlane
       value: 
       objectReference: {fileID: 1253353161}
+    - target: {fileID: 2858600654741202213, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4422947281353344660, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.36
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4422947281353344660, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.272
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4422947281353344660, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.59
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4422947281353344660, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
       propertyPath: m_LocalRotation.w

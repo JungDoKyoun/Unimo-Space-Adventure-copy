@@ -12,7 +12,10 @@ public partial class PlayerManager
     [SerializeField] SkinnedMeshRenderer bodyRenderer;
     [SerializeField] SkinnedMeshRenderer faceRenderer;
     [SerializeField] float playerDamage=5f;
+    [SerializeField] GameObject hitEffect;
 
+    public delegate void onPlayerDead();
+    public event onPlayerDead OnPlayerDead;
     public float PlayerHP
     {
         get {  return playerHP; }
@@ -34,11 +37,11 @@ public partial class PlayerManager
         {
             
             playerHP -= dmg;//데미지 입음
-
+            PlayHitEffect();
             if (playerHP < 0)
             {
                 playerHP = 0;
-
+                OnPlayerDead?.Invoke();
             }
             else
             {
@@ -49,6 +52,10 @@ public partial class PlayerManager
         {
             return;//피격중일 때
         }
+    }
+    public void PlayHitEffect()
+    {
+        hitEffect.SetActive(true);
     }
     IEnumerator PlayerBlink()
     {

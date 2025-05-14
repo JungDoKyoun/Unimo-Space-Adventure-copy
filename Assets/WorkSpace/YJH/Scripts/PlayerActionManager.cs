@@ -40,6 +40,9 @@ public partial class PlayerManager : MonoBehaviour
     public delegate void OnTargetSet();
     public event OnTargetSet OnTargetObjectSet;
 
+    
+
+
     private Vector3 firePos;
     
     public void ActionStart()
@@ -168,7 +171,15 @@ public partial class PlayerManager : MonoBehaviour
             }
         }
     }
-
+    public void ActiveGatheringBeam()
+    {
+        gatheringEffect.SetActive(true);
+        //gatheringEffect.transform.LookAt(targetObject.transform);   
+    }
+    public void DeactiveGatheringBeam()
+    {
+        gatheringEffect.SetActive(false);
+    }
 
 
     IEnumerator FindItem()
@@ -250,14 +261,16 @@ public partial class PlayerManager : MonoBehaviour
 
 
                     isGathering = true;
-                    gatheringEffect.SetActive(true);
+                    ActiveGatheringBeam();
+
+
                     OnTargetObjectSet?.Invoke();
                 }
                 else
                 {
                     //Debug.Log("no target");
                     isGathering = false;
-                    gatheringEffect.SetActive(false);
+                    DeactiveGatheringBeam();
                     targetObject = null;
                 }
 
@@ -307,6 +320,12 @@ public partial class PlayerManager : MonoBehaviour
 
         
     }
+
+    
+
+   
+
+
 
     private void OnDrawGizmos()
     {
