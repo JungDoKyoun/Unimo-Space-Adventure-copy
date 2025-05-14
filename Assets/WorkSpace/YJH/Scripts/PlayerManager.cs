@@ -44,7 +44,7 @@ public partial class PlayerManager : MonoBehaviour
             Debug.Log("playerhit");
             Vector3 hitDir = collision.GetContact(0).normal;
 
-            hitEffect.transform.rotation = Quaternion.FromToRotation(transform.rotation.eulerAngles, hitDir);
+            hitEffect.transform.rotation = Quaternion.FromToRotation(hitDir, transform.rotation.eulerAngles);
             PlayerGetDemage(tempdmg);
             isOnHit = true;
 
