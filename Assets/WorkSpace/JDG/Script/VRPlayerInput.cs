@@ -52,7 +52,6 @@ namespace JDG
 
                 if (_hexGridLayout.TryGetTile(hitcoord, out var tile))
                 {
-                    Debug.Log(tile.TileVisibility);
                     if (IsTriggerPressed())
                     {
                         if (tile.TileVisibility == TileVisibility.Visible)

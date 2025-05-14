@@ -231,7 +231,6 @@ namespace JDG
 
         public bool TryGetTile(Vector2Int coord, out HexRenderer hex)
         {
-            Debug.Log(_hexMap.TryGetValue(coord, out hex));
             return _hexMap.TryGetValue(coord, out hex);
         }
 
@@ -248,7 +247,7 @@ namespace JDG
                 int minGap = _bossMinGapByDistance[i];
 
                 List<Vector2Int> valid = candidateCoords.FindAll(coord =>
-                HexDistance(_playerCoord, coord) >= distance &&
+                HexDistance(_playerCoord, coord) == distance &&
                 !placedBosses.Exists(b => HexDistance(b, coord) < minGap));
                 Debug.Log($"[보스 배치] 거리 {distance}에서 후보 {valid.Count}개");
 
@@ -264,6 +263,20 @@ namespace JDG
                 else
                 {
                     Debug.LogWarning($"[보스 배치 실패] 거리 {distance}에 유효한 후보가 없음");
+                    List<Vector2Int> fallback = new List<Vector2Int>(candidateCoords);
+                    fallback.Sort((a, b) => HexDistance(_playerCoord, b).CompareTo(HexDistance(_playerCoord, a)));
+
+                    foreach(var coord in fallback)
+                    {
+                        if(!placedBosses.Exists(b => HexDistance(b, coord) < minGap))
+                        {
+                            _hexMap[coord].TileType = TileType.Boss;
+                            placedBosses.Add(coord);
+                            candidateCoords.Remove(coord);
+                            Debug.Log($"[보스 강제 배치] 거리 {HexDistance(_playerCoord, coord)}에 배치됨");
+                            break;
+                        }
+                    }
                 }
             }
         }

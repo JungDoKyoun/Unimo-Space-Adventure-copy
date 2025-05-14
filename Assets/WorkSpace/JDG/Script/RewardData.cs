@@ -5,9 +5,10 @@ using UnityEngine;
 namespace JDG
 {
     [System.Serializable]
-    public class ModeRatioEntry
+    public class RewardData
     {
-        public string modeName;
-        [Range(0f, 1f)] public float ratio;
+        public Sprite RewardIcon;
+        public string RewardName;
+        public int RewardAmount;
     }
 }

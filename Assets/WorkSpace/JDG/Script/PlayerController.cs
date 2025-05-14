@@ -26,8 +26,11 @@ namespace JDG
 
         public void MoveTo(Vector3 targetPos)
         {
-            _targetPos = targetPos;
-            _isMoving = true;
+            if(!_isMoving)
+            {
+                _targetPos = targetPos;
+                _isMoving = true;
+            }
         }
 
         private void MoveAction()
