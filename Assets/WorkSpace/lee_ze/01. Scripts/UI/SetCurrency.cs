@@ -20,6 +20,15 @@ public class SetCurrency : MonoBehaviour
         ingameCurrency = 0;
 
         metaCurrency = 0;
+
+        SetFieldZero();
+    }
+
+    private void SetFieldZero()
+    {
+        rewardIngameCurrencyInputField.text = 0.ToString();
+
+        rewardMetaCurrencyInputField.text = 0.ToString();
     }
 
     public void IncreaseIngameCurrency()

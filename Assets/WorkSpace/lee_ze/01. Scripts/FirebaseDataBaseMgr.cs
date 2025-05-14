@@ -12,11 +12,19 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     FirebaseUser user;
 
+    [Header("Save")]
     [SerializeField]
     private TMP_InputField rewardIngameCurrencyField;
 
     [SerializeField]
     private TMP_InputField rewardMetaCurrencyField;
+
+    [Header("Display")]
+    [SerializeField]
+    private TextMeshProUGUI rewardIngameCurrencyText;
+
+    [SerializeField]
+    private TextMeshProUGUI rewardMetaCurrencyText;
 
     private IEnumerator Start()
     {
@@ -31,16 +39,44 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         this.dbRef = FirebaseAuthMgr.dbRef;
 
         this.user = FirebaseAuthMgr.user;
+
+        StartCoroutine(ShowUserIngameCurrency());
+
+        StartCoroutine(ShowUserMetaCurrency());
     }
 
-    public void SaveCurrencyInDataBase() // 재화 저장
+    private IEnumerator ShowUserIngameCurrency()
+    {
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").GetValueAsync();
+
+        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
+
+        if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
+        {
+            rewardIngameCurrencyText.text = "InGame Currency: " + savedValue.ToString();
+        }
+    }
+
+    private IEnumerator ShowUserMetaCurrency()
+    {
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardMetaCurrency").GetValueAsync();
+
+        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
+
+        if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
+        {
+            rewardMetaCurrencyText.text = "Meta Currency: " + savedValue.ToString();
+        }
+    }
+
+    public void SaveCurrencyInDataBase() // 전체 재화 저장
     {
         StartCoroutine(UpdateRewardIngameCurrency(int.Parse(rewardIngameCurrencyField.text))); // reward를 인자값으로 주면 해당 값을 더하게 해야됨.
 
         StartCoroutine(UpdateRewardMetaCurrency(int.Parse(rewardMetaCurrencyField.text)));
     }
 
-    private IEnumerator UpdateRewardIngameCurrency(int ingameCurrency)
+    private IEnumerator UpdateRewardIngameCurrency(int ingameCurrencyToAdd) // Ingame 재화 저장 함수(더할 값)
     {
         int tempIngameCurrency = 0;
 
@@ -60,7 +96,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             tempIngameCurrency = savedValue; // tempIngameCurrency = 기존 재화
         }
 
-        int newIngameCurrency = tempIngameCurrency + ingameCurrency; // 재화 최신화
+        int newIngameCurrency = tempIngameCurrency + ingameCurrencyToAdd; // 재화 최신화
 
         var DBTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").SetValueAsync(newIngameCurrency); // 최신화 된 재화 DB 저장
 
@@ -73,11 +109,12 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         else
         {
-
+            // 재화 디스플레이
+            StartCoroutine(ShowUserIngameCurrency());
         }
     }
 
-    private IEnumerator UpdateRewardMetaCurrency(int metaCurrency)
+    private IEnumerator UpdateRewardMetaCurrency(int metaCurrencyToAdd) // Meta 재화 저장 함수(더할 값)
     {
         int tempMetaCurrency = 0;
 
@@ -97,9 +134,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             tempMetaCurrency = savedValue; // tempMetaCurrency = 기존 재화
         }
 
-        int newMetaCurrency = tempMetaCurrency + metaCurrency; // 재화 최신화
+        int newMetaCurrency = tempMetaCurrency + metaCurrencyToAdd; // 재화 최신화
 
-        var DBTask = dbRef.Child("users").Child(user.UserId).Child("rewardMetaCurrency").SetValueAsync(metaCurrency);
+        var DBTask = dbRef.Child("users").Child(user.UserId).Child("rewardMetaCurrency").SetValueAsync(newMetaCurrency);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
@@ -110,7 +147,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         else
         {
-
+            // 재화 디스플레이
+            StartCoroutine(ShowUserMetaCurrency());
         }
     }
 }
