@@ -4,7 +4,7 @@ using UnityEngine;
 
 public partial class PlayerManager
 {
-    [SerializeField] float playerHP;//체력 필요 없나?
+    [SerializeField] float playerHP=300;//체력 필요 없나?
     bool isOnHit = false;//맞았는지?
     [SerializeField] float onHitTime = 1f;//무적시간
     [SerializeField] float onHitBlinkTime = 0.5f;// 무적시간동안 깜빡이는 간격
@@ -38,13 +38,15 @@ public partial class PlayerManager
             
             playerHP -= dmg;//데미지 입음
             PlayHitEffect();
-            if (playerHP < 0)
+            if (playerHP <= 0)
             {
+                Debug.Log("dead");
                 playerHP = 0;
                 OnPlayerDead?.Invoke();
             }
             else
             {
+                Debug.Log("startblink");
                 StartCoroutine(PlayerBlink());
             }
         }
@@ -59,6 +61,9 @@ public partial class PlayerManager
     }
     IEnumerator PlayerBlink()
     {
+        Debug.Log("startblink");
+        BlinkRenderer();
+        yield return new WaitForSeconds(onHitBlinkTime);
         BlinkRenderer();
         yield return new WaitForSeconds(onHitBlinkTime);
         BlinkRenderer();

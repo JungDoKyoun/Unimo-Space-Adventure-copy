@@ -34,11 +34,19 @@ public partial class PlayerManager : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("collision");
         float tempdmg = 1f;
-        if (collision.gameObject.layer==enemyLayerMask && isOnHit == false)//적에게 피격시 
+        Debug.Log(enemyLayerMask);
+        Debug.Log(collision.gameObject.layer);
+        if (collision.gameObject.layer==LayerMask.NameToLayer("tempenemy") && isOnHit == false)//적에게 피격시 
         {
-            isOnHit = true;
+            
+            Debug.Log("playerhit");
+            Vector3 hitDir = collision.GetContact(0).normal;
+
+            hitEffect.transform.rotation = Quaternion.FromToRotation(transform.rotation.eulerAngles, hitDir);
             PlayerGetDemage(tempdmg);
+            isOnHit = true;
 
 
         }

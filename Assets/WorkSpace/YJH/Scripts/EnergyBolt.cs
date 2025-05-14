@@ -63,13 +63,13 @@ public class EnergyBolt : MonoBehaviour,IAttackType
             hitSoundSource.clip = hitSound;
             hitSoundSource.Play();
         }
-        Debug.Log("playhit!");
+       // Debug.Log("playhit!");
     }
 
     private void OnTriggerEnter(Collider other)
     {
         selfCollider.enabled = false;
-        Debug.Log("trigger");
+        //Debug.Log("trigger");
         OnHit();
     }
 
