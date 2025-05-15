@@ -57,16 +57,9 @@ public class ButtonToInputField : MonoBehaviour
         num.text = $"{i}";
     }
 
-    public void SetAcount_qwe()
-    {
-        email.text = "qwe@qwe.com";
-
-        password.text = "qweqwe";
-    }
-
     public void CreateAcount()
     {
-        email.text = "qwe" + i + "@qwe.com";
+        email.text = "qwe" + i;
 
         password.text = "qweqwe";
 

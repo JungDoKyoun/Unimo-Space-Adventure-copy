@@ -37,9 +37,6 @@ public class FirebaseAuthMgr : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI confirmText;
 
-    [SerializeField]
-    private GameObject laser;
-
     private void Awake()
     {
         Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
@@ -74,12 +71,12 @@ public class FirebaseAuthMgr : MonoBehaviour
 
     public void Login()
     {
-        StartCoroutine(LoginCor(emailField.text, passwordField.text));
+        StartCoroutine(LoginCor(emailField.text + "@unimo.com", passwordField.text));
     }
 
     public void Register()
     {
-        StartCoroutine(RegisterCor(emailField.text, passwordField.text, nicknameField.text));
+        StartCoroutine(RegisterCor(emailField.text + "@unimo.com", passwordField.text, nicknameField.text));
     }
 
     #region 로그인 코루틴
@@ -154,8 +151,6 @@ public class FirebaseAuthMgr : MonoBehaviour
             confirmText.text = "nickname: " + user.DisplayName;
 
             startButton.interactable = true;
-
-            laser.Destroy();
         }
     }
 
@@ -254,8 +249,6 @@ public class FirebaseAuthMgr : MonoBehaviour
                         confirmText.text = "nickname: " + user.DisplayName;
 
                         startButton.interactable = true;
-
-                        laser.Destroy();
                     }
                 }
             }

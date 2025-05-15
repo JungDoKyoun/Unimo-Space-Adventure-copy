@@ -69,7 +69,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         }
     }
 
-    public void SaveCurrencyInDataBase() // 전체 재화 저장
+    public void SaveCurrencyInDataBase() // 전체 재화 저장 >> 버튼 이벤트 함수로 호출
     {
         StartCoroutine(UpdateRewardIngameCurrency(int.Parse(rewardIngameCurrencyField.text))); // reward를 인자값으로 주면 해당 값을 더하게 해야됨.
 
