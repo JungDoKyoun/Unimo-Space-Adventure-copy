@@ -164,7 +164,7 @@ public partial class PlayerManager
     public void ActiveGatheringBeam()
     {
         gatheringEffect.SetActive(true);
-        //gatheringEffect.transform.LookAt(targetObject.transform);   
+        gatheringEffect.transform.LookAt(targetObject.transform);   
     }
     public void DeactiveGatheringBeam()
     {
@@ -327,7 +327,7 @@ public partial class PlayerManager
 
     public void OnUseSpell()
     {
-        Debug.Log("pressedQ");
+        //Debug.Log("pressedQ");
         playerSpellType.UseSpell();
     }
     
