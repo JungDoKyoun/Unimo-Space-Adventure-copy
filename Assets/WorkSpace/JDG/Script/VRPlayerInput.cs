@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using JDG;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.UI;
 
 namespace JDG
 {
@@ -15,12 +16,15 @@ namespace JDG
         [SerializeField] private ActionBasedController _inputController;
         [SerializeField] private float _inputThreshold = 0.1f;
 
+        [Header("UI ฐüทร")]
+        [SerializeField] TileSelectionUI _tileSelectionUI;
+
         private PlayerController _playerController;
         private HexGridLayout _hexGridLayout;
 
         private void Update()
         {
-            TryMovePlayer();
+            TryRayInteract();
         }
 
         public void Init(PlayerController playerController, HexGridLayout hexGridLayout)
@@ -38,7 +42,7 @@ namespace JDG
             return triggerValue > _inputThreshold;
         }
 
-        private void TryMovePlayer()
+        private void TryRayInteract()
         {
             if (_rayInteractor == null || _inputController == null || _hexGridLayout == null)
                 return;
@@ -47,6 +51,17 @@ namespace JDG
 
             if(_rayInteractor.TryGetCurrent3DRaycastHit(out hit))
             {
+                GameObject hitObj = hit.collider.gameObject;
+
+                if(hitObj.TryGetComponent<Button>(out Button button))
+                {
+                    if(IsTriggerPressed())
+                    {
+                        button.onClick.Invoke();
+                        return;
+                    }
+                }
+
                 Vector3 hitPos = hit.point;
                 Vector2Int hitcoord = _hexGridLayout.GetCoordinateFromPosition(hitPos);
 
@@ -54,10 +69,11 @@ namespace JDG
                 {
                     if (IsTriggerPressed())
                     {
-                        if (tile.TileVisibility == TileVisibility.Visible)
+                        if (tile.TileData.TileVisibility == TileVisibility.Visible)
                         {
-                            Vector3 target = _hexGridLayout.GetPositionForHexFromCoordinate(hitcoord);
-                            _playerController.MoveTo(target + Vector3.up * 1f);
+                            Vector3 center = _hexGridLayout.GetPositionForHexFromCoordinate(_hexGridLayout.GetBaseCoord());;
+                            _tileSelectionUI.ShowUI(tile, center);
+                            return;
                         }
                     }
                 }

@@ -40,15 +40,26 @@ namespace JDG
         [SerializeField] private int _viewRange = 1;
         private GameObject _playerInstance;
 
+        [Header("UI 관련")]
+        [SerializeField] TileSelectionUI _tileSelectionUI;
+        [SerializeField] SceneLoader _sceneLoader;
+
         private List<Vector2Int> _tileCoords = new List<Vector2Int>(); //타일 좌표 리스트
+        private Vector2Int _baseCoord;
         private Vector2Int _playerCoord;
         private Dictionary<Vector2Int, HexRenderer> _hexMap = new Dictionary<Vector2Int, HexRenderer>(); //타일 오브젝트 정보
 
-        private void OnEnable()
+        private void Start()
         {
+            if (GameStateManager.Instance.IsRestoreMap)
+                return;
+
             GenerateConnectedMap();
             LayoutGrid();
         }
+
+        public Dictionary<Vector2Int, HexRenderer> HexMap { get { return _hexMap; } }
+        public Vector2Int PlayerCoord { get { return _playerCoord; } }
 
         private void GenerateConnectedMap()
         {
@@ -56,6 +67,7 @@ namespace JDG
             _tileCoords.Clear();
             _tileCoords.Add(center);
             _playerCoord = center;
+            _baseCoord = center;
 
             List<Vector2Int> frontier = new List<Vector2Int>(GetNeighbors(center));
 
@@ -124,10 +136,13 @@ namespace JDG
                 hexRenderer.InnerSize = _innerSize;
                 hexRenderer.Height = _height;
                 hexRenderer.SetMaterial(_material);
+
+                var data = new TileData(coord, TileType.None, TileVisibility.Hidden, TileEnvironmentManager.Instance.GetRandomEnvironment(), false);
+                hexRenderer.SetTileData(data);
+
                 hexRenderer.DrawMesh();
                 MeshCollider collider = tile.AddComponent<MeshCollider>();
                 collider.sharedMesh = tile.GetComponent<MeshFilter>().mesh;
-                //hexRenderer.SetVisibility(TileVisibility.Hidden);
                 _hexMap.Add(coord, hexRenderer);
 
                 tile.transform.SetParent(transform, true);
@@ -143,6 +158,13 @@ namespace JDG
             {
                 _vRPlayerInput.Init(player, this);
             }
+
+            if(_tileSelectionUI != null)
+            {
+                _tileSelectionUI.Init(player, this);
+            }
+
+            SceneLoader.Instance.Init(this, player);
 
             AssignTileRoles();
             UpdateFog();
@@ -254,10 +276,11 @@ namespace JDG
                 if (valid.Count > 0)
                 {
                     int randomIndex = Random.Range(0, valid.Count);
-                    var chosen = valid[randomIndex];
-                    _hexMap[chosen].TileType = TileType.Boss;
-                    placedBosses.Add(chosen);
-                    candidateCoords.Remove(chosen);
+                    var coord = valid[randomIndex];
+                    _hexMap[coord].TileData.TileType = TileType.Boss;
+                    _hexMap[coord].TileData.SceneName = "BossScene";
+                    placedBosses.Add(coord);
+                    candidateCoords.Remove(coord);
                 }
 
                 else
@@ -270,7 +293,8 @@ namespace JDG
                     {
                         if(!placedBosses.Exists(b => HexDistance(b, coord) < minGap))
                         {
-                            _hexMap[coord].TileType = TileType.Boss;
+                            _hexMap[coord].TileData.TileType = TileType.Boss;
+                            _hexMap[coord].TileData.SceneName = "BossScene";
                             placedBosses.Add(coord);
                             candidateCoords.Remove(coord);
                             Debug.Log($"[보스 강제 배치] 거리 {HexDistance(_playerCoord, coord)}에 배치됨");
@@ -289,7 +313,7 @@ namespace JDG
             {
                 var randomIndex = Random.Range(0, candidateCoords.Count);
                 var chosen = candidateCoords[randomIndex];
-                _hexMap[chosen].TileType = TileType.Event;
+                _hexMap[chosen].TileData.TileType = TileType.Event;
                 candidateCoords.RemoveAt(randomIndex);
             }
         }
@@ -307,9 +331,10 @@ namespace JDG
                 for(int i = 0; i < count && candidateCoords.Count > 0; i++)
                 {
                     int randomIndex = Random.Range(0, candidateCoords.Count);
-                    var chosen = candidateCoords[randomIndex];
-                    _hexMap[chosen].TileType = TileType.Mode;
-                    _hexMap[chosen].ModeName = modeName;
+                    var coord = candidateCoords[randomIndex];
+                    _hexMap[coord].TileData.TileType = TileType.Mode;
+                    _hexMap[coord].TileData.ModeName = modeName;
+                    _hexMap[coord].TileData.SceneName = modeName == "Explore" ? "ExploreScene" : "GatherScene";
                     candidateCoords.RemoveAt(randomIndex);
                 }
             }
@@ -318,7 +343,7 @@ namespace JDG
         private void AssignTileRoles()
         {
             List<Vector2Int> candidateCoords = new List<Vector2Int>(_tileCoords);
-            _hexMap[_playerCoord].TileType = TileType.Base;
+            _hexMap[_playerCoord].TileData.TileType = TileType.Base;
             candidateCoords.Remove(_playerCoord);
 
             AssignBossTiles(candidateCoords);
@@ -329,6 +354,67 @@ namespace JDG
             {
                 hex.SetDebugColorByType();
             }
+        }
+
+        public Vector2Int GetBaseCoord()
+        {
+            return _baseCoord;
+        }
+
+        public void RestoreMapState(Dictionary<Vector2Int, TileData> mapData, Vector2Int playerCoord)
+        {
+            //foreach(var data in mapData)
+            //{
+            //    if(_hexMap.TryGetValue(data.Key, out HexRenderer hex))
+            //    {
+            //        hex.SetTileData(data.Value);
+            //    }
+            //}
+
+            _hexMap.Clear();
+
+            foreach (var pair in mapData)
+            {
+                Vector2Int coord = pair.Key;
+                TileData data = pair.Value;
+
+                GameObject tile = new GameObject($"Hex {coord.x},{coord.y}", typeof(HexRenderer));
+                tile.transform.position = GetPositionForHexFromCoordinate(coord);
+
+                HexRenderer hex = tile.GetComponent<HexRenderer>();
+                hex.OuterSize = _outerSize;
+                hex.InnerSize = _innerSize;
+                hex.Height = _height;
+                hex.SetMaterial(_material);
+                hex.SetTileData(data);
+                hex.DrawMesh();
+
+                MeshCollider collider = tile.AddComponent<MeshCollider>();
+                collider.sharedMesh = tile.GetComponent<MeshFilter>().mesh;
+
+                tile.transform.SetParent(transform, true);
+                _hexMap[coord] = hex;
+            }
+
+            _playerCoord = playerCoord;
+            Vector3 spawnPos = GetPositionForHexFromCoordinate(playerCoord) + Vector3.up * 1f;
+            _playerInstance = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
+
+            var player = _playerInstance.GetComponent<PlayerController>();
+            player.Init(this);
+
+            if (_vRPlayerInput != null)
+            {
+                _vRPlayerInput.Init(player, this);
+            }
+
+            if (_tileSelectionUI != null)
+            {
+                _tileSelectionUI.Init(player, this);
+            }
+            SceneLoader.Instance.Init(this, player);
+
+            UpdateFog();
         }
     }
 }

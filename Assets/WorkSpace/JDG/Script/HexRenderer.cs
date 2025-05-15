@@ -36,9 +36,7 @@ namespace JDG
         private MeshFilter _meshFilter;
         private MeshRenderer _meshRenderer;
         private List<Face> _faces; //면들의 목록
-        private TileVisibility _tileVisibility;
-        private TileType _tileType;
-        private string _modeName = string.Empty;
+        private TileData _tileData;
         private float _innerSize; //내부 반지름
         private float _outerSize; //바깥 반지름
         private float _height; //높이
@@ -54,9 +52,7 @@ namespace JDG
                 _meshRenderer.material = _material;
         }
 
-        public TileVisibility TileVisibility { get { return _tileVisibility; } }
-        public TileType TileType { get { return _tileType; } set { _tileType = value; } }
-        public string ModeName { get { return _modeName;} set { _modeName = value; } }
+        public TileData TileData { get { return _tileData; } }
         public float InnerSize { get { return _innerSize; } set { _innerSize = value; } }
         public float OuterSize { get { return _outerSize; } set { _outerSize = value; } }
         public float Height { get { return _height; } set { _height = value; } }
@@ -175,13 +171,13 @@ namespace JDG
 
         public void SetVisibility(TileVisibility visibility)
         {
-            _tileVisibility = visibility;
+            _tileData.TileVisibility = visibility;
             SetDebugColorByType();
         }
 
         public TileVisibility GetTileVisibility()
         {
-            return _tileVisibility;
+            return _tileData.TileVisibility;
         }
 
         public void SetDebugColorByType()
@@ -191,7 +187,7 @@ namespace JDG
 
             Color color = Color.white;
 
-            switch(_tileType)
+            switch(_tileData.TileType)
             {
                 case TileType.Base:
                     color = Color.blue;
@@ -203,9 +199,9 @@ namespace JDG
                     color = Color.yellow;
                     break;
                 case TileType.Mode:
-                    if (_modeName == "Explore")
+                    if (_tileData.ModeName == "Explore")
                         color = Color.cyan;
-                    else if (_modeName == "Gather")
+                    else if (_tileData.ModeName == "Gather")
                         color = Color.green;
                     else
                         color = Color.magenta;
@@ -216,7 +212,7 @@ namespace JDG
                     break;
             }
 
-            switch (_tileVisibility)
+            switch (_tileData.TileVisibility)
             {
                 case TileVisibility.Hidden:
                     color = Color.black;
@@ -229,6 +225,12 @@ namespace JDG
             }
 
             _meshRenderer.material.SetColor("_BaseColor", color);
+        }
+
+        public void SetTileData(TileData data)
+        {
+            _tileData = data;
+            SetDebugColorByType();
         }
     }
 }

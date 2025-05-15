@@ -5,7 +5,7 @@ namespace JDG
 {
     public class RewardManager : MonoBehaviour
     {
-        private RewardManager _instance;
+        private static RewardManager _instance;
         [SerializeField] private List<TileRewardRuleSO> _tileRewardRuleSOs;
 
         private void Awake()
@@ -14,9 +14,13 @@ namespace JDG
             {
                 _instance = this;
             }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
 
-        public RewardManager Instance
+        public static RewardManager Instance
         {
             get
             {
