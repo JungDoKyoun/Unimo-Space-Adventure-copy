@@ -46,25 +46,29 @@ public class EnergyBolt : MonoBehaviour,IAttackType
     }
     private void OnDestroy()
     {
-        
+        var temp=Instantiate(hitEffect,transform.position,Quaternion.identity);
+        Destroy(temp, 2f);
+        //PlayHit();
     }
     public void OnHit()
     {
 
-        PlayHit();
+        
+
         Destroy(gameObject);
         //hit 이펙트 활성화
 
     }
-    public void PlayHit()
-    {
-        if (hitSoundSource != null)
-        {
-            hitSoundSource.clip = hitSound;
-            hitSoundSource.Play();
-        }
-       // Debug.Log("playhit!");
-    }
+    //public void PlayHit()
+    //{
+    //    if (hitSoundSource != null)
+    //    {
+    //        hitSoundSource.clip = hitSound;
+    //        hitSoundSource.Play();
+    //        hitEffect.SetActive(true);
+    //    }
+    //   // Debug.Log("playhit!");
+    //}
 
     private void OnTriggerEnter(Collider other)
     {

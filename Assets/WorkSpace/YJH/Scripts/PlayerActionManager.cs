@@ -17,7 +17,7 @@ public partial class PlayerManager
 
     public float ItemDetectionRange {  get { return itemDetectionRange; } }
 
-    [Header("家府")]
+    [Header("盲笼 家府")]
     [SerializeField] AudioClip gatheringAudioClip;
     [SerializeField] AudioSource gatheringAudioSource;
 
@@ -164,7 +164,7 @@ public partial class PlayerManager
     public void ActiveGatheringBeam()
     {
         gatheringEffect.SetActive(true);
-        gatheringEffect.transform.LookAt(targetObject.transform);   
+          
     }
     public void DeactiveGatheringBeam()
     {

@@ -20,7 +20,7 @@ public partial class PlayerManager : MonoBehaviourPun
     public Vector3 PlayerMoveDirection { get { return playerMoveDirection; } }
 
 
-    [Header("家府 包访")]
+    [Header("捞悼 家府 包访")]
     [SerializeField] AudioSource moveSoundSource;
     [SerializeField] AudioClip moveSoundClip;
     [SerializeField] bool isMoveSoundPlay=false;
