@@ -11,8 +11,10 @@ public class EnergyBolt : MonoBehaviour,IAttackType
     [SerializeField] bool canPierce=false;
     [SerializeField] Transform firePos;
     [SerializeField] GameObject hitEffect;
-    [SerializeField] AudioClip hitSound;
-    [SerializeField] AudioSource hitSoundSource;
+
+    [SerializeField] AudioClip hitSound;//사용 안함
+    [SerializeField] AudioSource hitSoundSource;//사용 안함
+
     [SerializeField] Rigidbody selfBody;
     [SerializeField] Collider selfCollider;
     private Vector3 initialFirePos;
@@ -32,17 +34,20 @@ public class EnergyBolt : MonoBehaviour,IAttackType
     public Transform FirePos { get { return firePos; }set { firePos = value; } }
     public GameObject HitEffect { get { return hitEffect; }set { hitEffect = value; } }
     public AudioClip HitSound { get { return hitSound; } set { hitSound = value; } }
-    
+
+    private void Start()
+    {
+        
+    }
     public void Shoot(Vector3 fireDirection)
     {
-        //transform.LookAt(fireDirection);
+        
         Vector3 tempVelocity = new Vector3(fireDirection.x, 0, fireDirection.z); //fireDirection.normalized * speed;
         firePos = transform;
         selfBody.velocity = tempVelocity.normalized*speed;
-        //Debug.Log(selfBody.velocity);
+        
         Destroy(gameObject, maxRange / speed);
-        //Debug.Log(transform.forward*speed);
-        //Debug.Log(selfBody.velocity);
+        
     }
     private void OnDestroy()
     {
