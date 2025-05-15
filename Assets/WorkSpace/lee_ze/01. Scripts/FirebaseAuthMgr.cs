@@ -54,7 +54,6 @@ public class FirebaseAuthMgr : MonoBehaviour
 
             else
             {
-                //UnityEngine.Debug.LogError(System.String.Format("Could not resolve all Firebase dependencies: {0}", dependencyStatus));
                 Debug.LogError("파이어베이스 오류");
             }
         });
