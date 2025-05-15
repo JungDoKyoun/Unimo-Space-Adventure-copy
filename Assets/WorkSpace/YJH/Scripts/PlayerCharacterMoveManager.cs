@@ -11,10 +11,14 @@ using Photon.Pun;
 
 public partial class PlayerManager : MonoBehaviourPun
 {
-    private Rigidbody playerCharacterBody;
+    [SerializeField] Rigidbody playerCharacterBody;
     private Vector3 playerMoveDirection;
     private Vector3 playerPushDirection;
     private Transform playerTransform;
+
+    public Rigidbody PlayerRigBody {  get { return playerCharacterBody; } }
+    public Vector3 PlayerMoveDirection { get { return playerMoveDirection; } }
+
 
     [Header("소리 관련")]
     [SerializeField] AudioSource moveSoundSource;
@@ -28,7 +32,7 @@ public partial class PlayerManager : MonoBehaviourPun
 
     public bool isGathering = false;
     public bool isStunning = false;
-
+    public bool canMove = true;
 
    
     
@@ -46,7 +50,7 @@ public partial class PlayerManager : MonoBehaviourPun
 
     public void PlayerMoveBySpeed()
     {
-        if (PhotonNetwork.IsConnected == false)
+        if (PhotonNetwork.IsConnected == false && canMove == true)
         {
             if (playerMoveDirection.magnitude > float.Epsilon)
             {

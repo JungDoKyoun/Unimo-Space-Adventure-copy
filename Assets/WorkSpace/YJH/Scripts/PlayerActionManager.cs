@@ -25,9 +25,9 @@ public partial class PlayerManager
     [SerializeField] LayerMask itemLayerMask;
 
     [SerializeField] GameObject attackPrefab;
-    [SerializeField] IAttackType playerAttackType;
-    [SerializeField] GameObject spellPrefab;
-    [SerializeField] ISpellType playerSpellType;
+    private IAttackType playerAttackType;
+    //[SerializeField] GameObject spellPrefab;
+    private ISpellType playerSpellType;
 
     [SerializeField] LayerMask enemyLayerMask;
     private int playerOwnEnergy=0;
@@ -52,13 +52,27 @@ public partial class PlayerManager
         //StartFindEnemy();
         OnTargetObjectSet += GatheringItem;
         SetAttackType(attackPrefab);
+        if(playerSpellType != null)
+        {
+            Debug.Log("notnullspell");
+            playerSpellType.InitSpell();
+        }
+        else
+        {
+            Debug.Log("nullspell");
+
+            ISpellType temp = new Dash();
+            Debug.Log(temp);
+            SetSpellType(temp);
+            playerSpellType.InitSpell();
+        }
         //SetAttackType(new EnergyBolt());
     }
     // Update is called once per frame
     
     public void ActionUpdate()
     {
-        
+        playerSpellType.UpdateTime();
         
     }
     public void StartDetectItem()
@@ -76,10 +90,11 @@ public partial class PlayerManager
         playerAttackType = attackPrefab.GetComponent<IAttackType>();
         playerAttackType.Damage = playerDamage;
     }
-    public void SetSpellType(GameObject spellType)
+    public void SetSpellType(ISpellType spellType)
     {
-        spellPrefab=spellType;
-        playerSpellType = spellType.GetComponent<ISpellType>();
+        Debug.Log("set spell");
+        playerSpellType = spellType;
+        playerSpellType.SetPlayer(this);
     }
     public void GetItem(IGatheringObject temp)
     {
@@ -123,32 +138,7 @@ public partial class PlayerManager
             return;
         }
     }
-    //IEnumerator FindEnemy()
-    //{
-    //
-    //    while (targetEnemyObject==null)
-    //    {
-    //        yield return new WaitForSeconds(0.5f);
-    //        Collider[] targetEnemies = Physics.OverlapSphere(transform.position, 100f, enemyLayerMask);
-    //        float distance = float.MaxValue;
-    //        if (targetEnemies.Length > 0)
-    //        {
-    //            foreach (Collider collider in targetEnemies)
-    //            {
-    //
-    //                float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);//감지된 콜라이더와의 거리
-    //                if (distance > distanceBetween)//1.거리 비교 조건
-    //                {
-    //                    distance = distanceBetween;
-    //                    targetEnemyObject = collider.gameObject;
-    //                    //Debug.Log("detected");
-    //                    //Debug.Log(targetObject.name);
-    //
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
+    
 
     public void FindEnemy()
     {
@@ -334,6 +324,13 @@ public partial class PlayerManager
         
     }
 
+
+    public void OnUseSpell()
+    {
+        Debug.Log("pressedQ");
+        playerSpellType.UseSpell();
+    }
+    
 
 
 

@@ -2,7 +2,7 @@
     "name": "VrInitInputSystem",
     "maps": [
         {
-            "name": "VR leftController",
+            "name": "VR Controller",
             "id": "534b5805-6eea-4350-8fda-800331f51653",
             "actions": [
                 {
@@ -13,6 +13,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "UseSpell",
+                    "type": "Button",
+                    "id": "60a861fb-10ae-4144-9e14-34351694fb2b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -81,6 +90,28 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "89688ce0-1bcd-4276-a2d8-a1269194b2d2",
+                    "path": "<XRController>{RightHand}/{TriggerButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UseSpell",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fc7d2bb5-d675-4fa9-bb67-69d9b3bc3772",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UseSpell",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

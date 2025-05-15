@@ -134,6 +134,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c180452cbc5998d4f8370e1728ad93bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &158496351 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 7265882205627089676, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
+  m_PrefabInstance: {fileID: 1142388260243371801}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &338002862
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1093,6 +1098,10 @@ PrefabInstance:
       propertyPath: gatheringAuraPlane
       value: 
       objectReference: {fileID: 1253353161}
+    - target: {fileID: 2642926704503865842, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
+      propertyPath: playerCharacterBody
+      value: 
+      objectReference: {fileID: 158496351}
     - target: {fileID: 4422947281353344660, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1136,6 +1145,10 @@ PrefabInstance:
     - target: {fileID: 7960359065341660635, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8361555699976815380, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
+      propertyPath: m_DefaultActionMap
+      value: 534b5805-6eea-4350-8fda-800331f51653
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
