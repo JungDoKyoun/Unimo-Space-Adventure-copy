@@ -115,7 +115,8 @@ public partial class PlayerManager : MonoBehaviourPun
         {
             Vector3 headDir = new Vector3(targetObject.transform.position.x,transform.position.y, targetObject.transform.position.z);
             transform.LookAt(headDir);
-            
+            gatheringEffect.transform.LookAt(targetObject.transform);
+
         }
         else
         {
