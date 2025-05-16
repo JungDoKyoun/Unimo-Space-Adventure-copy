@@ -4,32 +4,27 @@ using ZL.CS.Collections;
 
 namespace ZL.CS.Pooling
 {
-    public abstract class Pool<TClass>
+    public abstract class Pool<TClone>
 
-        where TClass : class
+        where TClone : class
     {
-        private readonly LinkedList<TClass> stock = new LinkedList<TClass>();
+        protected readonly LinkedList<TClone> collection = new LinkedList<TClone>();
 
-        public virtual TClass Generate()
+        public virtual TClone Cloning()
         {
-            if (stock.Count == 0)
+            if (collection.Count != 0)
             {
-                return Replicate();
+                return collection.PopLast();
             }
 
-            return stock.PopLast();
+            return Instantiate();
         }
 
-        public abstract TClass Replicate();
+        public abstract TClone Instantiate();
 
-        public virtual void Collect(TClass replica)
+        public virtual void Collect(TClone clone)
         {
-            stock.AddLast(replica);
-        }
-
-        public void Release(TClass replica)
-        {
-            stock.Remove(replica);
+            collection.AddLast(clone);
         }
     }
 }

@@ -6,15 +6,13 @@ using ZL.Unity.Collections;
 
 namespace ZL.Unity.Tweening
 {
-    [DisallowMultipleComponent]
+    public abstract class KeyFrameTweener<TObjectValueTweener, TValueTweener, T1, T2, TPlugOptions> : MonoBehaviour
 
-    public abstract class KeyFrameTweener<TValueTweener, T1, T2, TPlugOptions, TObjectValueTweener> : MonoBehaviour
+        where TObjectValueTweener : ObjectValueTweener<TValueTweener, T1, T2, TPlugOptions>
 
         where TValueTweener : ValueTweener<T1, T2, TPlugOptions>
 
         where TPlugOptions : struct, IPlugOptions
-
-        where TObjectValueTweener : ObjectValueTweener<TValueTweener, T1, T2, TPlugOptions>
     {
         [Space]
 
@@ -24,9 +22,11 @@ namespace ZL.Unity.Tweening
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
-        protected TObjectValueTweener objectVaueTweener;
+        protected TObjectValueTweener objectVaueTweener = null;
 
         #if UNITY_EDITOR
 
@@ -42,7 +42,7 @@ namespace ZL.Unity.Tweening
 
         [SerializeField]
 
-        protected LoopList<T2> keyFrames;
+        protected LoopList<T2> keyFrames = null;
 
         #if UNITY_EDITOR
 

@@ -12,110 +12,90 @@ namespace ZL.Unity.Pooling
 {
     [Serializable]
 
-    public sealed class ManagedObjectPool<TKey, TComponent> : ObjectPool<TComponent>
+    public sealed class ManagedObjectPool<TKey, TClone> : ObjectPool<TClone>
 
-        where TComponent : Component, IKeyValuePair<TKey, TComponent>
+        where TClone : Component, IKeyValuePair<TKey, TClone>
     {
-        private readonly Dictionary<TKey, TComponent> replicas = new Dictionary<TKey, TComponent>();
+        private readonly Dictionary<TKey, TClone> clones = new Dictionary<TKey, TClone>();
 
-        public TComponent this[TKey key]
+        public TClone this[TKey key]
         {
-            get => replicas[key];
+            get => clones[key];
         }
 
-        public bool TryGenerate(TKey key, out TComponent replica)
+        public bool TryGenerate(TKey key, out TClone clone)
         {
-            if (replicas.ContainsKey(key) == true)
+            if (clones.ContainsKey(key) == true)
             {
-                replica = replicas[key];
+                clone = clones[key];
 
                 return false;
             }
 
-            replica = Generate();
+            clone = Cloning();
 
-            replica.Key = key;
+            clone.Key = key;
 
-            replicas.Add(key, replica);
+            clones.Add(key, clone);
 
             return true;
         }
 
-        public TComponent Find(TKey key)
+        public TClone Find(TKey key)
         {
-            return replicas[key];
+            return clones[key];
         }
 
-        public override void Collect(TComponent replica)
+        public override void Collect(TClone clone)
         {
-            replicas.Remove(replica.Key);
+            clones.Remove(clone.Key);
 
-            base.Collect(replica);
+            base.Collect(clone);
         }
 
         public void CollectAll()
         {
-            foreach (var kvp in replicas.Values.ToArray())
+            foreach (var kvp in clones.Values.ToArray())
             {
                 kvp.gameObject.SetActive(false);
             }
 
-            replicas.Clear();
-        }
-
-        public void ReleaseAll()
-        {
-            foreach (var replica in replicas.Values.ToArray())
-            {
-                replica.gameObject.Destroy();
-            }
-
-            replicas.Clear();
+            clones.Clear();
         }
     }
 
     [Serializable]
 
-    public class ManagedObjectPool<TComponent> : ObjectPool<TComponent>
+    public class ManagedObjectPool<TClone> : ObjectPool<TClone>
 
-        where TComponent : Component
+        where TClone : Component
     {
-        private readonly HashSet<TComponent> replicas = new HashSet<TComponent>();
+        private readonly HashSet<TClone> clones = new HashSet<TClone>();
 
-        public override TComponent Generate()
+        public override TClone Cloning()
         {
-            var clone = base.Generate();
+            var clone = base.Cloning();
 
-            replicas.Add(clone);
+            clones.Add(clone);
 
             return clone;
         }
 
-        public override void Collect(TComponent replica)
+        public override void Collect(TClone clone)
         {
-            replicas.Remove(replica);
+            clones.Remove(clone);
 
-            base.Collect(replica);
+            base.Collect(clone);
         }
 
         public void CollectAll()
         {
-            foreach (var replica in replicas.ToArray())
+            foreach (var clone in clones.ToArray())
             {
-                replica.gameObject.SetActive(false);
+                clone.gameObject.SetActive(false);
             }
 
-            replicas.Clear();
-        }
-
-        public void ReleaseAll()
-        {
-            foreach (var replica in replicas.ToArray())
-            {
-                replica.gameObject.Destroy();
-            }
-
-            replicas.Clear();
+            clones.Clear();
         }
     }
 }

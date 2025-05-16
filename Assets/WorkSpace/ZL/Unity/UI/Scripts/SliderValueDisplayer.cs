@@ -20,7 +20,7 @@ namespace ZL.Unity.UI
 
         [ReadOnlyWhenPlayMode]
 
-        private Slider slider;
+        private Slider slider = null;
 
         [SerializeField]
 
@@ -30,18 +30,13 @@ namespace ZL.Unity.UI
 
         [ReadOnlyWhenPlayMode]
 
-        private TextController textController;
+        private TextController textController = null;
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
 
         private float sliderValue = 0f;
 
         private string inputText = null;
-
-        private void Reset()
-        {
-            this.DisallowMultiple();
-        }
 
         private void Awake()
         {

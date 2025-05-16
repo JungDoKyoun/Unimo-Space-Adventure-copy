@@ -6,15 +6,13 @@ namespace ZL.Unity.Phys
 {
     [AddComponentMenu("ZL/Phys/On Trigger Exit Event Trigger")]
 
-    [DisallowMultipleComponent]
-
     public sealed class OnTriggerExitEventTrigger : MonoBehaviour
     {
         [Space]
 
         [SerializeField]
 
-        private UnityEvent<Collider> onTriggerExitEvent;
+        private UnityEvent<Collider> onTriggerExitEvent = null;
 
         private void OnTriggerExit(Collider other)
         {

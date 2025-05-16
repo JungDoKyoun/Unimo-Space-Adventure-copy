@@ -22,7 +22,7 @@ namespace ZL.Unity
                 return instance.propertyPath[..(lastIndex + 1)];
             }
 
-            return string.Empty;
+            return "";
         }
 
         public static bool IsPropertyTypeIn(this SerializedProperty instance, params SerializedPropertyType[] propertyTypes)

@@ -4,10 +4,6 @@ namespace ZL.Unity.Phys
 {
     [AddComponentMenu("ZL/Phys/Gravity Controller")]
 
-    [DisallowMultipleComponent]
-
-    [RequireComponent(typeof(Rigidbody))]
-
     public sealed class GravityController : MonoBehaviour
     {
         [Space]
@@ -18,11 +14,13 @@ namespace ZL.Unity.Phys
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
         #pragma warning disable CS0108
 
-        private Rigidbody rigidbody;
+        private Rigidbody rigidbody = null;
 
         public Rigidbody Rigidbody
         {
@@ -66,7 +64,7 @@ namespace ZL.Unity.Phys
 
         [AddIndent(1)]
 
-        private GravityGenerator gravityGenerator;
+        private GravityGenerator gravityGenerator = null;
 
         public GravityGenerator GravityGenerator
         {
@@ -85,7 +83,7 @@ namespace ZL.Unity.Phys
 
         [Alias("Gravity Direction")]
 
-        private Vector3 customGravityDirection = new Vector3(0f, -1f, 0f);
+        private Vector3 customGravityDirection = Vector3.down;
 
         public Vector3 CustomGravityDirection
         {

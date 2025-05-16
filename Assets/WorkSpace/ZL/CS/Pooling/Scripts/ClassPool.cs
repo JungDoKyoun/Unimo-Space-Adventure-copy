@@ -8,12 +8,12 @@ namespace ZL.CS.Pooling
 
         public static TClass Generate()
         {
-            return pool.Generate();
+            return pool.Cloning();
         }
 
         public static TClass Replicate()
         {
-            return pool.Replicate();
+            return pool.Instantiate();
         }
 
         public static void Collect(TClass value)
@@ -23,7 +23,7 @@ namespace ZL.CS.Pooling
 
         private sealed class Pool : Pool<TClass>
         {
-            public override TClass Replicate()
+            public override TClass Instantiate()
             {
                 return new TClass();
             }

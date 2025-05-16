@@ -6,8 +6,6 @@ namespace ZL.Unity
 {
     [AddComponentMenu("ZL/Event Invoker")]
 
-    [DisallowMultipleComponent]
-
     public sealed class EventInvoker : MonoBehaviour
     {
         [Space]
@@ -27,7 +25,7 @@ namespace ZL.Unity
 
         [SerializeField]
 
-        private UnityEvent onTimeEvent;
+        private UnityEvent onTimeEvent = null;
 
         public UnityEvent OnTimeEvent
         {

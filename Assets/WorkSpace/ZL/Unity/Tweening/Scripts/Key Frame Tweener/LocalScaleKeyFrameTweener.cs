@@ -6,9 +6,7 @@ namespace ZL.Unity.Tweening
 {
     [AddComponentMenu("ZL/Tweening/Local Scale Key Frame Tweener")]
 
-    [RequireComponent(typeof(LocalScaleTweener))]
-
-    public sealed class LocalScaleKeyFrameTweener : KeyFrameTweener<Vector3Tweener, Vector3, Vector3, VectorOptions, LocalScaleTweener>
+    public sealed class LocalScaleKeyFrameTweener : KeyFrameTweener<LocalScaleTweener, Vector3Tweener, Vector3, Vector3, VectorOptions>
     {
         public override void SetKeyFrame(int index)
         {

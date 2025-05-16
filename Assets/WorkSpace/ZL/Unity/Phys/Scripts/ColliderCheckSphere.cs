@@ -23,7 +23,7 @@ namespace ZL.Unity.Phys
 
         #endif
 
-        public override bool Check()
+        protected override bool Check()
         {
             return Physics.CheckSphere(transform.position, transform.lossyScale.GetMaxAxis() * 0.5f, layerMask, triggerInteraction);
         }

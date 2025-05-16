@@ -38,7 +38,7 @@ namespace ZL.Unity.Tweening
 
         [SerializeField]
 
-        private Ease ease = Ease.Unset;
+        private Ease ease = Ease.Linear;
 
         public Ease Ease
         {
@@ -60,7 +60,7 @@ namespace ZL.Unity.Tweening
 
         [SerializeField]
 
-        [Tooltip("0: Loop once (Default)\n-1: Infinity loop")]
+        [Tooltip("1 = Loop once (Default)\n-1 = Infinity loop")]
 
         private int loopCount = 1;
 
@@ -141,7 +141,7 @@ namespace ZL.Unity.Tweening
             return Tween(endValue, duration);
         }
 
-        public TweenerCore<T1, T2, TPlugOptions> Tween(T2 endValue, float duration = -1f)
+        public virtual TweenerCore<T1, T2, TPlugOptions> Tween(T2 endValue, float duration = -1f)
         {
             Current.Kill();
 

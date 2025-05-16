@@ -18,8 +18,6 @@ namespace ZL.Unity.Audio
 {
     [AddComponentMenu("ZL/Audio/Audio Mixer Manager (Singleton)")]
 
-    [DefaultExecutionOrder(-1)]
-
     public sealed class AudioMixerManager : MonoSingleton<AudioMixerManager>
     {
         [Space]
@@ -28,9 +26,9 @@ namespace ZL.Unity.Audio
 
         [UsingCustomProperty]
 
-        [PropertyField]
-
         [Essential]
+
+        [PropertyField]
 
         [Button("LoadAudioMixerParameters", "Load Parameters")]
 
@@ -46,12 +44,17 @@ namespace ZL.Unity.Audio
 
         [Button(nameof(SaveVolumes))]
 
-        private SerializableDictionary<string, float, FloatPref> parameterPrefs;
+        private SerializableDictionary<string, float, FloatPref> parameterPrefs = null;
 
         #if UNITY_EDITOR
 
         private void OnValidate()
         {
+            if (parameterPrefs == null)
+            {
+                return;
+            }
+
             foreach (var parameterPref in parameterPrefs)
             {
                 parameterPref.Value = Mathf.Clamp01(parameterPref.Value);
@@ -69,7 +72,7 @@ namespace ZL.Unity.Audio
 
             if (audioMixer != null)
             {
-                foreach (var audioMixerGroup in audioMixer.FindMatchingGroups(string.Empty))
+                foreach (var audioMixerGroup in audioMixer.FindMatchingGroups(""))
                 {
                     var key = audioMixerGroup.name;
 
@@ -86,7 +89,7 @@ namespace ZL.Unity.Audio
             EditorUtility.SetDirty(this);
         }
 
-        #endif
+#endif
 
         private void Start()
         {

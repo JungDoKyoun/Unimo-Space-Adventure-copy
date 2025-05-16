@@ -8,10 +8,6 @@ namespace ZL.Unity.Audio
 {
     [AddComponentMenu("ZL/Audio/Audio Track (Singleton)")]
 
-    [DisallowMultipleComponent]
-
-    [RequireComponent(typeof(AudioSource))]
-
     public sealed class AudioTrack : PrimaryMonoSingleton<AudioTrack>, IPrimaryMonoSingleton<AudioTrack>
     {
         [Space]
@@ -22,17 +18,19 @@ namespace ZL.Unity.Audio
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
-        private AudioSource audioSource;
+        private AudioSource audioSource = null;
 
         [Space]
 
         [SerializeField]
 
-        private string trackName = string.Empty;
+        private string trackName = "";
 
-        [Space]
+        [Space] 
 
         [SerializeField]
 
@@ -69,7 +67,7 @@ namespace ZL.Unity.Audio
 
         [SerializeField]
 
-        private AudioClip[] playlist;
+        private AudioClip[] playlist = null;
 
         private bool isLooping = false;
 
@@ -77,7 +75,7 @@ namespace ZL.Unity.Audio
 
         [HideInInspector]
 
-        public bool isPlayModeShuffle;
+        public bool isPlayModeShuffle = false;
 
         private void OnValidate()
         {

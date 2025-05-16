@@ -2,15 +2,7 @@ using System;
 
 using System.Collections.Generic;
 
-#if UNITY_EDITOR
-
-using UnityEditor;
-
-#endif
-
 using UnityEngine;
-
-using UnityObject = UnityEngine.Object;
 
 namespace ZL.Unity
 {
@@ -121,84 +113,6 @@ namespace ZL.Unity
             instance.gameObject.SetActive(value);
 
             return instance;
-        }
-
-        public static void DisallowMultiple<TComponent>(this TComponent instance)
-
-            where TComponent : Component
-        {
-            void DestroyImmediate()
-            {
-                instance.DestroyImmediate();
-
-                string typeName = instance.GetType().Name;
-
-                FixedEditorUtility.DisplayDialog
-                (
-                    "Invalid operation.",
-                    
-                    $"Can't add '{typeName}' to {instance.gameObject.name} because a '{typeName}' is already added to the game object!",
-                    
-                    "Ok"
-                );
-            }
-
-            if (instance.GetType().IsInheritGeneric(out var type) == true)
-            {
-                var components = instance.GetComponents<Component>();
-
-                foreach (var component in components)
-                {
-                    if (component == instance)
-                    {
-                        continue;
-                    }
-
-                    if (component.GetType().IsInheritGeneric(out var compareType) == true)
-                    {
-                        if (type.GetGenericTypeDefinition() == compareType.GetGenericTypeDefinition())
-                        {
-                            DestroyImmediate();
-
-                            return;
-                        }
-                    }
-                }
-            }
-
-            else if (instance.GetComponents<TComponent>().Length > 1)
-            {
-                DestroyImmediate();
-            }
-        }
-
-        public static void DestroyImmediate<TComponent>(this TComponent instance)
-
-            where TComponent : Component
-        {
-            #if UNITY_EDITOR
-
-            if (Application.isPlaying == false)
-            {
-                void Callback()
-                {
-                    var gameObject = instance.gameObject;
-
-                    UnityObject.DestroyImmediate(instance);
-
-                    EditorUtility.SetDirty(gameObject);
-
-                    EditorApplication.update -= Callback;
-                }
-
-                EditorApplication.update += Callback;
-
-                return;
-            }
-
-            #endif
-
-            UnityObject.DestroyImmediate(instance);
         }
     }
 }

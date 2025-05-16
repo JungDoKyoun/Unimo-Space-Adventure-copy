@@ -25,7 +25,7 @@ namespace ZL.Unity
 
         public static bool DisplayDialog(string title, string message, string ok)
         {
-            return DisplayDialog(title, message, ok, string.Empty);
+            return DisplayDialog(title, message, ok, "");
         }
 
         public static bool DisplayDialog(string title, string message, string ok, string cancel)

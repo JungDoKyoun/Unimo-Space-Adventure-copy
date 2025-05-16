@@ -40,16 +40,16 @@ namespace ZL.Unity.Collections
 
         public bool TryGetCurrent(out T current)
         {
-            if (list.Count == 0)
+            if (Count != 0)
             {
-                current = default;
+                current = list[index.Loop(0, Count - 1, loopPattern)];
 
-                return false;
+                return true;
             }
 
-            current = list[index.Loop(0, Count - 1, loopPattern)];
+            current = default;
 
-            return true;
+            return false;
         }
     }
 }

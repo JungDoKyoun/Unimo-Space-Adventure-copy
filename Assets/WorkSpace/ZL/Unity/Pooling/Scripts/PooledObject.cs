@@ -10,46 +10,31 @@ namespace ZL.Unity.Pooling
     {
         private Action onDisableAction = null;
 
-        private Action onDestroyAction = null;
+        public static TClone Instantiate<TClone>(ObjectPool<TClone> pool)
 
-        public static TReplica Replicate<TReplica>(ObjectPool<TReplica> pool)
-
-            where TReplica : Component
+            where TClone : Component
         {
-            var replica = Instantiate(pool.Original, pool.Parent);
+            var clone = Instantiate(pool.Prefab, pool.Parent);
 
-            #if UNITY_EDITOR
-
-            replica.gameObject.name = $"{pool.Original.name} (Pooled)";
-
-            #endif
-
-            if (replica.TryGetComponent<PooledObject>(out var pooledObject) == false)
+            if (clone.TryGetComponent<PooledObject>(out var pooledObject) == false)
             {
-                FixedDebug.LogWarning($"The '{replica.gameObject.name}' prefab being pooled doesn't have a component of type 'PooledObject'. We recommend adding it to the prefab to improve performance.");
+                FixedDebug.LogWarning($"Prefab '{pool.Prefab.name}' being pooled does not have a component of type 'Pooled Object'. We recommend adding it to the prefab to improve performance.");
 
-                pooledObject = replica.AddComponent<PooledObject>();
+                pooledObject = clone.AddComponent<PooledObject>();
             }
 
-            pooledObject.onDisableAction = () => pool.Collect(replica);
+            pooledObject.onDisableAction = () => pool.Collect(clone);
 
-            pooledObject.onDestroyAction = () => pool.Release(replica);
-
-            return replica;
+            return clone;
         }
 
         #if UNITY_EDITOR
-
-        private void Reset()
-        {
-            this.DisallowMultiple();
-        }
 
         private void Start()
         {
             if (onDisableAction == null)
             {
-                FixedDebug.LogWarning($"Game object '{gameObject.name}' is a 'Pooled Object' but was not created from an 'Object Pool'.");
+                FixedDebug.LogWarning($"Game Object '{gameObject.name}' is a 'Pooled Object' but was not created from an'Object Pool'.");
             }
         }
 
@@ -58,11 +43,6 @@ namespace ZL.Unity.Pooling
         private void OnDisable()
         {
             onDisableAction?.Invoke();
-        }
-
-        private void OnDestroy()
-        {
-            onDestroyAction?.Invoke();
         }
     }
 }

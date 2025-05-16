@@ -13,8 +13,6 @@ namespace ZL.Unity.Server.Photon
 
     }
 
-    [RequireComponent(typeof(PhotonView))]
-
     public abstract class PhotonSceneDirector<TPhotonSceneDirector> : SceneDirector<TPhotonSceneDirector>
 
         where TPhotonSceneDirector : PhotonSceneDirector<TPhotonSceneDirector>
@@ -27,7 +25,7 @@ namespace ZL.Unity.Server.Photon
 
         [ReadOnly(true)]
 
-        private PhotonView photonView;
+        private PhotonView photonView = null;
 
         public void RPCLoadScene(string loadSceneName)
         {

@@ -8,26 +8,9 @@ namespace ZL.Unity.IO.GoogleSheet
 {
     public abstract class ScriptableSheetData : ScriptableObject, ISheetData
     {
-        [Space]
+        public abstract List<string> GetHeader();
 
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [ReadOnly(true)]
-
-        private string startCell;
-
-        public string StartCell => startCell;
-
-        public virtual void Import(GstuSpreadSheet sheet)
-        {
-            string columnIndex = sheet.columns.secondaryKeyLink["name"];
-
-            int rowIndex = sheet.rows.secondaryKeyLink[name];
-
-            startCell = columnIndex + rowIndex;
-        }
+        public abstract void Import(GstuSpreadSheet sheet);
 
         public abstract List<string> Export();
     }

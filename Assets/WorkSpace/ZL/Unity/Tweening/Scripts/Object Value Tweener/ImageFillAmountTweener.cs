@@ -8,8 +8,6 @@ namespace ZL.Unity.Tweening
 {
     [AddComponentMenu("ZL/Tweening/Image Fill Amount Tweener")]
 
-    [RequireComponent(typeof(Image))]
-
     public sealed class ImageFillAmountTweener : ObjectValueTweener<FloatTweener, float, float, FloatOptions>
     {
         [Space]
@@ -20,9 +18,11 @@ namespace ZL.Unity.Tweening
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
-        private Image image;
+        private Image image = null;
 
         public override float Value
         {

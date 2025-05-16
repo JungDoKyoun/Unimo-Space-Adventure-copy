@@ -8,15 +8,13 @@ namespace ZL.Unity.UI
 {
     [AddComponentMenu("ZL/UI/On Drag Event Trigger")]
 
-    [DisallowMultipleComponent]
-
     public sealed class OnDragEventTrigger : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
     {
         [Space]
 
         [SerializeField]
 
-        private RectTransform rect;
+        private RectTransform rect = null;
 
         [Space]
 
@@ -36,7 +34,7 @@ namespace ZL.Unity.UI
 
         [ReadOnly(true)]
 
-        private Vector2 startPoint;
+        private Vector2 startPoint = Vector2.zero;
 
         public Vector2 StartPoint
         {
@@ -49,7 +47,7 @@ namespace ZL.Unity.UI
 
         [ReadOnly(true)]
 
-        private Vector2 endPoint;
+        private Vector2 endPoint = Vector2.zero;
 
         public Vector2 EndPoint
         {
@@ -64,7 +62,7 @@ namespace ZL.Unity.UI
 
         [ReadOnly(true)]
 
-        private Vector2 dragDirection;
+        private Vector2 dragDirection = Vector2.zero;
 
         public Vector2 DragDirection
         {
@@ -75,7 +73,7 @@ namespace ZL.Unity.UI
 
         [SerializeField]
 
-        private UnityEvent<Vector2> onDragEvent;
+        private UnityEvent<Vector2> onDragEvent = null;
 
         public UnityEvent<Vector2> OnDragEvent
         {

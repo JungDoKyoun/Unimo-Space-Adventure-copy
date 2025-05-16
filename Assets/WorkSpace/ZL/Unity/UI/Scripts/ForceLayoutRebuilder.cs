@@ -6,8 +6,6 @@ namespace ZL.Unity.UI
 {
     [AddComponentMenu("ZL/UI/Force Layout Rebuilder")]
 
-    [DisallowMultipleComponent]
-
     public sealed class ForceLayoutRebuilder : MonoBehaviour
     {
         [Space]
@@ -18,6 +16,8 @@ namespace ZL.Unity.UI
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
         [PropertyField]
@@ -26,7 +26,7 @@ namespace ZL.Unity.UI
 
         [Button(nameof(ForceRebuildLayout))]
 
-        private RectTransform rectTransform;
+        private RectTransform rectTransform = null;
 
         private void Start()
         {
