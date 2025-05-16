@@ -364,9 +364,6 @@ namespace JDG
                     //    _hexMap[coord].TileData.SceneName = $"GatherScene_{level}";
                     //}
 
-=======
-                    _hexMap[coord].TileData.SceneName = modeName == "Explore" ? "Explore Scene" : "Gather Scene";
->>>>>>> Stashed changes
                     candidateCoords.RemoveAt(randomIndex);
                 }
             }

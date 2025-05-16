@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -937,16 +937,12 @@ MonoBehaviour:
   _outerSize: 1
   _innerSize: 0
   _height: 0.5
-<<<<<<< Updated upstream
   _material: {fileID: 2100000, guid: 0998fb421169edd44a89873c6205968e, type: 2}
-=======
-  _material: {fileID: 2100000, guid: 0a75bfa64efa5794894d4fb1c41d63a4, type: 2}
->>>>>>> Stashed changes
   _modeRatio:
   - modeName: Explore
-    ratio: 0
+    ratio: 0.5
   - modeName: Gather
-    ratio: 1
+    ratio: 0.5
   _bossDistance: 040000000800000014000000
   _bossCountPerCircle: 3
   _bossMinGapByDistance: 040000000600000008000000
@@ -956,13 +952,7 @@ MonoBehaviour:
   _playerPrefab: {fileID: 97310487267514807, guid: 79abe35477413ab44acda40f3fa9ba90, type: 3}
   _viewRange: 1
   _tileSelectionUI: {fileID: 1355780166}
-  _difficultyEntries:
-  - Distance: 4
-    Level: 1
-  - Distance: 10
-    Level: 2
-  - Distance: 15
-    Level: 3
+  _difficultyEntries: []
 --- !u!4 &766587507
 Transform:
   m_ObjectHideFlags: 0
