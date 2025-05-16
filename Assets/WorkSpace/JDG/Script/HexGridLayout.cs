@@ -349,6 +349,7 @@ namespace JDG
                     var coord = candidateCoords[randomIndex];
                     _hexMap[coord].TileData.TileType = TileType.Mode;
                     _hexMap[coord].TileData.ModeName = modeName;
+<<<<<<< Updated upstream
                     _hexMap[coord].TileData.SceneName = modeName == "Explore" ? "ExploreScene" : "GatherScene";
                     //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
                     //int dis = HexDistance(_baseCoord, coord);
@@ -364,6 +365,9 @@ namespace JDG
                     //    _hexMap[coord].TileData.SceneName = $"GatherScene_{level}";
                     //}
 
+=======
+                    _hexMap[coord].TileData.SceneName = modeName == "Explore" ? "Explore Scene" : "Gather Scene";
+>>>>>>> Stashed changes
                     candidateCoords.RemoveAt(randomIndex);
                 }
             }

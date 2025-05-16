@@ -44,6 +44,17 @@ namespace ZL.Unity.Unimo
 
         protected float lookSpeed = 0f;
 
+        [Space]
+
+        [SerializeField]
+
+        private LayerMask damagerLayerMask = 0;
+
+        public LayerMask DamagerLayerMask
+        {
+            get => damagerLayerMask;
+        }
+
         protected int currentHealth = 0;
 
         public int CurrentHealth
@@ -66,6 +77,19 @@ namespace ZL.Unity.Unimo
             if (animator != null)
             {
                 animator.Rebind();
+            }
+        }
+
+        public void OnCollisionStay(Collision collision)
+        {
+            if (damagerLayerMask.Contains(collision.gameObject.layer) == false)
+            {
+                return;
+            }
+
+            if (collision.gameObject.TryGetComponent<IDamager>(out var damager) == true)
+            {
+                damager.GiveDamage(this);
             }
         }
 

@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 6054767688912918273}
   - component: {fileID: 3124590143941777458}
   - component: {fileID: 7265882205627089676}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -256,11 +256,11 @@ MonoBehaviour:
   gatheringAudioSource: {fileID: 6054767688912918273}
   itemLayerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 2048
   attackPrefab: {fileID: 7503936081269918129, guid: 07c22d31208dbd6418c693b8554433d7, type: 3}
-  enemyLayerMask:
+  damagerLayerMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 768
   playerCharacterBody: {fileID: 7265882205627089676}
   moveSoundSource: {fileID: 1784417401385593923}
   moveSoundClip: {fileID: 8300000, guid: c4ef33583abe07741ab9b30329cfd6b5, type: 3}
@@ -271,7 +271,7 @@ MonoBehaviour:
   isGathering: 0
   isStunning: 0
   canMove: 1
-  playerHP: 5000
+  currentHealth: 300
   onHitTime: 1
   onHitBlinkTime: 0.5
   cartRenderer: {fileID: 6459899133926012848}
