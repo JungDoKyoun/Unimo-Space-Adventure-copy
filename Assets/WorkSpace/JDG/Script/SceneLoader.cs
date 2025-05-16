@@ -1,0 +1,127 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor.TerrainTools;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+namespace JDG
+{
+    public class SceneLoader : MonoBehaviour
+    {
+        private static SceneLoader _instance;
+        private string _wordMapScene = "WorldMapScene";
+        private string _currentScene;
+        private TileData _choseTileData;
+        private HexGridLayout _hexGridLayout;
+        private PlayerController _playerController;
+
+        //private void Awake()
+        //{
+        //    if (_instance != null && _instance != this)
+        //    {
+        //        Debug.LogWarning("¾À·Î´õ Áö¿öÁü");
+        //        Destroy(gameObject);
+        //        return;
+        //    }
+
+        //    Debug.LogWarning("¾À·Î´õ ¸¸µé¾îÁü");
+        //    _instance = this;
+        //    DontDestroyOnLoad(gameObject);
+        //    SceneManager.sceneLoaded += OnSceneLoaded;
+        //}
+        private void Awake()
+        {
+            if (_instance == null)
+            {
+                _instance = this;
+                DontDestroyOnLoad(gameObject);
+                SceneManager.sceneLoaded += OnSceneLoaded;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        public TileData ChoseTileData { get { return _choseTileData; } }
+
+        private void OnDestroy()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        public static SceneLoader Instance
+        {
+            get
+            {
+                return _instance;
+            }
+        }
+
+        public void Init(HexGridLayout hexGrid, PlayerController playerController)
+        {
+            _hexGridLayout = hexGrid;
+            _playerController = playerController;
+        }
+
+        public void EnterTileScene(HexRenderer tile)
+        {
+            _choseTileData = tile.TileData;
+            GameStateManager.Instance.SaveTileStates(_hexGridLayout.HexMap, _hexGridLayout.PlayerCoord);
+
+            _currentScene = tile.TileData.SceneName;
+            SceneManager.LoadScene(_currentScene);
+        }
+
+        public void ReturnToWorldMap()
+        {
+            _currentScene = _wordMapScene;
+            SceneManager.LoadScene(_currentScene);
+        }
+
+        public TileData GetChoseTile()
+        {
+            return _choseTileData;
+        }
+
+        public void ClearTile()
+        {
+            if(_choseTileData != null)
+            {
+                _choseTileData.IsCleared = true;
+                GameStateManager.Instance.UpdateTileState(_choseTileData);
+            }
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if(scene.name == _wordMapScene)
+            {
+                var stateManager = GameStateManager.Instance;
+                if(stateManager.IsRestoreMap)
+                {
+                    if (stateManager.TileSaveData != null && stateManager.TileSaveData.Count > 0)
+                    {
+                        HexGridLayout layout = FindObjectOfType<HexGridLayout>();
+                        layout.CalculateMapOrigin();
+                        layout.RestoreMapState(stateManager.TileSaveData, stateManager.PlayerCoord);
+
+                        StartCoroutine(MoveToClearedTile());
+                    }
+                }
+            }
+        }
+
+        private IEnumerator MoveToClearedTile()
+        {
+            yield return null;
+
+            if (_choseTileData != null && _choseTileData.IsCleared)
+            {
+                Vector3 targetPos = _hexGridLayout.GetPositionForHexFromCoordinate(_choseTileData.Coord);
+                _playerController.MoveTo(targetPos);
+                GameStateManager.Instance.ResetIsRestoreMap();
+            }
+        }
+    }
+}
