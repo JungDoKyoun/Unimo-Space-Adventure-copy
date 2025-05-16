@@ -17,6 +17,7 @@ namespace JDG
     {
         [Header("그리드 세팅")]
         [SerializeField] private Vector2Int _gridSize;
+        [SerializeField] private Vector3 _mapOrigin = Vector3.zero;
 
         [Header("타일 세팅")]
         [SerializeField] private int _spawnCount = 80;
@@ -42,7 +43,6 @@ namespace JDG
 
         [Header("UI 관련")]
         [SerializeField] TileSelectionUI _tileSelectionUI;
-        [SerializeField] SceneLoader _sceneLoader;
 
         private List<Vector2Int> _tileCoords = new List<Vector2Int>(); //타일 좌표 리스트
         private Vector2Int _baseCoord;
@@ -54,6 +54,7 @@ namespace JDG
             if (GameStateManager.Instance.IsRestoreMap)
                 return;
 
+            CalculateMapOrigin();
             GenerateConnectedMap();
             LayoutGrid();
         }
@@ -196,7 +197,7 @@ namespace JDG
             xPosition = (column * horizontalDistance) + offset;
             yPosition = (row * verticalDistance);
 
-            return new Vector3(xPosition, 0, -yPosition);
+            return new Vector3(xPosition, 0, -yPosition) + _mapOrigin;
         }
 
         private int HexDistance(Vector2Int a, Vector2Int b)
@@ -234,6 +235,8 @@ namespace JDG
 
         public Vector2Int GetCoordinateFromPosition(Vector3 pos)
         {
+            pos -= _mapOrigin;
+
             float size = _outerSize;
             float width = Mathf.Sqrt(3) * size;
             float height = 2f * size;
@@ -271,7 +274,6 @@ namespace JDG
                 List<Vector2Int> valid = candidateCoords.FindAll(coord =>
                 HexDistance(_playerCoord, coord) == distance &&
                 !placedBosses.Exists(b => HexDistance(b, coord) < minGap));
-                Debug.Log($"[보스 배치] 거리 {distance}에서 후보 {valid.Count}개");
 
                 if (valid.Count > 0)
                 {
@@ -285,7 +287,6 @@ namespace JDG
 
                 else
                 {
-                    Debug.LogWarning($"[보스 배치 실패] 거리 {distance}에 유효한 후보가 없음");
                     List<Vector2Int> fallback = new List<Vector2Int>(candidateCoords);
                     fallback.Sort((a, b) => HexDistance(_playerCoord, b).CompareTo(HexDistance(_playerCoord, a)));
 
@@ -297,7 +298,6 @@ namespace JDG
                             _hexMap[coord].TileData.SceneName = "BossScene";
                             placedBosses.Add(coord);
                             candidateCoords.Remove(coord);
-                            Debug.Log($"[보스 강제 배치] 거리 {HexDistance(_playerCoord, coord)}에 배치됨");
                             break;
                         }
                     }
@@ -415,6 +415,13 @@ namespace JDG
             SceneLoader.Instance.Init(this, player);
 
             UpdateFog();
+        }
+
+        public void CalculateMapOrigin()
+        {
+            Vector2Int centerCoord = new Vector2Int(_gridSize.x / 2, _gridSize.y / 2);
+            Vector3 centerPos = GetPositionForHexFromCoordinate(centerCoord);
+            _mapOrigin = -centerPos;
         }
     }
 }

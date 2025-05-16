@@ -11,7 +11,7 @@ namespace JDG
         private static SceneLoader _instance;
         private string _wordMapScene = "WorldMapScene";
         private string _currentScene;
-        private HexRenderer _choseTile;
+        private TileData _choseTileData;
         private HexGridLayout _hexGridLayout;
         private PlayerController _playerController;
 
@@ -33,17 +33,17 @@ namespace JDG
         {
             if (_instance == null)
             {
-                Debug.Log("»ý¼º");
                 _instance = this;
                 DontDestroyOnLoad(gameObject);
                 SceneManager.sceneLoaded += OnSceneLoaded;
             }
             else
             {
-                Debug.Log("ÆÄ±«");
                 Destroy(gameObject);
             }
         }
+
+        public TileData ChoseTileData { get { return _choseTileData; } }
 
         private void OnDestroy()
         {
@@ -66,9 +66,7 @@ namespace JDG
 
         public void EnterTileScene(HexRenderer tile)
         {
-            Debug.Log(tile);
-            _choseTile = tile;
-            Debug.Log(_choseTile);
+            _choseTileData = tile.TileData;
             GameStateManager.Instance.SaveTileStates(_hexGridLayout.HexMap, _hexGridLayout.PlayerCoord);
 
             _currentScene = tile.TileData.SceneName;
@@ -81,18 +79,17 @@ namespace JDG
             SceneManager.LoadScene(_currentScene);
         }
 
-        public HexRenderer GetChoseTile()
+        public TileData GetChoseTile()
         {
-            return _choseTile;
+            return _choseTileData;
         }
 
         public void ClearTile()
         {
-            Debug.Log(_choseTile);
-            if(_choseTile != null)
+            if(_choseTileData != null)
             {
-                _choseTile.TileData.IsCleared = true;
-                Debug.Log("Å¸ÀÏ Å¬¸®¾î");
+                _choseTileData.IsCleared = true;
+                GameStateManager.Instance.UpdateTileState(_choseTileData);
             }
         }
 
@@ -106,8 +103,8 @@ namespace JDG
                     if (stateManager.TileSaveData != null && stateManager.TileSaveData.Count > 0)
                     {
                         HexGridLayout layout = FindObjectOfType<HexGridLayout>();
+                        layout.CalculateMapOrigin();
                         layout.RestoreMapState(stateManager.TileSaveData, stateManager.PlayerCoord);
-                        stateManager.ResetIsRestoreMap();
 
                         StartCoroutine(MoveToClearedTile());
                     }
@@ -117,14 +114,13 @@ namespace JDG
 
         private IEnumerator MoveToClearedTile()
         {
-            Debug.Log("µé¾î¿È");
             yield return null;
 
-            if (_choseTile != null && _choseTile.TileData.IsCleared)
+            if (_choseTileData != null && _choseTileData.IsCleared)
             {
-                Debug.Log("µé¾î¿È2");
-                Vector3 targetPos = _hexGridLayout.GetPositionForHexFromCoordinate(_choseTile.TileData.Coord) + Vector3.up;
+                Vector3 targetPos = _hexGridLayout.GetPositionForHexFromCoordinate(_choseTileData.Coord);
                 _playerController.MoveTo(targetPos);
+                GameStateManager.Instance.ResetIsRestoreMap();
             }
         }
     }

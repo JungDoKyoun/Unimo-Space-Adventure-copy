@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JDG;
 
 namespace JDG
 {
@@ -14,7 +15,6 @@ namespace JDG
 
         private IEnumerator a()
         {
-            Debug.Log("Ω√¿€");
             yield return new WaitForSeconds(5f);
 
             SceneLoader.Instance.ClearTile();

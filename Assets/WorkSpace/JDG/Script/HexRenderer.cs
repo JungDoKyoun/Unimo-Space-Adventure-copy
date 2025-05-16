@@ -224,6 +224,11 @@ namespace JDG
                     break;
             }
 
+            if(_tileData.IsCleared)
+            {
+                color = Color.gray;
+            }
+
             _meshRenderer.material.SetColor("_BaseColor", color);
         }
 

@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using JDG;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace JDG
@@ -23,14 +20,20 @@ namespace JDG
         [Header("UI 오프셋")]
         [SerializeField] private Vector3 _offSet;
 
+        [Header("필요한 컴포넌트")]
+        [SerializeField] private Camera _worldCam;
+
         private HexRenderer _currentTile;
         private PlayerController _playerController;
         private HexGridLayout _hexGrid;
+        private bool _isUIOpen = false;
 
         private void Start()
         {
             HideUI();
         }
+
+        public bool IsUIOpen => _isUIOpen;
 
         public void Init(PlayerController playerController, HexGridLayout hexGird)
         {
@@ -38,45 +41,57 @@ namespace JDG
             _hexGrid = hexGird;
         }
 
-        public void ShowUI(HexRenderer tile, Vector3 wordPos)
+        public void ShowUI(HexRenderer tile, Vector3 wordPos = default)
         {
             _currentTile = tile;
             transform.position = wordPos + _offSet;
             _root.SetActive(true);
+            _isUIOpen = true;
+
+            //if (_worldCam != null)
+            //{
+            //    Vector3 camPos = _worldCam.transform.position;
+            //    Vector3 lookDir = new Vector3(0, camPos.y - transform.position.y, 0);
+
+            //    if (lookDir != Vector3.zero)
+            //    {
+            //        transform.forward = -lookDir.normalized;
+            //    }
+            //}
 
             var env = TileEnvironmentManager.Instance.GetEnvironmentInfo(tile.TileData.EnvironmentType);
             var display = TileDisplayInfoManager.Instance.GetDisplayInfo(tile.TileData.TileType, tile.TileData.ModeName);
             var rewards = RewardManager.Instance.GetTileRewardRuleSO(tile.TileData.TileType, tile.TileData.ModeName);
 
-            if(env != null)
+            if (env != null)
             {
                 _envImage.sprite = env.EnviromentIcon;
                 _envText.text = env.EnviromentName;
             }
 
-            if(display != null)
+            if (display != null)
             {
                 _displayImage.sprite = display.DisplayIcon;
                 _displayText.text = display.DisplayName;
             }
 
-            foreach(Transform child in _rewardParent)
+            foreach (Transform child in _rewardParent)
             {
                 Destroy(child.gameObject);
             }
 
-            foreach(RewardData reward in rewards)
+            foreach (RewardData reward in rewards)
             {
                 GameObject obj = Instantiate(_rewardPrefab, _rewardParent);
                 RewardSlot rewardSlot = obj.GetComponent<RewardSlot>();
 
-                if(rewardSlot != null)
+                if (rewardSlot != null)
                 {
                     rewardSlot.SetRewardSlot(reward.RewardIcon, reward.RewardName, reward.RewardAmount);
                 }
             }
 
-            if(tile.TileData.IsCleared || tile.TileData.TileType == TileType.Event)
+            if (tile.TileData.IsCleared || tile.TileData.TileType == TileType.Event)
             {
                 _actionButtonName.text = "Move";
             }
@@ -95,6 +110,8 @@ namespace JDG
         {
             Vector3 target = _hexGrid.GetPositionForHexFromCoordinate(tile.TileData.Coord);
             _playerController.MoveTo(target);
+            _hexGrid.SetPlayerCoord(tile.TileData.Coord);
+            _hexGrid.UpdateFog();
         }
 
         public void OnActionButtonClicked()
@@ -102,19 +119,22 @@ namespace JDG
             if (_currentTile == null)
                 return;
 
-            if(_currentTile.TileData.IsCleared || _currentTile.TileData.TileType == TileType.Event)
+            var tile = _currentTile.TileData;
+
+            if (tile.IsCleared || tile.TileType == TileType.Base)
             {
-                if(_currentTile.TileData.TileType == TileType.Event)
-                {
-                    //나중에 이벤트 발동 함수 넣으면됨
-                    Debug.Log("이벤트 실행됨");
-                    _currentTile.TileData.IsCleared = true;
-                }
+                MovePlayerTo(_currentTile);
+            }
+
+            else if (_currentTile.TileData.TileType == TileType.Event)
+            {
+                //나중에 이벤트 발동 함수 넣으면됨
+                Debug.Log("이벤트 실행됨");
+                _currentTile.TileData.IsCleared = true;
                 MovePlayerTo(_currentTile);
             }
             else
             {
-                Debug.Log(_currentTile);
                 SceneLoader.Instance.EnterTileScene(_currentTile);
             }
 
@@ -124,6 +144,7 @@ namespace JDG
         public void OnCancleButtonClicked()
         {
             HideUI();
+            _isUIOpen = false;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace JDG
         {
             if(!_isMoving)
             {
-                _targetPos = targetPos;
+                _targetPos = targetPos + Vector3.up;
                 _isMoving = true;
             }
         }

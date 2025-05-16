@@ -9,7 +9,7 @@ namespace JDG
         private static GameStateManager _instance;
         private Dictionary<Vector2Int, TileData> _tileSaveData = new Dictionary<Vector2Int, TileData>();
         private Vector2Int _playerCoord;
-        private bool _isRestoreMap = false;
+        private bool _isRestoreMap;
 
         private void Awake()
         {
@@ -58,6 +58,14 @@ namespace JDG
         public void ResetIsRestoreMap()
         {
             _isRestoreMap = false;
+        }
+
+        public void UpdateTileState(TileData tileData)
+        {
+            if(tileData != null)
+            {
+                _tileSaveData[tileData.Coord] = tileData;
+            }
         }
     }
 }

@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using JDG;
-using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace JDG
 {
@@ -38,24 +35,26 @@ namespace JDG
             if (_inputController.selectAction == null || _inputController.selectAction.action == null)
                 return false;
 
-            float triggerValue = _inputController.selectAction.action.ReadValue<float>();
-            return triggerValue > _inputThreshold;
+            //float triggerValue = _inputController.selectAction.action.ReadValue<float>();
+            //return triggerValue > _inputThreshold;
+            return _inputController.selectAction.action.triggered;
         }
 
         private void TryRayInteract()
         {
+            Debug.Log("들어왔다1");
             if (_rayInteractor == null || _inputController == null || _hexGridLayout == null)
                 return;
 
             RaycastHit hit;
 
-            if(_rayInteractor.TryGetCurrent3DRaycastHit(out hit))
+            if (_rayInteractor.TryGetCurrent3DRaycastHit(out hit))
             {
                 GameObject hitObj = hit.collider.gameObject;
 
-                if(hitObj.TryGetComponent<Button>(out Button button))
+                if (hitObj.TryGetComponent<Button>(out Button button))
                 {
-                    if(IsTriggerPressed())
+                    if (IsTriggerPressed())
                     {
                         button.onClick.Invoke();
                         return;
@@ -64,19 +63,29 @@ namespace JDG
 
                 Vector3 hitPos = hit.point;
                 Vector2Int hitcoord = _hexGridLayout.GetCoordinateFromPosition(hitPos);
-
-                if (_hexGridLayout.TryGetTile(hitcoord, out var tile))
+                Debug.Log("들어왔다2");
+                //if (_hexGridLayout.TryGetTile(hitcoord, out var tile))
+                //{
+                if (IsTriggerPressed())
                 {
-                    if (IsTriggerPressed())
+                    if (_tileSelectionUI != null && _tileSelectionUI.IsUIOpen)
+                        return;
+
+                    //if (tile.TileData.TileVisibility == TileVisibility.Visible)
+                    //{
+                    //    Vector3 center = _hexGridLayout.GetPositionForHexFromCoordinate(_hexGridLayout.GetBaseCoord());;
+                    //    _tileSelectionUI.ShowUI(tile, center);
+                    //    return;
+                    //}
+
+                    if (hit.collider.TryGetComponent<WorldMapRenderer>(out WorldMapRenderer renderer))
                     {
-                        if (tile.TileData.TileVisibility == TileVisibility.Visible)
-                        {
-                            Vector3 center = _hexGridLayout.GetPositionForHexFromCoordinate(_hexGridLayout.GetBaseCoord());;
-                            _tileSelectionUI.ShowUI(tile, center);
-                            return;
-                        }
+                        Debug.Log("들어옴");
+                        renderer.HandleRayHit(hit);
+                        return;
                     }
                 }
+                //}
             }
         }
     }
