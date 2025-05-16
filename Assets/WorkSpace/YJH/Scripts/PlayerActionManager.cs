@@ -251,6 +251,7 @@ public partial class PlayerManager
 
 
                     isGathering = true;
+
                     ActiveGatheringBeam();
 
 
