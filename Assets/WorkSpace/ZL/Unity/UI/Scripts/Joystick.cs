@@ -8,38 +8,39 @@ namespace ZL.Unity.UI
 {
     [AddComponentMenu("ZL/UI/Joystick")]
 
-    [DisallowMultipleComponent]
-
     public sealed class Joystick : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
     {
-        [SerializeField]
-
-        private RectTransform container = null;
-
-        [SerializeField]
-
-        private RectTransform handle = null;
+        [Space]
 
         [SerializeField]
 
         [UsingCustomProperty]
 
-        [ReadOnly(true)]
+        [Essential]
 
-        private Vector2 dragDirection = Vector2.zero;
+        [ReadOnlyWhenPlayMode]
+
+        private RectTransform container = null;
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [ReadOnlyWhenPlayMode]
+
+        private RectTransform handle = null;
+
+        [Space]
 
         [SerializeField]
 
         private float dragRange = 75f;
 
+        [Space]
+
         [SerializeField]
 
         private UnityEvent<Vector2> onDragEvent = null;
-
-        public Vector2 DragDirection
-        {
-            get => dragDirection;
-        }
 
         private void Start()
         {
@@ -56,8 +57,6 @@ namespace ZL.Unity.UI
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            dragDirection = Vector2.zero;
-
             onDragEvent.Invoke(Vector2.zero);
 
             if (handle != null)
@@ -68,25 +67,25 @@ namespace ZL.Unity.UI
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (eventData.TryGetLocalPoint(container, out var pointerPosition) == false)
+            if (eventData.TryGetLocalPoint(container, out var localPoint) == false)
             {
                 return;
             }
 
             if (handle != null)
             {
-                if (pointerPosition.magnitude < dragRange)
+                if (localPoint.magnitude < dragRange)
                 {
-                    handle.anchoredPosition = pointerPosition;
+                    handle.anchoredPosition = localPoint;
                 }
 
                 else
                 {
-                    handle.anchoredPosition = pointerPosition.normalized * dragRange;
+                    handle.anchoredPosition = localPoint.normalized * dragRange;
                 }
             }
 
-            dragDirection = pointerPosition / container.sizeDelta;
+            var dragDirection = localPoint / container.sizeDelta;
 
             onDragEvent.Invoke(dragDirection);
         }

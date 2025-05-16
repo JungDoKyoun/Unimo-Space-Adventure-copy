@@ -6,8 +6,6 @@ namespace ZL.Unity
 {
     [AddComponentMenu("ZL/Application Manager Receiver")]
 
-    [DisallowMultipleComponent]
-
     public sealed class ApplicationManagerReceiver : MonoBehaviour
     {
         public BoolPref RunInBackgroundPref

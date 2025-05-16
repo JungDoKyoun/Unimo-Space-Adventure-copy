@@ -4,39 +4,20 @@ using UnityEngine.Events;
 
 namespace ZL.Unity
 {
-    public abstract class OnStopEventTrigger<TComponent> : MonoBehaviour
-
-        where TComponent : Component
+    public abstract class OnStopEventTrigger : MonoBehaviour
     {
         [Space]
 
         [SerializeField]
 
-        [UsingCustomProperty]
-
-        [GetComponent]
-
-        [ReadOnly(true)]
-
-        protected TComponent target;
-
-        public TComponent Target
-        {
-            get => target;
-        }
-
-        [Space]
-
-        [SerializeField]
-
-        private UnityEvent onStopEvent;
+        private UnityEvent onStopEvent = null;
 
         public UnityEvent OnStopEvent
         {
             get => onStopEvent;
         }
 
-        public abstract bool IsStoped { get; }
+        protected abstract bool IsStoped { get; }
 
         private void LateUpdate()
         {

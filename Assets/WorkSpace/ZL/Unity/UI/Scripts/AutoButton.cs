@@ -1,5 +1,13 @@
 using System.Collections;
 
+#if UNITY_EDITOR
+
+using UnityEditor;
+
+using UnityEditor.UI;
+
+#endif
+
 using UnityEngine;
 
 using UnityEngine.EventSystems;
@@ -58,16 +66,67 @@ namespace ZL.Unity.UI
 
         [Alias("")]
 
-        private AnimationCurve autoClickIntervalCurve;
+        private AnimationCurve autoClickIntervalCurve = null;
 
         private float pressedTime = 0f;
 
         #if UNITY_EDITOR
 
+        [CustomEditor(typeof(AutoButton))]
+
+        public sealed class AutoButtonEditor : ButtonEditor
+        {
+            private AutoButton autoButton;
+
+            private SerializedProperty autoClickThreshold;
+
+            private SerializedProperty useAutoClickIntervalCurve;
+
+            private SerializedProperty autoClickInterval;
+
+            private SerializedProperty autoClickIntervalCurve;
+
+            protected override void OnEnable()
+            {
+                base.OnEnable();
+
+                autoButton = target as AutoButton;
+
+                autoClickThreshold = serializedObject.FindProperty(nameof(autoButton.autoClickThreshold));
+
+                useAutoClickIntervalCurve = serializedObject.FindProperty(nameof(autoButton.useAutoClickIntervalCurve));
+
+                autoClickInterval = serializedObject.FindProperty(nameof(autoButton.autoClickInterval));
+
+                autoClickIntervalCurve = serializedObject.FindProperty(nameof(autoButton.autoClickIntervalCurve));
+            }
+
+            public override void OnInspectorGUI()
+            {
+                serializedObject.ScriptField();
+
+                EditorGUILayout.Space();
+
+                base.OnInspectorGUI();
+
+                serializedObject.Update();
+
+                EditorGUILayout.PropertyField(autoClickThreshold);
+
+                EditorGUILayout.PropertyField(useAutoClickIntervalCurve);
+
+                EditorGUILayout.PropertyField(autoClickInterval);
+
+                EditorGUILayout.PropertyField(autoClickIntervalCurve);
+
+                serializedObject.ApplyModifiedProperties();
+            }
+        }
+
         protected override void Reset()
         {
             base.Reset();
-
+        
         #else
 
         private void Reset()
@@ -89,12 +148,19 @@ namespace ZL.Unity.UI
             FixedAnimationUtility.SetKeyLeftTangentMode(autoClickIntervalCurve, 1, FixedTangentMode.Auto);
         }
 
+        protected override void OnDisable()
+        {
+            StopAutoClick();
+        }
+
         public override void OnPointerDown(PointerEventData eventData)
         {
-            if (interactable == false)
+            if (IsClicked(eventData) == false)
             {
                 return;
             }
+
+            pressedTime = 0f;
 
             StartAutoClick();
         }
@@ -106,24 +172,17 @@ namespace ZL.Unity.UI
 
         public override void OnPointerClick(PointerEventData eventData)
         {
-            if (eventData.button != PointerEventData.InputButton.Left)
+            if (IsClicked(eventData) == false)
             {
                 return;
             }
 
-            if (IsActive() == false || IsInteractable() == false)
+            if (pressedTime >= autoClickThreshold)
             {
                 return;
             }
 
-            if (pressedTime > 0f || autoClickThreshold == 0f)
-            {
-                pressedTime = 0f;
-            }
-
-            UISystemProfilerApi.AddMarker("Button.onClick", this);
-
-            onClick.Invoke();
+            Click();
         }
 
         private void StartAutoClick()
@@ -160,7 +219,11 @@ namespace ZL.Unity.UI
 
             while (true)
             {
-                yield return WaitForInterval(interval);
+                yield return WaitForSecondsCache.Get(interval);
+
+                pressedTime += interval;
+
+                Click();
 
                 if (useAutoClickIntervalCurve == true)
                 {
@@ -174,11 +237,24 @@ namespace ZL.Unity.UI
             }
         }
 
-        private IEnumerator WaitForInterval(float seconds)
+        private bool IsClicked(PointerEventData eventData)
         {
-            yield return WaitForSecondsCache.Get(seconds);
+            if (eventData.button != PointerEventData.InputButton.Left)
+            {
+                return false;
+            }
 
-            pressedTime += seconds;
+            if (IsActive() == false || IsInteractable() == false)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void Click()
+        {
+            UISystemProfilerApi.AddMarker("Button.onClick", this);
 
             onClick.Invoke();
         }

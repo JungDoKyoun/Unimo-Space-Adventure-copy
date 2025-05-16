@@ -6,10 +6,6 @@ namespace ZL.Unity.UI
 {
     [AddComponentMenu("ZL/UI/Image Controller")]
 
-    [DisallowMultipleComponent]
-
-    [RequireComponent(typeof(Image))]
-
     public sealed class ImageController : MonoBehaviour
     {
         [Space]
@@ -20,9 +16,11 @@ namespace ZL.Unity.UI
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
-        private Image image;
+        private Image image = null;
 
         [Space]
 

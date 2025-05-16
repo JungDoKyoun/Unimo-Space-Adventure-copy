@@ -6,8 +6,6 @@ namespace ZL.Unity.Tweening
 {
     [AddComponentMenu("ZL/Tweening/Audio Source Tweener")]
 
-    [RequireComponent(typeof(AudioSource))]
-
     public sealed class AudioSourceVolumeTweener : ObjectValueTweener<FloatTweener, float, float, FloatOptions>
     {
         [Space]
@@ -18,9 +16,11 @@ namespace ZL.Unity.Tweening
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
-        private AudioSource audioSource;
+        private AudioSource audioSource = null;
 
         public override float Value
         {

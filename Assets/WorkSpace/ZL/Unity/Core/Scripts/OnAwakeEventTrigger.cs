@@ -6,15 +6,18 @@ namespace ZL.Unity
 {
     [AddComponentMenu("ZL/On Awake Event Trigger")]
 
-    [DisallowMultipleComponent]
-
     public sealed class OnAwakeEventTrigger : MonoBehaviour
     {
         [Space]
 
         [SerializeField]
 
-        private UnityEvent onAwakeEvent;
+        private UnityEvent onAwakeEvent = null;
+
+        public UnityEvent OnAwakeEvent
+        {
+            get => onAwakeEvent;
+        }
 
         private void Awake()
         {

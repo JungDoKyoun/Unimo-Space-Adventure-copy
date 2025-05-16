@@ -1,3 +1,7 @@
+// Working
+
+#pragma warning disable
+
 using UnityEngine;
 
 using UnityEngine.InputSystem;
@@ -5,12 +9,6 @@ using UnityEngine.InputSystem;
 namespace ZL.Unity.Phys
 {
     [AddComponentMenu("ZL/Phys/Rigidbody Player Input")]
-
-    [DisallowMultipleComponent]
-
-    [RequireComponent(typeof(PlayerInput))]
-
-    [RequireComponent(typeof(RigidbodyCharacterController))]
 
     public class RigidbodyPlayerInput : MonoBehaviour
     {
@@ -22,15 +20,17 @@ namespace ZL.Unity.Phys
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
-        private RigidbodyCharacterController rigidbodyCharacterController;
+        private RigidbodyCharacterController rigidbodyCharacterController = null;
 
         [Space]
 
         [SerializeField]
 
-        private Transform virtualCameraFollower;
+        private Transform virtualCameraFollower = null;
 
         [Space]
 
@@ -43,19 +43,6 @@ namespace ZL.Unity.Phys
             get => jumpPower;
 
             set => jumpPower = value;
-        }
-
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        protected Vector2 lookDelta;
-
-        private void FixedUpdate()
-        {
-            //virtualCameraFollower.Rotate
         }
 
         protected virtual void OnMove(InputValue inputValue)
@@ -73,7 +60,7 @@ namespace ZL.Unity.Phys
 
         protected virtual void OnLook(InputValue inputValue)
         {
-            lookDelta = inputValue.Get<Vector2>();
+
         }
     }
 }

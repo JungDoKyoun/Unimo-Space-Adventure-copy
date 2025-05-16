@@ -14,13 +14,16 @@ namespace ZL.Unity.IO
 
         [ReadOnlyWhenPlayMode]
 
-        protected string key;
+        protected string key = "";
 
         public string Key
         {
             get => key;
 
-            set => key = value;
+            set
+            {
+
+            }
         }
 
         [SerializeField]

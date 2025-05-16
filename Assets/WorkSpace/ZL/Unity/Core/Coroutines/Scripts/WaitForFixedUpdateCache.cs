@@ -4,12 +4,7 @@ namespace ZL.Unity.Coroutines
 {
     public static class WaitForFixedUpdateCache
     {
-        private static readonly WaitForFixedUpdate waitForFixedUpdate;
-
-        static WaitForFixedUpdateCache()
-        {
-            waitForFixedUpdate = new WaitForFixedUpdate();
-        }
+        private static readonly WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
 
         public static WaitForFixedUpdate Get()
         {

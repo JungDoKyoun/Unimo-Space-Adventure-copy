@@ -15,11 +15,11 @@ namespace ZL.Unity
             get => color;
         }
 
-        private float deltaH;
+        private float deltaH = 0f;
 
-        private float deltaS;
+        private float deltaS = 0f;
 
-        private float deltaV;
+        private float deltaV = 0f;
 
         public Discolorator(ColorPalette color) : this(color.ToColor())
         {

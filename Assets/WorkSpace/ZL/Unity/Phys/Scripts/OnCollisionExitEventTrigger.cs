@@ -6,15 +6,13 @@ namespace ZL.Unity.Phys
 {
     [AddComponentMenu("ZL/Phys/On Collision Exit Event Trigger")]
 
-    [DisallowMultipleComponent]
-
     public sealed class OnCollisionExitEventTrigger : MonoBehaviour
     {
         [Space]
 
         [SerializeField]
 
-        private UnityEvent<Collision> onCollisionExitEvent;
+        private UnityEvent<Collision> onCollisionExitEvent = null;
 
         private void OnCollisionExit(Collision collision)
         {

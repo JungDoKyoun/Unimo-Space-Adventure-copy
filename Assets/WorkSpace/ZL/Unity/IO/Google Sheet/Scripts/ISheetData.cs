@@ -6,7 +6,7 @@ namespace ZL.Unity.IO.GoogleSheet
 {
     public interface ISheetData
     {
-        public string StartCell { get; }
+        public List<string> GetHeader();
 
         public void Import(GstuSpreadSheet sheet);
 

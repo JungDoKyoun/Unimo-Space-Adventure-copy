@@ -18,9 +18,11 @@ namespace ZL.Unity.Tweening
 
         [GetComponent]
 
-        [ReadOnly(true)]
+        [Essential]
 
-        private Graphic graphic;
+        [ReadOnlyWhenPlayMode]
+
+        private Graphic graphic = null;
 
         public override Color Value
         {

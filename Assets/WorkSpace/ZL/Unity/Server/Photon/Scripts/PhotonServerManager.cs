@@ -28,9 +28,7 @@ namespace ZL.Unity.Server.Photon
 {
     [AddComponentMenu("ZL/Server/Photon/Photon Server Manager (Singleton)")]
 
-    [DefaultExecutionOrder(-1)]
-
-    [DisallowMultipleComponent]
+    [DefaultExecutionOrder((int)ScriptExecutionOrder.Singleton)]
 
     public sealed class PhotonServerManager : MonoBehaviourPunCallbacks, ISingleton<PhotonServerManager>
     {
@@ -44,7 +42,7 @@ namespace ZL.Unity.Server.Photon
 
         [ReadOnlyWhenPlayMode]
 
-        private StringPref nicknamePref = new StringPref("Nickname", string.Empty);
+        private StringPref nicknamePref = new StringPref("Nickname", "");
 
         public string Nickname
         {
@@ -59,7 +57,7 @@ namespace ZL.Unity.Server.Photon
 
         [ReadOnlyWhenPlayMode]
 
-        private Wrapper<TypedLobby[]> lobbies;
+        private Wrapper<TypedLobby[]> lobbies = null;
 
         [Space]
 
@@ -71,7 +69,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent onConnectingToMasterEvent;
+        private UnityEvent onConnectingToMasterEvent = null;
 
         public UnityEvent OnConnectingToMasterEvent
         {
@@ -82,7 +80,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent onConnectedToMasterEvent;
+        private UnityEvent onConnectedToMasterEvent = null;
 
         public UnityEvent OnConnectedToMasterEvent
         {
@@ -93,7 +91,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent onDisconnectedEvent;
+        private UnityEvent onDisconnectedEvent = null;
 
         public UnityEvent OnDisconnectedEvent
         {
@@ -104,7 +102,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent onJoinedLobbyEvent;
+        private UnityEvent onJoinedLobbyEvent = null;
 
         public UnityEvent OnJoinedLobbyEvent
         {
@@ -115,7 +113,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent onLeftLobbyEvent;
+        private UnityEvent onLeftLobbyEvent = null;
 
         public UnityEvent OnLeftLobbyEvent
         {
@@ -126,7 +124,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent<List<RoomInfo>> onRoomListUpdateEvent;
+        private UnityEvent<List<RoomInfo>> onRoomListUpdateEvent = null;
 
         public UnityEvent<List<RoomInfo>> OnRoomListUpdateEvent
         {
@@ -137,7 +135,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent onCreatedRoomEvent;
+        private UnityEvent onCreatedRoomEvent = null;
 
         public UnityEvent OnCreatedRoomEvent
         {
@@ -148,7 +146,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent<short> onCreateRoomFailedEvent;
+        private UnityEvent<short> onCreateRoomFailedEvent = null;
 
         public UnityEvent<short> OnCreateRoomFailedEvent
         {
@@ -159,7 +157,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent<Hashtable> onRoomPropertiesUpdateEvent;
+        private UnityEvent<Hashtable> onRoomPropertiesUpdateEvent = null;
 
         public UnityEvent<Hashtable> OnRoomPropertiesUpdateEvent
         {
@@ -170,7 +168,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent onJoinedRoomEvent;
+        private UnityEvent onJoinedRoomEvent = null;
 
         public UnityEvent OnJoinedRoomEvent
         {
@@ -181,7 +179,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent<short> onJoinRoomFailedEvent;
+        private UnityEvent<short> onJoinRoomFailedEvent = null;
 
         public UnityEvent<short> OnJoinRoomFailedEvent
         {
@@ -192,7 +190,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent onLeftRoomEvent;
+        private UnityEvent onLeftRoomEvent = null;
 
         public UnityEvent OnLeftRoomEvent
         {
@@ -203,7 +201,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent<Player> onPlayerEnteredRoomEvent;
+        private UnityEvent<Player> onPlayerEnteredRoomEvent = null;
 
         public UnityEvent<Player> OnPlayerEnteredRoomEvent
         {
@@ -214,7 +212,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent<Player> onPlayerLeftRoomEvent;
+        private UnityEvent<Player> onPlayerLeftRoomEvent = null;
 
         public UnityEvent<Player> OnPlayerLeftRoomEvent
         {
@@ -225,14 +223,14 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        private UnityEvent onMasterClientSwitchedEvent;
+        private UnityEvent onMasterClientSwitchedEvent = null;
 
         public UnityEvent OnMasterClientSwitchedEvent
         {
             get => onMasterClientSwitchedEvent;
         }
 
-        private Dictionary<string, TypedLobby> lobbyDictionary;
+        private Dictionary<string, TypedLobby> lobbyDictionary = null;
 
         private readonly Stopwatch loadingStopwatch = new Stopwatch();
 

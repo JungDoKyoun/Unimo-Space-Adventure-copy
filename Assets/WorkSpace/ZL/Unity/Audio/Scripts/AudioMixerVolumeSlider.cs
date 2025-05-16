@@ -6,8 +6,6 @@ namespace ZL.Unity.Audio
 {
     [AddComponentMenu("ZL/UI/Audio Mixer Volume Slider")]
 
-    [DisallowMultipleComponent]
-
     public sealed class AudioMixerVolumeSlider : MonoBehaviour
     {
         [Space]
@@ -20,7 +18,7 @@ namespace ZL.Unity.Audio
 
         [Essential]
 
-        private Slider slider;
+        private Slider slider = null;
 
         [SerializeField]
         
@@ -28,7 +26,7 @@ namespace ZL.Unity.Audio
         
         [ReadOnlyWhenPlayMode]
 
-        private string key;
+        private string key = "";
 
         public void Refresh()
         {

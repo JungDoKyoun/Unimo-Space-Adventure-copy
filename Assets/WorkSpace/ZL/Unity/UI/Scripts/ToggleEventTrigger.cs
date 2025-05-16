@@ -8,10 +8,6 @@ namespace ZL.Unity.UI
 {
     [AddComponentMenu("ZL/UI/Toggle Event Trigger")]
 
-    [DisallowMultipleComponent]
-
-    [RequireComponent(typeof(Toggle))]  
-
     public sealed class ToggleEventTrigger : MonoBehaviour
     {
         [Space]
@@ -22,28 +18,30 @@ namespace ZL.Unity.UI
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
-        private Toggle toggle;
+        private Toggle toggle = null;
 
         [Space]
 
         [SerializeField]
 
-        private UnityEvent OnToggleOnEvent;
+        private UnityEvent OnToggleOnEvent = null;
 
         [Space]
 
         [SerializeField]
 
-        private UnityEvent OnToggleOffEvent;
+        private UnityEvent OnToggleOffEvent = null;
 
         private void Awake()
         {
-            toggle.onValueChanged.AddListener(OnToggleSwitched);
+            toggle.onValueChanged.AddListener(OnToggleChanged);
         }
 
-        private void OnToggleSwitched(bool value)
+        private void OnToggleChanged(bool value)
         {
             if (value == true)
             {
