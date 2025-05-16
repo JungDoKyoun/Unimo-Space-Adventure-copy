@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace JDG
@@ -42,7 +41,10 @@ namespace JDG
         private GameObject _playerInstance;
 
         [Header("UI 관련")]
-        [SerializeField] TileSelectionUI _tileSelectionUI;
+        [SerializeField] private TileSelectionUI _tileSelectionUI;
+
+        [Header("난이도 관련")]
+        [SerializeField] private List<DifficultyEntry> _difficultyEntries = new List<DifficultyEntry>();
 
         private List<Vector2Int> _tileCoords = new List<Vector2Int>(); //타일 좌표 리스트
         private Vector2Int _baseCoord;
@@ -72,21 +74,21 @@ namespace JDG
 
             List<Vector2Int> frontier = new List<Vector2Int>(GetNeighbors(center));
 
-            while(_tileCoords.Count <= _spawnCount && frontier.Count > 0)
+            while (_tileCoords.Count <= _spawnCount && frontier.Count > 0)
             {
                 Vector2Int current = frontier[Random.Range(0, frontier.Count)];
                 frontier.Remove(current);
 
-                if(_tileCoords.Contains(current))
+                if (_tileCoords.Contains(current))
                 {
                     continue;
                 }
 
                 _tileCoords.Add(current);
 
-                foreach(var neighbor in GetNeighbors(current))
+                foreach (var neighbor in GetNeighbors(current))
                 {
-                    if(!frontier.Contains(neighbor) && !_tileCoords.Contains(neighbor))
+                    if (!frontier.Contains(neighbor) && !_tileCoords.Contains(neighbor))
                     {
                         frontier.Add(neighbor);
                     }
@@ -127,7 +129,7 @@ namespace JDG
         {
             _hexMap.Clear();
 
-            foreach(var coord in _tileCoords)
+            foreach (var coord in _tileCoords)
             {
                 GameObject tile = new GameObject($"Hex {coord.x},{coord.y}", typeof(HexRenderer));
                 tile.transform.position = GetPositionForHexFromCoordinate(coord);
@@ -138,7 +140,7 @@ namespace JDG
                 hexRenderer.Height = _height;
                 hexRenderer.SetMaterial(_material);
 
-                var data = new TileData(coord, TileType.None, TileVisibility.Hidden, TileEnvironmentManager.Instance.GetRandomEnvironment(), false);
+                var data = new TileData(coord, TileType.None, TileVisibility.Hidden, TileEnvironmentManager.Instance.GetRandomEnvironment(), false, level: 0);
                 hexRenderer.SetTileData(data);
 
                 hexRenderer.DrawMesh();
@@ -155,12 +157,12 @@ namespace JDG
             var player = _playerInstance.GetComponent<PlayerController>();
             player.Init(this);
 
-            if(_vRPlayerInput != null)
+            if (_vRPlayerInput != null)
             {
                 _vRPlayerInput.Init(player, this);
             }
 
-            if(_tileSelectionUI != null)
+            if (_tileSelectionUI != null)
             {
                 _tileSelectionUI.Init(player, this);
             }
@@ -215,18 +217,18 @@ namespace JDG
 
         public void UpdateFog()
         {
-            foreach(var pair in _hexMap)
+            foreach (var pair in _hexMap)
             {
                 Vector2Int coord = pair.Key;
                 HexRenderer hex = pair.Value;
 
                 var dis = HexDistance(coord, _playerCoord);
 
-                if(dis <= _viewRange)
+                if (dis <= _viewRange)
                 {
                     hex.SetVisibility(TileVisibility.Visible);
                 }
-                else if(hex.GetTileVisibility() == TileVisibility.Visible)
+                else if (hex.GetTileVisibility() == TileVisibility.Visible)
                 {
                     hex.SetVisibility(TileVisibility.Visited);
                 }
@@ -252,6 +254,7 @@ namespace JDG
         public void SetPlayerCoord(Vector2Int newCoord)
         {
             _playerCoord = newCoord;
+            Debug.Log(_playerCoord);
         }
 
         public bool TryGetTile(Vector2Int coord, out HexRenderer hex)
@@ -263,7 +266,7 @@ namespace JDG
         {
             List<Vector2Int> placedBosses = new List<Vector2Int>();
 
-            for(int i = 0; i < _bossCountPerCircle; i++)
+            for (int i = 0; i < _bossCountPerCircle; i++)
             {
                 if (i >= _bossDistance.Length || i >= _bossMinGapByDistance.Length)
                     break;
@@ -281,6 +284,12 @@ namespace JDG
                     var coord = valid[randomIndex];
                     _hexMap[coord].TileData.TileType = TileType.Boss;
                     _hexMap[coord].TileData.SceneName = "BossScene";
+                    //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
+                    //int dis = HexDistance(_baseCoord, coord);
+                    //int level = GetLevelByDistance(dis);
+                    //_hexMap[coord].TileData.Level = level;
+                    //_hexMap[coord].TileData.SceneName = $"BossScene_{level}";
+
                     placedBosses.Add(coord);
                     candidateCoords.Remove(coord);
                 }
@@ -290,12 +299,18 @@ namespace JDG
                     List<Vector2Int> fallback = new List<Vector2Int>(candidateCoords);
                     fallback.Sort((a, b) => HexDistance(_playerCoord, b).CompareTo(HexDistance(_playerCoord, a)));
 
-                    foreach(var coord in fallback)
+                    foreach (var coord in fallback)
                     {
-                        if(!placedBosses.Exists(b => HexDistance(b, coord) < minGap))
+                        if (!placedBosses.Exists(b => HexDistance(b, coord) < minGap))
                         {
                             _hexMap[coord].TileData.TileType = TileType.Boss;
                             _hexMap[coord].TileData.SceneName = "BossScene";
+                            //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
+                            //int dis = HexDistance(_baseCoord, coord);
+                            //int level = GetLevelByDistance(dis);
+                            //_hexMap[coord].TileData.Level = level;
+                            //_hexMap[coord].TileData.SceneName = $"BossScene_{level}";
+
                             placedBosses.Add(coord);
                             candidateCoords.Remove(coord);
                             break;
@@ -309,7 +324,7 @@ namespace JDG
         {
             int eventCount = Mathf.Max(_eventMinDistance, Mathf.RoundToInt(candidateCoords.Count * _eventTileRatio));
 
-            for(int i = 0; i < eventCount && candidateCoords.Count > 0; i++)
+            for (int i = 0; i < eventCount && candidateCoords.Count > 0; i++)
             {
                 var randomIndex = Random.Range(0, candidateCoords.Count);
                 var chosen = candidateCoords[randomIndex];
@@ -322,19 +337,33 @@ namespace JDG
         {
             int totalCount = candidateCoords.Count;
 
-            foreach(var entry in _modeRatio)
+            foreach (var entry in _modeRatio)
             {
                 string modeName = entry.modeName;
                 float ratio = entry.ratio;
                 int count = Mathf.RoundToInt(totalCount * ratio);
 
-                for(int i = 0; i < count && candidateCoords.Count > 0; i++)
+                for (int i = 0; i < count && candidateCoords.Count > 0; i++)
                 {
                     int randomIndex = Random.Range(0, candidateCoords.Count);
                     var coord = candidateCoords[randomIndex];
                     _hexMap[coord].TileData.TileType = TileType.Mode;
                     _hexMap[coord].TileData.ModeName = modeName;
                     _hexMap[coord].TileData.SceneName = modeName == "Explore" ? "ExploreScene" : "GatherScene";
+                    //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
+                    //int dis = HexDistance(_baseCoord, coord);
+                    //int level = GetLevelByDistance(dis);
+                    //_hexMap[coord].TileData.Level = level;
+
+                    //if (modeName == "Explore")
+                    //{
+                    //    _hexMap[coord].TileData.SceneName = $"ExploreScene_{level}";
+                    //}
+                    //else if (modeName == "Gather")
+                    //{
+                    //    _hexMap[coord].TileData.SceneName = $"GatherScene_{level}";
+                    //}
+
                     candidateCoords.RemoveAt(randomIndex);
                 }
             }
@@ -350,7 +379,7 @@ namespace JDG
             AssignEventTiles(candidateCoords);
             AssignModeTiles(candidateCoords);
 
-            foreach(var hex in _hexMap.Values)
+            foreach (var hex in _hexMap.Values)
             {
                 hex.SetDebugColorByType();
             }
@@ -363,14 +392,6 @@ namespace JDG
 
         public void RestoreMapState(Dictionary<Vector2Int, TileData> mapData, Vector2Int playerCoord)
         {
-            //foreach(var data in mapData)
-            //{
-            //    if(_hexMap.TryGetValue(data.Key, out HexRenderer hex))
-            //    {
-            //        hex.SetTileData(data.Value);
-            //    }
-            //}
-
             _hexMap.Clear();
 
             foreach (var pair in mapData)
@@ -422,6 +443,20 @@ namespace JDG
             Vector2Int centerCoord = new Vector2Int(_gridSize.x / 2, _gridSize.y / 2);
             Vector3 centerPos = GetPositionForHexFromCoordinate(centerCoord);
             _mapOrigin = -centerPos;
+        }
+
+        private int GetLevelByDistance(int distance)
+        {
+            int level = 0;
+
+            foreach (var entry in _difficultyEntries)
+            {
+                if (distance >= entry.Distance)
+                {
+                    level = entry.Level;
+                }
+            }
+            return level;
         }
     }
 }
