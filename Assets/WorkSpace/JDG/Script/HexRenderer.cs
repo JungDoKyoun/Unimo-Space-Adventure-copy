@@ -226,6 +226,9 @@ namespace JDG
 
             if(_tileData.IsCleared)
             {
+                if (_tileData.TileType == TileType.Base)
+                    return;
+
                 color = Color.gray;
             }
 

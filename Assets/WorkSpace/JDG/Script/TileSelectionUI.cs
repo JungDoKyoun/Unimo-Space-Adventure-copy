@@ -48,17 +48,6 @@ namespace JDG
             _root.SetActive(true);
             _isUIOpen = true;
 
-            //if (_worldCam != null)
-            //{
-            //    Vector3 camPos = _worldCam.transform.position;
-            //    Vector3 lookDir = new Vector3(0, camPos.y - transform.position.y, 0);
-
-            //    if (lookDir != Vector3.zero)
-            //    {
-            //        transform.forward = -lookDir.normalized;
-            //    }
-            //}
-
             var env = TileEnvironmentManager.Instance.GetEnvironmentInfo(tile.TileData.EnvironmentType);
             var display = TileDisplayInfoManager.Instance.GetDisplayInfo(tile.TileData.TileType, tile.TileData.ModeName);
             var rewards = RewardManager.Instance.GetTileRewardRuleSO(tile.TileData.TileType, tile.TileData.ModeName);
@@ -91,7 +80,7 @@ namespace JDG
                 }
             }
 
-            if (tile.TileData.IsCleared || tile.TileData.TileType == TileType.Event)
+            if (tile.TileData.IsCleared || tile.TileData.TileType == TileType.Event || tile.TileData.TileType == TileType.Base)
             {
                 _actionButtonName.text = "Move";
             }
@@ -104,13 +93,13 @@ namespace JDG
         public void HideUI()
         {
             _root.SetActive(false);
+            _isUIOpen = false;
         }
 
         private void MovePlayerTo(HexRenderer tile)
         {
             Vector3 target = _hexGrid.GetPositionForHexFromCoordinate(tile.TileData.Coord);
             _playerController.MoveTo(target);
-            _hexGrid.SetPlayerCoord(tile.TileData.Coord);
             _hexGrid.UpdateFog();
         }
 
