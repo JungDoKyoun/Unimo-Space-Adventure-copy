@@ -7,7 +7,9 @@ using ZL.Unity.Unimo;
 
 public partial class PlayerManager : IDamageable
 {
-    [SerializeField] float currentHealth =300;//체력 필요 없나?
+    [SerializeField] float maxHP = 300;
+    [SerializeField] float currentHealth;//체력 필요 없나?
+    
     bool isOnHit = false;//맞았는지?
     [SerializeField] float onHitTime = 1.0f;//무적시간
     [SerializeField] float onHitBlinkTime = 0.1f;// 무적시간동안 깜빡이는 간격
@@ -34,7 +36,10 @@ public partial class PlayerManager : IDamageable
             }
         }
     }
-
+    public void StatusStart()
+    {
+        currentHealth = maxHP;
+    }
     public void TakeDamage(int damage)
     {
         isOnHit = true;

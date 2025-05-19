@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IAttackType 
 {
-    public float Speed
+    public float BulletSpeed
     {
         get; set;
     }

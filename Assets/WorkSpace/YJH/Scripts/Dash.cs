@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Dash :ISpellType,IStackSpell
 {
+
+
     [SerializeField] int nowStack;// 현재 충전되어 있는 충전량
     [SerializeField] int maxStack=2;// 최대 충전량
     [SerializeField] float chargeTime=3f;// 충전에 필요한 시간
@@ -14,6 +16,7 @@ public class Dash :ISpellType,IStackSpell
     [SerializeField] float pushPower = 10f;// 대쉬 속도
     [SerializeField] float dashTime = 1f;// 대쉬 하는 시간
     [SerializeField] float dashTimer; // 
+    
     private PlayerManager playerManager;// 사용하는 플레이어
     private bool isDash=false;
 

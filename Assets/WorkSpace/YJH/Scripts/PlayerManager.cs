@@ -27,6 +27,7 @@ public partial class PlayerManager
     {
         ActionStart();
         MoveStart();
+        StatusStart();
     }
 
     // Update is called once per frame

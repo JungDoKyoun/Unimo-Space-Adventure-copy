@@ -26,8 +26,10 @@ public partial class PlayerManager : MonoBehaviourPun
     [SerializeField] bool isMoveSoundPlay=false;
 
     [Header("속도들")]
-    [SerializeField] float moveSpeed = 4f;
-    [SerializeField] float pushSpeed = 3f;
+
+    [SerializeField] float moveSpeed = 4.4f;//최종속도
+    [SerializeField] float baseSpeed=4f;//기본 속도
+    //[SerializeField] float pushSpeed = 3f;
     [SerializeField] float rotateSpeed = 10f;
 
     public bool isGathering = false;
@@ -46,7 +48,10 @@ public partial class PlayerManager : MonoBehaviourPun
     }
 
     
-    
+    public void SetMoveSpeed(float mul)
+    {
+        moveSpeed += mul;
+    }
 
     public void PlayerMoveBySpeed()
     {
@@ -64,7 +69,7 @@ public partial class PlayerManager : MonoBehaviourPun
                 Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
                 //GetRotate(transform.forward);
             }
-            transform.position += moveSpeed * Time.deltaTime * playerMoveDirection + pushSpeed * Time.deltaTime * playerPushDirection;
+            transform.position += moveSpeed * Time.deltaTime * playerMoveDirection;// + pushSpeed * Time.deltaTime * playerPushDirection;
             if (isMoveSoundPlay)
             {
                 moveSoundSource?.Play();

@@ -5,13 +5,14 @@ using ZL.Unity.Unimo;
 
 public class EnergyBolt : MonoBehaviour, IAttackType, IDamager
 {
-    [SerializeField] float speed=5;
-    [SerializeField] float maxRange=5;
+    [SerializeField] float bulletSpeed=5;//발사체 속도 
+    [SerializeField] float maxRange=5;// 발사체 거리 
     [SerializeField] int energyCost=1;
     [SerializeField] int damage;//float으로?
     [SerializeField] bool canPierce=false;
     [SerializeField] Transform firePos;
     [SerializeField] GameObject hitEffect;
+    [SerializeField] float attackPower;
 
     [SerializeField] AudioClip hitSound;//사용 안함
     [SerializeField] AudioSource hitSoundSource;//사용 안함
@@ -24,9 +25,9 @@ public class EnergyBolt : MonoBehaviour, IAttackType, IDamager
 
 
     
-    public float Speed
+    public float BulletSpeed
     {
-        get { return speed; } set { speed = value; }
+        get { return bulletSpeed; } set { bulletSpeed = value; }
     }
     public float MaxRange { get { return maxRange; } set { maxRange = value; } }
     public int EnergyCost { get { return energyCost; } set { energyCost = value; } }
@@ -45,9 +46,9 @@ public class EnergyBolt : MonoBehaviour, IAttackType, IDamager
         
         Vector3 tempVelocity = new Vector3(fireDirection.x, 0, fireDirection.z); //fireDirection.normalized * speed;
         firePos = transform;
-        selfBody.velocity = tempVelocity.normalized*speed;
+        selfBody.velocity = tempVelocity.normalized*bulletSpeed;
         
-        Destroy(gameObject, maxRange / speed);
+        Destroy(gameObject, maxRange / bulletSpeed);
         
     }
     private void OnDestroy()
@@ -85,6 +86,6 @@ public class EnergyBolt : MonoBehaviour, IAttackType, IDamager
 
     public void GiveDamage(IDamageable damageable)
     {
-        damageable.TakeDamage(damage);
+        damageable.TakeDamage((int)(damage* attackPower));
     }
 }
