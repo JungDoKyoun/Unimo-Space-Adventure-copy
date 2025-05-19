@@ -2,6 +2,8 @@ using DG.Tweening.Plugins.Options;
 
 using UnityEngine;
 
+using ZL.Unity.GFX;
+
 namespace ZL.Unity.Tweening
 {
     [AddComponentMenu("ZL/Tweening/Material Color Tweener")]
@@ -18,7 +20,7 @@ namespace ZL.Unity.Tweening
 
         [ReadOnly(true)]
 
-        private MaterialController materialCopier = null;
+        private MaterialController materialController = null;
 
         [Space]
 
@@ -26,7 +28,7 @@ namespace ZL.Unity.Tweening
 
         [UsingCustomProperty]
 
-        [ToggleIf(nameof(materialCopier), null, false)]
+        [ToggleIf(nameof(materialController), null, false)]
 
         private Material material = null;
 
@@ -48,9 +50,9 @@ namespace ZL.Unity.Tweening
         {
             base.Awake();
 
-            if (materialCopier.Material != null)
+            if (materialController.Material != null)
             {
-                material = materialCopier.Material;
+                material = materialController.Material;
             }
         }
     }

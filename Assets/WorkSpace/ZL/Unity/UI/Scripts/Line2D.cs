@@ -6,11 +6,7 @@ namespace ZL.Unity.UI
 {
     [AddComponentMenu("ZL/UI/Line 2D")]
 
-    [DisallowMultipleComponent]
-
     [ExecuteInEditMode]
-
-    [RequireComponent(typeof(Image))]
 
     public sealed class Line2D : MonoBehaviour
     {
@@ -22,9 +18,11 @@ namespace ZL.Unity.UI
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
-        private RectTransform rectTransform;
+        private RectTransform rectTransform = null;
 
         [SerializeField]
 
@@ -32,9 +30,11 @@ namespace ZL.Unity.UI
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
-        private Image image;
+        private Image image = null;
 
         [Space]
 
@@ -78,7 +78,7 @@ namespace ZL.Unity.UI
 
         [SerializeField]
 
-        private float thickness = 1f;
+        private float thickness = 0f;
 
         public float Thickness
         {

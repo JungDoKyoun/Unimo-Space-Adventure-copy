@@ -17,6 +17,10 @@ public class Dash :ISpellType,IStackSpell
     private PlayerManager playerManager;// 사용하는 플레이어
     private bool isDash=false;
 
+    public delegate void onSkillUseDenied();
+    public event onSkillUseDenied OnSkillUseDenied;
+
+
 
 
 
@@ -84,7 +88,10 @@ public class Dash :ISpellType,IStackSpell
             dashTimer = 0;
         }
     }
-    
+    public bool ReturnState()
+    {
+        return isDash;
+    }
     
     public void InitSpell()
     {

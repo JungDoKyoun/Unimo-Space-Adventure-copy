@@ -36,14 +36,14 @@ namespace ZL.CS
             return min > instance || instance > max;
         }
 
-        public static int Clamp(this int instance, int min, int max)
-        {
-            return Math.Clamp(instance, min, max);
-        }
-
         public static int Clamp01(this int instance)
         {
             return Clamp(instance, 0, 1);
+        }
+
+        public static int Clamp(this int instance, int min, int max)
+        {
+            return Math.Clamp(instance, min, max);
         }
 
         public static int Repeat(this int instance, int min, int max)

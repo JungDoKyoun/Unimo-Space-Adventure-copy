@@ -4,8 +4,6 @@ namespace ZL.Unity.Phys
 {
     [AddComponentMenu("ZL/Phys/Gravity Generator")]
 
-    [DisallowMultipleComponent]
-
     public sealed class GravityGenerator : MonoBehaviour
     {
         [Space]

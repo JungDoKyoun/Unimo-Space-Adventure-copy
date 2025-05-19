@@ -6,19 +6,21 @@ namespace ZL.Unity.Tweening
 {
     [AddComponentMenu("ZL/Tweening/Canvas Group Alpha Tweener")]
 
-    [RequireComponent(typeof(CanvasGroup))]
-
-    public class CanvasGroupAlphaTweener : ObjectValueTweener<FloatTweener, float, float, FloatOptions>
+    public sealed class CanvasGroupAlphaTweener : ObjectValueTweener<FloatTweener, float, float, FloatOptions>
     {
+        [Space]
+
         [SerializeField]
 
         [UsingCustomProperty]
 
         [GetComponent]
 
-        [EmptyField]
+        [Essential]
 
-        protected CanvasGroup canvasGroup;
+        [ReadOnly(true)]
+
+        private CanvasGroup canvasGroup = null;
 
         public override float Value
         {

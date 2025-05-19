@@ -61,6 +61,8 @@ public partial class PlayerManager : MonoBehaviourPun
             else
             {
                 isMoveSoundPlay = false;
+                Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
+                //GetRotate(transform.forward);
             }
             transform.position += moveSpeed * Time.deltaTime * playerMoveDirection + pushSpeed * Time.deltaTime * playerPushDirection;
             if (isMoveSoundPlay)
@@ -111,15 +113,17 @@ public partial class PlayerManager : MonoBehaviourPun
         Quaternion nextRotation=Quaternion.LookRotation(headingVector3);
         Quaternion firstRotation = Quaternion.LookRotation(new Vector3(transform.forward.x,0,transform.forward.z));
         
-        if (isGathering == true)
+        if (isGathering == true&&targetObject!=null)
         {
             Vector3 headDir = new Vector3(targetObject.transform.position.x,transform.position.y, targetObject.transform.position.z);
             transform.LookAt(headDir);
+           // Debug.Log(headDir);
             gatheringEffect.transform.LookAt(targetObject.transform);
 
         }
         else
         {
+           // Debug.Log("notgathering");
             transform.rotation = Quaternion.SlerpUnclamped(firstRotation,nextRotation,rotateSpeed*Time.deltaTime);
             //transform.rotation = nextRotation;
         }

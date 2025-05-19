@@ -6,18 +6,27 @@ namespace ZL.Unity.Phys
 {
     [AddComponentMenu("ZL/Phys/On Collision Stay Event Trigger")]
 
-    [DisallowMultipleComponent]
-
     public sealed class OnCollisionStayEventTrigger : MonoBehaviour
     {
         [Space]
 
         [SerializeField]
 
-        private UnityEvent<Collision> onCollisionStayEvent;
+        private LayerMask layerMask = ~0;
+
+        [Space]
+
+        [SerializeField]
+
+        private UnityEvent<Collision> onCollisionStayEvent = null;
 
         private void OnCollisionStay(Collision collision)
         {
+            if (layerMask.Contains(collision.gameObject.layer) == false)
+            {
+                return;
+            }
+
             onCollisionStayEvent.Invoke(collision);
         }
     }

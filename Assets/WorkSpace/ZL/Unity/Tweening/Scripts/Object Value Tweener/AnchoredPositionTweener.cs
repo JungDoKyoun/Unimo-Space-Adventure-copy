@@ -6,8 +6,6 @@ namespace ZL.Unity.Tweening
 {
     [AddComponentMenu("ZL/Tweening/Anchored Position Tweener")]
 
-    [RequireComponent(typeof(RectTransform))]
-
     public sealed class AnchoredPositionTweener : ObjectValueTweener<Vector2Tweener, Vector2, Vector2, VectorOptions>
     {
         [Space]
@@ -18,9 +16,11 @@ namespace ZL.Unity.Tweening
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
-        private RectTransform rectTransform;
+        private RectTransform rectTransform = null;
 
         public override Vector2 Value
         {

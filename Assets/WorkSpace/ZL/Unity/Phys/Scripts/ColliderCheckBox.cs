@@ -23,7 +23,7 @@ namespace ZL.Unity.Phys
 
         #endif
 
-        public override bool Check()
+        protected override bool Check()
         {
             return Physics.CheckBox(transform.position, transform.lossyScale * 0.5f, transform.rotation, layerMask, triggerInteraction);
         }

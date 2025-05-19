@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace ZL.Unity.IO.GoogleSheet
 {
-    [CreateAssetMenu(menuName = "ZL/Google Sheet/Sheet", fileName = "Sheet")]
+    public abstract class ScriptableSheet<TSheetData> : ScriptableObject
 
-    public sealed class ScriptableSheet : ScriptableObject
+        where TSheetData : ISheetData
     {
         [Space]
 
         [SerializeField]
 
-        private SheetConfig sheetConfig;
+        private ScriptableSheetConfig sheetConfig = null;
 
         [Space]
 
@@ -34,7 +34,7 @@ namespace ZL.Unity.IO.GoogleSheet
 
         [SerializeField]
 
-        private ScriptableSheetData[] datas;
+        private TSheetData[] datas = null;
 
         public void Read()
         {
@@ -51,11 +51,18 @@ namespace ZL.Unity.IO.GoogleSheet
 
         public void Write()
         {
+            var column = sheetConfig.TitleColumn;
+
+            int row = sheetConfig.TitleRow;
+
+            SpreadsheetManager.Write(sheetConfig.GetSearch($"{column}{row++}"), new ValueRange(datas[0].GetHeader()), null);
+
             for (int i = 0; i < datas.Length; ++i)
             {
                 var data = datas[i];
 
-                SpreadsheetManager.Write(sheetConfig.GetSearch(data), new ValueRange(data.Export()), null);
+                SpreadsheetManager.Write(sheetConfig.GetSearch($"{column}{row++}"), new ValueRange(data.Export()), null);
+
             }
         }
     }

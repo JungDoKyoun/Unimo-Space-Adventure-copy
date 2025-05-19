@@ -1,3 +1,7 @@
+// Working
+
+#pragma warning disable
+
 using System;
 
 using UnityEngine;
@@ -5,14 +9,6 @@ using UnityEngine;
 namespace ZL.Unity.Phys
 {
     [AddComponentMenu("ZL/Phys/Rigidbody Character Controller")]
-
-    [DisallowMultipleComponent]
-
-    [RequireComponent(typeof(CapsuleCollider))]
-
-    [RequireComponent(typeof(Rigidbody))]
-
-    [RequireComponent(typeof(GravityController))]
 
     public class RigidbodyCharacterController : MonoBehaviour
     {
@@ -24,11 +20,13 @@ namespace ZL.Unity.Phys
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
         #pragma warning disable CS0108
 
-        private Rigidbody rigidbody;
+        private Rigidbody rigidbody = null;
 
         public Rigidbody Rigidbody
         {
@@ -43,15 +41,17 @@ namespace ZL.Unity.Phys
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
-        private GravityController gravityController;
+        private GravityController gravityController = null;
 
         [Space]
 
         [SerializeField]
 
-        private Transform model;
+        private Transform model = null;
 
         [Space]
 

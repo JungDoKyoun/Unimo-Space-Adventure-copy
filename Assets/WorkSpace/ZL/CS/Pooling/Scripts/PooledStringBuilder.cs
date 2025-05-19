@@ -1,3 +1,5 @@
+using System.Linq;
+
 using System.Text;
 
 namespace ZL.CS.Pooling
@@ -6,7 +8,7 @@ namespace ZL.CS.Pooling
     {
         public static string Concat(params char[] values)
         {
-            var stringBuilder = Generate();
+            var stringBuilder = Generate(values.Length);
 
             var @string = stringBuilder.Concat(values);
 
@@ -17,7 +19,7 @@ namespace ZL.CS.Pooling
 
         public static string Concat(params string[] values)
         {
-            var stringBuilder = Generate();
+            var stringBuilder = Generate(values.Sum(s => s.Length));
 
             var @string = stringBuilder.Concat(values);
 

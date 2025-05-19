@@ -8,10 +8,6 @@ namespace ZL.Unity.UI
 {
     [AddComponentMenu("ZL/UI/Force TMP Mesh Updater")]
 
-    [DisallowMultipleComponent]
-
-    [RequireComponent(typeof(TextMeshProUGUI))]
-
     public sealed class ForceTMPMeshUpdater : MonoBehaviour
     {
         [Space]
@@ -22,6 +18,8 @@ namespace ZL.Unity.UI
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
         [PropertyField]
@@ -30,7 +28,7 @@ namespace ZL.Unity.UI
 
         [Button(nameof(ForceMeshUpdate))]
 
-        private TextMeshProUGUI text;
+        private TMP_Text text = null;
 
         private void OnEnable()
         {

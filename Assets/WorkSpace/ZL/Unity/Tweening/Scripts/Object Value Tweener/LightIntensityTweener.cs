@@ -6,8 +6,6 @@ namespace ZL.Unity.Tweening
 {
     [AddComponentMenu("ZL/Tweening/Light Intensity Tweener")]
 
-    [RequireComponent(typeof(Light))]
-
     public sealed class LightIntensityTweener : ObjectValueTweener<FloatTweener, float, float, FloatOptions>
     {
         [Space]
@@ -18,11 +16,13 @@ namespace ZL.Unity.Tweening
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
         #pragma warning disable CS0108
 
-        private Light light;
+        private Light light = null;
 
         #pragma warning restore CS0108
 

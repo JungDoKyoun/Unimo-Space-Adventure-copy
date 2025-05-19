@@ -42,7 +42,6 @@ namespace JDG
 
         private void TryRayInteract()
         {
-            Debug.Log("들어왔다1");
             if (_rayInteractor == null || _inputController == null || _hexGridLayout == null)
                 return;
 
@@ -63,7 +62,7 @@ namespace JDG
 
                 Vector3 hitPos = hit.point;
                 Vector2Int hitcoord = _hexGridLayout.GetCoordinateFromPosition(hitPos);
-                Debug.Log("들어왔다2");
+
                 //if (_hexGridLayout.TryGetTile(hitcoord, out var tile))
                 //{
                 if (IsTriggerPressed())
@@ -80,7 +79,6 @@ namespace JDG
 
                     if (hit.collider.TryGetComponent<WorldMapRenderer>(out WorldMapRenderer renderer))
                     {
-                        Debug.Log("들어옴");
                         renderer.HandleRayHit(hit);
                         return;
                     }

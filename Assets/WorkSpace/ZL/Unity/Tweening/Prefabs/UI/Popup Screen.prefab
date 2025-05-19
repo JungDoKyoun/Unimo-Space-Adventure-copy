@@ -87,101 +87,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 5037600968028591810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2311bb4a9725eb8469a770cf54cfbb07, type: 3}
+  m_Script: {fileID: 11500000, guid: c4a0eac61e5677d43bcf89219e29910d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tweener: {fileID: 31930668838741612}
+  faderGroup: {fileID: 0}
   isFadedIn: 0
   onFadeInEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2778954448509355801}
-        m_TargetAssemblyTypeName: ZL.Unity.Tweening.ObjectValueTweener`4[[ZL.Unity.Tweening.Vector3Tweener,
-          Assembly-CSharp
-        m_MethodName: set_Duration
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 1
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2778954448509355801}
-        m_TargetAssemblyTypeName: ZL.Unity.Tweening.ObjectValueTweener`4[[ZL.Unity.Tweening.Vector3Tweener,
-          Assembly-CSharp
-        m_MethodName: SetEase
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 24
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3914126819475232145}
-        m_TargetAssemblyTypeName: ZL.Unity.Tweening.LocalScaleKeyFrameTweener, Assembly-CSharp
-        m_MethodName: SetKeyFrame
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onFadedInEvent:
     m_PersistentCalls:
       m_Calls: []
   onFadeOutEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2778954448509355801}
-        m_TargetAssemblyTypeName: ZL.Unity.Tweening.ObjectValueTweener`4[[ZL.Unity.Tweening.Vector3Tweener,
-          Assembly-CSharp
-        m_MethodName: set_Duration
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0.5
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2778954448509355801}
-        m_TargetAssemblyTypeName: ZL.Unity.Tweening.ObjectValueTweener`4[[ZL.Unity.Tweening.Vector3Tweener,
-          Assembly-CSharp
-        m_MethodName: SetEase
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 26
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3914126819475232145}
-        m_TargetAssemblyTypeName: ZL.Unity.Tweening.KeyFrameTweener`5[[ZL.Unity.Tweening.Vector3Tweener,
-          Assembly-CSharp
-        m_MethodName: TweenKeyFrame
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   onFadedOutEvent:
     m_PersistentCalls:
       m_Calls: []
-  screenFaderGroup: {fileID: 0}
 --- !u!1 &5631244452092991899
 GameObject:
   m_ObjectHideFlags: 0
@@ -354,30 +277,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d741e7fc535c1845ab3694a76f619de, type: 3}
---- !u!114 &2778954448509355801 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6250606063434649940, guid: 7d741e7fc535c1845ab3694a76f619de, type: 3}
-  m_PrefabInstance: {fileID: 8083478920798180941}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d6247e40f742f241b9ac8c8aaaa848a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &3404424237074774268 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6850177955203313329, guid: 7d741e7fc535c1845ab3694a76f619de, type: 3}
   m_PrefabInstance: {fileID: 8083478920798180941}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3914126819475232145 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5079933775566996444, guid: 7d741e7fc535c1845ab3694a76f619de, type: 3}
-  m_PrefabInstance: {fileID: 8083478920798180941}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71cea11c1fe19ec4ea07c6b3883b8054, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

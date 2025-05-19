@@ -29,12 +29,7 @@ namespace ZL.Unity.Server.Photon
 
         [ReadOnlyWhenPlayMode]
 
-        protected ManagedObjectPool<int, TPlayerListItem> playerListItemPool;
-
-        private void Reset()
-        {
-            this.DisallowMultiple();
-        }
+        protected ManagedObjectPool<int, TPlayerListItem> playerListItemPool = null;
 
         public void Refresh()
         {

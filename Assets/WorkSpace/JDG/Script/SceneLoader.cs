@@ -9,26 +9,12 @@ namespace JDG
     public class SceneLoader : MonoBehaviour
     {
         private static SceneLoader _instance;
-        private string _wordMapScene = "WorldMapScene";
+        private string _wordMapScene = "World Map Scene";
         private string _currentScene;
         private TileData _choseTileData;
         private HexGridLayout _hexGridLayout;
         private PlayerController _playerController;
 
-        //private void Awake()
-        //{
-        //    if (_instance != null && _instance != this)
-        //    {
-        //        Debug.LogWarning("¾À·Î´õ Áö¿öÁü");
-        //        Destroy(gameObject);
-        //        return;
-        //    }
-
-        //    Debug.LogWarning("¾À·Î´õ ¸¸µé¾îÁü");
-        //    _instance = this;
-        //    DontDestroyOnLoad(gameObject);
-        //    SceneManager.sceneLoaded += OnSceneLoaded;
-        //}
         private void Awake()
         {
             if (_instance == null)
@@ -70,6 +56,7 @@ namespace JDG
             GameStateManager.Instance.SaveTileStates(_hexGridLayout.HexMap, _hexGridLayout.PlayerCoord);
 
             _currentScene = tile.TileData.SceneName;
+            Debug.Log(_currentScene);
             SceneManager.LoadScene(_currentScene);
         }
 

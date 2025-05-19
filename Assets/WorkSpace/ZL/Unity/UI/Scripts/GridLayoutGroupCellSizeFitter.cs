@@ -8,27 +8,33 @@ namespace ZL.Unity.UI
 {
     [AddComponentMenu("ZL/UI/Grid Layout Group Cell Size Fitter")]
 
-    [DisallowMultipleComponent]
-
-    [RequireComponent(typeof(GridLayoutGroup))]
-
     public sealed class GridLayoutGroupCellSizeFitter : MonoBehaviour
     {
+        [Space]
+
         [SerializeField]
 
         [UsingCustomProperty]
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
-        private GridLayoutGroup gridLayoutGroup;
+        private GridLayoutGroup gridLayoutGroup = null;
 
         [Space]
 
         [SerializeField]
 
-        private RectTransform container;
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private RectTransform container = null;
 
         [SerializeField]
 
@@ -38,7 +44,16 @@ namespace ZL.Unity.UI
 
         [Button(nameof(Fit))]
 
-        private Axis axis;
+        private Axis axis = 0;
+
+        [Flags]
+
+        public enum Axis
+        {
+            Horizontal = 1,
+
+            Vertical = 2,
+        }
 
         private void Reset()
         {
@@ -64,15 +79,6 @@ namespace ZL.Unity.UI
             gridLayoutGroup.cellSize = cellSize;
 
             FixedEditorUtility.SetDirty(gridLayoutGroup);
-        }
-
-        [Flags]
-
-        public enum Axis
-        {
-            Horizontal = 1,
-
-            Vertical = 2,
         }
     }
 }

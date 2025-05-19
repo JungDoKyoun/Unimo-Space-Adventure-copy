@@ -29,7 +29,13 @@ public partial class PlayerManager
     //[SerializeField] GameObject spellPrefab;
     private ISpellType playerSpellType;
 
-    [SerializeField] LayerMask enemyLayerMask;
+    [SerializeField] LayerMask damagerLayerMask;
+
+    public LayerMask DamagerLayerMask
+    {
+        get => damagerLayerMask;
+    }
+
     private int playerOwnEnergy=0;
     private GameObject targetObject;
     private GameObject targetEnemyObject;
@@ -54,15 +60,15 @@ public partial class PlayerManager
         SetAttackType(attackPrefab);
         if(playerSpellType != null)
         {
-            Debug.Log("notnullspell");
+            //Debug.Log("notnullspell");
             playerSpellType.InitSpell();
         }
         else
         {
-            Debug.Log("nullspell");
+            //Debug.Log("nullspell");
 
             ISpellType temp = new Dash();
-            Debug.Log(temp);
+            //Debug.Log(temp);
             SetSpellType(temp);
             playerSpellType.InitSpell();
         }
@@ -142,7 +148,7 @@ public partial class PlayerManager
 
     public void FindEnemy()
     {
-        Collider[] targetEnemies = Physics.OverlapSphere(transform.position, 100f, enemyLayerMask);
+        Collider[] targetEnemies = Physics.OverlapSphere(transform.position, 100f, damagerLayerMask);
         float distance = float.MaxValue;
         if (targetEnemies.Length > 0)
         {
@@ -186,7 +192,7 @@ public partial class PlayerManager
             else
             {
                // Debug.Log(Vector3.Distance(transform.position, targetObject.transform.position));
-                if (Vector3.Distance(transform.position, targetObject.transform.position) > itemDetectionRange)
+                if (Vector3.Distance(transform.position, targetObject.transform.position) > itemDetectionRange+float.Epsilon)
                 {
 
                     isGathering = false;
@@ -195,7 +201,7 @@ public partial class PlayerManager
                 }
             }
 
-            while (isGathering == false)
+            while (isGathering == false&&playerSpellType.ReturnState()==false)
             {
                 //Debug.Log("enterwhile");
                 yield return new WaitForSeconds(0.1f);
@@ -251,7 +257,10 @@ public partial class PlayerManager
 
 
                     isGathering = true;
-                    ActiveGatheringBeam();
+                    if (targetObject != null)
+                    {
+                        ActiveGatheringBeam();
+                    }
 
 
                     OnTargetObjectSet?.Invoke();
@@ -329,6 +338,7 @@ public partial class PlayerManager
     {
         //Debug.Log("pressedQ");
         playerSpellType.UseSpell();
+        DeactiveGatheringBeam() ;
     }
     
 

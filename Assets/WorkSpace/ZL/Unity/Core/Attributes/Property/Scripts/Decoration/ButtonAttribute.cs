@@ -12,6 +12,8 @@ namespace ZL.Unity
 
         public float Height { get; set; } = defaultLabelHeight;
 
+        public BindingFlags Binding { get; set; } = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
+
         public ButtonAttribute(string methodName, string text = null)
         {
             this.methodName = methodName;
@@ -29,7 +31,7 @@ namespace ZL.Unity
         {
             var type = drawer.TargetObject.GetType();
 
-            method = type.GetMethod(methodName);
+            method = type.GetMethod(methodName, Binding);
         }
 
         protected override void Draw(Drawer drawer)

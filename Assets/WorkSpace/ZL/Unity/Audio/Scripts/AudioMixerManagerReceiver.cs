@@ -4,8 +4,6 @@ namespace ZL.Unity.Audio
 {
     [AddComponentMenu("ZL/Audio/Audio Mixer Manager Receiver")]
 
-    [DisallowMultipleComponent]
-
     public sealed class AudioMixerManagerReceiver : MonoBehaviour
     {
         public void LoadVolumes()

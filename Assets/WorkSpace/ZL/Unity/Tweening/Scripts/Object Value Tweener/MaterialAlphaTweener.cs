@@ -4,6 +4,8 @@ using DG.Tweening.Plugins.Options;
 
 using UnityEngine;
 
+using ZL.Unity.GFX;
+
 namespace ZL.Unity.Tweening
 {
     [AddComponentMenu("ZL/Tweening/Material Alpha Tweener")]
@@ -18,7 +20,9 @@ namespace ZL.Unity.Tweening
 
         [GetComponent]
 
-        [ReadOnly(true)]
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
 
         private MaterialController materialController = null;
 
@@ -39,7 +43,7 @@ namespace ZL.Unity.Tweening
             set => material = value;
         }
 
-        private Color color;
+        private Color color = Color.white;
 
         public override float Value
         {

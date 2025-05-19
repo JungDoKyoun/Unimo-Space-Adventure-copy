@@ -6,15 +6,13 @@ namespace ZL.Unity.Phys
 {
     [AddComponentMenu("ZL/Phys/On Trigger Stay Event Trigger")]
 
-    [DisallowMultipleComponent]
-
     public sealed class OnTriggerStayEventTrigger : MonoBehaviour
     {
         [Space]
 
         [SerializeField]
 
-        private UnityEvent<Collider> onTriggerStayEvent;
+        private UnityEvent<Collider> onTriggerStayEvent = null;
 
         private void OnTriggerStay(Collider other)
         {

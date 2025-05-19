@@ -4,10 +4,6 @@ namespace ZL.Unity.UI
 {
     [AddComponentMenu("ZL/UI/Rect Transform Fitter")]
 
-    [DisallowMultipleComponent]
-
-    [RequireComponent(typeof(RectTransform))]
-
     public sealed class RectTransformFitter : MonoBehaviour
     {
         [Space]
@@ -18,9 +14,11 @@ namespace ZL.Unity.UI
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
-        private RectTransform rectTransform;
+        private RectTransform rectTransform = null;
 
         [Space]
 
@@ -28,9 +26,13 @@ namespace ZL.Unity.UI
 
         [UsingCustomProperty]
 
+        [Essential]
+
         [Button(nameof(FitParentSizeMin))]
 
         [Button(nameof(FitParentSizeMax))]
+
+        [ReadOnlyWhenPlayMode]
 
         private RectTransform fitTarget = null;
 

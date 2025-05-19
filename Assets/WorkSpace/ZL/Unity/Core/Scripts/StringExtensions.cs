@@ -169,7 +169,7 @@ namespace ZL.Unity
         {
             if (instance.IsNullOrEmpty() == true)
             {
-                return string.Empty;
+                return "";
             }
 
             char initial = char.ToUpper(instance[0]);
@@ -188,7 +188,7 @@ namespace ZL.Unity
         {
             if (instance.IsNullOrEmpty() == true)
             {
-                return string.Empty;
+                return "";
             }
 
             char initial = char.ToLower(instance[0]);

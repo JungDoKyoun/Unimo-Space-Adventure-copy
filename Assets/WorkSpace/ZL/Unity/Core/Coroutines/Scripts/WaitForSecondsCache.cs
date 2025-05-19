@@ -6,12 +6,7 @@ namespace ZL.Unity.Coroutines
 {
     public static partial class WaitForSecondsCache
     {
-        private static readonly Dictionary<float, WaitForSeconds> waitForSecondsDictionary;
-
-        static WaitForSecondsCache()
-        {
-            waitForSecondsDictionary = new Dictionary<float, WaitForSeconds>(WaitForSecondsComparerCache.Get());
-        }
+        private static readonly Dictionary<float, WaitForSeconds> waitForSecondsDictionary = new Dictionary<float, WaitForSeconds>(WaitForSecondsComparerCache.Get());
 
         public static WaitForSeconds Get(float seconds)
         {

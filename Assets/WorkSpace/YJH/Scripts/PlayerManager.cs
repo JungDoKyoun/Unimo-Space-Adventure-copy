@@ -3,10 +3,24 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using ZL.Unity;
+
+using ZL.Unity.Unimo;
+
 public partial class PlayerManager 
 {
+    void OnEnable()
+    {
+        MonsterManager.Instance.Target = transform;
+    }
 
-    
+    void OnDisable()
+    {
+        if (MonsterManager.Instance != null)
+        {
+            MonsterManager.Instance.Target = null;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -34,22 +48,25 @@ public partial class PlayerManager
     }
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("collision");
-        float tempdmg = 1f;
-        Debug.Log(enemyLayerMask);
-        Debug.Log(collision.gameObject.layer);
-        if (collision.gameObject.layer==LayerMask.NameToLayer("tempenemy") && isOnHit == false)//적에게 피격시 
+        
+
+        if (isOnHit == true)
         {
-            
-            Debug.Log("playerhit");
+            return;
+        }
+
+        if (damagerLayerMask.Contains(collision.gameObject.layer) == false)
+        {
+            return;
+        }
+
+        if (collision.gameObject.TryGetComponent<IDamager>(out var damager) == true)
+        {
             Vector3 hitDir = collision.GetContact(0).normal;
 
             hitEffect.transform.rotation = Quaternion.FromToRotation(hitDir, transform.rotation.eulerAngles);
-            PlayerGetDemage(tempdmg);
-            isOnHit = true;
 
-
+            damager.GiveDamage(this);
         }
     }
-
 }

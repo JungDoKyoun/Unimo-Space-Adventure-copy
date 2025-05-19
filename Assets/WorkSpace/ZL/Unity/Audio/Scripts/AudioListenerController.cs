@@ -6,8 +6,6 @@ namespace ZL.Unity.Audio
 {
     [AddComponentMenu("ZL/Audio/Audio Listener Controller")]
 
-    [DisallowMultipleComponent]
-
     public sealed class AudioListenerController : MonoBehaviour
     {
         [Space]

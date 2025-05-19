@@ -4,7 +4,7 @@ using ZL.CS.Singleton;
 
 namespace ZL.Unity.Singleton
 {
-    [DisallowMultipleComponent]
+    [DefaultExecutionOrder((int)ScriptExecutionOrder.Singleton)]
 
     public abstract class MonoSingleton<TMonoSingleton> : MonoBehaviour, ISingleton<TMonoSingleton>
 

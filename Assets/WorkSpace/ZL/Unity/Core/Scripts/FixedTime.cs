@@ -6,7 +6,7 @@ namespace ZL.Unity
     {
         public static bool IsPaused { get; private set; } = false;
 
-        private static float timeScale;
+        private static float timeScale = 1f;
 
         public static float TimeScale
         {

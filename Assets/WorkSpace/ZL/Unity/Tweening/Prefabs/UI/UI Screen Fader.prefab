@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   valueTweener:
-    duration: 1
+    duration: 0
     delay: 0
     ease: 0
     isIndependentUpdate: 1
@@ -125,11 +125,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6774704113132190040}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2311bb4a9725eb8469a770cf54cfbb07, type: 3}
+  m_Script: {fileID: 11500000, guid: c4a0eac61e5677d43bcf89219e29910d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tweener: {fileID: 5449394640197298269}
-  isFadedIn: 0
+  faderGroup: {fileID: 0}
+  isFadedIn: 1
   onFadeInEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -142,4 +143,3 @@ MonoBehaviour:
   onFadedOutEvent:
     m_PersistentCalls:
       m_Calls: []
-  screenFaderGroup: {fileID: 0}
