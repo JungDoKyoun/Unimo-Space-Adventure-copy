@@ -50,11 +50,11 @@ public class Dash :ISpellType,IStackSpell
             isDash = true;
             if (playerManager.PlayerMoveDirection.magnitude < float.Epsilon)
             {
-                playerManager.PlayerRigBody.AddForce(playerManager.transform.forward * skillInfo.spellPower, ForceMode.Impulse);
+                playerManager.PlayerRigBody.AddForce(playerManager.transform.forward * skillInfo.skillPower, ForceMode.Impulse);
             }
             else
             {
-                playerManager.PlayerRigBody.AddForce(playerManager.PlayerMoveDirection.normalized * skillInfo.spellPower, ForceMode.Impulse);
+                playerManager.PlayerRigBody.AddForce(playerManager.PlayerMoveDirection.normalized * skillInfo.skillPower, ForceMode.Impulse);
             }
 
         }
@@ -83,7 +83,7 @@ public class Dash :ISpellType,IStackSpell
             chargeTimer = 0;
             
         }
-        if (dashTimer >= skillInfo.spellTime)
+        if (dashTimer >= skillInfo.skillTime)
         {
             playerManager.canMove = true;
             isDash = false;

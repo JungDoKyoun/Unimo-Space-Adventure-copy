@@ -13,9 +13,9 @@ public class StackSpellScriptableObject : ScriptableObject
     
     public int useStack;// 사용하는 충전량
     [Header("대쉬 속도 등")]
-    public float spellPower;// 대쉬 속도
+    public float skillPower;// 대쉬 속도
     [Header("대쉬 시간 등")]
-    public float spellTime;// 대쉬 하는 시간
+    public float skillTime;// 대쉬 하는 시간
     //public float dashTimer; // 
 
 }

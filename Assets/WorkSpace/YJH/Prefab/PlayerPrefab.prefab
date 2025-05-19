@@ -223,6 +223,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 7432434810442397352}
     m_Modifications:
     - target: {fileID: 2642926704503865842, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
+      propertyPath: onHitBlinkTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2642926704503865842, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
       propertyPath: gatheringAuraPlane
       value: 
       objectReference: {fileID: 964136266045281027}
@@ -273,8 +277,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7960359065341660635, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3984069490900200426}
   m_SourcePrefab: {fileID: 100100000, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
+--- !u!1 &4460110503222783592 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7960359065341660635, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
+  m_PrefabInstance: {fileID: 6025146406209397683}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3984069490900200426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4460110503222783592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d72393c2b511cc3448ca415f2d718bf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerBodyAnimator: {fileID: 5320146310224078566}
+  playerManager: {fileID: 8588383655159521857}
+--- !u!95 &5320146310224078566 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1894162054740690261, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
+  m_PrefabInstance: {fileID: 6025146406209397683}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7997523935338800423 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4422947281353344660, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
@@ -285,7 +316,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2642926704503865842, guid: a599dcc7b4ea85c45bdef3c8692bebe5, type: 3}
   m_PrefabInstance: {fileID: 6025146406209397683}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 4460110503222783592}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c180452cbc5998d4f8370e1728ad93bf, type: 3}

@@ -50,6 +50,7 @@ public partial class PlayerManager : IDamageable
 
         if (currentHealth <= 0)
         {
+            canMove = false;
             Debug.Log("dead");
             currentHealth = 0;
             OnPlayerDead?.Invoke();
