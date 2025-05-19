@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace JDG
 {
@@ -32,5 +34,33 @@ namespace JDG
         public bool IsCleared { get { return _isCleared; } set { _isCleared = value; } }
         public string SceneName { get { return _sceneName; } set { _sceneName = value; } }
         public string ModeName { get { return _modeName; } set { _modeName = value; } }
+
+        public Dictionary<string, object> ToDictionary()
+        {
+            return new Dictionary<string, object>
+            {
+                { "CoordX", Coord.x },
+                { "CoordY", Coord.y },
+                { "TileType", (int)TileType }, // enum은 int로 변환
+                { "TileVisibility", (int)TileVisibility },
+                { "EnvironmentType", (int)EnvironmentType },
+                { "IsCleared", IsCleared },
+                { "SceneName", SceneName },
+                { "ModeName", ModeName }
+            };
+        }
+
+        public static TileData FromDictionary(Dictionary<string, object> dict)
+        {
+            Vector2Int coord = new Vector2Int(Convert.ToInt32(dict["CoordX"]), Convert.ToInt32(dict["CoordY"]));
+            TileType tileType = (TileType)Convert.ToInt32(dict["TileType"]);
+            TileVisibility visibility = (TileVisibility)Convert.ToInt32(dict["TileVisibility"]);
+            EnvironmentType envType = (EnvironmentType)Convert.ToInt32(dict["EnvironmentType"]);
+            bool isCleared = Convert.ToBoolean(dict["IsCleared"]);
+            string sceneName = dict["SceneName"]?.ToString();
+            string modeName = dict["ModeName"]?.ToString();
+            
+            return new TileData(coord, tileType, visibility, envType, isCleared, sceneName, modeName);
+        }
     }
 }
