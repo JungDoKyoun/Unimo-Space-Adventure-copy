@@ -349,7 +349,7 @@ namespace JDG
                     var coord = candidateCoords[randomIndex];
                     _hexMap[coord].TileData.TileType = TileType.Mode;
                     _hexMap[coord].TileData.ModeName = modeName;
-                    _hexMap[coord].TileData.SceneName = modeName == "Explore" ? "ExploreScene" : "GatherScene";
+                    _hexMap[coord].TileData.SceneName = modeName == "Explore" ? "Explore Scene" : "Gather Scene";
                     //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
                     //int dis = HexDistance(_baseCoord, coord);
                     //int level = GetLevelByDistance(dis);

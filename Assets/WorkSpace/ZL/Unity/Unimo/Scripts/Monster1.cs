@@ -6,14 +6,8 @@ namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Monster 1")]
 
-    public sealed class Monster1 : Monster
+    public sealed class Monster1 : Monster, IDamager
     {
-        [Space]
-
-        [SerializeField]
-
-        private LayerMask damageableLayerMask = 0;
-
         private void FixedUpdate()
         {
             if (MonsterManager.Instance.Target == null)
@@ -38,17 +32,9 @@ namespace ZL.Unity.Unimo
             }
         }
 
-        public void OnCollisionStay(Collision collision)
+        public void GiveDamage(IDamageable damageable)
         {
-            if (damageableLayerMask.Contains(collision.gameObject.layer) == false)
-            {
-                return;
-            }
-
-            if (collision.gameObject.TryGetComponent<IDamageable>(out var damageable) == true)
-            {
-                damageable.TakeDamage(monsterData.AttackPower);
-            }
+            damageable.TakeDamage(monsterData.AttackPower);
         }
     }
 }

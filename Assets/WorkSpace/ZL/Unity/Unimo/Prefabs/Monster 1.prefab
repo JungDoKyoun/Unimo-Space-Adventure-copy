@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 1250342652194304174}
   - component: {fileID: 1776234791810188155}
   - component: {fileID: 3926752811560212115}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Monster 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,9 +170,9 @@ MonoBehaviour:
   rigidbody: {fileID: 1250342652194304174}
   monsterData: {fileID: 11400000, guid: e420c9c71f6d5f242bc5f8b9673e52bf, type: 2}
   lookSpeed: 90
-  damageableLayerMask:
+  damagerLayerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 128
 --- !u!95 &5676578419162309910
 Animator:
   serializedVersion: 5

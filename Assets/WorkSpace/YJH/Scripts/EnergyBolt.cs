@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ZL.Unity.Unimo;
 
-public class EnergyBolt : MonoBehaviour,IAttackType
+public class EnergyBolt : MonoBehaviour, IAttackType, IDamager
 {
     [SerializeField] float speed=5;
     [SerializeField] float maxRange=5;
     [SerializeField] int energyCost=1;
-    [SerializeField] float damage;
+    [SerializeField] int damage;
     [SerializeField] bool canPierce=false;
     [SerializeField] Transform firePos;
     [SerializeField] GameObject hitEffect;
@@ -29,7 +30,7 @@ public class EnergyBolt : MonoBehaviour,IAttackType
     }
     public float MaxRange { get { return maxRange; } set { maxRange = value; } }
     public int EnergyCost { get { return energyCost; } set { energyCost = value; } }
-    public float Damage { get { return damage; } set { damage = value; } }
+    public int Damage { get { return damage; } set { damage = value; } }
     public bool CanPierce { get { return canPierce; }set { canPierce = value; } }
     public Transform FirePos { get { return firePos; }set { firePos = value; } }
     public GameObject HitEffect { get { return hitEffect; }set { hitEffect = value; } }
@@ -82,5 +83,8 @@ public class EnergyBolt : MonoBehaviour,IAttackType
         OnHit();
     }
 
-
+    public void GiveDamage(IDamageable damageable)
+    {
+        damageable.TakeDamage(damage);
+    }
 }

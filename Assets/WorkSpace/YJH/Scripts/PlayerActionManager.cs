@@ -29,7 +29,13 @@ public partial class PlayerManager
     //[SerializeField] GameObject spellPrefab;
     private ISpellType playerSpellType;
 
-    [SerializeField] LayerMask enemyLayerMask;
+    [SerializeField] LayerMask damagerLayerMask;
+
+    public LayerMask DamagerLayerMask
+    {
+        get => damagerLayerMask;
+    }
+
     private int playerOwnEnergy=0;
     private GameObject targetObject;
     private GameObject targetEnemyObject;
@@ -142,7 +148,7 @@ public partial class PlayerManager
 
     public void FindEnemy()
     {
-        Collider[] targetEnemies = Physics.OverlapSphere(transform.position, 100f, enemyLayerMask);
+        Collider[] targetEnemies = Physics.OverlapSphere(transform.position, 100f, damagerLayerMask);
         float distance = float.MaxValue;
         if (targetEnemies.Length > 0)
         {

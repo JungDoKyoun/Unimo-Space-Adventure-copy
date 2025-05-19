@@ -9,7 +9,7 @@ namespace JDG
     public class SceneLoader : MonoBehaviour
     {
         private static SceneLoader _instance;
-        private string _wordMapScene = "WorldMapScene";
+        private string _wordMapScene = "World Map Scene";
         private string _currentScene;
         private TileData _choseTileData;
         private HexGridLayout _hexGridLayout;
