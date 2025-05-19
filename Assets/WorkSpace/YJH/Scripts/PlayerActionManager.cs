@@ -58,7 +58,8 @@ public partial class PlayerManager
         //StartFindEnemy();
         OnTargetObjectSet += GatheringItem;
         SetAttackType(attackPrefab);
-        if(playerSpellType != null)
+
+        if(playerSpellType != null)//임시 나중에는 별도 함수로 집어 넣기
         {
             //Debug.Log("notnullspell");
             playerSpellType.InitSpell();

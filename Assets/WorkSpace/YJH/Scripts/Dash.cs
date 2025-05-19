@@ -5,16 +5,16 @@ using UnityEngine;
 public class Dash :ISpellType,IStackSpell
 {
 
-
-    [SerializeField] int nowStack;// 현재 충전되어 있는 충전량
-    [SerializeField] int maxStack=2;// 최대 충전량
-    [SerializeField] float chargeTime=3f;// 충전에 필요한 시간
+    private StackSpellScriptableObject skillInfo;
+    //[SerializeField] int nowStack;// 현재 충전되어 있는 충전량
+    //[SerializeField] int maxStack=2;// 최대 충전량
+    //[SerializeField] float chargeTime=3f;// 충전에 필요한 시간
     [SerializeField] float chargeTimer;// 
-    [SerializeField] int chargeStack=1;// 충전되는 양
+    //[SerializeField] int chargeStack=1;// 충전되는 양
 
-    [SerializeField] int useStack=1;// 사용하는 충전량
-    [SerializeField] float pushPower = 10f;// 대쉬 속도
-    [SerializeField] float dashTime = 1f;// 대쉬 하는 시간
+    //[SerializeField] int useStack=1;// 사용하는 충전량
+    //[SerializeField] float pushPower = 10f;// 대쉬 속도
+    //[SerializeField] float dashTime = 1f;// 대쉬 하는 시간
     [SerializeField] float dashTimer; // 
     
     private PlayerManager playerManager;// 사용하는 플레이어
@@ -30,31 +30,31 @@ public class Dash :ISpellType,IStackSpell
 
     public PlayerManager PlayerManager { get { return playerManager; } set {playerManager=value ; } }
 
-    public int NowStack { get { return nowStack; } set { nowStack = value; } }
+    public int NowStack { get { return skillInfo.nowStack; } set { skillInfo.nowStack = value; } }
 
-    public int MaxStack { get { return maxStack; } }
+    public int MaxStack { get { return skillInfo.maxStack; } }
 
-    public float ChargeTime { get { return chargeTime; } }
+    public float ChargeTime { get { return skillInfo.chargeTime; } }
 
-    public int UseStack { get { return useStack; }set { useStack = value; } }
+    public int UseStack { get { return skillInfo.useStack; }set { skillInfo.useStack = value; } }
 
     public void UseSpell()
     {
-        if (nowStack >= useStack && isDash == false)
+        if (skillInfo.nowStack >= skillInfo.useStack && isDash == false)
         {
             playerManager.PlayerRigBody.constraints = RigidbodyConstraints.FreezeRotation|RigidbodyConstraints.FreezePositionY;
-            Debug.Log("dashed");
-            nowStack -= useStack;
+            //Debug.Log("dashed");
+            skillInfo.nowStack -= skillInfo.useStack;
 
             playerManager.canMove = false;
             isDash = true;
             if (playerManager.PlayerMoveDirection.magnitude < float.Epsilon)
             {
-                playerManager.PlayerRigBody.AddForce(playerManager.transform.forward * pushPower, ForceMode.Impulse);
+                playerManager.PlayerRigBody.AddForce(playerManager.transform.forward * skillInfo.spellPower, ForceMode.Impulse);
             }
             else
             {
-                playerManager.PlayerRigBody.AddForce(playerManager.PlayerMoveDirection.normalized * pushPower, ForceMode.Impulse);
+                playerManager.PlayerRigBody.AddForce(playerManager.PlayerMoveDirection.normalized * skillInfo.spellPower, ForceMode.Impulse);
             }
 
         }
@@ -73,17 +73,17 @@ public class Dash :ISpellType,IStackSpell
         
 
 
-        if (chargeTimer >= chargeTime)
+        if (chargeTimer >= skillInfo.chargeTime)
         {
-            if (nowStack < maxStack)
+            if (skillInfo.nowStack < skillInfo.maxStack)
             {
                 Debug.Log("stack charged");
-                nowStack += chargeStack;
+                skillInfo.nowStack += skillInfo.chargeStack;
             }
             chargeTimer = 0;
             
         }
-        if (dashTimer >= dashTime)
+        if (dashTimer >= skillInfo.spellTime)
         {
             playerManager.canMove = true;
             isDash = false;
@@ -98,7 +98,7 @@ public class Dash :ISpellType,IStackSpell
     
     public void InitSpell()
     {
-        
+        skillInfo = Resources.Load<StackSpellScriptableObject>("PlayerSkillSO/Dash");
 
     }
 
