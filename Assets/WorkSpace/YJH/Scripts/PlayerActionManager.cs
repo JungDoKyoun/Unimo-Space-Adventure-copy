@@ -60,15 +60,15 @@ public partial class PlayerManager
         SetAttackType(attackPrefab);
         if(playerSpellType != null)
         {
-            Debug.Log("notnullspell");
+            //Debug.Log("notnullspell");
             playerSpellType.InitSpell();
         }
         else
         {
-            Debug.Log("nullspell");
+            //Debug.Log("nullspell");
 
             ISpellType temp = new Dash();
-            Debug.Log(temp);
+            //Debug.Log(temp);
             SetSpellType(temp);
             playerSpellType.InitSpell();
         }
@@ -192,7 +192,7 @@ public partial class PlayerManager
             else
             {
                // Debug.Log(Vector3.Distance(transform.position, targetObject.transform.position));
-                if (Vector3.Distance(transform.position, targetObject.transform.position) > itemDetectionRange)
+                if (Vector3.Distance(transform.position, targetObject.transform.position) > itemDetectionRange+float.Epsilon)
                 {
 
                     isGathering = false;

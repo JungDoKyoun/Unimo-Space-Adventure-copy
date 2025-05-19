@@ -16,7 +16,7 @@ public interface IAttackType
     {
         get; set;
     }
-    public int Damage
+    public float Damage
     {
         get; set;
     }

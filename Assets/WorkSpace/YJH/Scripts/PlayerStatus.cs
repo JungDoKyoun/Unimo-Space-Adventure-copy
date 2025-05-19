@@ -6,22 +6,12 @@ using ZL.Unity.Unimo;
 
 public partial class PlayerManager : IDamageable
 {
-    [SerializeField] int currentHealth=300;//체력 필요 없나?
-    bool isOnHit = false;//맞았는지?
-    [SerializeField] float onHitTime = 1f;//무적시간
-    [SerializeField] float onHitBlinkTime = 0.5f;// 무적시간동안 깜빡이는 간격
-    [SerializeField] SkinnedMeshRenderer cartRenderer;
-    [SerializeField] SkinnedMeshRenderer bodyRenderer;
-    [SerializeField] SkinnedMeshRenderer faceRenderer;
-    [SerializeField] int playerDamage = 5;
-    [SerializeField] GameObject hitEffect;
-
-    public delegate void onPlayerDead();
-    public event onPlayerDead OnPlayerDead;
-    public int CurrentHealth
+    [SerializeField] float currentHealth=300;//체력 필요 없나?  float으로 ?
+    [SerializeField] float playerDamage = 5;// float 으로 ?
+    public float CurrentHealth//float 으로?
     {
-        get {  return currentHealth; }
-        set 
+        get { return currentHealth; }
+        set
         {
             if (value < 0)
             {
@@ -33,6 +23,21 @@ public partial class PlayerManager : IDamageable
             }
         }
     }
+
+
+
+    bool isOnHit = false;//맞았는지?
+    [SerializeField] float onHitTime = 1f;//무적시간
+    [SerializeField] float onHitBlinkTime = 0.5f;// 무적시간동안 깜빡이는 간격
+    [SerializeField] SkinnedMeshRenderer cartRenderer;
+    [SerializeField] SkinnedMeshRenderer bodyRenderer;
+    [SerializeField] SkinnedMeshRenderer faceRenderer;
+    
+    [SerializeField] GameObject hitEffect;
+
+    public delegate void onPlayerDead();
+    public event onPlayerDead OnPlayerDead;
+    
 
     public void TakeDamage(int damage)
     {
