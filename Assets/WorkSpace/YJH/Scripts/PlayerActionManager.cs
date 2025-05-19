@@ -201,7 +201,7 @@ public partial class PlayerManager
                 }
             }
 
-            while (isGathering == false)
+            while (isGathering == false&&playerSpellType.ReturnState()==false)
             {
                 //Debug.Log("enterwhile");
                 yield return new WaitForSeconds(0.1f);
@@ -257,8 +257,10 @@ public partial class PlayerManager
 
 
                     isGathering = true;
-
-                    ActiveGatheringBeam();
+                    if (targetObject != null)
+                    {
+                        ActiveGatheringBeam();
+                    }
 
 
                     OnTargetObjectSet?.Invoke();
@@ -336,6 +338,7 @@ public partial class PlayerManager
     {
         //Debug.Log("pressedQ");
         playerSpellType.UseSpell();
+        DeactiveGatheringBeam() ;
     }
     
 

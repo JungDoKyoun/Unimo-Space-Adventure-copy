@@ -48,20 +48,7 @@ public partial class PlayerManager
     }
     private void OnCollisionEnter(Collision collision)
     {
-        /*Debug.Log("collision");
-        int tempdmg = 1;
-        Debug.Log(damagerLayerMask);
-        Debug.Log(collision.gameObject.layer);
-        if (collision.gameObject.layer==LayerMask.NameToLayer("tempenemy") && isOnHit == false)//적에게 피격시 
-        {
-            
-            Debug.Log("playerhit");
-            Vector3 hitDir = collision.GetContact(0).normal;
-
-            hitEffect.transform.rotation = Quaternion.FromToRotation(hitDir, transform.rotation.eulerAngles);
-            TakeDamage(tempdmg);
-            isOnHit = true;
-        }*/
+        
 
         if (isOnHit == true)
         {
