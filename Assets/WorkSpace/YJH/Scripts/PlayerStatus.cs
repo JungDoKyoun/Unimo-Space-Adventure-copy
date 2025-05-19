@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 using ZL.Unity.Unimo;
@@ -8,8 +9,8 @@ public partial class PlayerManager : IDamageable
 {
     [SerializeField] float currentHealth =300;//체력 필요 없나?
     bool isOnHit = false;//맞았는지?
-    [SerializeField] float onHitTime = 1f;//무적시간
-    [SerializeField] float onHitBlinkTime = 0.5f;// 무적시간동안 깜빡이는 간격
+    [SerializeField] float onHitTime = 1.0f;//무적시간
+    [SerializeField] float onHitBlinkTime = 0.1f;// 무적시간동안 깜빡이는 간격
     [SerializeField] SkinnedMeshRenderer cartRenderer;
     [SerializeField] SkinnedMeshRenderer bodyRenderer;
     [SerializeField] SkinnedMeshRenderer faceRenderer;
@@ -61,15 +62,17 @@ public partial class PlayerManager : IDamageable
     }
     IEnumerator PlayerBlink()
     {
-        Debug.Log("startblink");
-        BlinkRenderer();
-        yield return new WaitForSeconds(onHitBlinkTime);
-        BlinkRenderer();
-        yield return new WaitForSeconds(onHitBlinkTime);
-        BlinkRenderer();
-        yield return new WaitForSeconds(onHitBlinkTime);
-        BlinkRenderer();
+        int blinkCount = (int)(onHitTime / onHitBlinkTime);
+        
+        for (int i = 0; i < blinkCount; i++)
+        {
+            
+            BlinkRenderer();
+            yield return new WaitForSeconds(onHitBlinkTime);
+        }
+        
         isOnHit = false;
+        ActiveRenderer();
         yield break;
     }
     public void BlinkRenderer()
@@ -101,7 +104,12 @@ public partial class PlayerManager : IDamageable
             cartRenderer.enabled = false;
         }
     }
-    
+    public void ActiveRenderer()
+    {
+        bodyRenderer.enabled = true;
+        faceRenderer.enabled = true;
+        cartRenderer.enabled = true;
+    }
     
 
 

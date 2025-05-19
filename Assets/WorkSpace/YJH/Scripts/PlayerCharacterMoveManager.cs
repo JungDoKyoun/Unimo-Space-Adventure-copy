@@ -117,13 +117,13 @@ public partial class PlayerManager : MonoBehaviourPun
         {
             Vector3 headDir = new Vector3(targetObject.transform.position.x,transform.position.y, targetObject.transform.position.z);
             transform.LookAt(headDir);
-            Debug.Log(headDir);
+           // Debug.Log(headDir);
             gatheringEffect.transform.LookAt(targetObject.transform);
 
         }
         else
         {
-            Debug.Log("notgathering");
+           // Debug.Log("notgathering");
             transform.rotation = Quaternion.SlerpUnclamped(firstRotation,nextRotation,rotateSpeed*Time.deltaTime);
             //transform.rotation = nextRotation;
         }
