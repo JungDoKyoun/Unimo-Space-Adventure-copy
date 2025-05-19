@@ -45,6 +45,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         StartCoroutine(ShowUserMetaCurrency());
     }
 
+    #region Currency management
+
     private IEnumerator ShowUserIngameCurrency()
     {
         var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").GetValueAsync();
@@ -151,4 +153,13 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             StartCoroutine(ShowUserMetaCurrency());
         }
     }
+
+    #endregion
+
+    #region Tile management
+
+
+
+
+    #endregion
 }
