@@ -62,7 +62,7 @@ public partial class PlayerManager : MonoBehaviourPun
             {
                 isMoveSoundPlay = false;
                 Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
-                GetRotate(transform.forward);
+                //GetRotate(transform.forward);
             }
             transform.position += moveSpeed * Time.deltaTime * playerMoveDirection + pushSpeed * Time.deltaTime * playerPushDirection;
             if (isMoveSoundPlay)
