@@ -17,9 +17,9 @@ namespace ZL.Unity.Unimo
         [SerializeField]
 
         // 최대체력
-        private int maxHealth = 0;
+        private float maxHealth = 0;
 
-        public int MaxHealth
+        public float MaxHealth
         {
             get => maxHealth;
         }

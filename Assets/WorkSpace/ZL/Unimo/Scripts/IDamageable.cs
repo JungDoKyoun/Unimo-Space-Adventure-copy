@@ -6,13 +6,8 @@ namespace ZL.Unity.Unimo
     {
         public LayerMask DamagerLayerMask { get; }
 
-        public int CurrentHealth { get; }
+        public float CurrentHealth { get; }
 
         public void TakeDamage(int damage);
-    }
-
-    public interface IDamager
-    {
-        public void GiveDamage(IDamageable damageable);
     }
 }
