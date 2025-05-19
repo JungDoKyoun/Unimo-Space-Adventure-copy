@@ -16,7 +16,7 @@ public class Mon003mislState_Action : MonsterState_Action
 
     private Vector3 centerPos;
 
-    private float bombDamage = 1f;
+    //private float bombDamage = 1f;
 
     private float flightTime = 0.5f;
 

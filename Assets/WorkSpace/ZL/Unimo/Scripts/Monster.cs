@@ -55,9 +55,9 @@ namespace ZL.Unity.Unimo
             get => damagerLayerMask;
         }
 
-        protected int currentHealth = 0;
+        protected float currentHealth = 0;
 
-        public int CurrentHealth
+        public float CurrentHealth
         {
             get => currentHealth;
         }

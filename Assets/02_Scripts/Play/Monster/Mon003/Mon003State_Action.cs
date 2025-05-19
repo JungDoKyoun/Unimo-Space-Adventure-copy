@@ -12,7 +12,7 @@ public class Mon003State_Action : MonsterState_Action
     
     private GameObject bombFX;
 
-    private float bombDamage = 2.5f;
+    //private float bombDamage = 2.5f;
 
     private float chargeTime = 2f;
 

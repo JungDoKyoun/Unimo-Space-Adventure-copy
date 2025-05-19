@@ -6,9 +6,9 @@ public class MonsterController : MonoBehaviour
 
     public Collider enemyCollider { get; private set; }
 
-    [SerializeField]
+    //[SerializeField]
 
-    private float collideStunTime = 0.8f;
+    //private float collideStunTime = 0.8f;
 
     [SerializeField]
 
@@ -18,9 +18,9 @@ public class MonsterController : MonoBehaviour
 
     private GameObject explodeFX;
 
-    [SerializeField]
+    //[SerializeField]
 
-    private bool isexplodeFXAtPlayer = true;
+    //private bool isexplodeFXAtPlayer = true;
 
     public Transform playerTransform { get; private set; }
 
