@@ -84,7 +84,10 @@ public class Dash :ISpellType,IStackSpell
             dashTimer = 0;
         }
     }
-    
+    public bool ReturnState()
+    {
+        return isDash;
+    }
     
     public void InitSpell()
     {
