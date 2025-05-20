@@ -305,12 +305,7 @@ public partial class PlayerManager
                 isGatheringCoroutineWork = false;
                 yield break;
             }
-            //타겟 오브젝트의 스크립트를 가져와서 타겟 스크립트에 저장 s
-            //타겟 스크립트의 체력을 gatheringSpeed에 비례하게 감소 -> 정확하게 gatheringSpeed만큼 감소할 필요는 없기 때문s
-            //만약 타겟 스크립트의 체력이 0보다 아래로 내려가면s
-            //타겟 오브젝트를 null로 지정하고s
-            //재화를 증가시키고 ->use에 
-            //이동 매니저에 채취중을 활성화 시킨다s
+            
 
 
 
