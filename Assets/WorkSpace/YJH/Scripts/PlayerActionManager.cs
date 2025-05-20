@@ -82,6 +82,7 @@ public partial class PlayerManager
 
     private float fireTimer = 0;
     [SerializeField] TMP_Text skillRejectText;
+    private bool isSkillRejectActive = false;
     public void ActionStart()
     {
         gatheringAudioSource.clip = gatheringAudioClip;
@@ -143,63 +144,7 @@ public partial class PlayerManager
 
     public void GetEnergy(int energyNum)//딜레이 두고 발사하게 수정중
     {
-        //playerOwnEnergy += energyNum;
-        //if(playerOwnEnergy >= playerAttackType.EnergyCost)
-        //{
-        //    FindEnemy();
-        //    if (targetEnemyObject != null)
-        //    {
-        //        Vector3 tempDirection = new Vector3();
-        //        tempDirection = targetEnemyObject.transform.position - transform.position;
-        //        firePos = transform.position + (tempDirection).normalized * 1.5f;
-        //
-        //    }
-        //    else
-        //    {
-        //        firePos = transform.forward * 1.5f;
-        //    }
-        //    if (playerOwnEnergy/ playerAttackType.EnergyCost > 1)// 한번에 여러개를 발사해야 할 경우 
-        //    {
-        //        int offsetIndex = 0;
-        //        if ((playerOwnEnergy / playerAttackType.EnergyCost) % 2 == 0)//짝수개 발사해야 하면
-        //        {
-        //            for (int i = 0; i < playerOwnEnergy / playerAttackType.EnergyCost; i++)
-        //            {
-        //                int step = (i / 2) + 1;
-        //                int sign = (i % 2 == 0) ? -1 : 1; // 좌 → 우
-        //                offsetIndex = step * sign;
-        //                PlayerAttack(firePos);
-        //            }
-        //        }
-        //        else//홀수개 발사해야 하면
-        //        {
-        //            for (int i = 0; i < playerOwnEnergy / playerAttackType.EnergyCost; i++)
-        //            {
-        //
-        //            }
-        //        }
-        //            
-        //    }
-        //    else
-        //    {
-        //        PlayerAttack();
-        //    }
-        //
-        //
-        //
-        //    //FindEnemy();
-        //    //playerOwnEnergy -= playerAttackType.EnergyCost;
-        //    //if(playerOwnEnergy >= playerAttackType.EnergyCost)
-        //    //{
-        //    //    PlayerAttack();
-        //    //    
-        //    //}
-        //    //else
-        //    //{
-        //    //    PlayerAttack();
-        //    //}
-        //
-        //}
+        
         playerOwnEnergy += energyNum;
 
         if (playerOwnEnergy >= playerAttackType.EnergyCost)
@@ -456,15 +401,27 @@ public partial class PlayerManager
             
         }
     }
+    Coroutine fadeCoroutine;
     public void ActiveSkillReject()
     {
         skillRejectText.text = "스킬을 사용할 수 없습니다.";
         //효과음 출력
-        StartCoroutine(FadeOutReject());
+        if (isSkillRejectActive == false)
+        {
+            isSkillRejectActive = true;
+            fadeCoroutine=StartCoroutine(FadeOutReject());
+            
+        }
+        else
+        {
+            StopCoroutine(fadeCoroutine);
+            fadeCoroutine=StartCoroutine(FadeOutReject());
+        }
     }
 
     IEnumerator FadeOutReject()
     {
+
         Color color = Color.white;
         color.a = 1;
         yield return new WaitForSeconds(1f);
@@ -479,6 +436,7 @@ public partial class PlayerManager
 
             if(color.a <= 0)
             {
+                isSkillRejectActive= false;
                 yield break;
             }
 
