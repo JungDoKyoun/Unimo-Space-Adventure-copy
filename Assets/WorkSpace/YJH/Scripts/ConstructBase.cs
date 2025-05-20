@@ -12,7 +12,7 @@ public class BuildCost
 
 
 [CreateAssetMenu(fileName = "ConstructInfo", menuName = "ScriptableObject/Construct")]
-public class ConstructBase :ScriptableObject
+public class ConstructBase :ScriptableObject//,IConstruct
 {
     public bool isBuildConstructed;
     public string buildID;
@@ -25,10 +25,10 @@ public class ConstructBase :ScriptableObject
     public Vector3 buildPosition=new Vector3();
     public string buildIconDirection;
     public string buildType;
-    public bool buildRepeatable;
+    public bool isbuildRepeatable;
     public string buildPrefabDirection;
     public int spawnIndex;
-
+    public IConstruct constructEffect;
     
 
     public bool IsBuildConstructed()
@@ -57,6 +57,10 @@ public class ConstructBase :ScriptableObject
             return false;
         }
         if (IsBuildCostEnough(buildCostDic/*대충 임시로 넣은 딕셔너리임 나중에 재화랑 연동하기*/) == false)
+        {
+            return false;
+        }
+        if (isBuildConstructed == true && isbuildRepeatable == false)
         {
             return false;
         }
@@ -95,4 +99,7 @@ public class ConstructBase :ScriptableObject
 
 
     }
+
+   
+    
 }
