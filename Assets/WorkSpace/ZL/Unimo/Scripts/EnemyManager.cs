@@ -4,9 +4,9 @@ using ZL.Unity.Singleton;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Monster Manager")]
+    [AddComponentMenu("ZL/Unimo/Enemy Manager")]
 
-    public sealed class MonsterManager : MonoSingleton<MonsterManager>
+    public sealed class EnemyManager : MonoSingleton<EnemyManager>
     {
         [Space]
 
@@ -24,7 +24,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private MonsterDataSheet monsterDataSheet = null;
+        private EnemyDataSheet enemyDataSheet = null;
 
         public Transform Target { get; set; } = null;
 
@@ -40,7 +40,7 @@ namespace ZL.Unity.Unimo
 
         public void UpdateData()
         {
-            monsterDataSheet.Read();
+            enemyDataSheet.Read();
         }
     }
 }

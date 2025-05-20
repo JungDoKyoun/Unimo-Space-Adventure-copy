@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 6336191577327929987}
   - component: {fileID: 8093761307756736908}
   m_Layer: 0
-  m_Name: Monster Projectile 1
+  m_Name: Enemy Projectile 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,7 +165,7 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -188,9 +188,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8db60971b477a4498a4df5c4fbf9624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onDisableEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &9091837152447384865
 GameObject:
   m_ObjectHideFlags: 0

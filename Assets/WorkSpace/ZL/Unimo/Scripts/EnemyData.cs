@@ -10,7 +10,7 @@ namespace ZL.Unity.Unimo
 {
     [CreateAssetMenu(menuName = "ZL/Unimo/Monster Data", fileName = "Monster Data")]
 
-    public sealed class MonsterData : ScriptableSheetData
+    public sealed class EnemyData : ScriptableSheetData
     {
         [Space]
 

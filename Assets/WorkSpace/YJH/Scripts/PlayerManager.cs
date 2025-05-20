@@ -6,14 +6,14 @@ public partial class PlayerManager
 {
     private void OnEnable()
     {
-        MonsterManager.Instance.Target = transform;
+        EnemyManager.Instance.Target = transform;
     }
 
     private void OnDisable()
     {
-        if (MonsterManager.Instance != null)
+        if (EnemyManager.Instance != null)
         {
-            MonsterManager.Instance.Target = null;
+            EnemyManager.Instance.Target = null;
         }
     }
 

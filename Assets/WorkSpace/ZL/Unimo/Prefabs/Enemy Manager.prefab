@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5891379905535868639}
   - component: {fileID: 5981347389734253016}
   m_Layer: 0
-  m_Name: Monster Manager
+  m_Name: Enemy Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,4 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694ea3551c95c1443b0a34c5b2943189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterDataSheet: {fileID: 11400000, guid: 8d7343fd00a032341b8a0c345bf7d4ac, type: 2}
+  updateDataOnAwake: 0
+  enemyDataSheet: {fileID: 11400000, guid: 8d7343fd00a032341b8a0c345bf7d4ac, type: 2}

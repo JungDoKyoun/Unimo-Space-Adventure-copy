@@ -10,7 +10,7 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private float lifeTime = 0f;
+        private float lifeTime = -1f;
 
         [SerializeField]
 
@@ -22,7 +22,10 @@ namespace ZL.Unity.Unimo
 
         private void OnEnable()
         {
-            Invoke(nameof(SetActiveFalse), lifeTime);
+            if (lifeTime > 0f)
+            {
+                Invoke(nameof(SetActiveFalse), lifeTime);
+            }
         }
 
         private void OnDisable()

@@ -103,10 +103,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d7de81d8423fd408b465a2ed500af4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 2504801630112336550}
   rigidbody: {fileID: 4824024284693387068}
-  monsterData: {fileID: 11400000, guid: e420c9c71f6d5f242bc5f8b9673e52bf, type: 2}
-  lookSpeed: 90
+  animator: {fileID: 2504801630112336550}
+  enemyData: {fileID: 11400000, guid: e420c9c71f6d5f242bc5f8b9673e52bf, type: 2}
+  lifeTime: -1
+  rotationSpeed: 90
 --- !u!54 &4824024284693387068
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -169,9 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8db60971b477a4498a4df5c4fbf9624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onDisableEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &5996002709562139143
 GameObject:
   m_ObjectHideFlags: 0

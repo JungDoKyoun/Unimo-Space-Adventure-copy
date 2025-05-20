@@ -10,7 +10,7 @@ namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Monster 2")]
 
-    public sealed class Monster2 : Monster, IDamager
+    public sealed class Monster2 : Enemy, IDamager
     {
         [Space]
 
@@ -26,33 +26,30 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
+        private string projectileName = "";
+
+        [SerializeField]
+
         private float attackInterval = 0f;
 
         private float attackIntervalTimer = 0f;
 
         private void FixedUpdate()
         {
-            if (Target == null)
-            {
-                animator.SetBool("IsMoving", false);
+            animator.SetBool("IsMoving", false);
 
+            if (isStoped == true)
+            {
                 return;
             }
 
-            Movement();
-
-            Attack();
-        }
-
-        private void Movement()
-        {
-            animator.SetBool("IsMoving", true);
-
-            if (monsterData.MoveSpeed != 0f)
+            if (enemyData.MoveSpeed != 0f)
             {
+                animator.SetBool("IsMoving", true);
+
                 //rigidbody.MoveTowards(MonsterManager.Instance.Target, monsterData.MoveSpeed);
 
-                var forwardMove = rigidbody.rotation * Vector3.forward * monsterData.MoveSpeed * Time.fixedDeltaTime;
+                var forwardMove = rigidbody.rotation * Vector3.forward * enemyData.MoveSpeed * Time.fixedDeltaTime;
 
                 rigidbody.MovePosition(rigidbody.position + forwardMove);
             }
@@ -63,7 +60,7 @@ namespace ZL.Unity.Unimo
             }
         }
 
-        private void Attack()
+        private void Update()
         {
             if (attackIntervalTimer > 0f)
             {
@@ -72,14 +69,19 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
+            if (isStoped == true)
+            {
+                return;
+            }
+
             attackIntervalTimer = attackInterval;
 
             animator.SetTrigger("Attack");
         }
 
-        public void ShootProjectile()
+        public void OnAttack()
         {
-            var bullet = ObjectPoolManager.Instance.Cloning("Enemy Projectile 1");
+            var bullet = ObjectPoolManager.Instance.Cloning(projectileName);
 
             bullet.transform.SetPositionAndRotation(muzzle);
 
@@ -88,7 +90,7 @@ namespace ZL.Unity.Unimo
 
         public void GiveDamage(IDamageable damageable, Vector3 contact)
         {
-            //damageable.TakeDamage(monsterData.AttackPower, contact);
+            damageable.TakeDamage(enemyData.AttackPower, contact);
         }
     }
 }

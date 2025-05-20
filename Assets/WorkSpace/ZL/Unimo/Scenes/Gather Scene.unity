@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 253387550}
   - component: {fileID: 253387549}
   m_Layer: 0
-  m_Name: Object Pool Manager
+  m_Name: Enemy Pool Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197,23 +197,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 253387548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc1bd0f48c13a0e40a58686d6f3b5e92, type: 3}
+  m_Script: {fileID: 11500000, guid: b15f647022cee0d4789a74a37126534b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objectPoolDictionary:
     elements:
     - key: Monster 1
       value:
-        prefab: {fileID: 36539694684228574, guid: ad5b68f33056ebe41857d6c5f35d32fc, type: 3}
-        parent: {fileID: 1314727001}
+        prefab: {fileID: 5967240531552038192, guid: ad5b68f33056ebe41857d6c5f35d32fc, type: 3}
+        parent: {fileID: 253387550}
     - key: Monster 2
       value:
-        prefab: {fileID: 3528515223780530691, guid: f720a6514bcc5e94db8f97949cfcebb4, type: 3}
-        parent: {fileID: 1314727001}
-    - key: Enemy Projectile 1
-      value:
-        prefab: {fileID: 4303609021924844211, guid: 2c6de9f36ef0d7a4a90744d9f0839b01, type: 3}
-        parent: {fileID: 1218699400}
+        prefab: {fileID: 2144112506026283800, guid: f720a6514bcc5e94db8f97949cfcebb4, type: 3}
+        parent: {fileID: 253387550}
 --- !u!4 &253387550
 Transform:
   m_ObjectHideFlags: 0
@@ -226,9 +222,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1314727001}
-  - {fileID: 1218699400}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &274131022
@@ -577,6 +571,56 @@ MonoBehaviour:
   color: {r: 1, g: 0, b: 0, a: 0.5}
   center: {x: 0, y: 0, z: 0}
   radius: 0.5
+--- !u!1 &711688414
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 711688416}
+  - component: {fileID: 711688415}
+  m_Layer: 0
+  m_Name: Projectile Pool Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &711688415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711688414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8715d8756c37b6c4085136eb2a553ff5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectPoolDictionary:
+    elements:
+    - key: Enemy Projectile 1
+      value:
+        prefab: {fileID: 6613158746085051820, guid: 2c6de9f36ef0d7a4a90744d9f0839b01, type: 3}
+        parent: {fileID: 711688416}
+--- !u!4 &711688416
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711688414}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &768188271
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,7 +685,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &963077368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -949,68 +993,6 @@ MonoBehaviour:
   color: {r: 1, g: 0, b: 0, a: 0.5}
   center: {x: 0, y: 0, z: 0}
   radius: 0.5
---- !u!1 &1218699399
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1218699400}
-  m_Layer: 0
-  m_Name: Projectiles
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1218699400
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1218699399}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 253387550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1314727000
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1314727001}
-  m_Layer: 0
-  m_Name: Monsters
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1314727001
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1314727000}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 253387550}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1501284411
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1389,7 +1371,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2811316861628717865, guid: a837deb7cfadeb74895882262f919378, type: 3}
       propertyPath: m_Name
-      value: Monster Manager
+      value: Enemy Manager
       objectReference: {fileID: 0}
     - target: {fileID: 5891379905535868639, guid: a837deb7cfadeb74895882262f919378, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1673,8 +1655,9 @@ SceneRoots:
   - {fileID: 963077369}
   - {fileID: 1868085580}
   - {fileID: 1193462333}
-  - {fileID: 253387550}
   - {fileID: 1704002872743797121}
+  - {fileID: 253387550}
+  - {fileID: 711688416}
   - {fileID: 1723902105}
   - {fileID: 2036277902578993431}
   - {fileID: 3152179162270683187}

@@ -1,12 +1,8 @@
 using UnityEngine;
 
-using UnityEngine.Animations;
-
-using ZL.Unity.Phys;
-
 namespace ZL.Unity.Unimo
 {
-    public abstract class Monster : MonoBehaviour, IDamageable
+    public abstract class Enemy : MonoBehaviour, IDamageable
     {
         [Space]
 
@@ -47,7 +43,11 @@ namespace ZL.Unity.Unimo
 
         [Essential]
 
-        protected MonsterData monsterData = null;
+        protected EnemyData enemyData = null;
+
+        [SerializeField]
+
+        private float lifeTime = -1f;
 
         [SerializeField]
 
@@ -60,15 +60,19 @@ namespace ZL.Unity.Unimo
             get => currentHealth;
         }
 
-        private Transform target = null;
-
         protected Transform Target
         {
-            get => target;
+            get => EnemyManager.Instance.Target;
         }
+
+        protected bool isStoped = true;
 
         private void OnEnable()
         {
+            var forward = Target.position - transform.position;
+
+            transform.rotation = Quaternion.LookRotation(forward);
+
             if (rigidbody != null)
             {
                 rigidbody.velocity = Vector3.zero;
@@ -79,12 +83,17 @@ namespace ZL.Unity.Unimo
                 animator.Rebind();
             }
 
-            currentHealth = monsterData.MaxHealth;
+            if (lifeTime > 0f)
+            {
+                Invoke(nameof(Disappear), lifeTime);
+            }
+
+            currentHealth = enemyData.MaxHealth;
         }
 
-        public void FindTarget()
+        public void OnAppeared()
         {
-            target = MonsterManager.Instance.Target;
+            isStoped = false;
         }
 
         public virtual void TakeDamage(float damage, Vector3 contact)
@@ -95,15 +104,25 @@ namespace ZL.Unity.Unimo
             {
                 currentHealth = 0f;
 
-                Disappear();
+                Killed();
             }
+        }
+
+        private void Killed()
+        {
+            Disappear();
         }
 
         private void Disappear()
         {
-            target = null;
+            isStoped = true;
 
             animator.SetTrigger("Disappear");
+        }
+
+        public void OnDisappeared()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Monster 1")]
 
-    public sealed class Monster1 : Monster, IDamager
+    public sealed class Monster1 : Enemy, IDamager
     {
         private void FixedUpdate()
         {
@@ -17,11 +17,11 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
-            if (monsterData.MoveSpeed != 0f)
+            if (enemyData.MoveSpeed != 0f)
             {
                 //rigidbody.MoveTowards(MonsterManager.Instance.Target, monsterData.MoveSpeed);
 
-                var forwardMove = rigidbody.rotation * Vector3.forward * monsterData.MoveSpeed * Time.fixedDeltaTime;
+                var forwardMove = rigidbody.rotation * Vector3.forward * enemyData.MoveSpeed * Time.fixedDeltaTime;
 
                 rigidbody.MovePosition(rigidbody.position + forwardMove);
             }
@@ -34,7 +34,7 @@ namespace ZL.Unity.Unimo
 
         public void GiveDamage(IDamageable damageable, Vector3 contact)
         {
-            damageable.TakeDamage(monsterData.AttackPower, contact);
+            damageable.TakeDamage(enemyData.AttackPower, contact);
         }
     }
 }

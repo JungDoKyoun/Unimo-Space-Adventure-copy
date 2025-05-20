@@ -6,7 +6,7 @@ namespace ZL.Unity.Pooling
 {
     [AddComponentMenu("ZL/Pooling/Pooled Object")]
 
-    public class PooledObject : OnDisableEventTrigger
+    public class PooledObject : MonoBehaviour
     {
         private Action ReturnToPool = null;
 
@@ -40,10 +40,8 @@ namespace ZL.Unity.Pooling
 
         #endif
 
-        protected override void OnDisable()
+        private void OnDisable()
         {
-            base.OnDisable();
-
             ReturnToPool();
         }
     }

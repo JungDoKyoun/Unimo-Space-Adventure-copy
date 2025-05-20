@@ -259,7 +259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2149337454032493812}
   m_Layer: 0
-  m_Name: Muzzle
+  m_Name: Projectile Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -351,48 +351,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   events:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2144112506026283800}
-        m_TargetAssemblyTypeName: ZL.Unity.Unimo.Monster, Assembly-CSharp
-        m_MethodName: FindTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2144112506026283800}
-        m_TargetAssemblyTypeName: ZL.Unity.Unimo.Monster2, Assembly-CSharp
-        m_MethodName: ShootProjectile
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3797383579118669123}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+    elements:
+    - key: On Appeared
+      value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 2144112506026283800}
+            m_TargetAssemblyTypeName: ZL.Unity.Unimo.Monster, Assembly-CSharp
+            m_MethodName: OnAppeared
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - key: On Attack
+      value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 2144112506026283800}
+            m_TargetAssemblyTypeName: ZL.Unity.Unimo.Monster2, Assembly-CSharp
+            m_MethodName: OnAttack
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - key: On Disappeared
+      value:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 2144112506026283800}
+            m_TargetAssemblyTypeName: ZL.Unity.Unimo.Monster, Assembly-CSharp
+            m_MethodName: OnDisappeared
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
 --- !u!1 &3797383579118669123
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,9 +452,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 6250201364335106768}
   animator: {fileID: 5270054981442611278}
-  monsterData: {fileID: 11400000, guid: d9198271e05b01e4ab109616646f2fd4, type: 2}
+  enemyData: {fileID: 11400000, guid: d9198271e05b01e4ab109616646f2fd4, type: 2}
+  lifeTime: -1
   rotationSpeed: 90
   muzzle: {fileID: 2149337454032493812}
+  projectileName: Enemy Projectile 1
   attackInterval: 3
 --- !u!54 &6250201364335106768
 Rigidbody:
@@ -509,9 +518,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8db60971b477a4498a4df5c4fbf9624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onDisableEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &4996054033517959049
 GameObject:
   m_ObjectHideFlags: 0
