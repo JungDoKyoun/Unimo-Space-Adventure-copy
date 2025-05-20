@@ -62,6 +62,11 @@ namespace ZL.Unity.Pooling
 
             clones.Clear();
         }
+
+        public void ReleaseAll()
+        {
+
+        }
     }
 
     [Serializable]

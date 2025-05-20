@@ -4,21 +4,13 @@ using UnityEngine;
 
 using ZL.Unity.Coroutines;
 
-namespace ZL.Unity.Pooling
+using ZL.Unity.Pooling;
+
+namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Pooling/Spawner")]
+    [AddComponentMenu("ZL/Unimo/Spawner")]
 
-    public class Spawner : Spawner<Transform>
-    {
-        protected override Transform Cloning()
-        {
-            return ObjectPoolManager.Instance.Cloning(spawnerData.SpawnObject);
-        }
-    }
-
-    public abstract class Spawner<TClone> : MonoBehaviour
-
-        where TClone : Component
+    public sealed class Spawner : ObjectSpawner<Transform>
     {
         [Space]
 
@@ -30,13 +22,13 @@ namespace ZL.Unity.Pooling
 
         [ReadOnlyWhenPlayMode]
 
-        protected SpawnerData spawnerData = null;
+        private SpawnerData spawnerData = null;
 
         [Space]
 
         [SerializeField]
 
-        private Transform[] spawnPoints = null;
+        private SpawnPatternData[] spawnPatternDatas = null;
 
         private int spawnCount = 0;
 
@@ -88,44 +80,7 @@ namespace ZL.Unity.Pooling
             }
         }
 
-        protected void Spawn()
-        {
-            if (TryCloning(out var clone) == false)
-            {
-                return;
-            }
-
-            clone.SetActive(true);
-        }
-
-        protected void Spawn(Vector3 position)
-        {
-            if (TryCloning(out var clone) == false)
-            {
-                return;
-            }
-
-            clone.transform.position = position;
-
-            clone.SetActive(true);
-        }
-
-        protected void Spawn(Transform spawnPoint)
-        {
-            Spawn(spawnPoint.position);
-        }
-
-        protected void Spawn(int spawnPointIndex)
-        {
-            Spawn(spawnPoints[spawnPointIndex]);
-        }
-
-        protected void SpawnRandom()
-        {
-            Spawn(Random.Range(0, spawnPoints.Length));
-        }
-
-        protected bool TryCloning(out TClone clone)
+        protected override bool TryCloning(out Transform clone)
         {
             if (spawnCount >= spawnerData.ObjectCountLimits)
             {
@@ -141,6 +96,9 @@ namespace ZL.Unity.Pooling
             return true;
         }
 
-        protected abstract TClone Cloning();
+        protected override Transform Cloning()
+        {
+            return ObjectPoolManager.Instance.Cloning(spawnerData.SpawnObject);
+        }
     }
 }

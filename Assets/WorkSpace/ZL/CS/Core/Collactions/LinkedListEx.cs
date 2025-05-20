@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace ZL.CS.Collections
 {
-    public static partial class LinkedListExtentions
+    public static partial class LinkedListEx
     {
         public static T PopFirst<T>(this LinkedList<T> instance)
         {

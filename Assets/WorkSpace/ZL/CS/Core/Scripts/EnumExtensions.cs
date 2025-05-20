@@ -40,5 +40,17 @@ namespace ZL.CS
 
             return enumUnion.enumValue;
         }
+
+        public static bool Contains<TEnum>(this TEnum instance, TEnum flags)
+
+            where TEnum : Enum
+        {
+            return instance.ToInt().Contains(flags.ToInt());
+        }
+
+        public static bool Contains(this int instance, int flags)
+        {
+            return (instance & (1 << flags)) != 0;
+        }
     }
 }

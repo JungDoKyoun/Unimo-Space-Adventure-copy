@@ -2,7 +2,7 @@ using ZL.Unity.Server.Photon;
 
 namespace ZL.Unity
 {
-    public static partial class StringExtensions
+    public static partial class StringEx
     {
         public static bool IsValidNickname(this string instance)
         {

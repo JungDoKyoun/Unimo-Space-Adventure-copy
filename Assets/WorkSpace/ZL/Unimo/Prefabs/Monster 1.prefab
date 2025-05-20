@@ -130,13 +130,13 @@ GameObject:
   - component: {fileID: 1250342652194304174}
   - component: {fileID: 1776234791810188155}
   - component: {fileID: 3926752811560212115}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Monster 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5603882320026429288
 Transform:
   m_ObjectHideFlags: 0
@@ -170,9 +170,9 @@ MonoBehaviour:
   rigidbody: {fileID: 1250342652194304174}
   monsterData: {fileID: 11400000, guid: e420c9c71f6d5f242bc5f8b9673e52bf, type: 2}
   lookSpeed: 90
-  damagerLayerMask:
+  damageableLayerMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 64
 --- !u!95 &5676578419162309910
 Animator:
   serializedVersion: 5
@@ -219,7 +219,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!136 &1776234791810188155
 CapsuleCollider:
@@ -256,6 +256,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8db60971b477a4498a4df5c4fbf9624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDisableEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8847573861999060053
 GameObject:
   m_ObjectHideFlags: 0

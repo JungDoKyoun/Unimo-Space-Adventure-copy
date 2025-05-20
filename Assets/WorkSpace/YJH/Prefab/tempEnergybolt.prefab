@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8745932903724638958}
   - component: {fileID: 5301375898567522787}
   m_Layer: 0
-  m_Name: tempEnergybalt
+  m_Name: tempEnergybolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 7503936081269918129}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.3026423, y: 6.15, z: -1.9625204}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -97,7 +97,7 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -131,6 +131,9 @@ MonoBehaviour:
   hitSoundSource: {fileID: 5301375898567522787}
   selfBody: {fileID: 8745932903724638958}
   selfCollider: {fileID: 2260456582567339998}
+  damageableLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!54 &8745932903724638958
 Rigidbody:
   m_ObjectHideFlags: 0
