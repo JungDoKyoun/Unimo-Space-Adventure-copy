@@ -11,9 +11,5 @@ public interface ISpellType
 
     public bool ReturnState();
 
-
-
-
-
-
+  
 }

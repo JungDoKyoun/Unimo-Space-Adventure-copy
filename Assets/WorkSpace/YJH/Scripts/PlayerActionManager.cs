@@ -1,5 +1,5 @@
 using System.Collections;
-
+using TMPro;
 using UnityEngine;
 
 public partial class PlayerManager 
@@ -77,7 +77,11 @@ public partial class PlayerManager
     public event OnTargetSet OnTargetObjectSet;
 
     private Vector3 firePos;
-    
+
+    [SerializeField] float fireRate=0.3f;
+
+    private float fireTimer = 0;
+    [SerializeField] TMP_Text skillRejectText;
     public void ActionStart()
     {
         gatheringAudioSource.clip = gatheringAudioClip;
@@ -137,28 +141,44 @@ public partial class PlayerManager
         temp.UseItem();
     }
 
-    public void GetEnergy(int energyNum)
+    public void GetEnergy(int energyNum)//딜레이 두고 발사하게 수정중
     {
         playerOwnEnergy += energyNum;
         if(playerOwnEnergy >= playerAttackType.EnergyCost)
         {
             FindEnemy();
             playerOwnEnergy -= playerAttackType.EnergyCost;
-            if(targetEnemyObject != null)
+            if(playerOwnEnergy >= playerAttackType.EnergyCost)
             {
-                Vector3 tempDirection = new Vector3();
-                tempDirection=targetEnemyObject.transform.position- transform.position;
-                firePos=transform.position+(tempDirection).normalized*1.5f;
-
+                PlayerAttack();
+                
             }
             else
             {
-                firePos = transform.forward*1.5f;
+                PlayerAttack();
             }
-            var bullet=Instantiate(attackPrefab, firePos, Quaternion.identity);
-            //bullet.transform.LookAt(targetEnemyObject.transform);
-            bullet.GetComponent<IAttackType>().Shoot(targetEnemyObject.transform.position-firePos);
+                
         }
+    }
+    
+    public void PlayerAttack()
+    {
+        
+
+        if (targetEnemyObject != null)
+        {
+            Vector3 tempDirection = new Vector3();
+            tempDirection = targetEnemyObject.transform.position - transform.position;
+            firePos = transform.position + (tempDirection).normalized * 1.5f;
+
+        }
+        else
+        {
+            firePos = transform.forward * 1.5f;
+        }
+        var bullet = Instantiate(attackPrefab, firePos, Quaternion.identity);
+        //bullet.transform.LookAt(targetEnemyObject.transform);
+        bullet.GetComponent<IAttackType>().Shoot(targetEnemyObject.transform.position - firePos);
     }
 
     public void GatheringItem()
@@ -229,14 +249,13 @@ public partial class PlayerManager
 
             while (isGathering == false&&playerSpellType.ReturnState()==false)
             {
-                //Debug.Log("enterwhile");
+                
                 yield return new WaitForSeconds(0.1f);
                 Collider[] detectedColliders = Physics.OverlapSphere(transform.position, itemDetectionRange, itemLayerMask);
 
                 if (detectedColliders.Length > 0)
                 {
-                    //Debug.Log("detected more than 1");
-                    //Debug.Log(detectedColliders[0].gameObject.name);
+                    
                     float distance = float.MaxValue;
                     foreach (Collider collider in detectedColliders)
                     {
@@ -245,8 +264,7 @@ public partial class PlayerManager
                         {
                             distance = distanceBetween;
                             targetObject = collider.gameObject;
-                            //Debug.Log("detected");
-                            //Debug.Log(targetObject.name);
+                            
                         }
                         else if (distance == distanceBetween)
                         {
@@ -281,7 +299,7 @@ public partial class PlayerManager
                 }
                 else
                 {
-                    //Debug.Log("no target");
+                    
                     isGathering = false;
                     DeactiveGatheringBeam();
                     targetObject = null;
@@ -316,12 +334,33 @@ public partial class PlayerManager
                 isGatheringCoroutineWork = false;
                 yield break;
             }
-            //타겟 오브젝트의 스크립트를 가져와서 타겟 스크립트에 저장 s
-            //타겟 스크립트의 체력을 gatheringSpeed에 비례하게 감소 -> 정확하게 gatheringSpeed만큼 감소할 필요는 없기 때문s
-            //만약 타겟 스크립트의 체력이 0보다 아래로 내려가면s
-            //타겟 오브젝트를 null로 지정하고s
-            //재화를 증가시키고 ->use에 
-            //이동 매니저에 채취중을 활성화 시킨다s
+            
+        }
+    }
+    public void ActiveSkillReject()
+    {
+        skillRejectText.text = "스킬을 사용할 수 없습니다.";
+        StartCoroutine(FadeOutReject());
+    }
+
+    IEnumerator FadeOutReject()
+    {
+        Color color = Color.white;
+        color.a = 1;
+        while (true)
+        {
+            yield return new WaitForSeconds(0.01f);
+
+            skillRejectText.color = color;
+            color.a-=Time.deltaTime;
+
+
+            if(color.a <= 0)
+            {
+                yield break;
+            }
+
+
         }
     }
 

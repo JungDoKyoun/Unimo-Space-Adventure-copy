@@ -12,7 +12,7 @@ public partial class PlayerManager : IDamageable
 
     //체력 필요 없나?
     private float currentHealth = 300f;
-    
+    [SerializeField] float maxHP = 300f;
     [SerializeField]
 
     //무적시간
@@ -64,6 +64,7 @@ public partial class PlayerManager : IDamageable
             }
         }
     }
+    
 
     //맞았는지?
     private bool isOnHit = false;
@@ -89,7 +90,10 @@ public partial class PlayerManager : IDamageable
             damager.GiveDamage(this, collision.GetContact(0).point);
         }
     }
-
+    public void StatusStart()
+    {
+        currentHealth = maxHP;
+    }
     public void TakeDamage(float damage, Vector3 contact)
     {
         isOnHit = true;
@@ -100,6 +104,7 @@ public partial class PlayerManager : IDamageable
 
         if (currentHealth <= 0)
         {
+            canMove = false;
             Debug.Log("dead");
 
             currentHealth = 0;

@@ -60,7 +60,7 @@ public class Dash :ISpellType,IStackSpell
         }
         else
         {
-            Debug.Log("not enough charge");
+            playerManager.ActiveSkillReject();
         }
     }
     public void UpdateTime()
