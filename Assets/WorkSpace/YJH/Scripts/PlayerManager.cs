@@ -34,9 +34,12 @@ public partial class PlayerManager
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.gameObject.layer);
+        Debug.Log(LayerMask.NameToLayer("Energy"));
         if (other.gameObject.layer == LayerMask.NameToLayer("Energy"))
         {
-            GetEnergy(1);
+            Debug.Log("tri");
+            GetEnergy(3);
 
             Destroy(other.gameObject);
         }
