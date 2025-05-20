@@ -12,6 +12,6 @@ namespace JDG
         public List<RewardData> RewardDatas;
 
         [Header("타일 타입이 모드일때만 작성")]
-        public string ModeName;
+        public ModeType ModeType;
     }
 }

@@ -30,8 +30,7 @@ namespace JDG
         [SerializeField] private int[] _bossDistance;
         [SerializeField] private int _bossCountPerCircle;
         [SerializeField] private int[] _bossMinGapByDistance;
-        [SerializeField] private float _eventTileRatio;
-        [SerializeField] private int _eventMinDistance;
+        [SerializeField] private EventTileConfig _eventTileConfig;
 
 
         [Header("플레이어 관련")]
@@ -140,7 +139,7 @@ namespace JDG
                 hexRenderer.Height = _height;
                 hexRenderer.SetMaterial(_material);
 
-                var data = new TileData(coord, TileType.None, TileVisibility.Hidden, TileEnvironmentManager.Instance.GetRandomEnvironment(), false, level: 0);
+                var data = new TileData(coord, TileType.None, TileVisibility.Hidden, TileEnvironmentManager.Instance.GetRandomEnvironment(), false, 0);
                 hexRenderer.SetTileData(data);
 
                 hexRenderer.DrawMesh();
@@ -322,7 +321,8 @@ namespace JDG
 
         private void AssignEventTiles(List<Vector2Int> candidateCoords)
         {
-            int eventCount = Mathf.Max(_eventMinDistance, Mathf.RoundToInt(candidateCoords.Count * _eventTileRatio));
+            int eventCount = Mathf.RoundToInt(candidateCoords.Count * _eventTileConfig._eventTileRatio);
+            List<Vector2Int> selectedCoords = new List<Vector2Int>();
 
             for (int i = 0; i < eventCount && candidateCoords.Count > 0; i++)
             {
@@ -330,6 +330,22 @@ namespace JDG
                 var chosen = candidateCoords[randomIndex];
                 _hexMap[chosen].TileData.TileType = TileType.Event;
                 candidateCoords.RemoveAt(randomIndex);
+                selectedCoords.Add(chosen);
+            }
+
+            Utiles.Shuffle(selectedCoords);
+
+            int index = 0;
+
+            foreach(var entry in _eventTileConfig._eventTypes)
+            {
+                int count = Mathf.RoundToInt(selectedCoords.Count * entry._ratio);
+                for(int i = 0; i < count; i++)
+                {
+                    var coord = selectedCoords[index];
+                    _hexMap[coord].TileData.EventType = entry._eventType;
+                    index++;
+                }
             }
         }
 
@@ -339,8 +355,8 @@ namespace JDG
 
             foreach (var entry in _modeRatio)
             {
-                string modeName = entry.modeName;
-                float ratio = entry.ratio;
+                ModeType modeType = entry._modeType;
+                float ratio = entry._modeRatio;
                 int count = Mathf.RoundToInt(totalCount * ratio);
 
                 for (int i = 0; i < count && candidateCoords.Count > 0; i++)
@@ -348,18 +364,25 @@ namespace JDG
                     int randomIndex = Random.Range(0, candidateCoords.Count);
                     var coord = candidateCoords[randomIndex];
                     _hexMap[coord].TileData.TileType = TileType.Mode;
-                    _hexMap[coord].TileData.ModeName = modeName;
-                    _hexMap[coord].TileData.SceneName = modeName == "Explore" ? "ExploreScene" : "GatherScene";
+                    _hexMap[coord].TileData.ModeType = modeType;
+                    if(modeType == ModeType.Explore)
+                    {
+                        _hexMap[coord].TileData.SceneName = "ExploreScene";
+                    }
+                    else if(modeType == ModeType.Gather)
+                    {
+                        _hexMap[coord].TileData.SceneName = "GatherScene";
+                    }
                     //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
                     //int dis = HexDistance(_baseCoord, coord);
                     //int level = GetLevelByDistance(dis);
                     //_hexMap[coord].TileData.Level = level;
 
-                    //if (modeName == "Explore")
+                    //if (modeType == ModeType.Explore)
                     //{
                     //    _hexMap[coord].TileData.SceneName = $"ExploreScene_{level}";
                     //}
-                    //else if (modeName == "Gather")
+                    //else if (modeType == ModeType.Gather)
                     //{
                     //    _hexMap[coord].TileData.SceneName = $"GatherScene_{level}";
                     //}
@@ -457,6 +480,11 @@ namespace JDG
                 }
             }
             return level;
+        }
+
+        private void AssignNearbyShopTile(Vector2Int bossCoord, List<Vector2Int> candidateCoords)
+        {
+
         }
     }
 }

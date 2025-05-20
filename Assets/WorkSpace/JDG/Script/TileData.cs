@@ -12,10 +12,11 @@ namespace JDG
         private EnvironmentType _environmentType;
         private bool _isCleared;
         private string _sceneName;
-        private string _modeName;
+        private ModeType _modeType;
+        private EventType _eventType;
         private int _level;
 
-        public TileData(Vector2Int coord, TileType tileType, TileVisibility tileVisibility, EnvironmentType environmentType, bool isCleared, int level, string sceneName = "", string modeName = "")
+        public TileData(Vector2Int coord, TileType tileType, TileVisibility tileVisibility, EnvironmentType environmentType, bool isCleared, int level, string sceneName = "")
         {
             _coord = coord;
             _tileType = tileType;
@@ -23,7 +24,6 @@ namespace JDG
             _environmentType = environmentType;
             _isCleared = isCleared;
             _sceneName = sceneName;
-            _modeName = modeName;
             _level = level;
         }
 
@@ -33,7 +33,8 @@ namespace JDG
         public EnvironmentType EnvironmentType { get { return _environmentType; } set { _environmentType = value; } }
         public bool IsCleared { get { return _isCleared; } set { _isCleared = value; } }
         public string SceneName { get { return _sceneName; } set { _sceneName = value; } }
-        public string ModeName { get { return _modeName; } set { _modeName = value; } }
+        public ModeType ModeType { get { return _modeType; } set { _modeType = value; } }
+        public EventType EventType { get { return _eventType; } set { _eventType = value; } }
         public int Level { get { return _level; } set { _level = value; } }
     }
 }
