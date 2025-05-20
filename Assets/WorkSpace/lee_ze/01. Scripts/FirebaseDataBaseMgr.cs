@@ -55,6 +55,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
         {
+            // 여기에서 디스플레이
+
             rewardIngameCurrencyText.text = "InGame Currency: " + savedValue.ToString();
         }
     }
@@ -67,6 +69,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
         {
+            // 여기에서 디스플레이
+
             rewardMetaCurrencyText.text = "Meta Currency: " + savedValue.ToString();
         }
     }
@@ -78,6 +82,11 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         StartCoroutine(UpdateRewardMetaCurrency(int.Parse(rewardMetaCurrencyField.text)));
     }
 
+    /// <summary>
+    /// 인자값: 재화 추가 시 >> 양수 | 재화 사용 시 >> 음수
+    /// </summary>
+    /// <param name="ingameCurrencyToAdd"></param>
+    /// <returns></returns>
     private IEnumerator UpdateRewardIngameCurrency(int ingameCurrencyToAdd) // Ingame 재화 저장 함수(더할 값)
     {
         int tempIngameCurrency = 0;
@@ -116,6 +125,11 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 인자값: 재화 추가 시 >> 양수 | 재화 사용 시 >> 음수
+    /// </summary>
+    /// <param name="metaCurrencyToAdd"></param>
+    /// <returns></returns>
     private IEnumerator UpdateRewardMetaCurrency(int metaCurrencyToAdd) // Meta 재화 저장 함수(더할 값)
     {
         int tempMetaCurrency = 0;

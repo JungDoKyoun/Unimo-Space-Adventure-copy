@@ -42,7 +42,7 @@ public class FirebaseAuthMgr : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null || Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
 
@@ -54,8 +54,6 @@ public class FirebaseAuthMgr : MonoBehaviour
 
             DontDestroyOnLoad(gameObject);
         }
-
-        Instance = this;
 
         Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
@@ -153,6 +151,7 @@ public class FirebaseAuthMgr : MonoBehaviour
                     
                     break;
             }
+
             warningText.text = message;
         }
 
