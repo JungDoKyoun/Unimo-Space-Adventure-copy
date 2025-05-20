@@ -25,19 +25,26 @@ namespace ZL.Unity.Unimo
             Invoke(nameof(SetActiveFalse), lifeTime);
         }
 
+        private void OnDisable()
+        {
+            CancelInvoke();
+        }
+
         private void FixedUpdate()
         {
             transform.position += speed * Time.fixedDeltaTime * transform.forward;
         }
 
-        private void SetActiveFalse()
-        {
-            gameObject.SetActive(false);
-        }
-
         public void GiveDamage(IDamageable damageable, Vector3 contact)
         {
             damageable.TakeDamage(damage, contact);
+
+            SetActiveFalse();
+        }
+
+        private void SetActiveFalse()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

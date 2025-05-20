@@ -34,10 +34,10 @@ namespace ZL.Unity.Unimo
 
         private void Start()
         {
-            StartSpawning();
+            StartRandomSpawning();
         }
 
-        public void StartSpawning()
+        public void StartRandomSpawning()
         {
             if (spawnRoutine != null)
             {
@@ -49,7 +49,7 @@ namespace ZL.Unity.Unimo
             StartCoroutine(spawnRoutine);
         }
 
-        public void StopSpawning()
+        public void StopRandomSpawning()
         {
             if (spawnRoutine == null)
             {

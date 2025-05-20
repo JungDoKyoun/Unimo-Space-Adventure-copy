@@ -1,3 +1,5 @@
+#pragma warning disable
+
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;

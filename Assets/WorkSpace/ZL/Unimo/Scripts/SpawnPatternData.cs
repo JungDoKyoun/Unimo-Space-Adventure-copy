@@ -34,6 +34,7 @@ namespace ZL.Unity.Unimo
             get => isLoop;
         }
 
+        [Space]
 
         [SerializeField]
 
