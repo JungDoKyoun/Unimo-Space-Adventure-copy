@@ -4,10 +4,8 @@ namespace ZL.Unity.Unimo
 {
     public interface IDamageable
     {
-        public LayerMask DamagerLayerMask { get; }
-
         public float CurrentHealth { get; }
 
-        public void TakeDamage(int damage);
+        public void TakeDamage(float damage, Vector3 contact);
     }
 }

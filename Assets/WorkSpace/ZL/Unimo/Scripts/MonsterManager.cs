@@ -8,26 +8,39 @@ namespace ZL.Unity.Unimo
 
     public sealed class MonsterManager : MonoSingleton<MonsterManager>
     {
-        public Transform Target { get; set; } = null;
+        [Space]
 
-        /*[Space]
+        [SerializeField]
+
+        private bool updateDataOnAwake = false;
+
+        [Space]
 
         [SerializeField]
 
         [UsingCustomProperty]
 
-        [Essential]
+        [Button(nameof(UpdateData))]
 
         [ReadOnlyWhenPlayMode]
 
         private MonsterDataSheet monsterDataSheet = null;
 
+        public Transform Target { get; set; } = null;
+
         protected override void Awake()
         {
             base.Awake();
 
-            monsterDataSheet.Read();
-        }*/
+            if (updateDataOnAwake == true)
+            {
+                UpdateData();
+            }
+        }
 
+        public void UpdateData()
+        {
+            monsterDataSheet.Read();
+        }
     }
 }

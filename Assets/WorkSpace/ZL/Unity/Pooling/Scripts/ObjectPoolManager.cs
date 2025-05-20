@@ -25,7 +25,7 @@ namespace ZL.Unity.Pooling
 
         protected SerializableDictionary<string, ObjectPool<TClone>> objectPoolDictionary = null;
 
-        public virtual TClone Cloning(string key)
+        public TClone Cloning(string key)
         {
             return objectPoolDictionary[key].Cloning();
         }

@@ -1,5 +1,9 @@
 using UnityEngine;
 
+using UnityEngine.Animations;
+
+using ZL.Unity.Phys;
+
 namespace ZL.Unity.Unimo
 {
     public abstract class Monster : MonoBehaviour, IDamageable
@@ -24,11 +28,16 @@ namespace ZL.Unity.Unimo
 
         [ReadOnly(true)]
 
-        //#pragma warning disable CS0109
+        #pragma warning disable CS0108
 
-        protected new Rigidbody rigidbody = null;
+        protected Rigidbody rigidbody = null;
 
-        //#pragma warning restore CS0109
+        #pragma warning restore CS0108
+
+        public Rigidbody Rigidbody
+        {
+            get => rigidbody;
+        }
 
         [Space]
 
@@ -44,18 +53,7 @@ namespace ZL.Unity.Unimo
 
         protected float lookSpeed = 0f;
 
-        [Space]
-
-        [SerializeField]
-
-        private LayerMask damagerLayerMask = 0;
-
-        public LayerMask DamagerLayerMask
-        {
-            get => damagerLayerMask;
-        }
-
-        protected float currentHealth = 0;
+        protected float currentHealth = 0f;
 
         public float CurrentHealth
         {
@@ -66,7 +64,7 @@ namespace ZL.Unity.Unimo
         {
             if (MonsterManager.Instance.Target != null)
             {
-                transform.LookAt(MonsterManager.Instance.Target);
+                rigidbody.rotation = rigidbody.LookRotation(MonsterManager.Instance.Target, Axis.Y);
             }
 
             currentHealth = monsterData.MaxHealth;
@@ -78,28 +76,20 @@ namespace ZL.Unity.Unimo
             {
                 animator.Rebind();
             }
-        }
 
-        public void OnCollisionStay(Collision collision)
-        {
-            if (damagerLayerMask.Contains(collision.gameObject.layer) == false)
+            if (rigidbody != null)
             {
-                return;
-            }
-
-            if (collision.gameObject.TryGetComponent<IDamager>(out var damager) == true)
-            {
-                damager.GiveDamage(this);
+                rigidbody.velocity = Vector3.zero;
             }
         }
 
-        public virtual void TakeDamage(int damage)
+        public virtual void TakeDamage(float damage, Vector3 contact)
         {
             currentHealth -= damage;
 
-            if (currentHealth <= 0)
+            if (currentHealth <= 0f)
             {
-                currentHealth = 0;
+                currentHealth = 0f;
 
                 Dead();
             }

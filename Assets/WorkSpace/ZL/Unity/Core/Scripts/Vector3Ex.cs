@@ -2,8 +2,14 @@ using UnityEngine;
 
 namespace ZL.Unity
 {
-    public static partial class Vector3Extensions
+    public static partial class Vector3Ex
     {
+        public static Vector3 lockX = new Vector3(0f, 1f, 1f);
+
+        public static Vector3 lockY = new Vector3(1f, 0f, 1f);
+
+        public static Vector3 lockZ = new Vector3(1f, 1f, 0f);
+
         public static Color ToColor(this Vector3 instance)
         {
             instance = Absoulute(instance);

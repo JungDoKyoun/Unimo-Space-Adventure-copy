@@ -6,9 +6,9 @@ namespace ZL.Unity.Pooling
 {
     [AddComponentMenu("ZL/Pooling/Pooled Object")]
 
-    public class PooledObject : MonoBehaviour
+    public class PooledObject : OnDisableEventTrigger
     {
-        private Action onDisableAction = null;
+        private Action ReturnToPool = null;
 
         public static TClone Instantiate<TClone>(ObjectPool<TClone> pool)
 
@@ -23,7 +23,7 @@ namespace ZL.Unity.Pooling
                 pooledObject = clone.AddComponent<PooledObject>();
             }
 
-            pooledObject.onDisableAction = () => pool.Collect(clone);
+            pooledObject.ReturnToPool = () => pool.Collect(clone);
 
             return clone;
         }
@@ -32,7 +32,7 @@ namespace ZL.Unity.Pooling
 
         private void Start()
         {
-            if (onDisableAction == null)
+            if (ReturnToPool == null)
             {
                 FixedDebug.LogWarning($"Game Object '{gameObject.name}' is a 'Pooled Object' but was not created from an'Object Pool'.");
             }
@@ -40,9 +40,11 @@ namespace ZL.Unity.Pooling
 
         #endif
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
-            onDisableAction?.Invoke();
+            base.OnDisable();
+
+            ReturnToPool();
         }
     }
 }

@@ -6,11 +6,11 @@ using UnityEngine;
 
 using ZL.Unity.IO.GoogleSheet;
 
-namespace ZL.Unity.Pooling
+namespace ZL.Unity.Unimo
 {
-    [CreateAssetMenu(menuName = "ZL/Pooling/Spawner Data", fileName = "Spawner Data")]
+    [CreateAssetMenu(menuName = "ZL/Unimo/Spawner Data", fileName = "Spawner Data")]
 
-    public class SpawnerData : ScriptableSheetData
+    public sealed class SpawnerData : ScriptableSheetData
     {
         [Space]
 

@@ -1,53 +1,80 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 public partial class PlayerManager 
 {
-
-
-
     [Header("채집")]
-    [SerializeField] float itemDetectionRange = 5f;//temp value
-    [SerializeField] float gatheringSpeed = 4f;
-    [SerializeField] float gatheringDelay = 0.5f;
-    [SerializeField] GameObject gatheringAuraPlane;
-    [SerializeField] GameObject gatheringEffect;
 
-    public float ItemDetectionRange {  get { return itemDetectionRange; } }
+    [SerializeField]
+
+    private float itemDetectionRange = 5f;
+
+    public float ItemDetectionRange => itemDetectionRange;
+
+    [SerializeField]
+
+    private float gatheringSpeed = 4f;
+    
+    [SerializeField]
+
+    private float gatheringDelay = 0.5f;
+    
+    [SerializeField]
+
+    private GameObject gatheringAuraPlane;
+    
+    [SerializeField]
+
+    private GameObject gatheringEffect;
 
     [Header("채집 소리")]
-    [SerializeField] AudioClip gatheringAudioClip;
-    [SerializeField] AudioSource gatheringAudioSource;
+
+    [SerializeField]
+    
+    private AudioClip gatheringAudioClip;
+
+    [SerializeField]
+    
+    private AudioSource gatheringAudioSource;
 
     [Header("탐지할 오브젝트의 레이어")]
-    [SerializeField] LayerMask itemLayerMask;
 
-    [SerializeField] GameObject attackPrefab;
+    [SerializeField]
+    
+    private LayerMask itemLayerMask;
+
+    [Header("탐지할 적의 레이어")]
+
+    [SerializeField]
+    
+    private LayerMask enemyLayerMask;
+
+    [SerializeField]
+    
+    private GameObject attackPrefab;
+
     private IAttackType playerAttackType;
-    //[SerializeField] GameObject spellPrefab;
+
+    //[SerializeField]
+
+    //GameObject spellPrefab;
+
     private ISpellType playerSpellType;
 
-    [SerializeField] LayerMask damagerLayerMask;
+    private int playerOwnEnergy = 0;
 
-    public LayerMask DamagerLayerMask
-    {
-        get => damagerLayerMask;
-    }
-
-    private int playerOwnEnergy=0;
     private GameObject targetObject;
+
     private GameObject targetEnemyObject;
+
     // Start is called before the first frame update
 
     private bool isGatheringCoroutineWork = false;
 
     public delegate void OnTargetSet();
+
     public event OnTargetSet OnTargetObjectSet;
-
-    
-
 
     private Vector3 firePos;
     
@@ -58,8 +85,7 @@ public partial class PlayerManager
         //StartFindEnemy();
         OnTargetObjectSet += GatheringItem;
         SetAttackType(attackPrefab);
-
-        if(playerSpellType != null)//임시 나중에는 별도 함수로 집어 넣기
+        if(playerSpellType != null)
         {
             //Debug.Log("notnullspell");
             playerSpellType.InitSpell();
@@ -80,33 +106,37 @@ public partial class PlayerManager
     public void ActionUpdate()
     {
         playerSpellType.UpdateTime();
-        
     }
+
     public void StartDetectItem()
     {
-        
         StartCoroutine(FindItem());
     }
+
     //public void StartFindEnemy()
     //{
     //    //StartCoroutine (FindEnemy());
     //}
+
     public void SetAttackType(GameObject attackType)
     {
-        attackPrefab=attackType;
+        attackPrefab = attackType;
         playerAttackType = attackPrefab.GetComponent<IAttackType>();
         playerAttackType.Damage = playerDamage;
     }
+
     public void SetSpellType(ISpellType spellType)
     {
         Debug.Log("set spell");
         playerSpellType = spellType;
         playerSpellType.SetPlayer(this);
     }
+
     public void GetItem(IGatheringObject temp)
     {
         temp.UseItem();
     }
+
     public void GetEnergy(int energyNum)
     {
         playerOwnEnergy += energyNum;
@@ -130,7 +160,6 @@ public partial class PlayerManager
             bullet.GetComponent<IAttackType>().Shoot(targetEnemyObject.transform.position-firePos);
         }
     }
-    
 
     public void GatheringItem()
     {
@@ -145,17 +174,15 @@ public partial class PlayerManager
             return;
         }
     }
-    
 
     public void FindEnemy()
     {
-        Collider[] targetEnemies = Physics.OverlapSphere(transform.position, 100f, damagerLayerMask);
+        Collider[] targetEnemies = Physics.OverlapSphere(transform.position, 100f, enemyLayerMask);
         float distance = float.MaxValue;
         if (targetEnemies.Length > 0)
         {
             foreach (Collider collider in targetEnemies)
             {
-
                 float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);//감지된 콜라이더와의 거리
                 if (distance > distanceBetween)//1.거리 비교 조건
                 {
@@ -163,23 +190,22 @@ public partial class PlayerManager
                     targetEnemyObject = collider.gameObject;
                     //Debug.Log("detected");
                     //Debug.Log(targetObject.name);
-
                 }
             }
         }
     }
+
     public void ActiveGatheringBeam()
     {
         gatheringEffect.SetActive(true);
-          
     }
+
     public void DeactiveGatheringBeam()
     {
         gatheringEffect.SetActive(false);
     }
 
-
-    IEnumerator FindItem()
+    private IEnumerator FindItem()
     {
         while (true)
         {
@@ -195,7 +221,6 @@ public partial class PlayerManager
                // Debug.Log(Vector3.Distance(transform.position, targetObject.transform.position));
                 if (Vector3.Distance(transform.position, targetObject.transform.position) > itemDetectionRange+float.Epsilon)
                 {
-
                     isGathering = false;
                     targetObject = null;
                     //gatheringEffect.SetActive(false);
@@ -208,8 +233,6 @@ public partial class PlayerManager
                 yield return new WaitForSeconds(0.1f);
                 Collider[] detectedColliders = Physics.OverlapSphere(transform.position, itemDetectionRange, itemLayerMask);
 
-
-
                 if (detectedColliders.Length > 0)
                 {
                     //Debug.Log("detected more than 1");
@@ -217,7 +240,6 @@ public partial class PlayerManager
                     float distance = float.MaxValue;
                     foreach (Collider collider in detectedColliders)
                     {
-
                         float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);//감지된 콜라이더와의 거리
                         if (distance > distanceBetween)//1.거리 비교 조건
                         {
@@ -225,7 +247,6 @@ public partial class PlayerManager
                             targetObject = collider.gameObject;
                             //Debug.Log("detected");
                             //Debug.Log(targetObject.name);
-
                         }
                         else if (distance == distanceBetween)
                         {
@@ -234,11 +255,9 @@ public partial class PlayerManager
                                 var targetScript = targetObject.GetComponent<IGatheringObject>();
                                 var colliderScript = collider.GetComponent<IGatheringObject>();
 
-
                                 if (targetScript.NowHP > colliderScript.NowHP)//2. 체력 비교 조건
                                 {
                                     targetObject = collider.gameObject;
-
                                 }
                                 else if (targetScript.NowHP == colliderScript.NowHP)//3. 등급 비교 조건
                                 {
@@ -247,22 +266,16 @@ public partial class PlayerManager
                                         targetObject = collider.gameObject;
 
                                     }
-
                                 }
                             }
-
-
-
                         }
                     }
-
 
                     isGathering = true;
                     if (targetObject != null)
                     {
                         ActiveGatheringBeam();
                     }
-
 
                     OnTargetObjectSet?.Invoke();
                 }
@@ -273,11 +286,10 @@ public partial class PlayerManager
                     DeactiveGatheringBeam();
                     targetObject = null;
                 }
-
             }
         }
     }
-    IEnumerator GatheringCoroutine()// 아이템 채집중 사용할 코로틴
+    private IEnumerator GatheringCoroutine()// 아이템 채집중 사용할 코로틴
     {
         IGatheringObject targetScript = null;
         if (targetObject != null)
@@ -291,7 +303,6 @@ public partial class PlayerManager
                 targetScript = null;
                 isGatheringCoroutineWork = false;
                 yield break;
-
             }
 
             //Debug.Log("gathering");
@@ -305,30 +316,20 @@ public partial class PlayerManager
                 isGatheringCoroutineWork = false;
                 yield break;
             }
-            
-
-
-
+            //타겟 오브젝트의 스크립트를 가져와서 타겟 스크립트에 저장 s
+            //타겟 스크립트의 체력을 gatheringSpeed에 비례하게 감소 -> 정확하게 gatheringSpeed만큼 감소할 필요는 없기 때문s
+            //만약 타겟 스크립트의 체력이 0보다 아래로 내려가면s
+            //타겟 오브젝트를 null로 지정하고s
+            //재화를 증가시키고 ->use에 
+            //이동 매니저에 채취중을 활성화 시킨다s
         }
-        
-
-
-        
     }
-
-    
-
-   
-
-
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position,itemDetectionRange);
-        
     }
-
 
     public void OnUseSpell()
     {
@@ -336,8 +337,4 @@ public partial class PlayerManager
         playerSpellType.UseSpell();
         DeactiveGatheringBeam() ;
     }
-    
-
-
-
 }

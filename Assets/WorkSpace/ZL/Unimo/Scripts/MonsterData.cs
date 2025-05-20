@@ -24,9 +24,6 @@ namespace ZL.Unity.Unimo
             get => maxHealth;
         }
 
-        // 현재체력
-        //private int currentHealth = 0;
-
         [SerializeField]
 
         // 이동속도

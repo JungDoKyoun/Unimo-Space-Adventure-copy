@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using UnityEngine.Animations;
+
 using ZL.Unity.Phys;
 
 namespace ZL.Unity.Unimo
@@ -17,9 +19,7 @@ namespace ZL.Unity.Unimo
 
             if (monsterData.MoveSpeed != 0f)
             {
-                //rigidbody.MoveTowards(Player.Instance.transform.position, monsterData.MoveSpeed);
-
-                //rigidbody.MoveTowards(rigidbody.position + transform.forward.normalized, monsterData.MoveSpeed);
+                //rigidbody.MoveTowards(MonsterManager.Instance.Target, monsterData.MoveSpeed);
 
                 var forwardMove = rigidbody.rotation * Vector3.forward * monsterData.MoveSpeed * Time.fixedDeltaTime;
 
@@ -28,13 +28,13 @@ namespace ZL.Unity.Unimo
 
             if (lookSpeed != 0f)
             {
-                rigidbody.LookTowards(MonsterManager.Instance.Target.position, lookSpeed);
+                rigidbody.LookTowards(MonsterManager.Instance.Target, Axis.Y, lookSpeed);
             }
         }
 
-        public void GiveDamage(IDamageable damageable)
+        public void GiveDamage(IDamageable damageable, Vector3 contact)
         {
-            damageable.TakeDamage(monsterData.AttackPower);
+            damageable.TakeDamage(monsterData.AttackPower, contact);
         }
     }
 }

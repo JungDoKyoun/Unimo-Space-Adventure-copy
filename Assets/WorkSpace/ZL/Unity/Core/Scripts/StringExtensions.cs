@@ -10,7 +10,7 @@ using ZL.CS;
 
 namespace ZL.Unity
 {
-    public static partial class StringExtensions
+    public static partial class StringEx
     {
         public static string Concat(params char[] characters)
         {
