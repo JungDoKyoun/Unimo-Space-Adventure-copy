@@ -1,0 +1,43 @@
+using UnityEngine;
+
+namespace ZL.Unity.Unimo
+{
+    [AddComponentMenu("ZL/Unimo/Enemy Projectile")]
+
+    public sealed class EnemyProjectile : MonoBehaviour, IDamager
+    {
+        [Space]
+
+        [SerializeField]
+
+        private float lifeTime = 0f;
+
+        [SerializeField]
+
+        private float speed = 0f;
+
+        [SerializeField]
+
+        private float damage = 0f;
+
+        private void OnEnable()
+        {
+            Invoke(nameof(SetActiveFalse), lifeTime);
+        }
+
+        private void FixedUpdate()
+        {
+            transform.position += speed * Time.fixedDeltaTime * transform.forward;
+        }
+
+        private void SetActiveFalse()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void GiveDamage(IDamageable damageable, Vector3 contact)
+        {
+            damageable.TakeDamage(damage, contact);
+        }
+    }
+}

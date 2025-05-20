@@ -12,7 +12,7 @@ namespace ZL.Unity.Unimo
     {
         private void FixedUpdate()
         {
-            if (MonsterManager.Instance.Target == null)
+            if (Target == null)
             {
                 return;
             }
@@ -26,9 +26,9 @@ namespace ZL.Unity.Unimo
                 rigidbody.MovePosition(rigidbody.position + forwardMove);
             }
 
-            if (lookSpeed != 0f)
+            if (rotationSpeed != 0f)
             {
-                rigidbody.LookTowards(MonsterManager.Instance.Target, Axis.Y, lookSpeed);
+                rigidbody.LookTowards(Target, Axis.Y, rotationSpeed);
             }
         }
 

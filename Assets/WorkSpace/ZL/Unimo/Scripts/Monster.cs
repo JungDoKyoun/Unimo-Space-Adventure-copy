@@ -14,16 +14,6 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [GetComponentInChildren]
-
-        [ReadOnly(true)]
-
-        private Animator animator = null;
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
         [GetComponent]
 
         [ReadOnly(true)]
@@ -39,6 +29,16 @@ namespace ZL.Unity.Unimo
             get => rigidbody;
         }
 
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [GetComponentInChildren]
+
+        [ReadOnly(true)]
+
+        protected Animator animator = null;
+
         [Space]
 
         [SerializeField]
@@ -51,7 +51,7 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        protected float lookSpeed = 0f;
+        protected float rotationSpeed = 0f;
 
         protected float currentHealth = 0f;
 
@@ -60,27 +60,31 @@ namespace ZL.Unity.Unimo
             get => currentHealth;
         }
 
-        protected virtual void OnEnable()
-        {
-            if (MonsterManager.Instance.Target != null)
-            {
-                rigidbody.rotation = rigidbody.LookRotation(MonsterManager.Instance.Target, Axis.Y);
-            }
+        private Transform target = null;
 
-            currentHealth = monsterData.MaxHealth;
+        protected Transform Target
+        {
+            get => target;
         }
 
-        private void OnDisable()
+        private void OnEnable()
         {
+            if (rigidbody != null)
+            {
+                rigidbody.velocity = Vector3.zero;
+            }
+
             if (animator != null)
             {
                 animator.Rebind();
             }
 
-            if (rigidbody != null)
-            {
-                rigidbody.velocity = Vector3.zero;
-            }
+            currentHealth = monsterData.MaxHealth;
+        }
+
+        public void FindTarget()
+        {
+            target = MonsterManager.Instance.Target;
         }
 
         public virtual void TakeDamage(float damage, Vector3 contact)
@@ -91,13 +95,15 @@ namespace ZL.Unity.Unimo
             {
                 currentHealth = 0f;
 
-                Dead();
+                Disappear();
             }
         }
 
-        public virtual void Dead()
+        private void Disappear()
         {
-            gameObject.SetActive(false);
+            target = null;
+
+            animator.SetTrigger("Disappear");
         }
     }
 }

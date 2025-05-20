@@ -4,9 +4,9 @@ using UnityEngine.Events;
 
 namespace ZL.Unity
 {
-    [AddComponentMenu("ZL/Event Invoker")]
+    [AddComponentMenu("ZL/Event Timer")]
 
-    public sealed class EventInvoker : MonoBehaviour
+    public sealed class EventTimer : MonoBehaviour
     {
         [Space]
 
