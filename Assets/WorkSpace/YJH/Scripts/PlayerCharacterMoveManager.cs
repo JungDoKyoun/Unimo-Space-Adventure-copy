@@ -57,18 +57,21 @@ public partial class PlayerManager : MonoBehaviourPun
     {
         if (PhotonNetwork.IsConnected == false && canMove == true)
         {
+            Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
             if (playerMoveDirection.magnitude > float.Epsilon)
             {
                 isMoveSoundPlay = true;
-                Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
-                GetRotate(headDirection);
+                //Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
+                
             }
             else
             {
                 isMoveSoundPlay = false;
-                Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
+                //Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
                 //GetRotate(transform.forward);
             }
+            //Debug.Log(headDirection);
+            GetRotate(headDirection);
             transform.position += moveSpeed * Time.deltaTime * playerMoveDirection;// + pushSpeed * Time.deltaTime * playerPushDirection;
             if (isMoveSoundPlay)
             {
@@ -122,16 +125,21 @@ public partial class PlayerManager : MonoBehaviourPun
         {
             Vector3 headDir = new Vector3(targetObject.transform.position.x,transform.position.y, targetObject.transform.position.z);
             transform.LookAt(headDir);
-           // Debug.Log(headDir);
+            Debug.Log(headDir);
             gatheringEffect.transform.LookAt(targetObject.transform);
 
         }
         else
         {
-           // Debug.Log("notgathering");
+            if (headDirection.sqrMagnitude < 0.001f)
+            {
+                return;
+            }
+            Debug.Log("notgathering");
             transform.rotation = Quaternion.SlerpUnclamped(firstRotation,nextRotation,rotateSpeed*Time.deltaTime);
             //transform.rotation = nextRotation;
         }
+        
     }
 
 
