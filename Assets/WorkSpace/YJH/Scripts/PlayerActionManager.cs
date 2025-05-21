@@ -117,6 +117,10 @@ public partial class PlayerManager
     {
         StartCoroutine(FindItem());
     }
+    public void SetPlayerStatus()
+    {
+
+    }
 
     //public void StartFindEnemy()
     //{
