@@ -45,6 +45,10 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         StartCoroutine(ShowUserMetaCurrency());
     }
 
+    #region Currency management
+
+    // >>>>>>>>> Ingame Currency
+
     private IEnumerator ShowUserIngameCurrency()
     {
         var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").GetValueAsync();
@@ -53,29 +57,32 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
         {
+            // 여기에 디스플레이
+
             rewardIngameCurrencyText.text = "InGame Currency: " + savedValue.ToString();
-        }
-    }
-
-    private IEnumerator ShowUserMetaCurrency()
-    {
-        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardMetaCurrency").GetValueAsync();
-
-        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
-
-        if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
-        {
-            rewardMetaCurrencyText.text = "Meta Currency: " + savedValue.ToString();
         }
     }
 
     public void SaveCurrencyInDataBase() // 전체 재화 저장 >> 버튼 이벤트 함수로 호출
     {
-        StartCoroutine(UpdateRewardIngameCurrency(int.Parse(rewardIngameCurrencyField.text))); // reward를 인자값으로 주면 해당 값을 더하게 해야됨.
+        if (rewardIngameCurrencyField != null) StartCoroutine(UpdateRewardIngameCurrency(int.Parse(rewardIngameCurrencyField.text))); // reward를 인자값으로 주면 해당 값을 더하게 해야됨.
 
-        StartCoroutine(UpdateRewardMetaCurrency(int.Parse(rewardMetaCurrencyField.text)));
+        if (rewardMetaCurrencyField != null) StartCoroutine(UpdateRewardMetaCurrency(int.Parse(rewardMetaCurrencyField.text)));
     }
 
+    // 게임 클리어 실패 시 인게임 재화 초기화
+    private IEnumerator InitIngameCurrency()
+    {
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").SetValueAsync(0);
+
+        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
+    }
+
+    /// <summary>
+    /// 인자값: 재화 추가 시 >> 양수 | 재화 사용 시 >> 음수
+    /// </summary>
+    /// <param name="ingameCurrencyToAdd"></param>
+    /// <returns></returns>
     private IEnumerator UpdateRewardIngameCurrency(int ingameCurrencyToAdd) // Ingame 재화 저장 함수(더할 값)
     {
         int tempIngameCurrency = 0;
@@ -109,11 +116,33 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         else
         {
-            // 재화 디스플레이
+            // 업데이트 된 재화 디스플레이
             StartCoroutine(ShowUserIngameCurrency());
         }
     }
 
+
+    // >>>>>>>>> Meta Currency
+
+    private IEnumerator ShowUserMetaCurrency()
+    {
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardMetaCurrency").GetValueAsync();
+
+        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
+
+        if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
+        {
+            // 여기에 디스플레이
+
+            rewardMetaCurrencyText.text = "Meta Currency: " + savedValue.ToString();
+        }
+    }
+
+    /// <summary>
+    /// 인자값: 재화 추가 시 >> 양수 | 재화 사용 시 >> 음수
+    /// </summary>
+    /// <param name="metaCurrencyToAdd"></param>
+    /// <returns></returns>
     private IEnumerator UpdateRewardMetaCurrency(int metaCurrencyToAdd) // Meta 재화 저장 함수(더할 값)
     {
         int tempMetaCurrency = 0;
@@ -147,8 +176,18 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         else
         {
-            // 재화 디스플레이
+            // 업데이트 된 재화 디스플레이
             StartCoroutine(ShowUserMetaCurrency());
         }
     }
+
+    #endregion
+
+    #region Tile management
+
+
+    
+
+
+    #endregion
 }
