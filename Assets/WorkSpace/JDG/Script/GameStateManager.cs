@@ -45,7 +45,13 @@ namespace JDG
                 Vector2Int coord = data.Key;
                 TileData tiledata = data.Value.TileData;
 
-                _tileSaveData[coord] = new TileData(tiledata.Coord, tiledata.TileType, tiledata.TileVisibility, tiledata.EnvironmentType, tiledata.IsCleared, tiledata.Level, tiledata.SceneName, tiledata.ModeName);
+                _tileSaveData[coord] = new TileData(tiledata.Coord, tiledata.TileType, tiledata.TileVisibility, tiledata.EnvironmentType, tiledata.IsCleared ,tiledata.Level, tiledata.SceneName);
+
+                if (tiledata.TileType == TileType.Mode)
+                    _tileSaveData[coord].ModeType = tiledata.ModeType;
+
+                else if (tiledata.TileType == TileType.Event)
+                    _tileSaveData[coord].EventType = tiledata.EventType;
             }
             _playerCoord = playerCoord;
         }

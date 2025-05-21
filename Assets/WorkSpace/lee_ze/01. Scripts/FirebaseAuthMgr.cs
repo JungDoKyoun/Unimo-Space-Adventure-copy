@@ -8,9 +8,12 @@ using Firebase.Auth;
 using Firebase.Database;
 using System.Threading.Tasks;
 using ZL.Unity;
+using UnityEngine.SceneManagement;
 
 public class FirebaseAuthMgr : MonoBehaviour
 {
+    public static FirebaseAuthMgr Instance { get; private set; }
+
     [SerializeField]
     private Button startButton;
 
@@ -39,6 +42,19 @@ public class FirebaseAuthMgr : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+
+            return;
+        }
+        else
+        {
+            Instance = this;
+
+            DontDestroyOnLoad(gameObject);
+        }
+
         Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
         {
             DependencyStatus dependencyStatus = task.Result;
@@ -61,11 +77,11 @@ public class FirebaseAuthMgr : MonoBehaviour
 
     private void Start()
     {
-        startButton.interactable = false;
+        if (startButton != null) startButton.interactable = false;
 
-        warningText.text = "";
+        if (warningText != null) warningText.text = "";
 
-        confirmText.text = "";
+        if (confirmText != null) confirmText.text = "";
     }
 
     public void Login()
@@ -86,7 +102,7 @@ public class FirebaseAuthMgr : MonoBehaviour
 
         yield return new WaitUntil(predicate: () => LoginTask.IsCompleted);
 
-        // 로그인에 문제가 있다면
+        // 로그인 계정에 문제가 있다면
         if (LoginTask.Exception != null)
         {
             Debug.LogWarning(message: "다음과 같은 이유로 로그인 실패: " + LoginTask.Exception);
@@ -135,12 +151,14 @@ public class FirebaseAuthMgr : MonoBehaviour
                     
                     break;
             }
+
             warningText.text = message;
         }
 
-        // 로그인에 문제가 없다면
+        // 로그인 계정에 문제가 없다면
         else
         {
+            // 로그인
             user = LoginTask.Result.User; // 유저 정보 기억
 
             warningText.text = "";
@@ -219,6 +237,7 @@ public class FirebaseAuthMgr : MonoBehaviour
             // 회원가입 문제가 없다면
             else
             {
+                // 바로 로그인
                 user = RegisterTask.Result.User;
 
                 if (user != null)
@@ -254,8 +273,6 @@ public class FirebaseAuthMgr : MonoBehaviour
         }
     }
 
-    #endregion
-
     private IEnumerator InitPlayerCurrency() // 회원가입 시 재화 초기값 설정
     {
         // 초기 인게임 재화 생성
@@ -267,5 +284,11 @@ public class FirebaseAuthMgr : MonoBehaviour
         DBTask = dbRef.Child("users").Child(user.UserId).Child("rewardMetaCurrency").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+    }
+    #endregion
+
+    public void GoToSpaceship()
+    {
+        SceneManager.LoadScene("Spaceshit");
     }
 }

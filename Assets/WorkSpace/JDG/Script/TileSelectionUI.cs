@@ -49,8 +49,8 @@ namespace JDG
             _isUIOpen = true;
 
             var env = TileEnvironmentManager.Instance.GetEnvironmentInfo(tile.TileData.EnvironmentType);
-            var display = TileDisplayInfoManager.Instance.GetDisplayInfo(tile.TileData.TileType, tile.TileData.ModeName);
-            var rewards = RewardManager.Instance.GetTileRewardRuleSO(tile.TileData.TileType, tile.TileData.ModeName);
+            var display = TileDisplayInfoManager.Instance.GetDisplayInfo(tile.TileData.TileType, tile.TileData.ModeType);
+            var rewards = RewardManager.Instance.GetTileRewardRuleSO(tile.TileData.TileType, tile.TileData.ModeType);
 
             if (env != null)
             {
@@ -118,9 +118,13 @@ namespace JDG
             else if (_currentTile.TileData.TileType == TileType.Event)
             {
                 //나중에 이벤트 발동 함수 넣으면됨
-                Debug.Log("이벤트 실행됨");
                 _currentTile.TileData.IsCleared = true;
                 MovePlayerTo(_currentTile);
+
+                if(_currentTile.TileData.EventType == EventType.Shop)
+                {
+
+                }
             }
             else
             {
