@@ -10,8 +10,11 @@ public class PlayerStatus
     public float itemDetectionRange;
     public float gatheringSpeed;
     public float gatheringDelay;
-    public float moveSpeed;//최종속도
-    public float baseSpeed;
+    public float moveSpeed;
+    
+    
+    //최종속도
+    //public float baseSpeed;
 
 
 

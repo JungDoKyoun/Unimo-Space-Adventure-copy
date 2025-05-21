@@ -21,16 +21,20 @@ public class ConstructBase :ScriptableObject//,IConstruct
     public List<string> buildUnlocks=new List<string>();
     public List<BuildCost> buildCosts=new List<BuildCost>();//이 건물이 필요한 코스트
     public Dictionary<string, int> buildCostDic=new Dictionary<string, int>();//별도 처리 필요
-    public string buildEffect;
+    public string buildEffectDirection;
     public Vector3 buildPosition=new Vector3();
     public string buildIconDirection;
     public string buildType;
     public bool isbuildRepeatable;
     public string buildPrefabDirection;
+    public List<BuildEffect> buildEffects=new List<BuildEffect>();
     public int spawnIndex;
-    public IConstruct constructEffect;
+    
     public string buildingDescription;
 
+
+    
+    
     public bool IsBuildConstructed()
     {
         return isBuildConstructed;

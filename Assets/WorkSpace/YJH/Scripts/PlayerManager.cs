@@ -41,7 +41,7 @@ public partial class PlayerManager
         gatheringSpeed =           playerStatus.gatheringSpeed;
         gatheringDelay =           playerStatus.gatheringDelay;
         moveSpeed =                playerStatus.moveSpeed;//최종속도
-        baseSpeed =                playerStatus.baseSpeed;
+       // baseSpeed =                playerStatus.baseSpeed;
 }
     private void OnTriggerEnter(Collider other)
     {
