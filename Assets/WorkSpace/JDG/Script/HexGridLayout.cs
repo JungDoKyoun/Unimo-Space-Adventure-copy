@@ -49,6 +49,7 @@ namespace JDG
         private Vector2Int _baseCoord;
         private Vector2Int _playerCoord;
         private Dictionary<Vector2Int, HexRenderer> _hexMap = new Dictionary<Vector2Int, HexRenderer>(); //타일 오브젝트 정보
+        private List<Vector2Int> _bossNearShopCount = new List<Vector2Int>();
 
         private void Start()
         {
@@ -253,7 +254,6 @@ namespace JDG
         public void SetPlayerCoord(Vector2Int newCoord)
         {
             _playerCoord = newCoord;
-            Debug.Log(_playerCoord);
         }
 
         public bool TryGetTile(Vector2Int coord, out HexRenderer hex)
@@ -291,6 +291,7 @@ namespace JDG
 
                     placedBosses.Add(coord);
                     candidateCoords.Remove(coord);
+                    AssignNearbyShopTile(coord, candidateCoords);
                 }
 
                 else
@@ -312,6 +313,7 @@ namespace JDG
 
                             placedBosses.Add(coord);
                             candidateCoords.Remove(coord);
+                            AssignNearbyShopTile(coord, candidateCoords);
                             break;
                         }
                     }
@@ -323,11 +325,23 @@ namespace JDG
         {
             int eventCount = Mathf.RoundToInt(candidateCoords.Count * _eventTileConfig._eventTileRatio);
             List<Vector2Int> selectedCoords = new List<Vector2Int>();
+            int temp = 0;
+            Debug.Log($"남은 타일 갯수{candidateCoords.Count}");
+            Debug.Log($"이벤트 갯수{eventCount}");
 
-            for (int i = 0; i < eventCount && candidateCoords.Count > 0; i++)
+            while(selectedCoords.Count < eventCount && candidateCoords.Count > 0 && temp < 500)
             {
                 var randomIndex = Random.Range(0, candidateCoords.Count);
                 var chosen = candidateCoords[randomIndex];
+                bool tooClose = selectedCoords.Exists(coord => HexDistance(coord, chosen) < _eventTileConfig._eventMinDistance);
+                bool tooClose2 = _bossNearShopCount.Exists(coord => HexDistance(coord, chosen) < _eventTileConfig._eventMinDistance);
+
+                if (tooClose || tooClose2)
+                {
+                    temp++;
+                    continue;
+                }
+
                 _hexMap[chosen].TileData.TileType = TileType.Event;
                 candidateCoords.RemoveAt(randomIndex);
                 selectedCoords.Add(chosen);
@@ -388,6 +402,26 @@ namespace JDG
                     //}
 
                     candidateCoords.RemoveAt(randomIndex);
+                }
+            }
+
+            if(candidateCoords.Count > 0)
+            {
+                for(int i = 0; i < candidateCoords.Count; i++)
+                {
+                    int random = Random.Range(0, _modeRatio.Count);
+                    if(random == 0)
+                    {
+                        var coord = candidateCoords[i];
+                        _hexMap[coord].TileData.TileType = TileType.Mode;
+                        _hexMap[coord].TileData.ModeType = ModeType.Explore;
+                    }
+                    else if( random == 1)
+                    {
+                        var coord = candidateCoords[i];
+                        _hexMap[coord].TileData.TileType = TileType.Mode;
+                        _hexMap[coord].TileData.ModeType = ModeType.Gather;
+                    }
                 }
             }
         }
@@ -484,7 +518,21 @@ namespace JDG
 
         private void AssignNearbyShopTile(Vector2Int bossCoord, List<Vector2Int> candidateCoords)
         {
+            List<Vector2Int> neighbors = new List<Vector2Int>();
+            neighbors = GetNeighbors(bossCoord);
+            neighbors.Sort((a, b) => HexDistance(_baseCoord, a).CompareTo(HexDistance(_baseCoord, b)));
 
+            foreach (var coord in neighbors)
+            {
+                if(candidateCoords.Contains(coord))
+                {
+                    _hexMap[coord].TileData.TileType = TileType.Event;
+                    _hexMap[coord].TileData.EventType = EventType.Shop;
+                    _bossNearShopCount.Add(coord);
+                    candidateCoords.Remove(coord);
+                    break;
+                }
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ using JDG;
 
 namespace JDG
 {
-    [CreateAssetMenu(fileName = "TileRewardRuleSO", menuName = "SO/TileRewardRuleSO")]
+    [CreateAssetMenu(fileName = "TileRewardRuleSO", menuName = "SO/TileSO/TileRewardRuleSO")]
     public class TileRewardRuleSO : ScriptableObject
     {
         public TileType TileType;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace JDG
 {
-    [CreateAssetMenu(fileName = "TileDisplayInfoSO", menuName = "SO/TileDisplayInfoSO", order = 0)]
+    [CreateAssetMenu(fileName = "TileDisplayInfoSO", menuName = "SO/TileSO/TileDisplayInfoSO", order = 0)]
     public class TileDisplayInfoSO : ScriptableObject
     {
         public TileType TileType;

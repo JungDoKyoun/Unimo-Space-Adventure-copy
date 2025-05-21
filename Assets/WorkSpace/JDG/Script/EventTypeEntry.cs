@@ -10,9 +10,10 @@ namespace JDG
     }
 
     [System.Serializable]
-    public class EventTypeRatio
+    public class EventTypeEntry
     {
         public EventType _eventType;
         [Range(0, 1)] public float _ratio;
+        List<EventDataSO> _eventData;
     }
 }

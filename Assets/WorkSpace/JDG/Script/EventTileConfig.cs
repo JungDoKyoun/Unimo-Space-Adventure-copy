@@ -9,6 +9,6 @@ namespace JDG
     {
         [Range(0f, 1f)] public float _eventTileRatio;
         public int _eventMinDistance;
-        public List<EventTypeRatio> _eventTypes;
+        public List<EventTypeEntry> _eventTypes;
     }
 }

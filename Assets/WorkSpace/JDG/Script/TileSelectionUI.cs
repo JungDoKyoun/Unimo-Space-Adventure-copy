@@ -118,9 +118,13 @@ namespace JDG
             else if (_currentTile.TileData.TileType == TileType.Event)
             {
                 //나중에 이벤트 발동 함수 넣으면됨
-                Debug.Log("이벤트 실행됨");
                 _currentTile.TileData.IsCleared = true;
                 MovePlayerTo(_currentTile);
+
+                if(_currentTile.TileData.EventType == EventType.Shop)
+                {
+
+                }
             }
             else
             {
