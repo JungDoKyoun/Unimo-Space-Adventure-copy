@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Unity.Burst.Intrinsics.X86.Avx;
+using static UnityEditor.Searcher.Searcher.AnalyticsEvent;
 
 namespace JDG
 {
@@ -15,9 +16,10 @@ namespace JDG
         private bool _isCleared;
         private int _level;
         private string _sceneName;
-        private string _modeName;
+        private ModeType _modeType;
+        private EventType _eventType;
 
-        public TileData(Vector2Int coord, TileType tileType, TileVisibility tileVisibility, EnvironmentType environmentType, bool isCleared, int level, string sceneName = "", string modeName = "")
+        public TileData(Vector2Int coord, TileType tileType, TileVisibility tileVisibility, EnvironmentType environmentType, bool isCleared, int level, string sceneName = "")
         {
             _coord = coord;
             _tileType = tileType;
@@ -26,7 +28,6 @@ namespace JDG
             _isCleared = isCleared;
             _level = level;
             _sceneName = sceneName;
-            _modeName = modeName;
         }
 
         public Vector2Int Coord { get { return _coord; } set { _coord = value; } }
@@ -36,7 +37,8 @@ namespace JDG
         public bool IsCleared { get { return _isCleared; } set { _isCleared = value; } }
         public int Level { get { return _level; } set { _level = value; } }
         public string SceneName { get { return _sceneName; } set { _sceneName = value; } }
-        public string ModeName { get { return _modeName; } set { _modeName = value; } }
+        public ModeType ModeType { get { return _modeType; } set { _modeType = value; } }
+        public EventType EventType { get { return _eventType; } set { _eventType = value; } }
 
         public Dictionary<string, object> ToDictionary() // TODO: 나중에 계정 별 진행도 저장 시 사용 됨
         {
@@ -49,8 +51,7 @@ namespace JDG
                 { "EnvironmentType", (int)EnvironmentType },
                 { "IsCleared", IsCleared },
                 { "Level", Level },
-                { "SceneName", SceneName },
-                { "ModeName", ModeName }
+                { "SceneName", SceneName }
             };
         }
 
@@ -65,7 +66,7 @@ namespace JDG
             string sceneName = dict["SceneName"]?.ToString();
             string modeName = dict["ModeName"]?.ToString();
 
-            return new TileData(coord, tileType, visibility, envType, isCleared, level, sceneName, modeName);
+            return new TileData(coord, tileType, visibility, envType, isCleared, level, sceneName);
         }
     }
 }
