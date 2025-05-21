@@ -12,7 +12,11 @@ public partial class PlayerManager : IDamageable
 
     //체력 필요 없나?
     private float currentHealth = 300f;
-    [SerializeField] float maxHP = 300f;
+
+    [SerializeField]
+    
+    private float maxHP = 300f;
+
     [SerializeField]
 
     //무적시간
@@ -90,11 +94,16 @@ public partial class PlayerManager : IDamageable
             damager.GiveDamage(this, collision.GetContact(0).point);
         }
     }
-    public void StatusStart()//여기서 플레이어에게 적용받는 효과 적용시키기 
+
+    //여기서 플레이어에게 적용받는 효과 적용시키기 
+    public void StatusStart()
     {
         currentHealth = maxHP;
-        //OnPlayerDead += sdfasdf; 여기에 스테이지매니저 패배 함수 연결 하는 걸로 
+
+        // 여기에 스테이지매니저 패배 함수 연결 하는 걸로 
+        //OnPlayerDead += sdfasdf; 
     }
+
     public void TakeDamage(float damage, Vector3 contact)
     {
         isOnHit = true;
@@ -103,10 +112,11 @@ public partial class PlayerManager : IDamageable
 
         currentHealth -= damage;//데미지 입음
 
-        if (currentHealth <= 0)
+        if (currentHealth <= 0f)
         {
             canMove = false;
-            Debug.Log("dead");
+
+            //Debug.Log("dead");
 
             currentHealth = 0;
 
@@ -115,7 +125,7 @@ public partial class PlayerManager : IDamageable
 
         else
         {
-            Debug.Log("startblink");
+            //Debug.Log("startblink");
 
             StartCoroutine(PlayerBlink());
         }

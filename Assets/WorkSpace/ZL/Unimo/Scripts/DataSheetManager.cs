@@ -4,9 +4,9 @@ using ZL.Unity.Singleton;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Enemy Manager")]
+    [AddComponentMenu("ZL/Unimo/Data Sheet Manager")]
 
-    public sealed class EnemyManager : MonoSingleton<EnemyManager>
+    public sealed class DataSheetManager : MonoSingleton<DataSheetManager>
     {
         [Space]
 
@@ -22,11 +22,31 @@ namespace ZL.Unity.Unimo
 
         [Button(nameof(UpdateData))]
 
+        [Essential]
+
         [ReadOnlyWhenPlayMode]
 
         private EnemyDataSheet enemyDataSheet = null;
 
-        public Transform Target { get; set; } = null;
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private SpawnerDataSheet spawnerDataSheet = null;
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private SpawnPatternDataSheet spawnPatternDataSheet = null;
 
         protected override void Awake()
         {
@@ -41,6 +61,10 @@ namespace ZL.Unity.Unimo
         public void UpdateData()
         {
             enemyDataSheet.Read();
+
+            spawnerDataSheet.Read();
+
+            spawnPatternDataSheet.Read();
         }
     }
 }

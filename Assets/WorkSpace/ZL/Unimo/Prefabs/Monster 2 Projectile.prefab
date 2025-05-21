@@ -117,7 +117,6 @@ GameObject:
   - component: {fileID: 6613158746085051820}
   - component: {fileID: -2336283038660778905}
   - component: {fileID: 6336191577327929987}
-  - component: {fileID: 8093761307756736908}
   m_Layer: 7
   m_Name: Monster 2 Projectile
   m_TagString: Untagged
@@ -155,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeTime: 20
-  speed: 5
+  speed: 10
   damage: 1
 --- !u!54 &-2336283038660778905
 Rigidbody:
@@ -205,18 +204,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.25
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &8093761307756736908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4937113156892375309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8db60971b477a4498a4df5c4fbf9624, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &9091837152447384865
 GameObject:
   m_ObjectHideFlags: 0

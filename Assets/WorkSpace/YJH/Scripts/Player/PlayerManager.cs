@@ -1,28 +1,17 @@
 using UnityEngine;
 
-using ZL.Unity.Unimo;
-
 public partial class PlayerManager 
 {
-    [SerializeField] PlayerStatus playerStatus;
-    private void OnEnable()
-    {
-        MonsterManager.Instance.Target = transform;
-    }
-
-    private void OnDisable()
-    {
-        if (MonsterManager.Instance != null)
-        {
-            MonsterManager.Instance.Target = null;
-        }
-    }
+    [SerializeField]
+    
+    private PlayerStatus playerStatus;
 
     private void Start()
     {
         ActionStart();
 
         MoveStart();
+
         StatusStart();
     }
 
@@ -32,24 +21,37 @@ public partial class PlayerManager
 
         MoveUpdate();
     }
+
     public void SetPlayerStatus()
     {
-        currentHealth=             playerStatus.currentHealth;
-        maxHP =                    playerStatus.maxHP ;
-        playerDamage =             playerStatus.playerDamage;
-        itemDetectionRange =       playerStatus.itemDetectionRange;
-        gatheringSpeed =           playerStatus.gatheringSpeed;
-        gatheringDelay =           playerStatus.gatheringDelay;
-        moveSpeed =                playerStatus.moveSpeed;//최종속도
-       // baseSpeed =                playerStatus.baseSpeed;
-}
+        currentHealth = playerStatus.currentHealth;
+
+        maxHP = playerStatus.maxHP;
+
+        playerDamage = playerStatus.playerDamage;
+
+        itemDetectionRange = playerStatus.itemDetectionRange;
+
+        gatheringSpeed = playerStatus.gatheringSpeed;
+
+        gatheringDelay = playerStatus.gatheringDelay;
+
+        //최종속도
+        moveSpeed = playerStatus.moveSpeed;
+
+        //baseSpeed = playerStatus.baseSpeed;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         //Debug.Log(other.gameObject.layer);
+
         //Debug.Log(LayerMask.NameToLayer("Energy"));
+
         if (other.gameObject.layer == LayerMask.NameToLayer("Energy"))
         {
             //Debug.Log("tri");
+
             GetEnergy(3);
 
             Destroy(other.gameObject);

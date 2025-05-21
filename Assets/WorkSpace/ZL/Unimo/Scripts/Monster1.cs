@@ -6,7 +6,7 @@ using ZL.Unity.Phys;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Monster 1")]
+    [AddComponentMenu("ZL/Unimo/Monster 1 (Pooled)")]
 
     public sealed class Monster1 : Enemy, IDamager
     {

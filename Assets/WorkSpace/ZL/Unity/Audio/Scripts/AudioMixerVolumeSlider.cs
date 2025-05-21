@@ -14,16 +14,16 @@ namespace ZL.Unity.Audio
 
         [UsingCustomProperty]
 
-        [ReadOnlyWhenPlayMode]
-
         [Essential]
+
+        [ReadOnlyWhenPlayMode]
 
         private Slider slider = null;
 
         [SerializeField]
         
         [UsingCustomProperty]
-        
+
         [ReadOnlyWhenPlayMode]
 
         private string key = "";

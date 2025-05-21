@@ -4,9 +4,11 @@ using UnityEngine.Animations;
 
 using ZL.Unity.Phys;
 
+using ZL.Unity.Pooling;
+
 namespace ZL.Unity.Unimo
 {
-    public abstract class Enemy : MonoBehaviour, IDamageable
+    public abstract class Enemy : PooledObject, IDamageable
     {
         [Space]
 
@@ -20,14 +22,9 @@ namespace ZL.Unity.Unimo
 
         #pragma warning disable CS0108
 
-        protected Rigidbody rigidbody = null;
+        private Collider collider = null;
 
         #pragma warning restore CS0108
-
-        public Rigidbody Rigidbody
-        {
-            get => rigidbody;
-        }
 
         [SerializeField]
 
@@ -39,7 +36,7 @@ namespace ZL.Unity.Unimo
 
         #pragma warning disable CS0108
 
-        private Collider collider = null;
+        protected Rigidbody rigidbody = null;
 
         #pragma warning restore CS0108
 
@@ -61,6 +58,8 @@ namespace ZL.Unity.Unimo
 
         [Essential]
 
+        [ReadOnlyWhenPlayMode]
+
         protected EnemyData enemyData = null;
 
         [SerializeField]
@@ -71,6 +70,19 @@ namespace ZL.Unity.Unimo
 
         protected float rotationSpeed = 0f;
 
+        [Space]
+
+        [SerializeField]
+
+        private EnemyTargetDitection enemyTargetDitection = null;
+
+        public EnemyTargetDitection EnemyTargetDitection
+        {
+            get => enemyTargetDitection;
+
+            set => enemyTargetDitection = value;
+        }
+
         protected float currentHealth = 0f;
 
         public float CurrentHealth
@@ -80,7 +92,15 @@ namespace ZL.Unity.Unimo
 
         protected Transform Target
         {
-            get => EnemyManager.Instance.Target;
+            get
+            {
+                if (enemyTargetDitection != null)
+                {
+                    return enemyTargetDitection.FindTarget();
+                }
+
+                return null;
+            }
         }
 
         protected bool isStoped = true;

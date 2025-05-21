@@ -4,11 +4,13 @@ using UnityEngine;
 
 using ZL.Unity.Coroutines;
 
+using ZL.Unity.Debugging;
+
 using ZL.Unity.Pooling;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Spawner")]
+    [AddComponentMenu("ZL/Unimo/Object Spawner")]
 
     public sealed class Spawner : MonoBehaviour
     {
@@ -34,17 +36,26 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private Transform[] spawnPoints = null;
+        private float spawnRadius = 0f;
 
         [Space]
 
         [SerializeField]
+
+        private Transform[] spawnPoints = null;
 
         private int spawnCount = 0;
 
         private int SpawnCountMax
         {
             get => spawnerData.ObjectCountLimits;
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.red;
+
+            GizmosEx.DrawPolygon(transform.position, spawnRadius, 64);
         }
 
         private void Start()
@@ -95,12 +106,23 @@ namespace ZL.Unity.Unimo
                         break;
                     }
 
-                    SpawnRandom();
+                    //SpawnRandomPoint();
+
+                    SpawnRandomRange();
                 }
             }
         }
 
-        public void SpawnRandom()
+        public void SpawnRandomRange()
+        {
+            var position = Random.insideUnitCircle * spawnRadius;
+
+            var worldPosition = transform.position + new Vector3(position.x, 0f, position.y);
+
+            Spawn(worldPosition, Quaternion.identity);
+        }
+
+        public void SpawnRandomPoint()
         {
             Spawn(Random.Range(0, spawnPoints.Length));
         }
@@ -110,15 +132,20 @@ namespace ZL.Unity.Unimo
             Spawn(spawnPoints[spawnPointIndex]);
         }
 
-        public void Spawn(Transform spawnPoint)
+        private void Spawn(Transform spawnPoint)
+        {
+            Spawn(spawnPoint.position, spawnPoint.rotation);
+        }
+
+        private void Spawn(Vector3 position, Quaternion rotation)
         {
             ++spawnCount;
 
-            var clone = ObjectPoolManager.Instance.Cloning(spawnerData.SpawnObject);
+            var clone  = ObjectPoolManager.Instance.Cloning(spawnerData.SpawnObject);
 
             clone.OnDisableAction += OnDespawn;
 
-            clone.transform.SetPositionAndRotation(spawnPoint);
+            clone.transform.SetPositionAndRotation(position, rotation);
 
             clone.SetActive(true);
         }

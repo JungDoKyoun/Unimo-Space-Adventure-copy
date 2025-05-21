@@ -1,10 +1,12 @@
 using UnityEngine;
 
+using ZL.Unity.Pooling;
+
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Projectile")]
+    [AddComponentMenu("ZL/Unimo/Projectile (Pooled)")]
 
-    public sealed class Projectile : MonoBehaviour, IDamager
+    public sealed class Projectile : PooledObject, IDamager
     {
         [Space]
 

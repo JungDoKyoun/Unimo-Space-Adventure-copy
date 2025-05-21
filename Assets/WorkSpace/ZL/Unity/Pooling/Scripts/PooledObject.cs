@@ -18,12 +18,7 @@ namespace ZL.Unity.Pooling
         {
             var clone = Instantiate(pool.Prefab, pool.Parent);
 
-            if (clone.TryGetComponent<PooledObject>(out var pooledObject) == false)
-            {
-                FixedDebug.LogWarning($"Prefab '{pool.Prefab.name}' being pooled does not have a component of type 'Pooled Object'. We recommend adding it to the prefab to improve performance.");
-
-                pooledObject = clone.AddComponent<PooledObject>();
-            }
+            var pooledObject = clone.GetComponent<PooledObject>();
 
             pooledObject.ReturnToPool = () => pool.Collect(clone);
 
@@ -32,17 +27,17 @@ namespace ZL.Unity.Pooling
 
         #if UNITY_EDITOR
 
-        private void Start()
+        protected virtual void Start()
         {
             if (ReturnToPool == null)
             {
-                FixedDebug.LogWarning($"Game Object '{gameObject.name}' is a 'Pooled Object' but was not created from an'Object Pool'.");
+                FixedDebug.LogWarning($"Game Object '{gameObject.name}' is a 'Pooled Object' but was not created from an 'Object Pool'.");
             }
         }
 
         #endif
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             OnDisableAction?.Invoke();
 
