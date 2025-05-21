@@ -8,7 +8,9 @@ namespace ZL.Unity.Pooling
 
     public class PooledObject : MonoBehaviour
     {
-        private Action ReturnToPool = null;
+        public event Action OnDisableAction = null;
+
+        private event Action ReturnToPool = null;
 
         public static TClone Instantiate<TClone>(ObjectPool<TClone> pool)
 
@@ -42,7 +44,11 @@ namespace ZL.Unity.Pooling
 
         private void OnDisable()
         {
-            ReturnToPool();
+            OnDisableAction?.Invoke();
+
+            OnDisableAction = null;
+
+            ReturnToPool?.Invoke();
         }
     }
 }

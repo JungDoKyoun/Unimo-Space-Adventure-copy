@@ -32,11 +32,6 @@ namespace ZL.Unity
             get => onTimeEvent;
         }
 
-        private void OnDisable()
-        {
-            CancelInvoke(nameof(OnTime));
-        }
-
         public void Invoke()
         {
             Invoke(time);

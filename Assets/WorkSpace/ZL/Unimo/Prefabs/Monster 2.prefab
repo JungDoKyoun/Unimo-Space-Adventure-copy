@@ -258,8 +258,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2149337454032493812}
+  - component: {fileID: 357006552651008823}
   m_Layer: 0
-  m_Name: Projectile Spawner
+  m_Name: Muzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -274,12 +275,24 @@ Transform:
   m_GameObject: {fileID: 1958656454620972916}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0.25}
+  m_LocalPosition: {x: 0, y: 0, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3528515223780530691}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &357006552651008823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958656454620972916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a384866e38f7a64ab692969d77bf267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3783232394279660555
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,7 +327,7 @@ Transform:
   - {fileID: 5864290410803793716}
   - {fileID: 7686729483970828613}
   - {fileID: 3942511837465820666}
-  - {fileID: 5821092074209567085}
+  - {fileID: 6040612986141940896}
   m_Father: {fileID: 3528515223780530691}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &5270054981442611278
@@ -411,7 +424,7 @@ GameObject:
   - component: {fileID: 3528515223780530691}
   - component: {fileID: 2144112506026283800}
   - component: {fileID: 6250201364335106768}
-  - component: {fileID: 674208465780634791}
+  - component: {fileID: 8330148763195427836}
   - component: {fileID: 4689442550822974539}
   m_Layer: 7
   m_Name: Monster 2
@@ -419,7 +432,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3528515223780530691
 Transform:
   m_ObjectHideFlags: 0
@@ -451,13 +464,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 6250201364335106768}
+  collider: {fileID: 8330148763195427836}
   animator: {fileID: 5270054981442611278}
   enemyData: {fileID: 11400000, guid: d9198271e05b01e4ab109616646f2fd4, type: 2}
-  lifeTime: -1
-  rotationSpeed: 90
-  muzzle: {fileID: 2149337454032493812}
-  projectileName: Enemy Projectile 1
-  attackInterval: 3
+  lifeTime: 10
+  rotationSpeed: 180
+  muzzle: {fileID: 357006552651008823}
+  projectileName: Monster 2 Projectile
+  attackCooldown: 5
+  attackDistance: 30
 --- !u!54 &6250201364335106768
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -485,7 +500,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!135 &674208465780634791
+--- !u!135 &8330148763195427836
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -504,7 +519,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.75
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!114 &4689442550822974539
 MonoBehaviour:
@@ -573,9 +588,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5269462037413193694}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.13052619, y: -1.1007251e-16, z: -1.4491323e-17, w: 0.9914449}
-  m_LocalPosition: {x: -6.472663e-25, y: 1, z: 0.0000000058300564}
-  m_LocalScale: {x: 1, y: 0.99999994, z: 0.99999994}
+  m_LocalRotation: {x: -0.13052624, y: 0, z: 0, w: 0.9914449}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4242313830834769440}
@@ -586,7 +601,7 @@ Transform:
   - {fileID: 4424584502240172352}
   - {fileID: 6277491373720011231}
   m_Father: {fileID: 3942511837465820666}
-  m_LocalEulerAnglesHint: {x: -15, y: -1.6335298e-14, z: -5.040029e-22}
+  m_LocalEulerAnglesHint: {x: -15, y: 0, z: 0}
 --- !u!1 &6303694941751267128
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,6 +726,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7184013051164254127}
   m_LocalEulerAnglesHint: {x: -70.26533, y: 20.93764, z: -136.83948}
+--- !u!1 &8556507628012508770
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6040612986141940896}
+  m_Layer: 0
+  m_Name: Black Portal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &6040612986141940896
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8556507628012508770}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5821092074209567085}
+  m_Father: {fileID: 2371756568656849918}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9172086649592162280
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,7 +795,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2371756568656849918}
+    m_TransformParent: {fileID: 6040612986141940896}
     m_Modifications:
     - target: {fileID: 7543651097898661888, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -796,7 +843,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8087840629484875825, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -834,7 +881,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9001557012747604099, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.001
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 9001557012747604099, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
       propertyPath: m_LocalPosition.z

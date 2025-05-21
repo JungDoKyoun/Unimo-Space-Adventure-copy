@@ -10,7 +10,7 @@ namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Spawner")]
 
-    public sealed class Spawner : ObjectSpawner<Transform>
+    public sealed class Spawner : MonoBehaviour
     {
         [Space]
 
@@ -30,7 +30,22 @@ namespace ZL.Unity.Unimo
 
         private SpawnPatternData[] spawnPatternDatas = null;
 
+        [Space]
+
+        [SerializeField]
+
+        private Transform[] spawnPoints = null;
+
+        [Space]
+
+        [SerializeField]
+
         private int spawnCount = 0;
+
+        private int SpawnCountMax
+        {
+            get => spawnerData.ObjectCountLimits;
+        }
 
         private void Start()
         {
@@ -75,30 +90,42 @@ namespace ZL.Unity.Unimo
 
                 while (spawnCount-- > 0)
                 {
+                    if (SpawnCountMax != -1 && this.spawnCount >= SpawnCountMax)
+                    {
+                        break;
+                    }
+
                     SpawnRandom();
                 }
             }
         }
 
-        protected override bool TryCloning(out Transform clone)
+        public void SpawnRandom()
         {
-            if (spawnCount >= spawnerData.ObjectCountLimits)
-            {
-                clone = null;
-
-                return false;
-            }
-
-            ++spawnCount;
-
-            clone = Cloning();
-
-            return true;
+            Spawn(Random.Range(0, spawnPoints.Length));
         }
 
-        protected override Transform Cloning()
+        public void Spawn(int spawnPointIndex)
         {
-            return ObjectPoolManager.Instance.Cloning(spawnerData.SpawnObject);
+            Spawn(spawnPoints[spawnPointIndex]);
+        }
+
+        public void Spawn(Transform spawnPoint)
+        {
+            ++spawnCount;
+
+            var clone = ObjectPoolManager.Instance.Cloning(spawnerData.SpawnObject);
+
+            clone.OnDisableAction += OnDespawn;
+
+            clone.transform.SetPositionAndRotation(spawnPoint);
+
+            clone.SetActive(true);
+        }
+
+        private void OnDespawn()
+        {
+            --spawnCount;
         }
     }
 }

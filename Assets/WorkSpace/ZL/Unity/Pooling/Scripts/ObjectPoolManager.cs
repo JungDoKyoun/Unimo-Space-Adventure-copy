@@ -8,7 +8,7 @@ namespace ZL.Unity.Pooling
 {
     [AddComponentMenu("ZL/Pooling/Object Pool Manager")]
 
-    public sealed class ObjectPoolManager : ObjectPoolManager<ObjectPoolManager, Transform>
+    public sealed class ObjectPoolManager : ObjectPoolManager<ObjectPoolManager, PooledObject>
     {
 
     }

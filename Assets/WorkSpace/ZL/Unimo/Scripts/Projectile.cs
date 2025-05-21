@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Enemy Projectile")]
+    [AddComponentMenu("ZL/Unimo/Projectile")]
 
-    public sealed class EnemyProjectile : MonoBehaviour, IDamager
+    public sealed class Projectile : MonoBehaviour, IDamager
     {
         [Space]
 
@@ -22,15 +22,10 @@ namespace ZL.Unity.Unimo
 
         private void OnEnable()
         {
-            if (lifeTime > 0f)
+            if (lifeTime != -1f)
             {
-                Invoke(nameof(SetActiveFalse), lifeTime);
+                Invoke(nameof(OnDisappeared), lifeTime);
             }
-        }
-
-        private void OnDisable()
-        {
-            CancelInvoke();
         }
 
         private void FixedUpdate()
@@ -42,10 +37,10 @@ namespace ZL.Unity.Unimo
         {
             damageable.TakeDamage(damage, contact);
 
-            SetActiveFalse();
+            OnDisappeared();
         }
 
-        private void SetActiveFalse()
+        private void OnDisappeared()
         {
             gameObject.SetActive(false);
         }

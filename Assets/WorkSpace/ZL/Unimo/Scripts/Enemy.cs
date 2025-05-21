@@ -1,5 +1,9 @@
 using UnityEngine;
 
+using UnityEngine.Animations;
+
+using ZL.Unity.Phys;
+
 namespace ZL.Unity.Unimo
 {
     public abstract class Enemy : MonoBehaviour, IDamageable
@@ -24,6 +28,20 @@ namespace ZL.Unity.Unimo
         {
             get => rigidbody;
         }
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [GetComponent]
+
+        [ReadOnly(true)]
+
+        #pragma warning disable CS0108
+
+        private Collider collider = null;
+
+        #pragma warning restore CS0108
 
         [SerializeField]
 
@@ -67,11 +85,14 @@ namespace ZL.Unity.Unimo
 
         protected bool isStoped = true;
 
-        private void OnEnable()
+        protected virtual void OnEnable()
         {
-            var forward = Target.position - transform.position;
+            if (Target != null)
+            {
+                var forward = Target.position - transform.position;
 
-            transform.rotation = Quaternion.LookRotation(forward);
+                rigidbody.rotation = rigidbody.LookRotation(forward, Axis.Y);
+            }
 
             if (rigidbody != null)
             {
@@ -93,6 +114,8 @@ namespace ZL.Unity.Unimo
 
         public void OnAppeared()
         {
+            collider.enabled = true;
+
             isStoped = false;
         }
 
@@ -110,11 +133,15 @@ namespace ZL.Unity.Unimo
 
         private void Killed()
         {
+            CancelInvoke();
+
             Disappear();
         }
 
         private void Disappear()
         {
+            collider.enabled = false;
+
             isStoped = true;
 
             animator.SetTrigger("Disappear");

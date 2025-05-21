@@ -73,7 +73,7 @@ namespace ZL.Unity.Tweening
         {
             color = material.color;
 
-            return valueTweener.Tween(endValue, duration);
+            return ValueTweener.Tween(endValue, duration);
         }
     }
 }

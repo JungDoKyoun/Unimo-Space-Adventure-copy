@@ -4,8 +4,6 @@ using UnityEngine.Animations;
 
 using ZL.Unity.Phys;
 
-using ZL.Unity.Pooling;
-
 namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Monster 2")]
@@ -22,7 +20,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private Transform muzzle = null;
+        private Muzzle muzzle = null;
 
         [SerializeField]
 
@@ -30,42 +28,61 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private float attackInterval = 0f;
+        private float attackCooldown = 0f;
 
-        private float attackIntervalTimer = 0f;
+        [SerializeField]
+
+        private float attackDistance = 0f;
+
+        private float attackCooldownTimer = 0f;
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+
+            attackCooldownTimer = 0f;
+        }
 
         private void FixedUpdate()
         {
             animator.SetBool("IsMoving", false);
 
-            if (isStoped == true)
+            if (Target == null)
             {
                 return;
             }
 
-            if (enemyData.MoveSpeed != 0f)
+            if (isStoped == true)
             {
-                animator.SetBool("IsMoving", true);
-
-                //rigidbody.MoveTowards(MonsterManager.Instance.Target, monsterData.MoveSpeed);
-
-                var forwardMove = rigidbody.rotation * Vector3.forward * enemyData.MoveSpeed * Time.fixedDeltaTime;
-
-                rigidbody.MovePosition(rigidbody.position + forwardMove);
+                return;
             }
 
             if (rotationSpeed != 0f)
             {
                 rigidbody.LookTowards(Target, Axis.Y, rotationSpeed);
             }
+
+            if (enemyData.MoveSpeed != 0f)
+            {
+                animator.SetBool("IsMoving", true);
+
+                var forwardMove = rigidbody.rotation * Vector3.forward * enemyData.MoveSpeed * Time.fixedDeltaTime;
+
+                rigidbody.MovePosition(rigidbody.position + forwardMove);
+            }
         }
 
         private void Update()
         {
-            if (attackIntervalTimer > 0f)
+            if (attackCooldownTimer > 0f)
             {
-                attackIntervalTimer -= Time.fixedDeltaTime;
+                attackCooldownTimer -= Time.deltaTime;
 
+                return;
+            }
+
+            if (Target == null)
+            {
                 return;
             }
 
@@ -74,18 +91,19 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
-            attackIntervalTimer = attackInterval;
+            if (Vector3.Distance(transform.position, Target.position) > attackDistance)
+            {
+                return;
+            }
+
+            attackCooldownTimer = attackCooldown;
 
             animator.SetTrigger("Attack");
         }
 
         public void OnAttack()
         {
-            var bullet = ObjectPoolManager.Instance.Cloning(projectileName);
-
-            bullet.transform.SetPositionAndRotation(muzzle);
-
-            bullet.SetActive(true);
+            var projectile = muzzle.Launch(projectileName);
         }
 
         public void GiveDamage(IDamageable damageable, Vector3 contact)

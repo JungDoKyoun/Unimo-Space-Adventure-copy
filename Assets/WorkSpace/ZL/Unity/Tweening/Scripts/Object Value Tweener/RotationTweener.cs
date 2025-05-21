@@ -12,9 +12,9 @@ namespace ZL.Unity.Tweening
     {
         public RotateMode RotateMode
         {
-            get => valueTweener.RotateMode;
+            get => ValueTweener.RotateMode;
             
-            set => valueTweener.RotateMode = value;
+            set => ValueTweener.RotateMode = value;
         }
 
         public override Quaternion Value

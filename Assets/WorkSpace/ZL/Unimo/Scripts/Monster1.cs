@@ -17,6 +17,16 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
+            if (isStoped == true)
+            {
+                return;
+            }
+
+            if (rotationSpeed != 0f)
+            {
+                rigidbody.LookTowards(Target, Axis.Y, rotationSpeed);
+            }
+
             if (enemyData.MoveSpeed != 0f)
             {
                 //rigidbody.MoveTowards(MonsterManager.Instance.Target, monsterData.MoveSpeed);
@@ -24,11 +34,6 @@ namespace ZL.Unity.Unimo
                 var forwardMove = rigidbody.rotation * Vector3.forward * enemyData.MoveSpeed * Time.fixedDeltaTime;
 
                 rigidbody.MovePosition(rigidbody.position + forwardMove);
-            }
-
-            if (rotationSpeed != 0f)
-            {
-                rigidbody.LookTowards(Target, Axis.Y, rotationSpeed);
             }
         }
 
