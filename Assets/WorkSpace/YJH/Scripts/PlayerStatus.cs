@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStatus : MonoBehaviour
+public class PlayerStatus 
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public float currentHealth ;
+    public float maxHP;
+    public float playerDamage ;
+    public float itemDetectionRange;
+    public float gatheringSpeed;
+    public float gatheringDelay;
+    public float moveSpeed;//최종속도
+    public float baseSpeed;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+
+
+
 }

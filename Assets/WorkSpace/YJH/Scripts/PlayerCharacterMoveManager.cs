@@ -27,7 +27,7 @@ public partial class PlayerManager : MonoBehaviourPun
 
     [Header("속도들")]
 
-    [SerializeField] float moveSpeed = 4.4f;//최종속도
+    [SerializeField] float moveSpeed=4f;//최종속도
     [SerializeField] float baseSpeed=4f;//기본 속도
     //[SerializeField] float pushSpeed = 3f;
     [SerializeField] float rotateSpeed = 10f;
@@ -48,11 +48,6 @@ public partial class PlayerManager : MonoBehaviourPun
     }
 
     
-    public void SetMoveSpeed(float mul)
-    {
-        moveSpeed += mul;
-    }
-
     public void PlayerMoveBySpeed()
     {
         if (PhotonNetwork.IsConnected == false && canMove == true)

@@ -4,6 +4,7 @@ using ZL.Unity.Unimo;
 
 public partial class PlayerManager 
 {
+    [SerializeField] PlayerStatus playerStatus;
     private void OnEnable()
     {
         MonsterManager.Instance.Target = transform;
@@ -31,7 +32,17 @@ public partial class PlayerManager
 
         MoveUpdate();
     }
-
+    public void SetPlayerStatus()
+    {
+        currentHealth=             playerStatus.currentHealth;
+        maxHP =                    playerStatus.maxHP ;
+        playerDamage =             playerStatus.playerDamage;
+        itemDetectionRange =       playerStatus.itemDetectionRange;
+        gatheringSpeed =           playerStatus.gatheringSpeed;
+        gatheringDelay =           playerStatus.gatheringDelay;
+        moveSpeed =                playerStatus.moveSpeed;//최종속도
+        baseSpeed =                playerStatus.baseSpeed;
+}
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.gameObject.layer);
