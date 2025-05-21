@@ -48,6 +48,13 @@ public class ConstructManager : MonoBehaviour
             temp.ToDictionary();
         }
     }
+    public void Init()
+    {
+        foreach (var temp in constructList)
+        {
+            temp.Init();
+        }
+    }
 
 
     public void BuildButtonPressed(string buildID)
@@ -113,7 +120,16 @@ public class ConstructManager : MonoBehaviour
 
     }
 
-
+    public void ActiveBuildingEffect()
+    {
+        foreach(var t in constructList)
+        {
+            if (t.isBuildConstructed == true)
+            {
+                t.ActiveBuildingEffect();
+            }
+        }
+    }
 
 
 }

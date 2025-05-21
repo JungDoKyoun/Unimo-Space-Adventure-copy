@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[System.Serializable]
 public class PlayerStatus 
 {
     public float currentHealth ;
@@ -12,16 +14,17 @@ public class PlayerStatus
     public float gatheringDelay;
     public float moveSpeed;
     
-    public void Duplicate(PlayerStatus clone)
+    public PlayerStatus Clone()
     {
-        currentHealth = clone.currentHealth;
-        maxHP = clone.maxHP;
-        playerDamage = clone.playerDamage;
-        itemDetectionRange = clone.itemDetectionRange;
-        gatheringSpeed = clone.gatheringSpeed;
-        gatheringDelay = clone.gatheringDelay;
-        moveSpeed = clone.moveSpeed;
-            
+        PlayerStatus clone = new PlayerStatus();
+        clone.currentHealth=currentHealth;
+        clone.maxHP = maxHP;
+        clone.playerDamage = playerDamage;
+        clone.itemDetectionRange = itemDetectionRange;
+        clone.gatheringSpeed = gatheringSpeed;
+        clone.gatheringDelay = gatheringDelay;
+        clone.moveSpeed = moveSpeed;
+        return clone;
     }
     //최종속도
     //public float baseSpeed;

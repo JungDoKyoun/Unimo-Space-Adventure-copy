@@ -8,8 +8,11 @@ public partial class GameManager : MonoBehaviour
 
 
     public static GameManager Instance { get; private set; }
-
-    public PlayerStatus playerStatus;
+    [SerializeField] ConstructManager constructManager;
+    private PlayerManager playerManager;
+    public PlayerStatus playerStatus= new PlayerStatus();
+    [SerializeField] PlayerStatus originPlayerStatus= new PlayerStatus();
+    public PlayerStatus OriginPlayerStatus { get {  return originPlayerStatus; } }
     private void Awake()
     {
         if(Instance == null)
@@ -25,7 +28,8 @@ public partial class GameManager : MonoBehaviour
     }
     void Start()
     {
-        
+        playerManager= FindObjectOfType<PlayerManager>();
+        playerStatus= originPlayerStatus;
     }
 
     // Update is called once per frame

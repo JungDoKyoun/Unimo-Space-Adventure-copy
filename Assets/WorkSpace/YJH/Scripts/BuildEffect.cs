@@ -10,6 +10,10 @@ public class BuildEffect :ScriptableObject
     {
 
     }
+    public virtual void SetPlayerStatus(PlayerStatus status)
+    {
+
+    }
 
 
 

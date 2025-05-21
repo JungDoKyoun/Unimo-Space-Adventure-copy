@@ -33,7 +33,13 @@ public class ConstructBase :ScriptableObject//,IConstruct
     public string buildingDescription;
 
 
-    
+    public void Init()
+    {
+        foreach(var effect in buildEffects)
+        {
+            effect.SetPlayerStatus(GameManager.Instance.playerStatus);
+        }
+    }
     
     public bool IsBuildConstructed()
     {
