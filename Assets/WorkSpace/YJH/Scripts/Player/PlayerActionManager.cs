@@ -133,7 +133,7 @@ public partial class PlayerManager
 
     public void SetSpellType(ISpellType spellType)
     {
-        Debug.Log("set spell");
+        //Debug.Log("set spell");
         playerSpellType = spellType;
         playerSpellType.SetPlayer(this);
     }

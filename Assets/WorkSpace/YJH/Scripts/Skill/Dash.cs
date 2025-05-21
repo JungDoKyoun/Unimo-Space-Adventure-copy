@@ -77,7 +77,7 @@ public class Dash :ISpellType,IStackSpell
         {
             if (skillInfo.nowStack < skillInfo.maxStack)
             {
-                Debug.Log("stack charged");
+                //Debug.Log("stack charged");
                 skillInfo.nowStack += skillInfo.chargeStack;
             }
             chargeTimer = 0;

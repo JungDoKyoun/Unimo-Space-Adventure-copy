@@ -113,14 +113,13 @@ public partial class PlayerManager : MonoBehaviourPun
         
         Vector3 headingVector3 = new Vector3(headDirection.x, 0, headDirection.y);
         
-        Quaternion nextRotation=Quaternion.LookRotation(headingVector3);
-        Quaternion firstRotation = Quaternion.LookRotation(new Vector3(transform.forward.x,0,transform.forward.z));
+        
         
         if (isGathering == true&&targetObject!=null)
         {
             Vector3 headDir = new Vector3(targetObject.transform.position.x,transform.position.y, targetObject.transform.position.z);
             transform.LookAt(headDir);
-            Debug.Log(headDir);
+            //Debug.Log(headDir);
             gatheringEffect.transform.LookAt(targetObject.transform);
 
         }
@@ -130,7 +129,9 @@ public partial class PlayerManager : MonoBehaviourPun
             {
                 return;
             }
-            Debug.Log("notgathering");
+            Quaternion nextRotation = Quaternion.LookRotation(headingVector3);
+            Quaternion firstRotation = Quaternion.LookRotation(new Vector3(transform.forward.x, 0, transform.forward.z));
+            //Debug.Log("notgathering");
             transform.rotation = Quaternion.SlerpUnclamped(firstRotation,nextRotation,rotateSpeed*Time.deltaTime);
             //transform.rotation = nextRotation;
         }
