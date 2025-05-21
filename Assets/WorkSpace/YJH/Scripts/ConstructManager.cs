@@ -20,7 +20,8 @@ public class ConstructManager : MonoBehaviour
     [SerializeField] GameObject BuildPanel;
     [SerializeField] TMP_Text constructCostText;
 
-    [SerializeField] List<Button> buildButtons = new List<Button>(); 
+    [SerializeField] List<Button> buildButtons = new List<Button>();
+    [SerializeField] Button buildInfoBuildButton;
 
     public List<ConstructBase> ConstructList { get { return constructList;  } private set { constructList = value; } }
     public static ConstructManager Instance { get; private set; }
@@ -67,6 +68,10 @@ public class ConstructManager : MonoBehaviour
     {
         BuildPanel.SetActive(true); 
     }
+    public void DeActiveBuildPanel()
+    {
+        BuildPanel.SetActive(false);
+    }
     public void ShowBuildInfoPanel(ConstructBase buildingInfo)
     {
         var requireText= "";
@@ -85,8 +90,28 @@ public class ConstructManager : MonoBehaviour
             
         }
         buildingCostText.text = costText;
-    }
+        buildingInfoText.text=buildingInfo.buildingDescription;
+        DecideCanBuild( buildingInfo);
+            
 
+
+
+    }
+    public void DecideCanBuild(ConstructBase buildingInfo)
+    {
+        if (buildingInfo.TryConstruct() == false)
+        {
+            buildInfoBuildButton.interactable = false;
+        }
+        else
+        {
+            buildInfoBuildButton.interactable = true;
+        }
+    }
+    public void TryConstruct()
+    {
+
+    }
 
 
 

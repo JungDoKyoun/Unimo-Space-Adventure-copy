@@ -29,7 +29,7 @@ public class ConstructBase :ScriptableObject//,IConstruct
     public string buildPrefabDirection;
     public int spawnIndex;
     public IConstruct constructEffect;
-    
+    public string buildingDescription;
 
     public bool IsBuildConstructed()
     {
@@ -56,8 +56,9 @@ public class ConstructBase :ScriptableObject//,IConstruct
         {
             return false;
         }
-        if (IsBuildCostEnough(buildCostDic/*대충 임시로 넣은 딕셔너리임 나중에 재화랑 연동하기*/) == false)
+        if (IsBuildCostEnough(new Dictionary<string, int>()) == false)
         {
+            Debug.Log("notenoughcost");
             return false;
         }
         if (isBuildConstructed == true && isbuildRepeatable == false)
@@ -69,9 +70,13 @@ public class ConstructBase :ScriptableObject//,IConstruct
     }
     public bool IsBuildCostEnough(Dictionary<string,int> ownCostDic)
     {
-        foreach(var pair in ownCostDic)
+        foreach(var pair in buildCostDic)
         {
-            if (buildCostDic[pair.Key]>pair.Value)
+            if (ownCostDic.ContainsKey(pair.Key) == false)
+            {
+                return false;
+            }
+            if (ownCostDic[pair.Key]<pair.Value)
             {
                 return false;
             }
