@@ -326,8 +326,6 @@ namespace JDG
             int eventCount = Mathf.RoundToInt(candidateCoords.Count * _eventTileConfig._eventTileRatio);
             List<Vector2Int> selectedCoords = new List<Vector2Int>();
             int temp = 0;
-            Debug.Log($"남은 타일 갯수{candidateCoords.Count}");
-            Debug.Log($"이벤트 갯수{eventCount}");
 
             while(selectedCoords.Count < eventCount && candidateCoords.Count > 0 && temp < 500)
             {
