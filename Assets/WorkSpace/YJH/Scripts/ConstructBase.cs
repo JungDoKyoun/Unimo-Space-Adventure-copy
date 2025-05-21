@@ -108,7 +108,19 @@ public class ConstructBase :ScriptableObject//,IConstruct
 
 
     }
+    
+   public void ActiveBuildingEffect()
+    {
+        foreach(var t in buildEffects)
+        {
+            //t.playerStatus.Duplicate()//게임 매니저의 플레이어 스테이터스 할당
+        }
 
-   
+        foreach (var t in buildEffects)
+        {
+            t.ApplyBuildEffect();
+        }
+
+    }
     
 }

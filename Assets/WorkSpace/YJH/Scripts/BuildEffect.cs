@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BuildEffect :ScriptableObject
 {
-    public PlayerStatus playerStatus;
+    public PlayerStatus playerStatus= new PlayerStatus();
     public virtual void ApplyBuildEffect()
     {
 
