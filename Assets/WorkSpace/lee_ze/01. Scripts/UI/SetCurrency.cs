@@ -42,11 +42,6 @@ public class SetCurrency : MonoBehaviour
     {
         ingameCurrency--;
 
-        if (ingameCurrency < 0)
-        {
-            ingameCurrency = 0;
-        }
-
         rewardIngameCurrencyInputField.text = $"{ingameCurrency}";
     }
 
@@ -60,11 +55,6 @@ public class SetCurrency : MonoBehaviour
     public void DecreaseMetaCurrency()
     {
         metaCurrency--;
-
-        if (metaCurrency < 0)
-        {
-            metaCurrency = 0;
-        }
 
         rewardMetaCurrencyInputField.text = $"{metaCurrency}";
     }
