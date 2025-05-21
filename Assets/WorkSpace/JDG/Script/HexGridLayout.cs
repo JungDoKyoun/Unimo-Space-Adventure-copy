@@ -30,8 +30,7 @@ namespace JDG
         [SerializeField] private int[] _bossDistance;
         [SerializeField] private int _bossCountPerCircle;
         [SerializeField] private int[] _bossMinGapByDistance;
-        [SerializeField] private float _eventTileRatio;
-        [SerializeField] private int _eventMinDistance;
+        [SerializeField] private EventTileConfig _eventTileConfig;
 
 
         [Header("플레이어 관련")]
@@ -50,6 +49,7 @@ namespace JDG
         private Vector2Int _baseCoord;
         private Vector2Int _playerCoord;
         private Dictionary<Vector2Int, HexRenderer> _hexMap = new Dictionary<Vector2Int, HexRenderer>(); //타일 오브젝트 정보
+        private List<Vector2Int> _bossNearShopCount = new List<Vector2Int>();
 
         private void Start()
         {
@@ -140,7 +140,7 @@ namespace JDG
                 hexRenderer.Height = _height;
                 hexRenderer.SetMaterial(_material);
 
-                var data = new TileData(coord, TileType.None, TileVisibility.Hidden, TileEnvironmentManager.Instance.GetRandomEnvironment(), false, level: 0);
+                var data = new TileData(coord, TileType.None, TileVisibility.Hidden, TileEnvironmentManager.Instance.GetRandomEnvironment(), false, 0);
                 hexRenderer.SetTileData(data);
 
                 hexRenderer.DrawMesh();
@@ -254,7 +254,6 @@ namespace JDG
         public void SetPlayerCoord(Vector2Int newCoord)
         {
             _playerCoord = newCoord;
-            Debug.Log(_playerCoord);
         }
 
         public bool TryGetTile(Vector2Int coord, out HexRenderer hex)
@@ -292,6 +291,7 @@ namespace JDG
 
                     placedBosses.Add(coord);
                     candidateCoords.Remove(coord);
+                    AssignNearbyShopTile(coord, candidateCoords);
                 }
 
                 else
@@ -313,6 +313,7 @@ namespace JDG
 
                             placedBosses.Add(coord);
                             candidateCoords.Remove(coord);
+                            AssignNearbyShopTile(coord, candidateCoords);
                             break;
                         }
                     }
@@ -322,14 +323,43 @@ namespace JDG
 
         private void AssignEventTiles(List<Vector2Int> candidateCoords)
         {
-            int eventCount = Mathf.Max(_eventMinDistance, Mathf.RoundToInt(candidateCoords.Count * _eventTileRatio));
+            int eventCount = Mathf.RoundToInt(candidateCoords.Count * _eventTileConfig._eventTileRatio);
+            List<Vector2Int> selectedCoords = new List<Vector2Int>();
+            int temp = 0;
+            Debug.Log($"남은 타일 갯수{candidateCoords.Count}");
+            Debug.Log($"이벤트 갯수{eventCount}");
 
-            for (int i = 0; i < eventCount && candidateCoords.Count > 0; i++)
+            while(selectedCoords.Count < eventCount && candidateCoords.Count > 0 && temp < 500)
             {
                 var randomIndex = Random.Range(0, candidateCoords.Count);
                 var chosen = candidateCoords[randomIndex];
+                bool tooClose = selectedCoords.Exists(coord => HexDistance(coord, chosen) < _eventTileConfig._eventMinDistance);
+                bool tooClose2 = _bossNearShopCount.Exists(coord => HexDistance(coord, chosen) < _eventTileConfig._eventMinDistance);
+
+                if (tooClose || tooClose2)
+                {
+                    temp++;
+                    continue;
+                }
+
                 _hexMap[chosen].TileData.TileType = TileType.Event;
                 candidateCoords.RemoveAt(randomIndex);
+                selectedCoords.Add(chosen);
+            }
+
+            Utiles.Shuffle(selectedCoords);
+
+            int index = 0;
+
+            foreach(var entry in _eventTileConfig._eventTypes)
+            {
+                int count = Mathf.RoundToInt(selectedCoords.Count * entry._ratio);
+                for(int i = 0; i < count; i++)
+                {
+                    var coord = selectedCoords[index];
+                    _hexMap[coord].TileData.EventType = entry._eventType;
+                    index++;
+                }
             }
         }
 
@@ -339,8 +369,8 @@ namespace JDG
 
             foreach (var entry in _modeRatio)
             {
-                string modeName = entry.modeName;
-                float ratio = entry.ratio;
+                ModeType modeType = entry._modeType;
+                float ratio = entry._modeRatio;
                 int count = Mathf.RoundToInt(totalCount * ratio);
 
                 for (int i = 0; i < count && candidateCoords.Count > 0; i++)
@@ -348,23 +378,50 @@ namespace JDG
                     int randomIndex = Random.Range(0, candidateCoords.Count);
                     var coord = candidateCoords[randomIndex];
                     _hexMap[coord].TileData.TileType = TileType.Mode;
-                    _hexMap[coord].TileData.ModeName = modeName;
-                    _hexMap[coord].TileData.SceneName = modeName == "Explore" ? "Explore Scene" : "Gather Scene";
+                    _hexMap[coord].TileData.ModeType = modeType;
+                    if(modeType == ModeType.Explore)
+                    {
+                        _hexMap[coord].TileData.SceneName = "ExploreScene";
+                    }
+                    else if(modeType == ModeType.Gather)
+                    {
+                        _hexMap[coord].TileData.SceneName = "GatherScene";
+                    }
                     //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
                     //int dis = HexDistance(_baseCoord, coord);
                     //int level = GetLevelByDistance(dis);
                     //_hexMap[coord].TileData.Level = level;
 
-                    //if (modeName == "Explore")
+                    //if (modeType == ModeType.Explore)
                     //{
                     //    _hexMap[coord].TileData.SceneName = $"ExploreScene_{level}";
                     //}
-                    //else if (modeName == "Gather")
+                    //else if (modeType == ModeType.Gather)
                     //{
                     //    _hexMap[coord].TileData.SceneName = $"GatherScene_{level}";
                     //}
 
                     candidateCoords.RemoveAt(randomIndex);
+                }
+            }
+
+            if(candidateCoords.Count > 0)
+            {
+                for(int i = 0; i < candidateCoords.Count; i++)
+                {
+                    int random = Random.Range(0, _modeRatio.Count);
+                    if(random == 0)
+                    {
+                        var coord = candidateCoords[i];
+                        _hexMap[coord].TileData.TileType = TileType.Mode;
+                        _hexMap[coord].TileData.ModeType = ModeType.Explore;
+                    }
+                    else if( random == 1)
+                    {
+                        var coord = candidateCoords[i];
+                        _hexMap[coord].TileData.TileType = TileType.Mode;
+                        _hexMap[coord].TileData.ModeType = ModeType.Gather;
+                    }
                 }
             }
         }
@@ -457,6 +514,25 @@ namespace JDG
                 }
             }
             return level;
+        }
+
+        private void AssignNearbyShopTile(Vector2Int bossCoord, List<Vector2Int> candidateCoords)
+        {
+            List<Vector2Int> neighbors = new List<Vector2Int>();
+            neighbors = GetNeighbors(bossCoord);
+            neighbors.Sort((a, b) => HexDistance(_baseCoord, a).CompareTo(HexDistance(_baseCoord, b)));
+
+            foreach (var coord in neighbors)
+            {
+                if(candidateCoords.Contains(coord))
+                {
+                    _hexMap[coord].TileData.TileType = TileType.Event;
+                    _hexMap[coord].TileData.EventType = EventType.Shop;
+                    _bossNearShopCount.Add(coord);
+                    candidateCoords.Remove(coord);
+                    break;
+                }
+            }
         }
     }
 }

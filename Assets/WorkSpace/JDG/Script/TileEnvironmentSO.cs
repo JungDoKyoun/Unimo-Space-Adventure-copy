@@ -9,7 +9,7 @@ namespace JDG
         None
     }
 
-    [CreateAssetMenu(fileName = "TileEnvironmentSO", menuName = "SO/TileEnvironmentSO")]
+    [CreateAssetMenu(fileName = "TileEnvironmentSO", menuName = "SO/TileSO/TileEnvironmentSO")]
     public class TileEnvironmentSO : ScriptableObject
     {
         public EnvironmentType EnvironmentType;
