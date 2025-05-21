@@ -66,8 +66,10 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     public void SaveCurrencyInDataBase() // 전체 재화 저장 >> 버튼 이벤트 함수로 호출
     {
         if (rewardIngameCurrencyField != null) StartCoroutine(UpdateRewardIngameCurrency(int.Parse(rewardIngameCurrencyField.text))); // reward를 인자값으로 주면 해당 값을 더하게 해야됨.
+        else Debug.Log("Ingame empty");
 
         if (rewardMetaCurrencyField != null) StartCoroutine(UpdateRewardMetaCurrency(int.Parse(rewardMetaCurrencyField.text)));
+        else Debug.Log("Meta empty");
     }
 
     // 게임 클리어 실패 시 인게임 재화 초기화

@@ -535,6 +535,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2767921943547648439}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1489841267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1489841268}
+  - component: {fileID: 1489841269}
+  m_Layer: 0
+  m_Name: SceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1489841268
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489841267}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1489841269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489841267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff9e133db528e604fa77c11584e5e347, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1547526204
 GameObject:
   m_ObjectHideFlags: 0
@@ -8860,8 +8904,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 301729513662384365}
-        m_TargetAssemblyTypeName: FirebaseAuthMgr, Assembly-CSharp
+      - m_Target: {fileID: 1489841269}
+        m_TargetAssemblyTypeName: SceneControl, Assembly-CSharp
         m_MethodName: GoToSpaceship
         m_Mode: 1
         m_Arguments:
@@ -14053,6 +14097,7 @@ SceneRoots:
   - {fileID: 1897231627}
   - {fileID: 2767921943547648439}
   - {fileID: 7351045574834921653}
+  - {fileID: 1489841268}
   - {fileID: 6086779803773026300}
   - {fileID: 4616545686055320469}
   - {fileID: 6046802263201166740}
