@@ -38,7 +38,7 @@ namespace JDG
         public string SceneName { get { return _sceneName; } set { _sceneName = value; } }
         public string ModeName { get { return _modeName; } set { _modeName = value; } }
 
-        public Dictionary<string, object> ToDictionary()
+        public Dictionary<string, object> ToDictionary() // TODO: 나중에 계정 별 진행도 저장 시 사용 됨
         {
             return new Dictionary<string, object>
             {
@@ -54,7 +54,7 @@ namespace JDG
             };
         }
 
-        public static TileData FromDictionary(Dictionary<string, object> dict)
+        public static TileData FromDictionary(Dictionary<string, object> dict) // TODO: 나중에 계정 별 진행도 불러올 때 사용 됨
         {
             Vector2Int coord = new Vector2Int(Convert.ToInt32(dict["CoordX"]), Convert.ToInt32(dict["CoordY"]));
             TileType tileType = (TileType)Convert.ToInt32(dict["TileType"]);
