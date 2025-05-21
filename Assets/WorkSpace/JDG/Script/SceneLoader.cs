@@ -56,7 +56,6 @@ namespace JDG
             GameStateManager.Instance.SaveTileStates(_hexGridLayout.HexMap, _hexGridLayout.PlayerCoord);
 
             _currentScene = tile.TileData.SceneName;
-            Debug.Log(_currentScene);
             SceneManager.LoadScene(_currentScene);
         }
 
