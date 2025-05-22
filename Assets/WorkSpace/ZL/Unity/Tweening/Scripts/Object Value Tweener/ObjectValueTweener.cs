@@ -27,58 +27,58 @@ namespace ZL.Unity.Tweening
 
         public float Duration
         {
-            get => valueTweener.Duration;
+            get => ValueTweener.Duration;
 
-            set => valueTweener.Duration = value;
+            set => ValueTweener.Duration = value;
         }
 
         public float Delay
         {
-            get => valueTweener.Delay;
+            get => ValueTweener.Delay;
 
-            set => valueTweener.Delay = value;
+            set => ValueTweener.Delay = value;
         }
 
         public Ease Ease
         {
-            get => valueTweener.Ease;
+            get => ValueTweener.Ease;
 
-            set => valueTweener.Ease = value;
+            set => ValueTweener.Ease = value;
         }
 
         public bool IsIndependentUpdate
         {
-            get => valueTweener.IsIndependentUpdate;
+            get => ValueTweener.IsIndependentUpdate;
 
-            set => valueTweener.IsIndependentUpdate = value;
+            set => ValueTweener.IsIndependentUpdate = value;
         }
 
         public int LoopCount
         {
-            get => valueTweener.LoopCount;
+            get => ValueTweener.LoopCount;
 
-            set => valueTweener.LoopCount = value;
+            set => ValueTweener.LoopCount = value;
         }
 
         public LoopType LoopType
         {
-            get => valueTweener.LoopType;
+            get => ValueTweener.LoopType;
 
-            set => valueTweener.LoopType = value;
+            set => ValueTweener.LoopType = value;
         }
 
         public TweenerCore<T1, T2, TPlugOptions> Current
         {
-            get => valueTweener.Current;
+            get => ValueTweener.Current;
         }
 
         public abstract T1 Value { get; set; }
 
         protected virtual void Awake()
         {
-            valueTweener.Getter = () => Value;
+            ValueTweener.Getter = () => Value;
 
-            valueTweener.Setter = (value) => Value = value;
+            ValueTweener.Setter = (value) => Value = value;
         }
 
         public void SetEase(int value)
@@ -88,7 +88,7 @@ namespace ZL.Unity.Tweening
 
         public virtual TweenerCore<T1, T2, TPlugOptions> Tween(T2 endValue, float duration = -1f)
         {
-            return valueTweener.Tween(endValue, duration);
+            return ValueTweener.Tween(endValue, duration);
         }
     }
 }

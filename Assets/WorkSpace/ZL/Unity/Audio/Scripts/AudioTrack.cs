@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using ZL.CS;
 using ZL.CS.Singleton;
 
 using ZL.Unity.Singleton;
@@ -172,6 +172,11 @@ namespace ZL.Unity.Audio
                     playlistIndex = Random.Range(0, playlist.Length);
 
                     break;
+            }
+
+            if (playlistIndex.IsOutOfRange(0, playlist.Length - 1) == true)
+            {
+                return;
             }
 
             audioSource.clip = playlist[playlistIndex];

@@ -8,7 +8,7 @@ namespace ZL.Unity.Debugging
 
         [SerializeField]
 
-        private bool drawOnSelected = false;
+        private bool drawOnSelected = true;
 
         [Space]
 

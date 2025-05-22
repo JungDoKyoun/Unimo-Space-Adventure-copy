@@ -6,35 +6,40 @@ using ZL.Unity.Phys;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Monster 1")]
+    [AddComponentMenu("ZL/Unimo/Monster 1 (Pooled)")]
 
-    public sealed class Monster1 : Monster, IDamager
+    public sealed class Monster1 : Enemy, IDamager
     {
         private void FixedUpdate()
         {
-            if (MonsterManager.Instance.Target == null)
+            if (Target == null)
             {
                 return;
             }
 
-            if (monsterData.MoveSpeed != 0f)
+            if (isStoped == true)
+            {
+                return;
+            }
+
+            if (rotationSpeed != 0f)
+            {
+                rigidbody.LookTowards(Target, Axis.Y, rotationSpeed);
+            }
+
+            if (enemyData.MoveSpeed != 0f)
             {
                 //rigidbody.MoveTowards(MonsterManager.Instance.Target, monsterData.MoveSpeed);
 
-                var forwardMove = rigidbody.rotation * Vector3.forward * monsterData.MoveSpeed * Time.fixedDeltaTime;
+                var forwardMove = rigidbody.rotation * Vector3.forward * enemyData.MoveSpeed * Time.fixedDeltaTime;
 
                 rigidbody.MovePosition(rigidbody.position + forwardMove);
-            }
-
-            if (lookSpeed != 0f)
-            {
-                rigidbody.LookTowards(MonsterManager.Instance.Target, Axis.Y, lookSpeed);
             }
         }
 
         public void GiveDamage(IDamageable damageable, Vector3 contact)
         {
-            damageable.TakeDamage(monsterData.AttackPower, contact);
+            damageable.TakeDamage(enemyData.AttackPower, contact);
         }
     }
 }

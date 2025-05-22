@@ -4,13 +4,15 @@ using UnityEngine;
 
 using ZL.Unity.Coroutines;
 
+using ZL.Unity.Debugging;
+
 using ZL.Unity.Pooling;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Spawner")]
+    [AddComponentMenu("ZL/Unimo/Object Spawner")]
 
-    public sealed class Spawner : ObjectSpawner<Transform>
+    public sealed class Spawner : MonoBehaviour
     {
         [Space]
 
@@ -30,14 +32,38 @@ namespace ZL.Unity.Unimo
 
         private SpawnPatternData[] spawnPatternDatas = null;
 
+        [Space]
+
+        [SerializeField]
+
+        private float spawnRadius = 0f;
+
+        [Space]
+
+        [SerializeField]
+
+        private Transform[] spawnPoints = null;
+
         private int spawnCount = 0;
+
+        private int SpawnCountMax
+        {
+            get => spawnerData.ObjectCountLimits;
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.red;
+
+            GizmosEx.DrawPolygon(transform.position, spawnRadius, 64);
+        }
 
         private void Start()
         {
-            StartSpawning();
+            StartRandomSpawning();
         }
 
-        public void StartSpawning()
+        public void StartRandomSpawning()
         {
             if (spawnRoutine != null)
             {
@@ -49,7 +75,7 @@ namespace ZL.Unity.Unimo
             StartCoroutine(spawnRoutine);
         }
 
-        public void StopSpawning()
+        public void StopRandomSpawning()
         {
             if (spawnRoutine == null)
             {
@@ -75,30 +101,58 @@ namespace ZL.Unity.Unimo
 
                 while (spawnCount-- > 0)
                 {
-                    SpawnRandom();
+                    if (SpawnCountMax != -1 && this.spawnCount >= SpawnCountMax)
+                    {
+                        break;
+                    }
+
+                    //SpawnRandomPoint();
+
+                    SpawnRandomRange();
                 }
             }
         }
 
-        protected override bool TryCloning(out Transform clone)
+        public void SpawnRandomRange()
         {
-            if (spawnCount >= spawnerData.ObjectCountLimits)
-            {
-                clone = null;
+            var position = Random.insideUnitCircle * spawnRadius;
 
-                return false;
-            }
+            var worldPosition = transform.position + new Vector3(position.x, 0f, position.y);
 
-            ++spawnCount;
-
-            clone = Cloning();
-
-            return true;
+            Spawn(worldPosition, Quaternion.identity);
         }
 
-        protected override Transform Cloning()
+        public void SpawnRandomPoint()
         {
-            return ObjectPoolManager.Instance.Cloning(spawnerData.SpawnObject);
+            Spawn(Random.Range(0, spawnPoints.Length));
+        }
+
+        public void Spawn(int spawnPointIndex)
+        {
+            Spawn(spawnPoints[spawnPointIndex]);
+        }
+
+        private void Spawn(Transform spawnPoint)
+        {
+            Spawn(spawnPoint.position, spawnPoint.rotation);
+        }
+
+        private void Spawn(Vector3 position, Quaternion rotation)
+        {
+            ++spawnCount;
+
+            var clone  = ObjectPoolManager.Instance.Cloning(spawnerData.SpawnObject);
+
+            clone.OnDisableAction += OnDespawn;
+
+            clone.transform.SetPositionAndRotation(position, rotation);
+
+            clone.SetActive(true);
+        }
+
+        private void OnDespawn()
+        {
+            --spawnCount;
         }
     }
 }

@@ -6,16 +6,7 @@ namespace ZL.Unity
 {
     public abstract class OnStopEventTrigger : MonoBehaviour
     {
-        [Space]
-
-        [SerializeField]
-
-        private UnityEvent onStopEvent = null;
-
-        public UnityEvent OnStopEvent
-        {
-            get => onStopEvent;
-        }
+        public abstract UnityEvent OnStopEvent { get; }
 
         protected abstract bool IsStoped { get; }
 
@@ -23,7 +14,7 @@ namespace ZL.Unity
         {
             if (IsStoped == true)
             {
-                onStopEvent.Invoke();
+                OnStopEvent.Invoke();
             }
         }
     }

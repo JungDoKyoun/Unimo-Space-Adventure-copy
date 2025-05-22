@@ -6,9 +6,11 @@ namespace ZL.Unity.Pooling
 {
     [AddComponentMenu("ZL/Pooling/Pooled Object")]
 
-    public class PooledObject : OnDisableEventTrigger
+    public class PooledObject : MonoBehaviour
     {
-        private Action ReturnToPool = null;
+        public event Action OnDisableAction = null;
+
+        private event Action ReturnToPool = null;
 
         public static TClone Instantiate<TClone>(ObjectPool<TClone> pool)
 
@@ -16,12 +18,7 @@ namespace ZL.Unity.Pooling
         {
             var clone = Instantiate(pool.Prefab, pool.Parent);
 
-            if (clone.TryGetComponent<PooledObject>(out var pooledObject) == false)
-            {
-                FixedDebug.LogWarning($"Prefab '{pool.Prefab.name}' being pooled does not have a component of type 'Pooled Object'. We recommend adding it to the prefab to improve performance.");
-
-                pooledObject = clone.AddComponent<PooledObject>();
-            }
+            var pooledObject = clone.GetComponent<PooledObject>();
 
             pooledObject.ReturnToPool = () => pool.Collect(clone);
 
@@ -30,21 +27,23 @@ namespace ZL.Unity.Pooling
 
         #if UNITY_EDITOR
 
-        private void Start()
+        protected virtual void Start()
         {
             if (ReturnToPool == null)
             {
-                FixedDebug.LogWarning($"Game Object '{gameObject.name}' is a 'Pooled Object' but was not created from an'Object Pool'.");
+                FixedDebug.LogWarning($"Game Object '{gameObject.name}' is a 'Pooled Object' but was not created from an 'Object Pool'.");
             }
         }
 
         #endif
 
-        protected override void OnDisable()
+        protected virtual void OnDisable()
         {
-            base.OnDisable();
+            OnDisableAction?.Invoke();
 
-            ReturnToPool();
+            OnDisableAction = null;
+
+            ReturnToPool?.Invoke();
         }
     }
 }

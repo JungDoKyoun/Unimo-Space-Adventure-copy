@@ -7,6 +7,7 @@ public class tempGathering : MonoBehaviour,IGatheringObject
 
     [SerializeField] float hp;
     [SerializeField] float maxHp;
+    [SerializeField] int gatheringPoint;
     //[SerializeField] float minHp;
     public float NowHP
     {
@@ -21,8 +22,8 @@ public class tempGathering : MonoBehaviour,IGatheringObject
 
     public int ActiveCount 
     {
-        get;
-        set;
+        get { return gatheringPoint; }
+        set {  gatheringPoint = value; }
     }
 
     public void BeGathering()
@@ -43,7 +44,7 @@ public class tempGathering : MonoBehaviour,IGatheringObject
 
     public void UseItem()//임시 채집물이라 별거 없음
     {
-        
+        //스테이지 매니저가 있다면 스테이지 매니저에 저장된 채집수 하나 늘리는 기능 -> 그래서 수가 일정 이상이면 스테이지 매니저가 승리 판단 
     }
 
 

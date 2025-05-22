@@ -17,7 +17,7 @@ namespace ZL.Unity
 
             if (drawer.Property.objectReferenceValue == null)
             {
-                drawer.DrawWarningBox($"{NameTag} This field must be assigned.");
+                drawer.DrawErrorBox($"{NameTag} This field must be assigned.");
 
                 return;
             }

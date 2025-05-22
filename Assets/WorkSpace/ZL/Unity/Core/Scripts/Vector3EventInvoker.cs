@@ -40,11 +40,11 @@ namespace ZL.Unity
 
         [SerializeField]
 
-        private UnityEvent<Vector3> @event;
+        private UnityEvent<Vector3> vector3Event;
 
         public void Invoke()
         {
-            @event.Invoke(vector);
+            vector3Event.Invoke(vector);
         }
     }
 }
