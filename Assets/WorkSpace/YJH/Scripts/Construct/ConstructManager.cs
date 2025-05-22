@@ -122,13 +122,7 @@ public class ConstructManager : MonoBehaviour
 
     public void ActiveBuildingEffect()
     {
-        foreach(var t in constructList)
-        {
-            if (t.isBuildConstructed == true)
-            {
-                t.ActiveBuildingEffect();
-            }
-        }
+        
     }
 
 
