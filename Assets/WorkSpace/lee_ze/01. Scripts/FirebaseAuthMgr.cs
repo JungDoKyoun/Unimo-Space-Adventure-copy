@@ -286,9 +286,4 @@ public class FirebaseAuthMgr : MonoBehaviour
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
     }
     #endregion
-
-    public void GoToSpaceship()
-    {
-        SceneManager.LoadScene("Spaceshit");
-    }
 }
