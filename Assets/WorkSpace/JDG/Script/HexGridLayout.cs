@@ -56,13 +56,13 @@ namespace JDG
         {
             if (GameStateManager.IsRestoreMap && GameStateManager.IsClear)
             {
+                SceneLoader.Instance.ClearTile();
                 SceneLoader.Instance.ReturnToWorldMap();
                 return;
             }
 
             else if (!GameStateManager.IsRestoreMap && !GameStateManager.IsClear)
             {
-                Debug.Log("½ÇÇà");
                 CalculateMapOrigin();
                 GenerateConnectedMap();
                 LayoutGrid();
