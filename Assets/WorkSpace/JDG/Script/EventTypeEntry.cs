@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JDG;
 
 namespace JDG
 {
@@ -14,6 +14,6 @@ namespace JDG
     {
         public EventType _eventType;
         [Range(0, 1)] public float _ratio;
-        List<EventDataSO> _eventData;
+        public List<EventDataSO> _eventData;
     }
 }

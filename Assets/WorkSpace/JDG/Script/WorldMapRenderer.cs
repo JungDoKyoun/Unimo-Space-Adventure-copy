@@ -1,4 +1,5 @@
 using UnityEngine;
+using JDG;
 
 namespace JDG
 {
@@ -20,8 +21,6 @@ namespace JDG
             float py = uv.y * texheight;
 
             Vector3 screenPos = new Vector3(px, py, 0);
-            //Vector3 screenPos = new Vector3(px, py, _wolrdCam.nearClipPlane + 0.01f);
-            //Vector3 worldPos = _wolrdCam.ScreenToWorldPoint(screenPos);
 
 
             Ray ray = _wolrdCam.ScreenPointToRay(screenPos);
@@ -41,27 +40,7 @@ namespace JDG
                         _tileSelectionUI.ShowUI(tile, transform.position);
                     }
                 }
-            }
-
-            //Vector2Int coord = _hexGridLayout.GetCoordinateFromPosition(worldPos);
-            //    if (_hexGridLayout.HexMap.ContainsKey(coord))
-            //    {
-            //        Debug.Log($"[DEBUG] Coord 존재함: {coord}");
-            //    }
-            //    else
-            //    {
-            //        Debug.LogWarning($"[DEBUG] Coord {coord} 에 해당하는 타일 없음");
-            //    }
-
-            //    if (_hexGridLayout.TryGetTile(coord, out HexRenderer tile))
-            //    {
-            //        Debug.Log("핸들레이 들어옴2222");
-            //        if (tile.TileData.TileVisibility == TileVisibility.Visible)
-            //        {
-            //            Debug.Log("핸들레이 들어옴");
-            //            _tileSelectionUI.ShowUI(tile, transform.position);
-            //        }
-            //    }
+            } 
         }
     }
 }

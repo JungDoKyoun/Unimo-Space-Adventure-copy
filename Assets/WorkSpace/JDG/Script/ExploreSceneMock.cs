@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using JDG;
 
@@ -18,7 +17,6 @@ namespace JDG
             yield return new WaitForSeconds(5f);
 
             SceneLoader.Instance.ClearTile();
-            SceneLoader.Instance.ReturnToWorldMap();
         }
     }
 }
