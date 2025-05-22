@@ -1,4 +1,5 @@
-using Photon.Realtime;
+using System.Collections;
+
 using UnityEngine;
 
 using ZL.Unity.Directing;
@@ -33,7 +34,7 @@ namespace ZL.Unity.Unimo
 
         private PlayerManager player = null;
 
-        [Space]
+        /*[Space]
 
         [SerializeField]
 
@@ -63,7 +64,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private RandomSpawner gatheringSpawner1 = null;
+        private RandomSpawner gatheringSpawner1 = null;*/
 
         public Transform EnemyTarget { get; private set; } = null;
 
@@ -92,22 +93,41 @@ namespace ZL.Unity.Unimo
 
         private void StageClear()
         {
-            FixedDebug.Log("스테이지 클리어");
+            StartCoroutine(StageClearRoutine());
+        }
 
-            // 인/아웃 게임 재화 획득
-
+        private IEnumerator StageClearRoutine()
+        {
             // UI 등장
 
-            LoadScene("World Map Scene");
+            FixedDebug.Log("스테이지 클리어");
+
+            FadeOut();
+
+            yield return FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(stageData.RewardIngameCurrency);
+
+            yield return FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(stageData.RewardMetaCurrency);
+
+            FixedSceneManager.LoadScene(this, fadeDuration, "World Map Scene");
         }
 
         private void StageFail()
         {
+            StartCoroutine(StageFailRoutine());
+        }
+
+        private IEnumerator StageFailRoutine()
+        {
+            // UI 등장
+
             FixedDebug.Log("스테이지 실패");
 
-            // 사망 시 인게임 재화 초기화
+            FadeOut();
 
-            LoadScene("World Map Scene");
+            // 사망 시 인게임 재화 초기화
+            yield return FirebaseDataBaseMgr.Instance.InitIngameCurrency();
+
+            FixedSceneManager.LoadScene(this, fadeDuration, "Station");
         }
     }
 }
