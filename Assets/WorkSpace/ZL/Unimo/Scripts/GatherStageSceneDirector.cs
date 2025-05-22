@@ -108,7 +108,7 @@ namespace ZL.Unity.Unimo
 
             yield return FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(stageData.RewardMetaCurrency);
 
-            FixedSceneManager.LoadScene(this, fadeDuration, "World Map Scene");
+            FixedSceneManager.LoadScene(this, fadeDuration, "Station");
         }
 
         private void StageFail()

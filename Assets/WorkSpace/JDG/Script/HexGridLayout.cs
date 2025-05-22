@@ -379,11 +379,11 @@ namespace JDG
                     _hexMap[coord].TileData.ModeType = modeType;
                     if(modeType == ModeType.Explore)
                     {
-                        _hexMap[coord].TileData.SceneName = "ExploreScene";
+                        _hexMap[coord].TileData.SceneName = "Explore Stage Scene";
                     }
                     else if(modeType == ModeType.Gather)
                     {
-                        _hexMap[coord].TileData.SceneName = "GatherScene";
+                        _hexMap[coord].TileData.SceneName = "Gather Stage Scene";
                     }
                     //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
                     //int dis = HexDistance(_baseCoord, coord);
