@@ -104,6 +104,10 @@ public class ConstructManager : MonoBehaviour
 
 
     }
+    public void DeActiveBuildInfoPanel()
+    {
+        buildingInfoPanel.SetActive(false);
+    }
     public void DecideCanBuild(ConstructBase buildingInfo)
     {
         if (buildingInfo.TryConstruct() == false)
@@ -115,15 +119,9 @@ public class ConstructManager : MonoBehaviour
             buildInfoBuildButton.interactable = true;
         }
     }
-    public void TryConstruct()
-    {
+    
 
-    }
-
-    public void ActiveBuildingEffect()
-    {
-        
-    }
+    
 
 
 }
