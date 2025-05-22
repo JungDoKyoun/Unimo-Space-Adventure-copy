@@ -2973,7 +2973,7 @@ MonoBehaviour:
   _displayImage: {fileID: 270448543}
   _displayText: {fileID: 511546083}
   _rewardParent: {fileID: 1984842942}
-  _rewardPrefab: {fileID: 6694945402382355340, guid: 63e8136b551f1f94c8c7921d98e9b998, type: 3}
+  _rewardPrefab: {fileID: 1172204143792327258, guid: 63e8136b551f1f94c8c7921d98e9b998, type: 3}
   _actionButton: {fileID: 877766420}
   _actionButtonName: {fileID: 1039044691}
   _offSet: {x: 0, y: 0, z: -0.5}
@@ -3138,6 +3138,7 @@ GameObject:
   - component: {fileID: 616737638}
   - component: {fileID: 616737637}
   - component: {fileID: 616737636}
+  - component: {fileID: 616737640}
   m_Layer: 5
   m_Name: MiniMapCanvas
   m_TagString: Untagged
@@ -3228,6 +3229,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 3.3373, y: 4.1836}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &616737640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616737635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &622798853
 GameObject:
   m_ObjectHideFlags: 0
@@ -8315,14 +8335,7 @@ MonoBehaviour:
   _bossDistance: 040000000800000014000000
   _bossCountPerCircle: 3
   _bossMinGapByDistance: 040000000600000008000000
-  _eventTileConfig:
-    _eventTileRatio: 0.15
-    _eventMinDistance: 2
-    _eventTypes:
-    - _eventType: 0
-      _ratio: 0.5
-    - _eventType: 1
-      _ratio: 0.5
+  _eventTileConfig: {fileID: 11400000, guid: b84d769fdaefa154b8cde2d11b4ded66, type: 2}
   _vRPlayerInput: {fileID: 1591904289}
   _playerPrefab: {fileID: 97310487267514807, guid: 79abe35477413ab44acda40f3fa9ba90, type: 3}
   _viewRange: 100

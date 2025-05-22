@@ -62,9 +62,11 @@ namespace JDG
 
             else if (!GameStateManager.IsRestoreMap && !GameStateManager.IsClear)
             {
+                Debug.Log("½ÇÇà");
                 CalculateMapOrigin();
                 GenerateConnectedMap();
                 LayoutGrid();
+                return;
             }
         }
 
