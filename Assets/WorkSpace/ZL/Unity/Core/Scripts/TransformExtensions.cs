@@ -278,7 +278,7 @@ namespace ZL.Unity
 
         public static void SetRotationRandom(this Transform instance)
         {
-            instance.rotation = Quaternion.Euler(RandomEx.Angles());
+            instance.rotation = Quaternion.Euler(RandomEx.EulerAngles());
         }
 
         public static void SetLocalRotationRandom(this Transform instance, in Vector3 min, in Vector3 max)
@@ -288,7 +288,7 @@ namespace ZL.Unity
 
         public static void SetLocalRotationRandom(this Transform instance)
         {
-            instance.localRotation = Quaternion.Euler(RandomEx.Angles());
+            instance.localRotation = Quaternion.Euler(RandomEx.EulerAngles());
         }
 
         public static TComponent GetLastChild<TComponent>(this Transform instance)

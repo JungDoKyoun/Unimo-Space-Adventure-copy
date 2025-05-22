@@ -4,9 +4,9 @@ using ZL.Unity.IO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {
-    [CreateAssetMenu(menuName = "ZL/Unimo/Enemy Data Sheet", fileName = "Enemy Data Sheet")]
+    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Enemy Data Sheet", fileName = "Enemy Data Sheet")]
 
-    public sealed class EnemyDataSheet : ScriptableSheet<EnemyData>
+    public sealed class EnemyDataSheet : ScriptableGoogleSheet<EnemyData>
     {
 
     }

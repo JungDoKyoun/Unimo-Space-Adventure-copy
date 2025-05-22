@@ -8,6 +8,8 @@ using TMPro;
 
 public class FirebaseDataBaseMgr : MonoBehaviour
 {
+    public static FirebaseDataBaseMgr Instance { get; private set; }
+
     DatabaseReference dbRef;
 
     FirebaseUser user;
@@ -25,6 +27,22 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI rewardMetaCurrencyText;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+
+            return;
+        }
+        else
+        {
+            Instance = this;
+
+            DontDestroyOnLoad(gameObject);
+        }
+    }
 
     private IEnumerator Start()
     {
@@ -51,7 +69,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private IEnumerator ShowUserIngameCurrency()
     {
-        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").GetValueAsync();
+        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardIngameCurrency").GetValueAsync();
 
         yield return new WaitUntil(predicate: () => getTask.IsCompleted);
 
@@ -73,9 +91,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     }
 
     // 게임 클리어 실패 시 인게임 재화 초기화
-    private IEnumerator InitIngameCurrency()
+    public IEnumerator InitIngameCurrency()
     {
-        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").SetValueAsync(0);
+        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardIngameCurrency").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => getTask.IsCompleted);
     }
@@ -85,11 +103,11 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     /// </summary>
     /// <param name="ingameCurrencyToAdd"></param>
     /// <returns></returns>
-    private IEnumerator UpdateRewardIngameCurrency(int ingameCurrencyToAdd) // Ingame 재화 저장 함수(더할 값)
+    public IEnumerator UpdateRewardIngameCurrency(int ingameCurrencyToAdd) // Ingame 재화 저장 함수(더할 값)
     {
         int tempIngameCurrency = 0;
 
-        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").GetValueAsync(); // 현재 인게임 재화 불러오기
+        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardIngameCurrency").GetValueAsync(); // 현재 인게임 재화 불러오기
 
         yield return new WaitUntil(predicate: () => getTask.IsCompleted);
 
@@ -107,7 +125,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         int newIngameCurrency = tempIngameCurrency + ingameCurrencyToAdd; // 재화 최신화
 
-        var DBTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").SetValueAsync(newIngameCurrency); // 최신화 된 재화 DB 저장
+        var DBTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardIngameCurrency").SetValueAsync(newIngameCurrency); // 최신화 된 재화 DB 저장
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
@@ -128,7 +146,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private IEnumerator ShowUserMetaCurrency()
     {
-        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardMetaCurrency").GetValueAsync();
+        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardMetaCurrency").GetValueAsync();
 
         yield return new WaitUntil(predicate: () => getTask.IsCompleted);
 
@@ -145,11 +163,11 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     /// </summary>
     /// <param name="metaCurrencyToAdd"></param>
     /// <returns></returns>
-    private IEnumerator UpdateRewardMetaCurrency(int metaCurrencyToAdd) // Meta 재화 저장 함수(더할 값)
+    public IEnumerator UpdateRewardMetaCurrency(int metaCurrencyToAdd) // Meta 재화 저장 함수(더할 값)
     {
         int tempMetaCurrency = 0;
 
-        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardMetaCurrency").GetValueAsync(); // 현재 메타 재화 불러오기
+        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardMetaCurrency").GetValueAsync(); // 현재 메타 재화 불러오기
 
         yield return new WaitUntil(predicate: () => getTask.IsCompleted);
 
@@ -167,7 +185,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         int newMetaCurrency = tempMetaCurrency + metaCurrencyToAdd; // 재화 최신화
 
-        var DBTask = dbRef.Child("users").Child(user.UserId).Child("rewardMetaCurrency").SetValueAsync(newMetaCurrency);
+        var DBTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardMetaCurrency").SetValueAsync(newMetaCurrency);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
