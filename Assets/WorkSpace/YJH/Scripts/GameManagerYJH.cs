@@ -89,7 +89,7 @@ public partial class GameManager : MonoBehaviour
         playerStatus.playerDamage += damageSum;
         playerStatus.itemDetectionRange += gatherRangeSum;
 
-
+        
 
 
 

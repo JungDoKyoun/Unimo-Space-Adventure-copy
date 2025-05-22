@@ -92,17 +92,20 @@ public partial class PlayerManager
     private TMP_Text skillRejectText;
 
     private bool isSkillRejectActive = false;
+    private bool isItemNear = false;
 
+    [SerializeField]
+    private SphereCollider detectCollider;
     public void ActionStart()
     {
         gatheringAudioSource.clip = gatheringAudioClip;
 
-        StartDetectItem();
+        //StartDetectItem();
 
         //StartFindEnemy();
 
         OnTargetObjectSet += GatheringItem;
-
+        detectCollider.radius=itemDetectionRange;
         SetAttackType(attackPrefab);
 
         if(playerSpellType != null)
@@ -131,6 +134,10 @@ public partial class PlayerManager
     public void ActionUpdate()
     {
         playerSpellType.UpdateTime();
+        if (isItemNear == true)
+        {
+            FindItemUpdate();
+        }
     }
 
     public void StartDetectItem()
@@ -336,6 +343,109 @@ public partial class PlayerManager
         gatheringEffect.SetActive(false);
     }
 
+    private void FindItemUpdate()
+    {
+        
+
+            if (targetObject == null)
+            {
+                //Debug.Log("null");
+
+                isGathering = false;
+
+                //gatheringEffect.SetActive(false);
+            }
+
+            else
+            {
+                //Debug.Log(Vector3.Distance(transform.position, targetObject.transform.position));
+
+                if (Vector3.Distance(transform.position, targetObject.transform.position) > itemDetectionRange + float.Epsilon)
+                {
+                    isGathering = false;
+
+                    targetObject = null;
+
+                    //gatheringEffect.SetActive(false);
+                }
+            }
+
+            if (isGathering == false && playerSpellType.ReturnState() == false)
+            {
+                
+
+                Collider[] detectedColliders = Physics.OverlapSphere(transform.position, itemDetectionRange, itemLayerMask);
+
+                if (detectedColliders.Length > 0)
+                {
+                    float distance = float.MaxValue;
+
+                    foreach (Collider collider in detectedColliders)
+                    {
+                        //감지된 콜라이더와의 거리
+                        float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);
+
+                        //1.거리 비교 조건
+                        if (distance > distanceBetween)
+                        {
+                            distance = distanceBetween;
+
+                            targetObject = collider.gameObject;
+                        }
+
+                        else if (distance == distanceBetween)
+                        {
+                            if (targetObject != null)
+                            {
+                                //var targetScript = targetObject.GetComponent<IGatheringObject>();
+
+                                var targetScript = targetObject.GetComponent<Gathering>();
+
+                                //var colliderScript = collider.GetComponent<IGatheringObject>();
+
+                                var colliderScript = collider.GetComponent<Gathering>();
+
+                                //2. 체력 비교 조건
+                                if (targetScript.CurrentHealth > colliderScript.CurrentHealth)
+                                {
+                                    targetObject = collider.gameObject;
+                                }
+
+                                //3. 등급 비교 조건
+                                else if (targetScript.CurrentHealth == colliderScript.CurrentHealth)
+                                {
+                                    //if (targetScript.MaxHealth < colliderScript.MaxHealth)
+
+                                    if (targetScript.GatheringData.MaxHealth < colliderScript.GatheringData.MaxHealth)
+                                    {
+                                        targetObject = collider.gameObject;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    isGathering = true;
+
+                    if (targetObject != null)
+                    {
+                        ActiveGatheringBeam();
+                    }
+
+                    OnTargetObjectSet?.Invoke();
+                }
+
+                else
+                {
+                    isGathering = false;
+
+                    DeactiveGatheringBeam();
+
+                    targetObject = null;
+                }
+            }
+        
+    }
     private IEnumerator FindItem()
     {
         while (true)
@@ -473,9 +583,9 @@ public partial class PlayerManager
 
             //targetScript.CurrentHealth -= gatheringSpeed;
 
-            targetScript.TakeDamage(gatheringSpeed);
+            targetScript?.TakeDamage(gatheringSpeed);
 
-            if(targetScript.CurrentHealth <= 0f)
+            if(targetScript?.CurrentHealth <= 0f)
             {
                 //targetScript.OnGatheringEnd();
 
