@@ -51,7 +51,6 @@ namespace JDG
             var env = TileEnvironmentManager.Instance.GetEnvironmentInfo(tile.TileData.EnvironmentType);
             var display = TileDisplayInfoManager.Instance.GetDisplayInfo(tile.TileData.TileType, tile.TileData.ModeType);
             var rewards = RewardManager.Instance.GetTileRewardRuleSO(tile.TileData.TileType, tile.TileData.ModeType);
-
             if (env != null)
             {
                 _envImage.sprite = env.EnviromentIcon;
@@ -82,11 +81,11 @@ namespace JDG
 
             if (tile.TileData.IsCleared || tile.TileData.TileType == TileType.Event || tile.TileData.TileType == TileType.Base)
             {
-                _actionButtonName.text = "Move";
+                _actionButtonName.text = "이동";
             }
             else
             {
-                _actionButtonName.text = "Play";
+                _actionButtonName.text = "시작";
             }
         }
 
