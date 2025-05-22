@@ -8,18 +8,11 @@ public class ItemDetectionRange : BuildEffect
     public float gatheringRange;
     public float gatheringRangePercent;
 
-    public override void ApplyBuildEffect()
+    
+    
+    public override float ReturnFinalStat(float baseStat)
     {
-        playerStatus.itemDetectionRange += gatheringRange;
-        if (playerStatus.itemDetectionRange < 0)
-        {
-            playerStatus.itemDetectionRange = 0;
-        }
+        return baseStat * gatheringRangePercent / 100 + gatheringRange;
     }
-    public override void SetPlayerStatus(PlayerStatus status)
-    {
-        playerStatus = status;
-    }
-
 
 }

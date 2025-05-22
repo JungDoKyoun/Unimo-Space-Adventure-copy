@@ -57,4 +57,17 @@ public partial class PlayerManager
             Destroy(other.gameObject);
         }
     }
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Gathering"))
+        {
+            isItemNear = true;
+        }
+        else
+        {
+            isItemNear = false;
+        }
+    }
+
+
 }

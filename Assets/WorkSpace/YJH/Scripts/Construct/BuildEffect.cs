@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class BuildEffect :ScriptableObject
+public class BuildEffect :ScriptableObject,IStatModifier
 {
-    public PlayerStatus playerStatus= new PlayerStatus();
-    public virtual void ApplyBuildEffect()
+    
+    
+
+    public virtual float ReturnFinalStat(float baseStat)
     {
-
+        return baseStat;
     }
-    public virtual void SetPlayerStatus(PlayerStatus status)
-    {
-
-    }
-
-
-
 }

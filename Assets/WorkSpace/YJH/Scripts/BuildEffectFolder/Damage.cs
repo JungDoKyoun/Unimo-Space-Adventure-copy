@@ -7,12 +7,10 @@ public class Damage : BuildEffect
 {
     public float damage;
     public float damagePercent;
-    public override void ApplyBuildEffect()
+    
+    
+    public override float ReturnFinalStat(float baseStat)
     {
-        playerStatus.playerDamage += damage;
-    }
-    public override void SetPlayerStatus(PlayerStatus status)
-    {
-        playerStatus = status;
+        return baseStat * damagePercent / 100 + damage;
     }
 }

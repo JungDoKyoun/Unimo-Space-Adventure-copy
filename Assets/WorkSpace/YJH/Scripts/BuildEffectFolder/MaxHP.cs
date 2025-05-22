@@ -8,12 +8,10 @@ public class MaxHp : BuildEffect
     public float hp;
     public float hpPercent;
 
-    public override void ApplyBuildEffect()
+    
+    
+    public override float ReturnFinalStat(float baseStat)
     {
-        playerStatus.maxHP += hp;
-    }
-    public override void SetPlayerStatus(PlayerStatus status)
-    {
-        playerStatus = status;
+        return baseStat * hpPercent / 100 + hp;
     }
 }

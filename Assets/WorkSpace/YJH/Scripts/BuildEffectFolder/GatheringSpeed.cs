@@ -8,14 +8,11 @@ public class GatheringSpeed : BuildEffect
     public float gatheringSpeed;
     public float gatheringSpeedPercent;
 
-    public override void ApplyBuildEffect()
-    {
-        playerStatus.gatheringSpeed += gatheringSpeed;
-    }
+    
 
-    public override void SetPlayerStatus(PlayerStatus status)
+    
+    public override float ReturnFinalStat(float baseStat)
     {
-        playerStatus = status;
+        return baseStat * gatheringSpeedPercent / 100 + gatheringSpeed;
     }
-
 }

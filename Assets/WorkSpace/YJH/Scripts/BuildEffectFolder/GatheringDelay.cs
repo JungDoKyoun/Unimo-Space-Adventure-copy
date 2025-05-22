@@ -8,14 +8,11 @@ public class GatheringDelay : BuildEffect
     public float gatheringDelay;
     public float gatheringDelayPercent;
 
-    public override void ApplyBuildEffect()
-    {
-        playerStatus.gatheringDelay += gatheringDelay;
-    }
+   
 
-    public override void SetPlayerStatus(PlayerStatus status)
+    
+    public override float ReturnFinalStat(float baseStat)
     {
-        playerStatus = status;
+        return baseStat * gatheringDelayPercent / 100 + gatheringDelay;
     }
-
 }

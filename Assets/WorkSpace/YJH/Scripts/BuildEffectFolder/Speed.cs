@@ -7,13 +7,11 @@ public class Speed :BuildEffect
 {
     public float speed;
     public float speedPercent;
-    public override void ApplyBuildEffect()
+    
+    
+    public override float ReturnFinalStat(float baseStat)
     {
-        playerStatus.moveSpeed += speed;
-    }
-    public override void SetPlayerStatus(PlayerStatus status)
-    {
-       playerStatus = status;
+        return baseStat * speedPercent / 100 + speed;
     }
 }
 
