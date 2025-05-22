@@ -1,89 +1,81 @@
-using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using JDG;
+    using System.Collections;
+    using UnityEngine;
+    using UnityEngine.SceneManagement;
+    using JDG;
 
-namespace JDG
-{
-    public class SceneLoader : MonoBehaviour
+    namespace JDG
     {
-        private static SceneLoader _instance;
-        private string _wordMapScene = "World Map Scene";
-        private string _currentScene;
-        private TileData _choseTileData;
-        private HexGridLayout _hexGridLayout;
-        private PlayerController _playerController;
-
-        private void Awake()
+        public class SceneLoader : MonoBehaviour
         {
-            if (_instance == null)
+            private static SceneLoader _instance;
+            private string _wordMapScene = "World Map Scene";
+            private string _currentScene;
+            private TileData _choseTileData;
+            private HexGridLayout _hexGridLayout;
+            private PlayerController _playerController;
+
+            private void Awake()
             {
-                _instance = this;
-                DontDestroyOnLoad(gameObject);
-                SceneManager.sceneLoaded += OnSceneLoaded;
+                if (_instance == null)
+                {
+                    _instance = this;
+                    DontDestroyOnLoad(gameObject);
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
             }
-            else
+
+            public TileData ChoseTileData { get { return _choseTileData; } }
+
+            public static SceneLoader Instance
             {
-                Destroy(gameObject);
+                get
+                {
+                    return _instance;
+                }
             }
-        }
 
-        public TileData ChoseTileData { get { return _choseTileData; } }
-
-        private void OnDestroy()
-        {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-        }
-
-        public static SceneLoader Instance
-        {
-            get
+            public void Init(HexGridLayout hexGrid, PlayerController playerController)
             {
-                return _instance;
+                _hexGridLayout = hexGrid;
+                _playerController = playerController;
             }
-        }
 
-        public void Init(HexGridLayout hexGrid, PlayerController playerController)
-        {
-            _hexGridLayout = hexGrid;
-            _playerController = playerController;
-        }
-
-        public void EnterTileScene(HexRenderer tile)
-        {
-            _choseTileData = tile.TileData;
-            GameStateManager.Instance.SaveTileStates(_hexGridLayout.HexMap, _hexGridLayout.PlayerCoord);
-
-            _currentScene = tile.TileData.SceneName;
-            SceneManager.LoadScene(_currentScene);
-        }
-
-        public void ReturnToWorldMap()
-        {
-            _currentScene = _wordMapScene;
-            SceneManager.LoadScene(_currentScene);
-        }
-
-        public TileData GetChoseTile()
-        {
-            return _choseTileData;
-        }
-
-        public void ClearTile()
-        {
-            if(_choseTileData != null)
+            public void EnterTileScene(HexRenderer tile)
             {
-                _choseTileData.IsCleared = true;
-                GameStateManager.Instance.UpdateTileState(_choseTileData);
-            }
-        }
+                _choseTileData = tile.TileData;
+                GameStateManager.Instance.SaveTileStates(_hexGridLayout.HexMap, _hexGridLayout.PlayerCoord);
 
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-        {
-            if(scene.name == _wordMapScene)
+                _currentScene = tile.TileData.SceneName;
+                SceneManager.LoadScene(_currentScene);
+            }
+
+            //public void ReturnToWorldMap()
+            //{
+            //    _currentScene = _wordMapScene;
+            //    SceneManager.LoadScene(_currentScene);
+            //}
+
+            public TileData GetChoseTile()
+            {
+                return _choseTileData;
+            }
+
+            public void ClearTile()
+            {
+                if(_choseTileData != null)
+                {
+                    _choseTileData.IsCleared = true;
+                    GameStateManager.Instance.UpdateTileState(_choseTileData);
+                }
+            }
+
+            public void ReturnToWorldMap()
             {
                 var stateManager = GameStateManager.Instance;
-                if(stateManager.IsRestoreMap)
+                if (stateManager.IsRestoreMap)
                 {
                     if (stateManager.TileSaveData != null && stateManager.TileSaveData.Count > 0)
                     {
@@ -95,18 +87,17 @@ namespace JDG
                     }
                 }
             }
-        }
 
-        private IEnumerator MoveToClearedTile()
-        {
-            yield return null;
-
-            if (_choseTileData != null && _choseTileData.IsCleared)
+            private IEnumerator MoveToClearedTile()
             {
-                Vector3 targetPos = _hexGridLayout.GetPositionForHexFromCoordinate(_choseTileData.Coord);
-                _playerController.MoveTo(targetPos);
-                GameStateManager.Instance.ResetIsRestoreMap();
+                yield return null;
+
+                if (_choseTileData != null && _choseTileData.IsCleared)
+                {
+                    Vector3 targetPos = _hexGridLayout.GetPositionForHexFromCoordinate(_choseTileData.Coord);
+                    _playerController.MoveTo(targetPos);
+                    GameStateManager.Instance.ResetIsRestoreMap();
+                }
             }
         }
     }
-}

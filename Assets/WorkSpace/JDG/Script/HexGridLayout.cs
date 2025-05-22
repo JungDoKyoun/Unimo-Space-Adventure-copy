@@ -54,12 +54,18 @@ namespace JDG
 
         private void Start()
         {
-            if (GameStateManager.Instance.IsRestoreMap)
+            if (GameStateManager.Instance.IsRestoreMap && GameStateManager.Instance.IsClear)
+            {
+                SceneLoader.Instance.ReturnToWorldMap();
                 return;
+            }
 
-            CalculateMapOrigin();
-            GenerateConnectedMap();
-            LayoutGrid();
+            else if (!GameStateManager.Instance.IsRestoreMap && !GameStateManager.Instance.IsClear)
+            {
+                CalculateMapOrigin();
+                GenerateConnectedMap();
+                LayoutGrid();
+            }
         }
 
         public Dictionary<Vector2Int, HexRenderer> HexMap { get { return _hexMap; } }

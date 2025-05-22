@@ -17,7 +17,6 @@ namespace JDG
             yield return new WaitForSeconds(5f);
 
             SceneLoader.Instance.ClearTile();
-            SceneLoader.Instance.ReturnToWorldMap();
         }
     }
 }
