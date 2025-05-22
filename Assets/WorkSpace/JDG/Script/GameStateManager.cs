@@ -10,8 +10,8 @@ namespace JDG
         private static GameStateManager _instance;
         private Dictionary<Vector2Int, TileData> _tileSaveData = new Dictionary<Vector2Int, TileData>();
         private Vector2Int _playerCoord;
-        private bool _isRestoreMap = false;
-        private bool _isClear = false;
+        private static bool _isRestoreMap = false;
+        private static bool _isClear = false;
 
         private void Awake()
         {
@@ -35,8 +35,8 @@ namespace JDG
         }
         public Dictionary<Vector2Int, TileData> TileSaveData { get { return _tileSaveData; } }
         public Vector2Int PlayerCoord { get { return _playerCoord; } }
-        public bool IsRestoreMap { get { return _isRestoreMap; } set { _isRestoreMap = value; } }
-        public bool IsClear { get { return _isClear; } set { _isClear = value; } }
+        public static bool IsRestoreMap { get { return _isRestoreMap; } set { _isRestoreMap = value; } }
+        public static bool IsClear { get { return _isClear; } set { _isClear = value; } }
 
         public void SaveTileStates(Dictionary<Vector2Int, HexRenderer> tileData, Vector2Int playerCoord)
         {

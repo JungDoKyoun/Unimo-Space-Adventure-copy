@@ -75,7 +75,7 @@
             public void ReturnToWorldMap()
             {
                 var stateManager = GameStateManager.Instance;
-                if (stateManager.IsRestoreMap)
+                if (GameStateManager.IsRestoreMap)
                 {
                     if (stateManager.TileSaveData != null && stateManager.TileSaveData.Count > 0)
                     {

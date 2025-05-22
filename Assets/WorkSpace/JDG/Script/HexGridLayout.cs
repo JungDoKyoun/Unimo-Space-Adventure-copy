@@ -54,13 +54,13 @@ namespace JDG
 
         private void Start()
         {
-            if (GameStateManager.Instance.IsRestoreMap && GameStateManager.Instance.IsClear)
+            if (GameStateManager.IsRestoreMap && GameStateManager.IsClear)
             {
                 SceneLoader.Instance.ReturnToWorldMap();
                 return;
             }
 
-            else if (!GameStateManager.Instance.IsRestoreMap && !GameStateManager.Instance.IsClear)
+            else if (!GameStateManager.IsRestoreMap && !GameStateManager.IsClear)
             {
                 CalculateMapOrigin();
                 GenerateConnectedMap();

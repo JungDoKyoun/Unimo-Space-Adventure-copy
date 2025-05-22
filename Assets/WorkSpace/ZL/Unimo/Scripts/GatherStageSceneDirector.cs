@@ -2,6 +2,8 @@ using System.Collections;
 
 using UnityEngine;
 
+using JDG;
+
 using ZL.Unity.Directing;
 
 namespace ZL.Unity.Unimo
@@ -104,6 +106,8 @@ namespace ZL.Unity.Unimo
 
             FadeOut();
 
+            GameStateManager.IsClear = true;
+
             yield return FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(stageData.RewardIngameCurrency);
 
             yield return FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(stageData.RewardMetaCurrency);
@@ -123,6 +127,10 @@ namespace ZL.Unity.Unimo
             FixedDebug.Log("스테이지 실패");
 
             FadeOut();
+
+            GameStateManager.IsRestoreMap = false;
+
+            GameStateManager.IsClear = false;
 
             // 사망 시 인게임 재화 초기화
             yield return FirebaseDataBaseMgr.Instance.InitIngameCurrency();
