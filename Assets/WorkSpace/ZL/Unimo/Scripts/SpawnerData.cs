@@ -8,9 +8,9 @@ using ZL.Unity.IO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {
-    [CreateAssetMenu(menuName = "ZL/Unimo/Spawner Data", fileName = "Spawner Data")]
+    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Spawner Data", fileName = "Spawner Data")]
 
-    public sealed class SpawnerData : ScriptableSheetData
+    public sealed class SpawnerData : ScriptableGoogleSheetData
     {
         [Space]
 

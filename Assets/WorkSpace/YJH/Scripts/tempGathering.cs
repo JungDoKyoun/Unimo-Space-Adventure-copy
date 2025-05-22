@@ -1,28 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class tempGathering : MonoBehaviour,IGatheringObject
+public class tempGathering : MonoBehaviour, IGatheringObject
 {
+    [SerializeField]
+    
+    private float hp;
 
-    [SerializeField] float hp;
-    [SerializeField] float maxHp;
-    [SerializeField] int gatheringPoint;
-    //[SerializeField] float minHp;
-    public float NowHP
+    [SerializeField]
+
+    private float maxHp;
+
+    [SerializeField]
+
+    private int gatheringPoint;
+
+    public float CurrentHealth
     {
         get { return hp; }
+
         set { hp = value; }
     }
-    public float MaxHP
+
+    public float MaxHealth
     {
         get { return maxHp; }
-
     }
 
     public int ActiveCount 
     {
         get { return gatheringPoint; }
+
         set {  gatheringPoint = value; }
     }
 
@@ -34,6 +41,7 @@ public class tempGathering : MonoBehaviour,IGatheringObject
     public void OnGatheringEnd()
     {
         UseItem();
+
         Destroy(gameObject);
     }
 
@@ -46,12 +54,4 @@ public class tempGathering : MonoBehaviour,IGatheringObject
     {
         //스테이지 매니저가 있다면 스테이지 매니저에 저장된 채집수 하나 늘리는 기능 -> 그래서 수가 일정 이상이면 스테이지 매니저가 승리 판단 
     }
-
-
-    // Start is called before the first frame update
-
-
-
-
-
 }

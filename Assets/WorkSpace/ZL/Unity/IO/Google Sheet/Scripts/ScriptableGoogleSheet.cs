@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace ZL.Unity.IO.GoogleSheet
 {
-    public abstract class ScriptableSheet<TSheetData> : ScriptableObject
+    public abstract class ScriptableGoogleSheet<TGoogleSheetData> : ScriptableObject
 
-        where TSheetData : ISheetData
+        where TGoogleSheetData : IGoogleSheetData
     {
         [Space]
 
         [SerializeField]
 
-        private ScriptableSheetConfig sheetConfig = null;
+        private ScriptableGoogleSheetConfig sheetConfig = null;
 
         [Space]
 
@@ -34,7 +34,7 @@ namespace ZL.Unity.IO.GoogleSheet
 
         [SerializeField]
 
-        private TSheetData[] datas = null;
+        private TGoogleSheetData[] datas = null;
 
         private int requestCount = 0;
 

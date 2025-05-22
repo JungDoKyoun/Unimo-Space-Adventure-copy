@@ -261,17 +261,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   attackPrefab: {fileID: 7503936081269918129, guid: 07c22d31208dbd6418c693b8554433d7, type: 3}
+  fireRate: 0.3
+  skillRejectText: {fileID: 0}
   playerCharacterBody: {fileID: 7265882205627089676}
   moveSoundSource: {fileID: 1784417401385593923}
   moveSoundClip: {fileID: 8300000, guid: c4ef33583abe07741ab9b30329cfd6b5, type: 3}
   isMoveSoundPlay: 0
   moveSpeed: 4
-  pushSpeed: 3
+  baseSpeed: 4
   rotateSpeed: 10
   isGathering: 0
   isStunning: 0
   canMove: 1
-  currentHealth: 300
+  currentHealth: 10
+  maxHP: 10
   onHitTime: 1
   onHitBlinkTime: 0.5
   cartRenderer: {fileID: 6459899133926012848}
@@ -280,6 +283,14 @@ MonoBehaviour:
   playerDamage: 5
   hitEffect: {fileID: 3765730885004938929}
   mainCollider: {fileID: 3124590143941777458}
+  playerStatus:
+    currentHealth: 0
+    maxHP: 0
+    playerDamage: 0
+    itemDetectionRange: 0
+    gatheringSpeed: 0
+    gatheringDelay: 0
+    moveSpeed: 0
 --- !u!82 &1784417401385593923
 AudioSource:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ namespace ZL.Unity
             };
         }
 
-        public static Vector3 Angles()
+        public static Vector3 EulerAngles()
         {
             return new Vector3()
             {
@@ -32,7 +32,7 @@ namespace ZL.Unity
             };
         }
 
-        public static bool Toss(float probability = 0.5f)
+        public static bool DrawLots(float probability = 0.5f)
         {
             return Random.value <= probability;
         }

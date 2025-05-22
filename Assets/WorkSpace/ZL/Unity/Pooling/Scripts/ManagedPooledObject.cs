@@ -2,9 +2,7 @@ using ZL.Unity.Collections;
 
 namespace ZL.Unity.Pooling
 {
-    public abstract class ManagedPooledObject<TKey, TValue> : PooledObject, IKeyValuePair<TKey, TValue>
-
-        where TValue : ManagedPooledObject<TKey, TValue>
+    public abstract class ManagedPooledObject<TKey> : PooledObject, IKeyValuePair<TKey, ManagedPooledObject<TKey>>
     {
         private TKey key;
 
@@ -15,21 +13,14 @@ namespace ZL.Unity.Pooling
             set => key = value;
         }
 
-        private TValue value;
-
-        public TValue Value
+        public ManagedPooledObject<TKey> Value
         {
-            get => value;
+            get => this;
 
             set
             {
 
             }
-        }
-
-        private void Awake()
-        {
-            value = (TValue)this;
         }
     }
 }
