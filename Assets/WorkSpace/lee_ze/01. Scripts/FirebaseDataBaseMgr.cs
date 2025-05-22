@@ -59,7 +59,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         {
             // 여기에 디스플레이
 
-            rewardIngameCurrencyText.text = "InGame Currency: " + savedValue.ToString();
+            rewardIngameCurrencyText.text = savedValue.ToString();
         }
     }
 
@@ -136,7 +136,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         {
             // 여기에 디스플레이
 
-            rewardMetaCurrencyText.text = "Meta Currency: " + savedValue.ToString();
+            rewardMetaCurrencyText.text = savedValue.ToString();
         }
     }
 

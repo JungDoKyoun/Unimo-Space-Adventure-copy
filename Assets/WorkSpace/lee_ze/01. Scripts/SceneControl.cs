@@ -26,7 +26,7 @@ public class SceneControl : MonoBehaviour
     public void GoToSpaceship() // start button에 임시 바인딩
     {
         // 기지 이동
-        SceneManager.LoadScene("Spaceship");
+        SceneManager.LoadScene("Station");
     }
 
     public void GoToRegister()
