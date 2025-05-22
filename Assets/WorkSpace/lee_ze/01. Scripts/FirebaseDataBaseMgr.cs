@@ -91,8 +91,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
         {
             // 여기에 디스플레이
+            rewardIngameCurrencyText = GameObject.Find("Reward Ingame Currency")?.GetComponent<TextMeshProUGUI>();
 
-            rewardIngameCurrencyText.text = savedValue.ToString();
+            if(rewardIngameCurrencyText != null) rewardIngameCurrencyText.text = savedValue.ToString();
         }
     }
 
@@ -168,8 +169,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
         {
             // 여기에 디스플레이
+            rewardMetaCurrencyText = GameObject.Find("Reward Meta Currency")?.GetComponent<TextMeshProUGUI>();
 
-            rewardMetaCurrencyText.text = savedValue.ToString();
+            if (rewardIngameCurrencyText != null) rewardMetaCurrencyText.text = savedValue.ToString();
         }
     }
 
