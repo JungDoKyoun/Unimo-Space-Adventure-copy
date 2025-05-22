@@ -6,20 +6,11 @@ using UnityEngine;
 
 using ZL.Unity.Pooling;
 
-using ZL.Unity.Collections;
-
 namespace ZL.Unity.Server.Photon
 {
     [AddComponentMenu("ZL/Server/Photon/Photon Player List Displayer")]
 
-    public sealed class PhotonPlayerListDisplayer : PhotonPlayerListDisplayer<PhotonPlayerListItem>
-    {
-
-    }
-
-    public abstract class PhotonPlayerListDisplayer<TPlayerListItem> : MonoBehaviour
-
-        where TPlayerListItem : Component, IKeyValuePair<int, TPlayerListItem>
+    public class PhotonPlayerListDisplayer : MonoBehaviour
     {
         [Space]
 
@@ -29,7 +20,7 @@ namespace ZL.Unity.Server.Photon
 
         [ReadOnlyWhenPlayMode]
 
-        protected ManagedObjectPool<int, TPlayerListItem> playerListItemPool = null;
+        protected ManagedObjectPool<int> playerListItemPool = null;
 
         public void Refresh()
         {

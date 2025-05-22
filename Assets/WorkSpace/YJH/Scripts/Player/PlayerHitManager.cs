@@ -57,9 +57,9 @@ public partial class PlayerManager : IDamageable
 
         set
         {
-            if (value < 0)
+            if (value < 0f)
             {
-                currentHealth = 0;
+                currentHealth = 0f;
             }
 
             else
@@ -69,7 +69,6 @@ public partial class PlayerManager : IDamageable
         }
     }
     
-
     //맞았는지?
     private bool isOnHit = false;
 
@@ -95,15 +94,6 @@ public partial class PlayerManager : IDamageable
         }
     }
 
-    //여기서 플레이어에게 적용받는 효과 적용시키기 
-    public void StatusStart()
-    {
-        currentHealth = maxHP;
-
-        // 여기에 스테이지매니저 패배 함수 연결 하는 걸로 
-        //OnPlayerDead += sdfasdf; 
-    }
-
     public void TakeDamage(float damage, Vector3 contact)
     {
         isOnHit = true;
@@ -114,19 +104,15 @@ public partial class PlayerManager : IDamageable
 
         if (currentHealth <= 0f)
         {
+            currentHealth = 0f;
+
             canMove = false;
-
-            //Debug.Log("dead");
-
-            currentHealth = 0;
 
             OnPlayerDead?.Invoke();
         }
 
         else
         {
-            //Debug.Log("startblink");
-
             StartCoroutine(PlayerBlink());
         }
     }
@@ -160,7 +146,7 @@ public partial class PlayerManager : IDamageable
 
     public void BlinkRenderer()
     {
-        if(bodyRenderer.enabled == false)
+        if (bodyRenderer.enabled == false)
         {
             bodyRenderer.enabled = true;
         }

@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.Serialization;
+
 using ZL.Unity.Collections;
 
 using ZL.Unity.Singleton;
@@ -8,24 +8,22 @@ namespace ZL.Unity.Pooling
 {
     [AddComponentMenu("ZL/Pooling/Object Pool Manager")]
 
-    public sealed class ObjectPoolManager : ObjectPoolManager<ObjectPoolManager, PooledObject>
-    {
-
-    }
-
-    public abstract class ObjectPoolManager<TMonoSingleton, TClone> : MonoSingleton<TMonoSingleton>
-
-        where TMonoSingleton : MonoSingleton<TMonoSingleton>
-
-        where TClone : Component
+    public class ObjectPoolManager : MonoSingleton<ObjectPoolManager>
     {
         [Space]
 
         [SerializeField]
 
-        protected SerializableDictionary<string, ObjectPool<TClone>> poolDictionary = null;
+        private SerializableDictionary<string, ObjectPool> poolDictionary = null;
 
-        public TClone Cloning(string key)
+        public TPooledObject Cloning<TPooledObject>(string key)
+
+            where TPooledObject : PooledObject
+        {
+            return (TPooledObject)Cloning(key);
+        }
+
+        public PooledObject Cloning(string key)
         {
             return poolDictionary[key].Cloning();
         }

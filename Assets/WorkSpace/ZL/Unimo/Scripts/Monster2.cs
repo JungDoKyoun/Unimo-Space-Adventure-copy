@@ -4,6 +4,8 @@ using UnityEngine.Animations;
 
 using ZL.Unity.Phys;
 
+using ZL.Unity.Pooling;
+
 namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Monster 2 (Pooled)")]
@@ -11,16 +13,6 @@ namespace ZL.Unity.Unimo
     public sealed class Monster2 : Enemy, IDamager
     {
         [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
-        private Muzzle muzzle = null;
 
         [SerializeField]
 
@@ -35,6 +27,18 @@ namespace ZL.Unity.Unimo
         private float attackDistance = 0f;
 
         private float attackCooldownTimer = 0f;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private Transform muzzle = null;
 
         protected override void OnEnable()
         {
@@ -103,7 +107,11 @@ namespace ZL.Unity.Unimo
 
         public void OnAttack()
         {
-            var projectile = muzzle.Launch(projectileName);
+            var projectile = ObjectPoolManager.Instance.Cloning(projectileName);
+
+            projectile.transform.SetPositionAndRotation(muzzle);
+
+            projectile.SetActive(true);
         }
 
         public void GiveDamage(IDamageable damageable, Vector3 contact)

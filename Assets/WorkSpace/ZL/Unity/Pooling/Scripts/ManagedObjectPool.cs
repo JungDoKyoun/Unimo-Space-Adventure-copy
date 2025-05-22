@@ -4,26 +4,22 @@ using System.Collections.Generic;
 
 using System.Linq;
 
-using UnityEngine;
-
 using ZL.Unity.Collections;
 
 namespace ZL.Unity.Pooling
 {
     [Serializable]
 
-    public sealed class ManagedObjectPool<TKey, TClone> : ObjectPool<TClone>
-
-        where TClone : Component, IKeyValuePair<TKey, TClone>
+    public sealed class ManagedObjectPool<TKey> : ObjectPool<ManagedPooledObject<TKey>>
     {
-        private readonly Dictionary<TKey, TClone> clones = new Dictionary<TKey, TClone>();
+        private readonly Dictionary<TKey, ManagedPooledObject<TKey>> clones = new Dictionary<TKey, ManagedPooledObject<TKey>>();
 
-        public TClone this[TKey key]
+        public ManagedPooledObject<TKey> this[TKey key]
         {
             get => clones[key];
         }
 
-        public bool TryGenerate(TKey key, out TClone clone)
+        public bool TryGenerate(TKey key, out ManagedPooledObject<TKey> clone)
         {
             if (clones.ContainsKey(key) == true)
             {
@@ -41,43 +37,36 @@ namespace ZL.Unity.Pooling
             return true;
         }
 
-        public TClone Find(TKey key)
+        public ManagedPooledObject<TKey> Find(TKey key)
         {
             return clones[key];
         }
 
-        public override void Collect(TClone clone)
+        public override void Collect(ManagedPooledObject<TKey> pooledObject)
         {
-            clones.Remove(clone.Key);
+            clones.Remove(pooledObject.Key);
 
-            base.Collect(clone);
+            base.Collect(pooledObject);
         }
 
         public void CollectAll()
         {
-            foreach (var kvp in clones.Values.ToArray())
+            foreach (var pooledObject in clones.Values.ToArray())
             {
-                kvp.gameObject.SetActive(false);
+                pooledObject.gameObject.SetActive(false);
             }
 
             clones.Clear();
-        }
-
-        public void ReleaseAll()
-        {
-
         }
     }
 
     [Serializable]
 
-    public class ManagedObjectPool<TClone> : ObjectPool<TClone>
-
-        where TClone : Component
+    public class ManagedObjectPool : ObjectPool<PooledObject>
     {
-        private readonly HashSet<TClone> clones = new HashSet<TClone>();
+        private readonly HashSet<PooledObject> clones = new HashSet<PooledObject>();
 
-        public override TClone Cloning()
+        public override PooledObject Cloning()
         {
             var clone = base.Cloning();
 
@@ -86,7 +75,7 @@ namespace ZL.Unity.Pooling
             return clone;
         }
 
-        public override void Collect(TClone clone)
+        public override void Collect(PooledObject clone)
         {
             clones.Remove(clone);
 
