@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ZL.Unity.IO.GoogleSheet
 {
-    public interface ISheetData
+    public interface IGoogleSheetData
     {
         public List<string> GetHeader();
 

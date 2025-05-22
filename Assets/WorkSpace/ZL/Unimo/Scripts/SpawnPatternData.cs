@@ -10,9 +10,9 @@ using ZL.Unity.IO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {
-    [CreateAssetMenu(menuName = "ZL/Unimo/Spawn Pattern Data", fileName = "Spawn Pattern Data")]
+    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Spawn Pattern Data", fileName = "Spawn Pattern Data")]
 
-    public sealed class SpawnPatternData : ScriptableSheetData
+    public sealed class SpawnPatternData : ScriptableGoogleSheetData
     {
         [Space]
 

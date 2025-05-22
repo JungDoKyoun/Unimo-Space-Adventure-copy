@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ZL.Unity.IO.GoogleSheet
 {
-    public abstract class ScriptableSheetData : ScriptableObject, ISheetData
+    public abstract class ScriptableGoogleSheetData : ScriptableObject, IGoogleSheetData
     {
         public abstract List<string> GetHeader();
 

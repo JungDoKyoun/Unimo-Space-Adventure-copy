@@ -10,17 +10,15 @@ namespace ZL.Unity.Pooling
     {
         public event Action OnDisableAction = null;
 
-        private event Action ReturnToPool = null;
+        private event Action OnCollectedAction = null;
 
-        public static TClone Instantiate<TClone>(ObjectPool<TClone> pool)
+        public static TPooledObject Instantiate<TPooledObject>(ObjectPool<TPooledObject> objectPool)
 
-            where TClone : Component
+            where TPooledObject : PooledObject
         {
-            var clone = Instantiate(pool.Prefab, pool.Parent);
+            var clone = Instantiate(objectPool.Prefab, objectPool.Parent);
 
-            var pooledObject = clone.GetComponent<PooledObject>();
-
-            pooledObject.ReturnToPool = () => pool.Collect(clone);
+            clone.OnCollectedAction += () => objectPool.Collect(clone);
 
             return clone;
         }
@@ -29,7 +27,7 @@ namespace ZL.Unity.Pooling
 
         protected virtual void Start()
         {
-            if (ReturnToPool == null)
+            if (OnCollectedAction == null)
             {
                 FixedDebug.LogWarning($"Game Object '{gameObject.name}' is a 'Pooled Object' but was not created from an 'Object Pool'.");
             }
@@ -43,7 +41,12 @@ namespace ZL.Unity.Pooling
 
             OnDisableAction = null;
 
-            ReturnToPool?.Invoke();
+            OnCollectedAction?.Invoke();
+        }
+
+        public virtual void Initialize(ScriptableObject data)
+        {
+
         }
     }
 }

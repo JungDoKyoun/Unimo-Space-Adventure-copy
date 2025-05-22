@@ -26,10 +26,5 @@ namespace ZL.CS.Pooling
         {
             collection.AddLast(clone);
         }
-
-        public void Release(TClone clone)
-        {
-            collection.Remove(clone);
-        }
     }
 }

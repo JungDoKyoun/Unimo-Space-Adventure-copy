@@ -8,16 +8,15 @@ using ZL.Unity.IO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {
-    [CreateAssetMenu(menuName = "ZL/Unimo/Monster Data", fileName = "Monster Data")]
+    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Enemy Data", fileName = "Enemy Data")]
 
-    public sealed class EnemyData : ScriptableSheetData
+    public sealed class EnemyData : ScriptableGoogleSheetData
     {
         [Space]
 
         [SerializeField]
 
-        // 최대체력
-        private float maxHealth = 0;
+        private float maxHealth = 0f;
 
         public float MaxHealth
         {
@@ -26,7 +25,6 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        // 이동속도
         private float moveSpeed = 0f;
 
         public float MoveSpeed
@@ -36,17 +34,15 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        // 공격력
-        private int attackPower = 0;
+        private float attackPower = 0;
 
-        public int AttackPower
+        public float AttackPower
         {
             get => attackPower;
         }
 
         [SerializeField]
 
-        // 경직시간
         private float staggerDuration = 0f;
 
         public float StaggerDuration
@@ -56,7 +52,6 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        //넉백거리
         private float knockbackDistance = 0f;
 
         public float KnockbackDistance
@@ -84,11 +79,11 @@ namespace ZL.Unity.Unimo
 
         public override void Import(GstuSpreadSheet sheet)
         {
-            maxHealth = int.Parse(sheet[name, nameof(maxHealth)].value);
+            maxHealth = float.Parse(sheet[name, nameof(maxHealth)].value);
 
             moveSpeed = float.Parse(sheet[name, nameof(moveSpeed)].value);
 
-            attackPower = int.Parse(sheet[name, nameof(attackPower)].value);
+            attackPower = float.Parse(sheet[name, nameof(attackPower)].value);
 
             staggerDuration = float.Parse(sheet[name, nameof(staggerDuration)].value);
 

@@ -12,7 +12,7 @@ public partial class PlayerManager
 
         MoveStart();
 
-        StatusStart();
+        currentHealth = maxHP;
     }
 
     private void Update()
