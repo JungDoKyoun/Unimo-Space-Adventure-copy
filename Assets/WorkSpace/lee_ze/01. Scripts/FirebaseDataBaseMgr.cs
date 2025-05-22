@@ -5,6 +5,7 @@ using Firebase;
 using Firebase.Database;
 using Firebase.Auth;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class FirebaseDataBaseMgr : MonoBehaviour
 {
@@ -43,6 +44,10 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
     private IEnumerator Start()
     {
@@ -61,6 +66,16 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         StartCoroutine(ShowUserIngameCurrency());
 
         StartCoroutine(ShowUserMetaCurrency());
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (user != null)
+        {
+            StartCoroutine(ShowUserIngameCurrency());
+
+            StartCoroutine(ShowUserMetaCurrency());
+        }
     }
 
     #region Currency management
@@ -206,8 +221,14 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     #region Tile management
 
 
-    
+
 
 
     #endregion
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
 }
