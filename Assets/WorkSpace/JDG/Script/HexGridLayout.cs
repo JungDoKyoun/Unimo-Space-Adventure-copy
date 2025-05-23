@@ -28,7 +28,6 @@ namespace JDG
         [Header("타일 역할 배치 변수")]
         [SerializeField] private List<ModeRatioEntry> _modeRatio = new List<ModeRatioEntry>();
         [SerializeField] private int[] _bossDistance;
-        [SerializeField] private int _bossCountPerCircle;
         [SerializeField] private int[] _bossMinGapByDistance;
         [SerializeField] private EventTileConfig _eventTileConfig;
 
@@ -276,7 +275,7 @@ namespace JDG
         {
             List<Vector2Int> placedBosses = new List<Vector2Int>();
 
-            for (int i = 0; i < _bossCountPerCircle; i++)
+            for (int i = 0; i < _bossDistance.Length; i++)
             {
                 if (i >= _bossDistance.Length || i >= _bossMinGapByDistance.Length)
                     break;
