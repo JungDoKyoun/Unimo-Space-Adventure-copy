@@ -377,9 +377,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc0d3dd53faf054b92b96bed7a9df58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rayInteractor: {fileID: 1556077940}
-  _inputController: {fileID: 183398874}
-  _inputThreshold: 0.1
+  _rightRayInteractor: {fileID: 1556077940}
+  _leftRayInteractor: {fileID: 614924954}
+  _rightInputController: {fileID: 183398874}
+  _leftInputController: {fileID: 591781924}
   _tileSelectionUI: {fileID: 528721198}
 --- !u!4 &69221048
 Transform:

@@ -8,11 +8,12 @@ namespace JDG
     public class VRPlayerInput : MonoBehaviour
     {
         [Header("XR Ray")]
-        [SerializeField] private XRRayInteractor _rayInteractor;
+        [SerializeField] private XRRayInteractor _rightRayInteractor;
+        [SerializeField] private XRRayInteractor _leftRayInteractor;
 
         [Header("입력 버튼")]
-        [SerializeField] private ActionBasedController _inputController;
-        [SerializeField] private float _inputThreshold = 0.1f;
+        [SerializeField] private ActionBasedController _rightInputController;
+        [SerializeField] private ActionBasedController _leftInputController;
 
         [Header("UI 관련")]
         [SerializeField] TileSelectionUI _tileSelectionUI;
@@ -22,7 +23,8 @@ namespace JDG
 
         private void Update()
         {
-            TryRayInteract();
+            TryRayInteract(_rightRayInteractor, _rightInputController);
+            TryRayInteract(_leftRayInteractor, _leftInputController);
         }
 
         public void Init(PlayerController playerController, HexGridLayout hexGridLayout)
@@ -31,28 +33,28 @@ namespace JDG
             _hexGridLayout = hexGridLayout;
         }
 
-        private bool IsTriggerPressed()
+        private bool IsTriggerPressed(ActionBasedController controller)
         {
-            if (_inputController.selectAction == null || _inputController.selectAction.action == null)
+            if (controller?.activateAction.action == null)
                 return false;
 
-            return _inputController.selectAction.action.triggered;
+            return controller.activateAction.action.triggered;
         }
 
-        private void TryRayInteract()
+        private void TryRayInteract(XRRayInteractor rayInteractor, ActionBasedController inputController)
         {
-            if (_rayInteractor == null || _inputController == null || _hexGridLayout == null)
+            if (rayInteractor == null || inputController == null || _hexGridLayout == null)
                 return;
 
             RaycastHit hit;
 
-            if (_rayInteractor.TryGetCurrent3DRaycastHit(out hit))
+            if (_rightRayInteractor.TryGetCurrent3DRaycastHit(out hit))
             {
                 GameObject hitObj = hit.collider.gameObject;
 
                 if (hitObj.TryGetComponent<Button>(out Button button))
                 {
-                    if (IsTriggerPressed())
+                    if (IsTriggerPressed(inputController))
                     {
                         button.onClick.Invoke();
                         return;
@@ -62,7 +64,7 @@ namespace JDG
                 Vector3 hitPos = hit.point;
                 Vector2Int hitcoord = _hexGridLayout.GetCoordinateFromPosition(hitPos);
 
-                if (IsTriggerPressed())
+                if (IsTriggerPressed(inputController))
                 {
                     if (_tileSelectionUI != null && _tileSelectionUI.IsUIOpen)
                         return;

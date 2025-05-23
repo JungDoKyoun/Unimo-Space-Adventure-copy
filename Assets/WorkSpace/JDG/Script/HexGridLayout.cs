@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using JDG;
 
 namespace JDG
 {
@@ -162,70 +161,28 @@ namespace JDG
 
             Vector3 spawnPos = GetPositionForHexFromCoordinate(_playerCoord) + Vector3.up * 1f;
             _playerPrefab = Resources.Load<GameObject>("WorldMap/Player");
-            if (_playerPrefab == null)
-            {
-                Debug.LogError("Resources.Load 실패: WorldMapPlayer/Player 프리팹을 찾을 수 없습니다.");
-            }
 
-            else
-            {
-                Debug.Log("Player 프리팹 로드 성공");
-
-                _playerInstance = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
-
-                var player = _playerInstance.GetComponent<PlayerController>();
-                if (player == null)
-                {
-                    Debug.LogError("PlayerController 컴포넌트가 Player 프리팹에 없습니다.");
-                }
-                else
-                {
-                    Debug.Log("PlayerController 연결 성공");
-                    player.Init(this);
-
-                    if (_vRPlayerInput != null)
-                    {
-                        Debug.Log("PlayerController 연결 성공");
-                        _vRPlayerInput.Init(player, this);
-                    }
-                    else
-                    {
-                        Debug.LogError("_vRPlayerInput 컴포넌트 없음");
-                    }
-
-                    if (_tileSelectionUI != null)
-                    {
-                        Debug.Log("_tileSelectionUI 연결 성공");
-                        _tileSelectionUI.Init(player, this);
-                    }
-                    else
-                    {
-                        Debug.LogError("_tileSelectionUI 컴포넌트 없음");
-                    }
-
-                    SceneLoader.Instance.Init(this, player);
-                }
-            }
             _playerInstance = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
 
-            //var player = _playerInstance.GetComponent<PlayerController>();
-            //player.Init(this);
+            var player = _playerInstance.GetComponent<PlayerController>();
+            player.Init(this);
 
-            //if (_vRPlayerInput != null)
-            //{
-            //    _vRPlayerInput.Init(player, this);
-            //}
+            if (_vRPlayerInput != null)
+            {
+                _vRPlayerInput.Init(player, this);
+            }
 
-            //if (_tileSelectionUI != null)
-            //{
-            //    _tileSelectionUI.Init(player, this);
-            //}
+            if (_tileSelectionUI != null)
+            {
+                _tileSelectionUI.Init(player, this);
+            }
 
-            //SceneLoader.Instance.Init(this, player);
+            SceneLoader.Instance.Init(this, player);
 
             AssignTileRoles();
             UpdateFog();
         }
+
 
         public Vector3 GetPositionForHexFromCoordinate(Vector2Int coord)
         {
@@ -381,7 +338,7 @@ namespace JDG
             List<Vector2Int> selectedCoords = new List<Vector2Int>();
             int temp = 0;
 
-            while(selectedCoords.Count < eventCount && candidateCoords.Count > 0 && temp < 500)
+            while (selectedCoords.Count < eventCount && candidateCoords.Count > 0 && temp < 500)
             {
                 var randomIndex = Random.Range(0, candidateCoords.Count);
                 var chosen = candidateCoords[randomIndex];
@@ -403,10 +360,10 @@ namespace JDG
 
             int index = 0;
 
-            foreach(var entry in _eventTileConfig._eventTypes)
+            foreach (var entry in _eventTileConfig._eventTypes)
             {
                 int count = Mathf.RoundToInt(selectedCoords.Count * entry._ratio);
-                for(int i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
                 {
                     var coord = selectedCoords[index];
                     _hexMap[coord].TileData.EventType = entry._eventType;
@@ -431,11 +388,11 @@ namespace JDG
                     var coord = candidateCoords[randomIndex];
                     _hexMap[coord].TileData.TileType = TileType.Mode;
                     _hexMap[coord].TileData.ModeType = modeType;
-                    if(modeType == ModeType.Explore)
+                    if (modeType == ModeType.Explore)
                     {
                         _hexMap[coord].TileData.SceneName = "Explore Stage Scene";
                     }
-                    else if(modeType == ModeType.Gather)
+                    else if (modeType == ModeType.Gather)
                     {
                         _hexMap[coord].TileData.SceneName = "Gather Stage Scene";
                     }
@@ -457,18 +414,18 @@ namespace JDG
                 }
             }
 
-            if(candidateCoords.Count > 0)
+            if (candidateCoords.Count > 0)
             {
-                for(int i = 0; i < candidateCoords.Count; i++)
+                for (int i = 0; i < candidateCoords.Count; i++)
                 {
                     int random = Random.Range(0, _modeRatio.Count);
-                    if(random == 0)
+                    if (random == 0)
                     {
                         var coord = candidateCoords[i];
                         _hexMap[coord].TileData.TileType = TileType.Mode;
                         _hexMap[coord].TileData.ModeType = ModeType.Explore;
                     }
-                    else if( random == 1)
+                    else if (random == 1)
                     {
                         var coord = candidateCoords[i];
                         _hexMap[coord].TileData.TileType = TileType.Mode;
@@ -501,6 +458,7 @@ namespace JDG
 
         public void RestoreMapState(Dictionary<Vector2Int, TileData> mapData, Vector2Int playerCoord)
         {
+            Debug.Log("북구");
             _hexMap.Clear();
 
             foreach (var pair in mapData)
@@ -527,7 +485,7 @@ namespace JDG
             }
 
             _playerCoord = playerCoord;
-            _playerPrefab = Resources.Load<GameObject>("WorldMapPlayer/Player");
+            _playerPrefab = Resources.Load<GameObject>("WorldMap/Player");
             Vector3 spawnPos = GetPositionForHexFromCoordinate(playerCoord) + Vector3.up * 1f;
             _playerInstance = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
 
@@ -577,7 +535,7 @@ namespace JDG
 
             foreach (var coord in neighbors)
             {
-                if(candidateCoords.Contains(coord))
+                if (candidateCoords.Contains(coord))
                 {
                     _hexMap[coord].TileData.TileType = TileType.Event;
                     _hexMap[coord].TileData.EventType = EventType.Shop;
