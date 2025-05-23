@@ -40,7 +40,7 @@ namespace JDG
         private GameObject _playerInstance;
 
         [Header("UI 관련")]
-        [SerializeField] private TileSelectionUI _tileSelectionUI;
+        private TileSelectionUI _tileSelectionUI;
 
         [Header("난이도 관련")]
         [SerializeField] private List<DifficultyEntry> _difficultyEntries = new List<DifficultyEntry>();
@@ -161,13 +161,11 @@ namespace JDG
 
             Vector3 spawnPos = GetPositionForHexFromCoordinate(_playerCoord) + Vector3.up * 1f;
             _playerPrefab = Resources.Load<GameObject>("WorldMap/Player");
-            Debug.Log(_playerPrefab);
-
             _playerInstance = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
-            Debug.Log(_playerInstance);
 
             var player = _playerInstance.GetComponent<PlayerController>();
             player.Init(this);
+            _tileSelectionUI = FindObjectOfType<TileSelectionUI>();
 
             if (_vRPlayerInput != null)
             {
@@ -493,6 +491,7 @@ namespace JDG
 
             var player = _playerInstance.GetComponent<PlayerController>();
             player.Init(this);
+            _tileSelectionUI = FindObjectOfType<TileSelectionUI>();
 
             if (_vRPlayerInput != null)
             {
