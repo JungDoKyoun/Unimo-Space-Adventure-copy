@@ -22,6 +22,11 @@ namespace ZL.Unity.UI
 
         private Slider slider = null;
 
+        public Slider Slider
+        {
+            get => slider;
+        }
+
         [SerializeField]
 
         [UsingCustomProperty]
@@ -30,25 +35,31 @@ namespace ZL.Unity.UI
 
         [ReadOnlyWhenPlayMode]
 
-        private TextController textController = null;
+        [Alias("Slider Value Text (UI)")]
 
-#if UNITY_EDITOR
+        private TextController sliderValueTextUI = null;
+
+        [Space]
+
+        [SerializeField]
+
+        private string format = "{0:F0}/{1:F0}";
+
+        #if UNITY_EDITOR
+
+        private float sliderMaxValue = 0f;
 
         private float sliderValue = 0f;
 
-        private string inputText = null;
+        private string sliderValueText = null;
 
         private void Awake()
         {
-            if (slider != null)
-            {
-                sliderValue = slider.value;
-            }
+            sliderMaxValue = slider.maxValue;
 
-            if (textController != null)
-            {
-                inputText = textController.Text;
-            }
+            sliderValue = slider.value;
+
+            sliderValueText = sliderValueTextUI.Text;
         }
 
         private void Update()
@@ -58,29 +69,41 @@ namespace ZL.Unity.UI
                 return;
             }
 
-            if (textController != null && slider != null)
+            if (slider != null && sliderValueTextUI != null)
             {
-                if (sliderValue != slider.value)
+                if (sliderMaxValue != slider.maxValue)
                 {
-                    textController.SetText(slider.value);
+                    RefreshText();
                 }
 
-                else if (inputText != textController.Text)
+                else if (sliderValue != slider.value)
                 {
-                    TrySetValue(textController.Text);
+                    RefreshText();
                 }
 
-                inputText = textController.Text;
+                else if (sliderValueText != sliderValueTextUI.Text)
+                {
+                    TrySetValue(sliderValueTextUI.Text);
+                }
+
+                sliderMaxValue = slider.maxValue;
 
                 sliderValue = slider.value;
+
+                sliderValueText = sliderValueTextUI.Text;
             }
         }
 
-#endif
+        #endif
 
-        public void TrySetValue(string text)
+        public void RefreshText()
         {
-            if (float.TryParse(text, out float value) == true)
+            sliderValueTextUI.Text = string.Format(format, slider.value, slider.maxValue);
+        }
+
+        public void TrySetValue(string valueText)
+        {
+            if (float.TryParse(valueText, out float value) == true)
             {
                 slider.value = value;
             }

@@ -55,7 +55,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 2722312193279100539}
-  textController: {fileID: 969824497507808372}
+  sliderValueTextUI: {fileID: 969824497507808372}
+  format: '{0}'
 --- !u!114 &5158348786953985021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +120,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3782913645520211614, guid: e3e7bdaa1ce1c084cb597920f0d49eeb, type: 3}
       propertyPath: m_Name
-      value: Value Input Field (TMP)
+      value: Slider Value Input Field (TMP)
       objectReference: {fileID: 0}
     - target: {fileID: 4652538606474685726, guid: e3e7bdaa1ce1c084cb597920f0d49eeb, type: 3}
       propertyPath: m_text
@@ -307,7 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acd16c5bde81840479730371c78d10fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 8139674493798345502}
+  textUI: {fileID: 8139674493798345502}
 --- !u!114 &8139674493798345502 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7525142933959112310, guid: e3e7bdaa1ce1c084cb597920f0d49eeb, type: 3}
@@ -448,19 +449,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 28901490435800646, guid: 8e48a7d679a32164a95c4cfdc0d31ad2, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 28901490435800646, guid: 8e48a7d679a32164a95c4cfdc0d31ad2, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 28901490435800646, guid: 8e48a7d679a32164a95c4cfdc0d31ad2, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 28901490435800646, guid: 8e48a7d679a32164a95c4cfdc0d31ad2, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3818680199174193854, guid: 8e48a7d679a32164a95c4cfdc0d31ad2, type: 3}
       propertyPath: m_AnchorMax.x
@@ -469,6 +470,34 @@ PrefabInstance:
     - target: {fileID: 3818680199174193854, guid: 8e48a7d679a32164a95c4cfdc0d31ad2, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781674347934052849, guid: 8e48a7d679a32164a95c4cfdc0d31ad2, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781674347934052849, guid: 8e48a7d679a32164a95c4cfdc0d31ad2, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781674347934052849, guid: 8e48a7d679a32164a95c4cfdc0d31ad2, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6375250785794183504}
+    - target: {fileID: 4781674347934052849, guid: 8e48a7d679a32164a95c4cfdc0d31ad2, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781674347934052849, guid: 8e48a7d679a32164a95c4cfdc0d31ad2, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RefreshText
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781674347934052849, guid: 8e48a7d679a32164a95c4cfdc0d31ad2, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ZL.Unity.UI.SliderValueDisplayer, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4781674347934052849, guid: 8e48a7d679a32164a95c4cfdc0d31ad2, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6928590701748691592, guid: 8e48a7d679a32164a95c4cfdc0d31ad2, type: 3}
       propertyPath: m_Name
