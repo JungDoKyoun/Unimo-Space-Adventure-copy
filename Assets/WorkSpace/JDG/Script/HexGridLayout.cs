@@ -161,6 +161,7 @@ namespace JDG
             }
 
             Vector3 spawnPos = GetPositionForHexFromCoordinate(_playerCoord) + Vector3.up * 1f;
+            _playerPrefab = Resources.Load<GameObject>("WorldMapPlayer/Player");
             _playerInstance = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
 
             var player = _playerInstance.GetComponent<PlayerController>();
@@ -482,6 +483,7 @@ namespace JDG
             }
 
             _playerCoord = playerCoord;
+            _playerPrefab = Resources.Load<GameObject>("WorldMapPlayer/Player");
             Vector3 spawnPos = GetPositionForHexFromCoordinate(playerCoord) + Vector3.up * 1f;
             _playerInstance = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
 

@@ -6,7 +6,7 @@ namespace JDG
 {
     public enum EventType
     {
-        None, Shop
+        None, Shop, script
     }
 
     [System.Serializable]
