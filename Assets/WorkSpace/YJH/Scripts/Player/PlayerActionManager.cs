@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 
 using UnityEngine;
+
 using ZL.Unity.Unimo;
 
 public partial class PlayerManager 
@@ -63,7 +64,7 @@ public partial class PlayerManager
 
     //GameObject spellPrefab;
 
-    private ISpellType playerSpellType;
+    private ISpellType playerSpellType = null;
 
     private int playerOwnEnergy = 0;
 
@@ -92,10 +93,13 @@ public partial class PlayerManager
     private TMP_Text skillRejectText;
 
     private bool isSkillRejectActive = false;
+
     private bool isItemNear = false;
 
     [SerializeField]
+
     private SphereCollider detectCollider;
+
     public void ActionStart()
     {
         gatheringAudioSource.clip = gatheringAudioClip;
@@ -105,7 +109,9 @@ public partial class PlayerManager
         //StartFindEnemy();
 
         OnTargetObjectSet += GatheringItem;
-        detectCollider.radius=itemDetectionRange;
+
+        detectCollider.radius = itemDetectionRange;
+
         SetAttackType(attackPrefab);
 
         if(playerSpellType != null)
@@ -612,15 +618,14 @@ public partial class PlayerManager
         {
             isSkillRejectActive = true;
 
-            fadeCoroutine=StartCoroutine(FadeOutReject());
-            
+            fadeCoroutine = StartCoroutine(FadeOutReject());
         }
 
         else
         {
             StopCoroutine(fadeCoroutine);
 
-            fadeCoroutine=StartCoroutine(FadeOutReject());
+            fadeCoroutine = StartCoroutine(FadeOutReject());
         }
     }
 
@@ -628,24 +633,24 @@ public partial class PlayerManager
     {
         Color color = Color.white;
 
-        color.a = 1;
+        skillRejectText.color = color;
 
         yield return new WaitForSeconds(1f);
 
         while (true)
         {
-            yield return new WaitForSeconds(0.01f);
+            color.a -= Time.deltaTime;
 
             skillRejectText.color = color;
 
-            color.a-=Time.deltaTime;
-
-            if(color.a <= 0)
+            if (color.a <= 0f)
             {
-                isSkillRejectActive= false;
+                isSkillRejectActive = false;
 
                 yield break;
             }
+
+            yield return null;
         }
     }
 
