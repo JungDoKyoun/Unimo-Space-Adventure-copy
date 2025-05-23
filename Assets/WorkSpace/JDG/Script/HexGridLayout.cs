@@ -34,7 +34,7 @@ namespace JDG
 
 
         [Header("플레이어 관련")]
-        private VRPlayerInput _vRPlayerInput;
+        [SerializeField] private VRPlayerInput _vRPlayerInput;
         private GameObject _playerPrefab;
         [SerializeField] private int _viewRange = 1;
         private GameObject _playerInstance;
@@ -161,14 +161,10 @@ namespace JDG
 
             Vector3 spawnPos = GetPositionForHexFromCoordinate(_playerCoord) + Vector3.up * 1f;
             _playerPrefab = Resources.Load<GameObject>("WorldMap/Player");
-            Debug.Log(_playerPrefab);
-
             _playerInstance = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
-            Debug.Log(_playerInstance);
 
             var player = _playerInstance.GetComponent<PlayerController>();
             player.Init(this);
-            _vRPlayerInput = _playerInstance.GetComponent<VRPlayerInput>();
             _tileSelectionUI = FindObjectOfType<TileSelectionUI>();
 
             if (_vRPlayerInput != null)
@@ -495,7 +491,6 @@ namespace JDG
 
             var player = _playerInstance.GetComponent<PlayerController>();
             player.Init(this);
-            _vRPlayerInput = _playerInstance.GetComponent<VRPlayerInput>();
             _tileSelectionUI = FindObjectOfType<TileSelectionUI>();
 
             if (_vRPlayerInput != null)
