@@ -34,13 +34,13 @@ namespace JDG
 
 
         [Header("플레이어 관련")]
-        [SerializeField] private VRPlayerInput _vRPlayerInput;
+        private VRPlayerInput _vRPlayerInput;
         private GameObject _playerPrefab;
         [SerializeField] private int _viewRange = 1;
         private GameObject _playerInstance;
 
         [Header("UI 관련")]
-        [SerializeField] private TileSelectionUI _tileSelectionUI;
+        private TileSelectionUI _tileSelectionUI;
 
         [Header("난이도 관련")]
         [SerializeField] private List<DifficultyEntry> _difficultyEntries = new List<DifficultyEntry>();
@@ -168,6 +168,8 @@ namespace JDG
 
             var player = _playerInstance.GetComponent<PlayerController>();
             player.Init(this);
+            _vRPlayerInput = _playerInstance.GetComponent<VRPlayerInput>();
+            _tileSelectionUI = FindObjectOfType<TileSelectionUI>();
 
             if (_vRPlayerInput != null)
             {
@@ -493,6 +495,8 @@ namespace JDG
 
             var player = _playerInstance.GetComponent<PlayerController>();
             player.Init(this);
+            _vRPlayerInput = _playerInstance.GetComponent<VRPlayerInput>();
+            _tileSelectionUI = FindObjectOfType<TileSelectionUI>();
 
             if (_vRPlayerInput != null)
             {
