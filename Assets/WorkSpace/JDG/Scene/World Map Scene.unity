@@ -395,7 +395,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 15384394}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -721,7 +721,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _root: {fileID: 974578281}
   _slotParent: {fileID: 764670006}
-  _slotPrefab: {fileID: 2868418523226335158, guid: 7a1b9225d466a61419bcfcedb6671bfa, type: 3}
   _repairIcon: {fileID: 1034311770}
   _repairButtonText1: {fileID: 657662418}
   _repairButtonText2: {fileID: 2083274668}
@@ -729,6 +728,7 @@ MonoBehaviour:
   _resourceIcon2: {fileID: 4973500}
   _resourceText1: {fileID: 1902033290}
   _resourceText2: {fileID: 223197775}
+  _offset: {x: 0, y: 0, z: 0}
 --- !u!1 &400452921
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,9 +875,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dc0d3dd53faf054b92b96bed7a9df58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rayInteractor: {fileID: 9032954039034542330}
-  _inputController: {fileID: 9014170784410995586}
-  _inputThreshold: 0.1
+  _rightRayInteractor: {fileID: 0}
+  _leftRayInteractor: {fileID: 0}
+  _rightInputController: {fileID: 0}
+  _leftInputController: {fileID: 0}
   _tileSelectionUI: {fileID: 1355780166}
 --- !u!1 &483615151
 GameObject:
@@ -2002,9 +2003,7 @@ MonoBehaviour:
   _bossMinGapByDistance: 040000000600000008000000
   _eventTileConfig: {fileID: 11400000, guid: b84d769fdaefa154b8cde2d11b4ded66, type: 2}
   _vRPlayerInput: {fileID: 465276521}
-  _playerPrefab: {fileID: 97310487267514807, guid: 79abe35477413ab44acda40f3fa9ba90, type: 3}
   _viewRange: 100
-  _tileSelectionUI: {fileID: 1355780166}
   _difficultyEntries: []
 --- !u!4 &766587507
 Transform:
@@ -3156,9 +3155,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a72a486cdeb90fa4ca3c36360ee24b6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneLoaderPrefab: {fileID: 3793257483562386664, guid: 95e1788f1b35f334d9ec0d69990c67d5, type: 3}
-  _stateManagerPrefab: {fileID: 6937569572968597334, guid: 05449ce6e848aaf49959acb6f0a88bb8, type: 3}
-  _rewardManagerPrefab: {fileID: 5695969754847417245, guid: 975d49d1484e301458bd2b42b9e4bd5c, type: 3}
 --- !u!4 &1321051551
 Transform:
   m_ObjectHideFlags: 0
@@ -3304,7 +3300,6 @@ MonoBehaviour:
   _displayImage: {fileID: 1330477675}
   _displayText: {fileID: 2070748614}
   _rewardParent: {fileID: 1032687839}
-  _rewardPrefab: {fileID: 1172204143792327258, guid: 63e8136b551f1f94c8c7921d98e9b998, type: 3}
   _actionButton: {fileID: 570116490}
   _actionButtonName: {fileID: 1992378748}
   _offSet: {x: 0, y: 0, z: -1}
@@ -4672,28 +4667,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 9014170783809206332, guid: 895f6f3c2d334633b5800312285058d2, type: 3}
   m_PrefabInstance: {fileID: 788026171}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &9014170784410995586 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9014170783705847993, guid: 895f6f3c2d334633b5800312285058d2, type: 3}
-  m_PrefabInstance: {fileID: 788026171}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caff514de9b15ad48ab85dcff5508221, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &9032954039034542330 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9032954039820430273, guid: 895f6f3c2d334633b5800312285058d2, type: 3}
-  m_PrefabInstance: {fileID: 788026171}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6803edce0201f574f923fd9d10e5b30a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
