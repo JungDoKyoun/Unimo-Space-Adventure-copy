@@ -612,15 +612,14 @@ public partial class PlayerManager
         {
             isSkillRejectActive = true;
 
-            fadeCoroutine=StartCoroutine(FadeOutReject());
-            
+            fadeCoroutine = StartCoroutine(FadeOutReject());
         }
 
         else
         {
             StopCoroutine(fadeCoroutine);
 
-            fadeCoroutine=StartCoroutine(FadeOutReject());
+            fadeCoroutine = StartCoroutine(FadeOutReject());
         }
     }
 
@@ -628,24 +627,24 @@ public partial class PlayerManager
     {
         Color color = Color.white;
 
-        color.a = 1;
+        skillRejectText.color = color;
 
         yield return new WaitForSeconds(1f);
 
         while (true)
         {
-            yield return new WaitForSeconds(0.01f);
+            color.a -= Time.deltaTime;
 
             skillRejectText.color = color;
 
-            color.a-=Time.deltaTime;
-
-            if(color.a <= 0)
+            if (color.a <= 0f)
             {
-                isSkillRejectActive= false;
+                isSkillRejectActive = false;
 
                 yield break;
             }
+
+            yield return null;
         }
     }
 

@@ -132,6 +132,13 @@ namespace ZL.Unity.Unimo
             currentHealth = enemyData.MaxHealth;
         }
 
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            OnDisappear();
+        }
+
         public void OnAppeared()
         {
             collider.enabled = true;
@@ -160,11 +167,16 @@ namespace ZL.Unity.Unimo
 
         private void Disappear()
         {
+            OnDisappear();
+
+            animator.SetTrigger("Disappear");
+        }
+
+        private void OnDisappear()
+        {
             collider.enabled = false;
 
             isStoped = true;
-
-            animator.SetTrigger("Disappear");
         }
 
         public void OnDisappeared()
