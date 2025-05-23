@@ -6,9 +6,9 @@ namespace JDG
     public class Bootstrapper : MonoBehaviour
     {
         private static bool _initialized = false;
-        [SerializeField] private SceneLoader _sceneLoaderPrefab;
-        [SerializeField] private GameStateManager _stateManagerPrefab;
-        [SerializeField] private RewardManager _rewardManagerPrefab;
+        private GameObject _sceneLoaderPrefab;
+        private GameObject _stateManagerPrefab;
+        private GameObject _rewardManagerPrefab;
 
         private void Awake()
         {
@@ -20,6 +20,10 @@ namespace JDG
 
             _initialized = true;
             DontDestroyOnLoad(gameObject);
+
+            _sceneLoaderPrefab = Resources.Load<GameObject>("WorldMap/SceneLoader");
+            _stateManagerPrefab = Resources.Load<GameObject>("WorldMap/GameStateManager");
+            _rewardManagerPrefab = Resources.Load<GameObject>("WorldMap/RewardManager");
 
             if (SceneLoader.Instance == null)
             {

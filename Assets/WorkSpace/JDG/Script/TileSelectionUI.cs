@@ -14,7 +14,7 @@ namespace JDG
         [SerializeField] private Image _displayImage;
         [SerializeField] private TextMeshProUGUI _displayText;
         [SerializeField] private Transform _rewardParent;
-        [SerializeField] private GameObject _rewardPrefab;
+        private GameObject _rewardPrefab;
         [SerializeField] private Button _actionButton;
         [SerializeField] private TextMeshProUGUI _actionButtonName;
 
@@ -68,6 +68,8 @@ namespace JDG
             {
                 Destroy(child.gameObject);
             }
+
+            _rewardPrefab = Resources.Load<GameObject>("WorldMap/RewardSlot");
 
             foreach (RewardData reward in rewards)
             {

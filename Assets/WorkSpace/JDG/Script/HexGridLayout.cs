@@ -36,7 +36,7 @@ namespace JDG
 
         [Header("플레이어 관련")]
         [SerializeField] private VRPlayerInput _vRPlayerInput;
-        [SerializeField] private GameObject _playerPrefab;
+        private GameObject _playerPrefab;
         [SerializeField] private int _viewRange = 1;
         private GameObject _playerInstance;
 
@@ -161,23 +161,67 @@ namespace JDG
             }
 
             Vector3 spawnPos = GetPositionForHexFromCoordinate(_playerCoord) + Vector3.up * 1f;
-            _playerPrefab = Resources.Load<GameObject>("WorldMapPlayer/Player");
+            _playerPrefab = Resources.Load<GameObject>("WorldMap/Player");
+            if (_playerPrefab == null)
+            {
+                Debug.LogError("Resources.Load 실패: WorldMapPlayer/Player 프리팹을 찾을 수 없습니다.");
+            }
+
+            else
+            {
+                Debug.Log("Player 프리팹 로드 성공");
+
+                _playerInstance = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
+
+                var player = _playerInstance.GetComponent<PlayerController>();
+                if (player == null)
+                {
+                    Debug.LogError("PlayerController 컴포넌트가 Player 프리팹에 없습니다.");
+                }
+                else
+                {
+                    Debug.Log("PlayerController 연결 성공");
+                    player.Init(this);
+
+                    if (_vRPlayerInput != null)
+                    {
+                        Debug.Log("PlayerController 연결 성공");
+                        _vRPlayerInput.Init(player, this);
+                    }
+                    else
+                    {
+                        Debug.LogError("_vRPlayerInput 컴포넌트 없음");
+                    }
+
+                    if (_tileSelectionUI != null)
+                    {
+                        Debug.Log("_tileSelectionUI 연결 성공");
+                        _tileSelectionUI.Init(player, this);
+                    }
+                    else
+                    {
+                        Debug.LogError("_tileSelectionUI 컴포넌트 없음");
+                    }
+
+                    SceneLoader.Instance.Init(this, player);
+                }
+            }
             _playerInstance = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
 
-            var player = _playerInstance.GetComponent<PlayerController>();
-            player.Init(this);
+            //var player = _playerInstance.GetComponent<PlayerController>();
+            //player.Init(this);
 
-            if (_vRPlayerInput != null)
-            {
-                _vRPlayerInput.Init(player, this);
-            }
+            //if (_vRPlayerInput != null)
+            //{
+            //    _vRPlayerInput.Init(player, this);
+            //}
 
-            if (_tileSelectionUI != null)
-            {
-                _tileSelectionUI.Init(player, this);
-            }
+            //if (_tileSelectionUI != null)
+            //{
+            //    _tileSelectionUI.Init(player, this);
+            //}
 
-            SceneLoader.Instance.Init(this, player);
+            //SceneLoader.Instance.Init(this, player);
 
             AssignTileRoles();
             UpdateFog();

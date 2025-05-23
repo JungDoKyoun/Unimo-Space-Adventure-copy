@@ -11,7 +11,7 @@ namespace JDG
     {
         [SerializeField] private GameObject _root;
         [SerializeField] private Transform _slotParent;
-        [SerializeField] private GameObject _slotPrefab;
+        private GameObject _slotPrefab;
         [SerializeField] private Image _repairIcon;
         [SerializeField] private TextMeshProUGUI _repairButtonText1;
         [SerializeField] private TextMeshProUGUI _repairButtonText2;
