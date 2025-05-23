@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 
 using UnityEngine;
+
 using ZL.Unity.Unimo;
 
 public partial class PlayerManager 
@@ -63,7 +64,7 @@ public partial class PlayerManager
 
     //GameObject spellPrefab;
 
-    private ISpellType playerSpellType;
+    private ISpellType playerSpellType = null;
 
     private int playerOwnEnergy = 0;
 
@@ -92,10 +93,13 @@ public partial class PlayerManager
     private TMP_Text skillRejectText;
 
     private bool isSkillRejectActive = false;
+
     private bool isItemNear = false;
 
     [SerializeField]
+
     private SphereCollider detectCollider;
+
     public void ActionStart()
     {
         gatheringAudioSource.clip = gatheringAudioClip;
@@ -105,7 +109,9 @@ public partial class PlayerManager
         //StartFindEnemy();
 
         OnTargetObjectSet += GatheringItem;
-        detectCollider.radius=itemDetectionRange;
+
+        detectCollider.radius = itemDetectionRange;
+
         SetAttackType(attackPrefab);
 
         if(playerSpellType != null)

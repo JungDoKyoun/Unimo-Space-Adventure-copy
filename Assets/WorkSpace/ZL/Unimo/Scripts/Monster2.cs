@@ -16,6 +16,10 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
+        private float stopDistance = 0f;
+
+        [SerializeField]
+
         private string projectileName = "";
 
         [SerializeField]
@@ -64,6 +68,11 @@ namespace ZL.Unity.Unimo
             if (rotationSpeed != 0f)
             {
                 rigidbody.LookTowards(Target, Axis.Y, rotationSpeed);
+            }
+
+            if (Vector3.Distance(transform.position, Target.position) <= stopDistance)
+            {
+                return;
             }
 
             if (enemyData.MoveSpeed != 0f)
