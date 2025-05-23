@@ -39,11 +39,11 @@ namespace ZL.Unity.Collections
             this.value = value;
         }
 
-        public SerializableKeyValuePair(KeyValuePair<TKey, TValue> keyValuePair)
+        public SerializableKeyValuePair(KeyValuePair<TKey, TValue> item)
         {
-            key = keyValuePair.Key;
+            key = item.Key;
 
-            value = keyValuePair.Value;
+            value = item.Value;
         }
 
         public override string ToString()

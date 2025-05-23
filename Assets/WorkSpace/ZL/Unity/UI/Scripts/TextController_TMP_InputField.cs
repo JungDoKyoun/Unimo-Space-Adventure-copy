@@ -20,13 +20,15 @@ namespace ZL.Unity.UI
 
         [ReadOnly(true)]
 
-        private TMP_InputField text = null;
+        [Alias("Text (UI)")]
+
+        private TMP_InputField textUI = null;
 
         public override string Text
         {
-            get => text.text;
+            get => textUI.text;
 
-            set => text.text = value;
+            set => textUI.text = value;
         }
     }
 }

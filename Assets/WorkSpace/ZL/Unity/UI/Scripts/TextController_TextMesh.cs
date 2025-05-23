@@ -18,13 +18,15 @@ namespace ZL.Unity.UI
 
         [ReadOnly(true)]
 
-        private TextMesh text = null;
+        [Alias("Text (UI)")]
+
+        private TextMesh textUI = null;
 
         public override string Text
         {
-            get => text.text;
+            get => textUI.text;
 
-            set => text.text = value;
+            set => textUI.text = value;
         }
     }
 }
