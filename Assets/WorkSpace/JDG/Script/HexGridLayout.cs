@@ -28,7 +28,6 @@ namespace JDG
         [Header("타일 역할 배치 변수")]
         [SerializeField] private List<ModeRatioEntry> _modeRatio = new List<ModeRatioEntry>();
         [SerializeField] private int[] _bossDistance;
-        [SerializeField] private int _bossCountPerCircle;
         [SerializeField] private int[] _bossMinGapByDistance;
         [SerializeField] private EventTileConfig _eventTileConfig;
 
@@ -40,7 +39,7 @@ namespace JDG
         private GameObject _playerInstance;
 
         [Header("UI 관련")]
-        [SerializeField] private TileSelectionUI _tileSelectionUI;
+        private TileSelectionUI _tileSelectionUI;
 
         [Header("난이도 관련")]
         [SerializeField] private List<DifficultyEntry> _difficultyEntries = new List<DifficultyEntry>();
@@ -161,13 +160,11 @@ namespace JDG
 
             Vector3 spawnPos = GetPositionForHexFromCoordinate(_playerCoord) + Vector3.up * 1f;
             _playerPrefab = Resources.Load<GameObject>("WorldMap/Player");
-            Debug.Log(_playerPrefab);
-
             _playerInstance = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
-            Debug.Log(_playerInstance);
 
             var player = _playerInstance.GetComponent<PlayerController>();
             player.Init(this);
+            _tileSelectionUI = FindObjectOfType<TileSelectionUI>();
 
             if (_vRPlayerInput != null)
             {
@@ -278,7 +275,7 @@ namespace JDG
         {
             List<Vector2Int> placedBosses = new List<Vector2Int>();
 
-            for (int i = 0; i < _bossCountPerCircle; i++)
+            for (int i = 0; i < _bossDistance.Length; i++)
             {
                 if (i >= _bossDistance.Length || i >= _bossMinGapByDistance.Length)
                     break;
@@ -493,6 +490,7 @@ namespace JDG
 
             var player = _playerInstance.GetComponent<PlayerController>();
             player.Init(this);
+            _tileSelectionUI = FindObjectOfType<TileSelectionUI>();
 
             if (_vRPlayerInput != null)
             {

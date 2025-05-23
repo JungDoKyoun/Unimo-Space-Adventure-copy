@@ -4756,7 +4756,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -6894,7 +6894,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 505704329}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -7650,7 +7650,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -8424,7 +8424,6 @@ MonoBehaviour:
   _eventTileConfig: {fileID: 11400000, guid: b84d769fdaefa154b8cde2d11b4ded66, type: 2}
   _vRPlayerInput: {fileID: 69221047}
   _viewRange: 100
-  _tileSelectionUI: {fileID: 528721198}
   _difficultyEntries: []
 --- !u!4 &1677392730
 Transform:
@@ -9802,9 +9801,9 @@ MonoBehaviour:
   _timeBarUI: {fileID: 1486676706}
   _playerImage: {fileID: 21300000, guid: ccc01ee2d9f5e8e4189cedf3a65a7dca, type: 3}
   _maxHP: 100
-  _curHP: 0
-  _timeLimitMax: 0
-  _remainingTime: 0
+  _curHP: 100
+  _timeLimitMax: 100
+  _remainingTime: 100
 --- !u!114 &2012396654
 MonoBehaviour:
   m_ObjectHideFlags: 0
