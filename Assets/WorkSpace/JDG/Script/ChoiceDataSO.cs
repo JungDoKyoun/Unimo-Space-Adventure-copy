@@ -11,6 +11,6 @@ namespace JDG
         public string _choiceDesc;
         public List<string> _eventRequiredRelics;
         public List<string> _eventRequiredBuildings;
-        public List<ConditionData> _eventRequiredCurrency;
+        public ResourceCostSO _eventRequiredCurrency;
     }
 }

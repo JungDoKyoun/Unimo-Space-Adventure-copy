@@ -15,12 +15,12 @@ namespace JDG
         [SerializeField] private Image _resourceIcon;
         [SerializeField] private TextMeshProUGUI _relicPrice;
 
-        public void SetShopItemSlot(string name, Sprite relicIcon, Sprite resourceIcon, string price)
+        public void SetShopItemSlot(string name, Sprite relicIcon, Sprite resourceIcon, int price)
         {
             _relicName.text = name;
             _relicIcon.sprite = relicIcon;
             _resourceIcon.sprite = resourceIcon;
-            _relicPrice.text = price;
+            _relicPrice.text = price.ToString();
         }
     }
 }
