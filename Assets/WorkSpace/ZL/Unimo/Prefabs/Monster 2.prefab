@@ -351,13 +351,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   events:
-    elements:
-    - key: On Appeared
+    items:
+    - key: OnAppeared
       value:
         m_PersistentCalls:
           m_Calls:
           - m_Target: {fileID: 2144112506026283800}
-            m_TargetAssemblyTypeName: ZL.Unity.Unimo.Monster, Assembly-CSharp
+            m_TargetAssemblyTypeName: ZL.Unity.Unimo.Enemy, Assembly-CSharp
             m_MethodName: OnAppeared
             m_Mode: 1
             m_Arguments:
@@ -368,7 +368,7 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
-    - key: On Attack
+    - key: OnAttack
       value:
         m_PersistentCalls:
           m_Calls:
@@ -384,12 +384,12 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
-    - key: On Disappeared
+    - key: OnDisappeared
       value:
         m_PersistentCalls:
           m_Calls:
           - m_Target: {fileID: 2144112506026283800}
-            m_TargetAssemblyTypeName: ZL.Unity.Unimo.Monster, Assembly-CSharp
+            m_TargetAssemblyTypeName: ZL.Unity.Unimo.Enemy, Assembly-CSharp
             m_MethodName: OnDisappeared
             m_Mode: 1
             m_Arguments:
