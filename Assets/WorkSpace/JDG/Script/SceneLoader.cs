@@ -94,7 +94,7 @@
 
                 if (_choseTileData != null && _choseTileData.IsCleared)
                 {
-                    Vector3 targetPos = _hexGridLayout.GetPositionForHexFromCoordinate(_choseTileData.Coord);
+                    Vector3 targetPos = _hexGridLayout.GetPositionForHexFromCoordinate(_choseTileData.Coord) + Vector3.up * 1f;
                     _playerController.MoveTo(targetPos);
                     GameStateManager.Instance.ResetIsRestoreMap();
                 }
