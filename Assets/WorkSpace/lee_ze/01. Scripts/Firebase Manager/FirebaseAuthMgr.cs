@@ -28,6 +28,16 @@ public class FirebaseAuthMgr : MonoBehaviour
 
     public static DatabaseReference dbRef; // DB 추가
 
+    private static bool hasUser;
+
+    public static bool HasUser
+    {
+        get
+        {
+            return hasUser;
+        }
+    }
+
     public static bool IsFirebaseReady { get; private set; } = false;
 
     public FirebaseAuth auth; // 인증 진행을 위한 정보
@@ -80,6 +90,8 @@ public class FirebaseAuthMgr : MonoBehaviour
                 Debug.LogError("파이어베이스 오류");
             }
         });
+
+        hasUser = false;
     }
 
     private void Start()
@@ -188,6 +200,8 @@ public class FirebaseAuthMgr : MonoBehaviour
             // 로그인
             user = LoginTask.Result.User; // 유저 정보 기억
 
+            hasUser = true;
+
             warningText.text = "";
 
             nicknameField.text = user.DisplayName;
@@ -266,6 +280,8 @@ public class FirebaseAuthMgr : MonoBehaviour
             {
                 // 바로 로그인
                 user = RegisterTask.Result.User;
+
+                hasUser = true;
 
                 if (user != null)
                 {
