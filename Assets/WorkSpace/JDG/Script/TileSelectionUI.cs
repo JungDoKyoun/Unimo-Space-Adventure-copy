@@ -25,7 +25,7 @@ namespace JDG
         [Header("필요한 컴포넌트")]
         [SerializeField] private Camera _worldCam;
         [SerializeField] private EventTileConfig _eventTileConfig;
-        [SerializeField] private ShopUI _shopUI;
+        private ShopUI _shopUI;
 
         [Header("이벤트 아이템 갯수 및 스크립트 이벤트 선택지 갯수")]
         [SerializeField] private int _itemCount;
@@ -34,19 +34,17 @@ namespace JDG
         private HexRenderer _currentTile;
         private PlayerController _playerController;
         private HexGridLayout _hexGrid;
-        private bool _isUIOpen = false;
 
         private void Start()
         {
             HideUI();
         }
 
-        public bool IsUIOpen => _isUIOpen;
-
         public void Init(PlayerController playerController, HexGridLayout hexGird)
         {
             _playerController = playerController;
             _hexGrid = hexGird;
+            _shopUI = UIManager.Instance.ShopUI;
         }
 
         public void ShowUI(HexRenderer tile, Vector3 wordPos = default)
@@ -55,7 +53,7 @@ namespace JDG
             transform.position = wordPos + _offSet;
             _uiPos = wordPos;
             _root.SetActive(true);
-            _isUIOpen = true;
+            UIManager.Instance.IsUIOpen = true;
 
             var env = TileEnvironmentManager.Instance.GetEnvironmentInfo(tile.TileData.EnvironmentType);
             var display = TileDisplayInfoManager.Instance.GetDisplayInfo(tile.TileData.TileType, tile.TileData.ModeType);
@@ -103,14 +101,14 @@ namespace JDG
         public void HideUI()
         {
             _root.SetActive(false);
-            _isUIOpen = false;
+            UIManager.Instance.IsUIOpen = false;
         }
 
         private void MovePlayerTo(HexRenderer tile)
         {
             Vector3 target = _hexGrid.GetPositionForHexFromCoordinate(tile.TileData.Coord);
             _playerController.MoveTo(target);
-            _hexGrid.UpdateFog();
+            _playerController.UpdateFog();
         }
 
         public void OnActionButtonClicked(int itemSlot = 0)
@@ -150,7 +148,7 @@ namespace JDG
         public void OnCancleButtonClicked()
         {
             HideUI();
-            _isUIOpen = false;
+            UIManager.Instance.IsUIOpen = false;
         }
 
         private EventDataSO GetRandomEvent(EventType type)
@@ -188,14 +186,7 @@ namespace JDG
             yield return new WaitUntil(() => !_playerController.IsMoving);
 
             _shopUI.OpenShopUI(relics, _uiPos);
-            _shopUI.OnShopClosed -= ClearUIFlag;
-            _shopUI.OnShopClosed += ClearUIFlag;
-            _isUIOpen = true;
-        }
-
-        private void ClearUIFlag()
-        {
-            _isUIOpen = false;
+            UIManager.Instance.IsUIOpen = true;
         }
     }
 }

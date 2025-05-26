@@ -35,7 +35,6 @@ namespace JDG
         [Header("플레이어 관련")]
         [SerializeField] private VRPlayerInput _vRPlayerInput;
         private GameObject _playerPrefab;
-        [SerializeField] private int _viewRange = 1;
         private GameObject _playerInstance;
 
         [Header("UI 관련")]
@@ -164,7 +163,7 @@ namespace JDG
 
             var player = _playerInstance.GetComponent<PlayerController>();
             player.Init(this);
-            _tileSelectionUI = FindObjectOfType<TileSelectionUI>();
+            _tileSelectionUI = UIManager.Instance.TileSelectionUI;
 
             if (_vRPlayerInput != null)
             {
@@ -179,7 +178,7 @@ namespace JDG
             SceneLoader.Instance.Init(this, player);
 
             AssignTileRoles();
-            UpdateFog();
+            player.UpdateFog();
         }
 
 
@@ -225,7 +224,7 @@ namespace JDG
             return Mathf.Max(Mathf.Abs(ax - bx), Mathf.Abs(ay - by), Mathf.Abs(az - bz));
         }
 
-        public void UpdateFog()
+        public void UpdateFog(int viewRange)
         {
             foreach (var pair in _hexMap)
             {
@@ -234,7 +233,7 @@ namespace JDG
 
                 var dis = HexDistance(coord, _playerCoord);
 
-                if (dis <= _viewRange)
+                if (dis <= viewRange)
                 {
                     hex.SetVisibility(TileVisibility.Visible);
                 }
@@ -490,7 +489,7 @@ namespace JDG
 
             var player = _playerInstance.GetComponent<PlayerController>();
             player.Init(this);
-            _tileSelectionUI = FindObjectOfType<TileSelectionUI>();
+            _tileSelectionUI = UIManager.Instance.TileSelectionUI;
 
             if (_vRPlayerInput != null)
             {
@@ -503,7 +502,7 @@ namespace JDG
             }
             SceneLoader.Instance.Init(this, player);
 
-            UpdateFog();
+            player.UpdateFog();
         }
 
         public void CalculateMapOrigin()

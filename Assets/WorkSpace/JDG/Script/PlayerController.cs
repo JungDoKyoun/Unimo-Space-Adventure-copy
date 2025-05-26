@@ -9,6 +9,7 @@ namespace JDG
     {
         [Header("플레이어 이동 관련")]
         [SerializeField] private float _moveSpeed;
+        [SerializeField] private int _viewRange;
 
         private HexGridLayout _hexGridLayout;
         private Vector3 _targetPos;
@@ -19,6 +20,7 @@ namespace JDG
             MoveAction();
         }
 
+        public int ViewRange { get { return _viewRange; } set { _viewRange = value; } }
         public bool IsMoving => _isMoving;
 
         public void Init(HexGridLayout hexGrid)
@@ -49,9 +51,16 @@ namespace JDG
                     Vector2Int newCoord = _hexGridLayout.GetCoordinateFromPosition(transform.position);
                     _hexGridLayout.SetPlayerCoord(newCoord);
 
-                    _hexGridLayout.UpdateFog();
+                    _hexGridLayout.UpdateFog(_viewRange);
                 }
             }
+        }
+
+        public void UpdateFog()
+        {
+            Vector2Int newCoord = _hexGridLayout.GetCoordinateFromPosition(transform.position);
+            _hexGridLayout.SetPlayerCoord(newCoord);
+            _hexGridLayout.UpdateFog(_viewRange);
         }
     }
 }

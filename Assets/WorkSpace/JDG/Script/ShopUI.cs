@@ -56,7 +56,7 @@ namespace JDG
         {
             Debug.Log("닫기 버튼 눌림");
             _root.SetActive(false);
-            OnShopClosed?.Invoke();
+            UIManager.Instance.IsUIOpen = false;
         }
 
         public void On10RepairButtonClicked()

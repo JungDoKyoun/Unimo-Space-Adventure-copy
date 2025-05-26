@@ -16,7 +16,7 @@ namespace JDG
         [SerializeField] private ActionBasedController _leftInputController;
 
         [Header("UI ฐüทร")]
-        [SerializeField] TileSelectionUI _tileSelectionUI;
+        TileSelectionUI _tileSelectionUI;
 
         private PlayerController _playerController;
         private HexGridLayout _hexGridLayout;
@@ -31,6 +31,7 @@ namespace JDG
         {
             _playerController = playerController;
             _hexGridLayout = hexGridLayout;
+            _tileSelectionUI = UIManager.Instance.TileSelectionUI;
         }
 
         private bool IsTriggerPressed(ActionBasedController controller)
@@ -66,7 +67,7 @@ namespace JDG
 
                 if (IsTriggerPressed(inputController))
                 {
-                    if (_tileSelectionUI != null && _tileSelectionUI.IsUIOpen)
+                    if (_tileSelectionUI != null && UIManager.Instance.IsUIOpen)
                         return;
 
                     if (hit.collider.TryGetComponent<WorldMapRenderer>(out WorldMapRenderer renderer))
