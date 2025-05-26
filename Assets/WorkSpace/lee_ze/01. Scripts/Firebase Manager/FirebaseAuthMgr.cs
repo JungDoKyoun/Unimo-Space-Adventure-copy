@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -7,9 +6,6 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
 using System.Threading.Tasks;
-using ZL.Unity;
-using UnityEngine.SceneManagement;
-using Unity.VisualScripting;
 
 public class FirebaseAuthMgr : MonoBehaviour
 {
@@ -91,7 +87,14 @@ public class FirebaseAuthMgr : MonoBehaviour
             }
         });
 
-        hasUser = false;
+        if (user == null)
+        {
+            hasUser = false;
+        }
+        else
+        {
+            hasUser = true;
+        }
     }
 
     private void Start()

@@ -57,8 +57,6 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         yield return new WaitUntil(() => FirebaseAuthMgr.user != null);
 
-        Debug.Log(FirebaseAuthMgr.IsFirebaseReady);
-
         this.dbRef = FirebaseAuthMgr.dbRef;
 
         this.user = FirebaseAuthMgr.user;

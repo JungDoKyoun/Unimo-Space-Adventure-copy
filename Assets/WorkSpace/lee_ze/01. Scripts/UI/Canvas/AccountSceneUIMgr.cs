@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AccountSceneUIMgr : MonoBehaviour
 {
@@ -10,26 +11,21 @@ public class AccountSceneUIMgr : MonoBehaviour
     [SerializeField]
     private GameObject modeSelectionCanvas;
 
+    private Button startButton;
+
     private void Start()
     {
-        SetCanvas();
+        SetCanvas(FirebaseAuthMgr.HasUser);
+
+        startButton = accountCanvas.transform.Find("Account/Start Button")?.GetComponent<Button>();
+
+        startButton.onClick.AddListener(() => SetCanvas(FirebaseAuthMgr.HasUser));
     }
 
-    private void SetCanvas()
+    private void SetCanvas(bool hasUser)
     {
-        bool set = FirebaseAuthMgr.HasUser;
+        accountCanvas.SetActive(!hasUser);
 
-        if (set == false)
-        {
-            accountCanvas.SetActive(!set);
-
-            modeSelectionCanvas.SetActive(set);
-        }
-        else
-        {
-            accountCanvas.SetActive(set);
-
-            modeSelectionCanvas.SetActive(!set);
-        }
+        modeSelectionCanvas.SetActive(hasUser);
     }
 }
