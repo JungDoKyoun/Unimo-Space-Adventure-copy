@@ -66,6 +66,7 @@ public class ConstructBase :ScriptableObject//,IConstruct
     {
         if (IsRequiredFulFilled() == false)
         {
+            Debug.Log("buildrequire");
             return false;
         }
         if (IsBuildCostEnough(new Dictionary<string, int>()) == false)//딕셔너리 파이어베이스 받아서 넣기
@@ -75,10 +76,11 @@ public class ConstructBase :ScriptableObject//,IConstruct
         }
         if (isBuildConstructed == true && isbuildRepeatable == false)
         {
+            Debug.Log("already builded");
             return false;
         }
         //ConstructEnd();
-        ConstructEnd();
+        
         return true;
     }
     public bool IsBuildCostEnough(Dictionary<string,int> ownCostDic)

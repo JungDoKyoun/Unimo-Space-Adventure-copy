@@ -90,7 +90,8 @@ public class ConstructManager : MonoBehaviour
         }
         else
         {
-
+            Debug.Log("buildcom");
+            building.ConstructEnd();
             spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
             //건설이 완료되었다는 뜻이니까 
             //건설 반영을 해야 함
