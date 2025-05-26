@@ -14,7 +14,7 @@ namespace JDG
         public string _relicName;
         public Sprite _relicImage;
         public string _relicDesc;
-        public ResourceCostSO _relicPrice;
+        public  ResourceCostSO _relicPrice;
         public RelicEffectType _relicEffectType;
         public float _relicEffectValue;
     }

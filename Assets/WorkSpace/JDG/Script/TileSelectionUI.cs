@@ -27,6 +27,9 @@ namespace JDG
         [SerializeField] private EventTileConfig _eventTileConfig;
         [SerializeField] private ShopUI _shopUI;
 
+        [Header("이벤트 아이템 갯수 및 스크립트 이벤트 선택지 갯수")]
+        [SerializeField] private int _itemCount;
+
         private Vector3 _uiPos;
         private HexRenderer _currentTile;
         private PlayerController _playerController;
@@ -89,7 +92,7 @@ namespace JDG
 
             if (tile.TileData.IsCleared || tile.TileData.TileType == TileType.Event || tile.TileData.TileType == TileType.Base)
             {
-                _actionButtonName.text = "a";
+                _actionButtonName.text = "이동";
             }
             else
             {
@@ -110,7 +113,7 @@ namespace JDG
             _hexGrid.UpdateFog();
         }
 
-        public void OnActionButtonClicked(int itmeSlot = 0)
+        public void OnActionButtonClicked(int itemSlot = 0)
         {
             if (_currentTile == null)
                 return;
@@ -130,8 +133,9 @@ namespace JDG
 
                 if (_currentTile.TileData.EventType == EventType.Shop)
                 {
+                    itemSlot = _itemCount;
                     EventDataSO eventData = GetRandomEvent(EventType.Shop);
-                    List<RelicDataSO> relicDatas = GetRandomRelics(eventData._relicDatas, itmeSlot);
+                    List<RelicDataSO> relicDatas = GetRandomRelics(eventData._relicDatas, itemSlot);
                     StartCoroutine(WaitAndOpenShop(relicDatas));
                 }
             }
@@ -166,6 +170,7 @@ namespace JDG
         {
             List<RelicDataSO> copy = new List<RelicDataSO>(relicDatas);
             List<RelicDataSO> result = new List<RelicDataSO>();
+            Debug.Log(relicDatas.Count);
 
             int maxCount = Mathf.Min(count, copy.Count);
 
@@ -185,6 +190,7 @@ namespace JDG
             _shopUI.OpenShopUI(relics, _uiPos);
             _shopUI.OnShopClosed -= ClearUIFlag;
             _shopUI.OnShopClosed += ClearUIFlag;
+            _isUIOpen = true;
         }
 
         private void ClearUIFlag()

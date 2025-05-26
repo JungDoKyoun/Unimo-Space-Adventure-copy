@@ -50,16 +50,16 @@ namespace JDG
 
             if (_rightRayInteractor.TryGetCurrent3DRaycastHit(out hit))
             {
-                GameObject hitObj = hit.collider.gameObject;
+                //GameObject hitObj = hit.collider.gameObject;
 
-                if (hitObj.TryGetComponent<Button>(out Button button))
-                {
-                    if (IsTriggerPressed(inputController))
-                    {
-                        button.onClick.Invoke();
-                        return;
-                    }
-                }
+                //if (hitObj.TryGetComponent<Button>(out Button button))
+                //{
+                //    if (IsTriggerPressed(inputController))
+                //    {
+                //        button.onClick.Invoke();
+                //        return;
+                //    }
+                //}
 
                 Vector3 hitPos = hit.point;
                 Vector2Int hitcoord = _hexGridLayout.GetCoordinateFromPosition(hitPos);
