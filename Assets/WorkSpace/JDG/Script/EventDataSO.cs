@@ -19,11 +19,4 @@ namespace JDG
         public List<ChoiceDataSO> _eventChoices;
         public List<RelicDataSO> _relicDatas;
     }
-
-    [System.Serializable]
-    public class ConditionData
-    {
-        public ResourcesType _resourcesType;
-        public int _value;
-    }
 }

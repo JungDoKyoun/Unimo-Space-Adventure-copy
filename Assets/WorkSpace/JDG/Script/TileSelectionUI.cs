@@ -1,7 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using JDG;
 
 namespace JDG
 {
@@ -23,7 +24,10 @@ namespace JDG
 
         [Header("필요한 컴포넌트")]
         [SerializeField] private Camera _worldCam;
+        [SerializeField] private EventTileConfig _eventTileConfig;
+        [SerializeField] private ShopUI _shopUI;
 
+        private Vector3 _uiPos;
         private HexRenderer _currentTile;
         private PlayerController _playerController;
         private HexGridLayout _hexGrid;
@@ -46,6 +50,7 @@ namespace JDG
         {
             _currentTile = tile;
             transform.position = wordPos + _offSet;
+            _uiPos = wordPos;
             _root.SetActive(true);
             _isUIOpen = true;
 
@@ -84,7 +89,7 @@ namespace JDG
 
             if (tile.TileData.IsCleared || tile.TileData.TileType == TileType.Event || tile.TileData.TileType == TileType.Base)
             {
-                _actionButtonName.text = "이동";
+                _actionButtonName.text = "a";
             }
             else
             {
@@ -105,7 +110,7 @@ namespace JDG
             _hexGrid.UpdateFog();
         }
 
-        public void OnActionButtonClicked()
+        public void OnActionButtonClicked(int itmeSlot = 0)
         {
             if (_currentTile == null)
                 return;
@@ -123,9 +128,11 @@ namespace JDG
                 _currentTile.TileData.IsCleared = true;
                 MovePlayerTo(_currentTile);
 
-                if(_currentTile.TileData.EventType == EventType.Shop)
+                if (_currentTile.TileData.EventType == EventType.Shop)
                 {
-
+                    EventDataSO eventData = GetRandomEvent(EventType.Shop);
+                    List<RelicDataSO> relicDatas = GetRandomRelics(eventData._relicDatas, itmeSlot);
+                    StartCoroutine(WaitAndOpenShop(relicDatas));
                 }
             }
             else
@@ -139,6 +146,49 @@ namespace JDG
         public void OnCancleButtonClicked()
         {
             HideUI();
+            _isUIOpen = false;
+        }
+
+        private EventDataSO GetRandomEvent(EventType type)
+        {
+            foreach (var eve in _eventTileConfig._eventTypes)
+            {
+                if (eve._eventType == type && eve._eventData.Count > 0)
+                {
+                    int random = Random.Range(0, eve._eventData.Count);
+                    return eve._eventData[random];
+                }
+            }
+            return null;
+        }
+
+        private List<RelicDataSO> GetRandomRelics(List<RelicDataSO> relicDatas, int count)
+        {
+            List<RelicDataSO> copy = new List<RelicDataSO>(relicDatas);
+            List<RelicDataSO> result = new List<RelicDataSO>();
+
+            int maxCount = Mathf.Min(count, copy.Count);
+
+            for (int i = 0; i < maxCount; i++)
+            {
+                int random = Random.Range(0, copy.Count);
+                result.Add(copy[random]);
+                copy.RemoveAt(random);
+            }
+            return result;
+        }
+
+        private IEnumerator WaitAndOpenShop(List<RelicDataSO> relics)
+        {
+            yield return new WaitUntil(() => !_playerController.IsMoving);
+
+            _shopUI.OpenShopUI(relics, _uiPos);
+            _shopUI.OnShopClosed -= ClearUIFlag;
+            _shopUI.OnShopClosed += ClearUIFlag;
+        }
+
+        private void ClearUIFlag()
+        {
             _isUIOpen = false;
         }
     }

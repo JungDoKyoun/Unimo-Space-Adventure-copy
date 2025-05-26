@@ -19,6 +19,8 @@ namespace JDG
             MoveAction();
         }
 
+        public bool IsMoving => _isMoving;
+
         public void Init(HexGridLayout hexGrid)
         {
             _hexGridLayout = hexGrid;
