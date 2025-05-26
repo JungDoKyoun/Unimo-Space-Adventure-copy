@@ -20,7 +20,10 @@ public class ConstructBase :ScriptableObject//,IConstruct
     public List<string> buildRequires=new List<string>();//필요한 건물 buildid
     public List<string> buildUnlocks=new List<string>();
     public List<BuildCost> buildCosts=new List<BuildCost>();//이 건물이 필요한 코스트
-    public Dictionary<string, int> buildCostDic=new Dictionary<string, int>();//별도 처리 필요
+    private Dictionary<string, int> buildCostDic=new Dictionary<string, int>();//별도 처리 필요
+    public Dictionary<string, int> BuildCostDic {  get { return buildCostDic; } }
+
+
     public string buildEffectDirection;//이거 addressable아니면 resource.load인데 애드레서블은 사실상 사용을 못하고 resource는 많이 사용하면 메모리 먹음 그냥 직접 대입이 맞을듯
     public Vector3 buildPosition=new Vector3();
     public string buildIconDirection;//이것도 직접이 맞을듯
@@ -33,7 +36,7 @@ public class ConstructBase :ScriptableObject//,IConstruct
     public string buildingDescription;
 
 
-    public void Init()
+    public void Init()//현재는 안씀?
     {
         
     }
@@ -63,7 +66,7 @@ public class ConstructBase :ScriptableObject//,IConstruct
         {
             return false;
         }
-        if (IsBuildCostEnough(new Dictionary<string, int>()) == false)
+        if (IsBuildCostEnough(new Dictionary<string, int>()) == false)//딕셔너리 파이어베이스 받아서 넣기
         {
             Debug.Log("notenoughcost");
             return false;
@@ -73,6 +76,7 @@ public class ConstructBase :ScriptableObject//,IConstruct
             return false;
         }
         //ConstructEnd();
+        ConstructEnd();
         return true;
     }
     public bool IsBuildCostEnough(Dictionary<string,int> ownCostDic)

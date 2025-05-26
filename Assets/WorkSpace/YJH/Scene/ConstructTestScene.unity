@@ -490,23 +490,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1bac92b10c1a784b98507baf6a8cded, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  constructManager: {fileID: 2135329927}
-  playerStatus:
-    currentHealth: 0
-    maxHP: 0
-    playerDamage: 0
-    itemDetectionRange: 0
-    gatheringSpeed: 0
-    gatheringDelay: 0
-    moveSpeed: 0
-  originPlayerStatus:
-    currentHealth: 0
-    maxHP: 0
-    playerDamage: 0
-    itemDetectionRange: 0
-    gatheringSpeed: 0
-    gatheringDelay: 0
-    moveSpeed: 0
 --- !u!114 &2135329927 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 155129759722265790, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
@@ -526,6 +509,62 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 155129759722265790, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: originPlayerStatus.maxHP
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 155129759722265790, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: originPlayerStatus.moveSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 155129759722265790, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: originPlayerStatus.playerDamage
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 155129759722265790, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: originPlayerStatus.currentHealth
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 155129759722265790, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: originPlayerStatus.gatheringDelay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 155129759722265790, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: originPlayerStatus.gatheringSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 155129759722265790, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: originPlayerStatus.itemDetectionRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467312021239458799, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467312021239458799, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467312021239458799, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2135329927}
+    - target: {fileID: 1467312021239458799, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467312021239458799, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TempGameStart
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467312021239458799, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ConstructManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1467312021239458799, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2741200535080100811, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
       propertyPath: m_IsActive
       value: 0

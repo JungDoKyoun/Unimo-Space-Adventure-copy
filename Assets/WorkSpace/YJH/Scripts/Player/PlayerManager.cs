@@ -6,6 +6,10 @@ public partial class PlayerManager
     
     private PlayerStatus playerStatus;
 
+    public PlayerStatus PlayerStatus {  get { return playerStatus; } }
+    
+
+
     private void Start()
     {
         ActionStart();
@@ -40,6 +44,11 @@ public partial class PlayerManager
         moveSpeed = playerStatus.moveSpeed;
 
         //baseSpeed = playerStatus.baseSpeed;
+    }
+    public void SetPlayerStatus(PlayerStatus status)
+    {
+        playerStatus = status;
+        SetPlayerStatus();
     }
 
     private void OnTriggerEnter(Collider other)

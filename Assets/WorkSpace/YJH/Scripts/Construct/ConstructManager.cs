@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ConstructManager : MonoBehaviour
@@ -26,6 +27,13 @@ public class ConstructManager : MonoBehaviour
     public List<ConstructBase> ConstructList { get { return constructList;  } private set { constructList = value; } }
     public static ConstructManager Instance { get; private set; }
 
+
+
+    private PlayerManager playerManager;
+    public PlayerStatus playerStatus = new PlayerStatus();
+    [SerializeField] PlayerStatus originPlayerStatus = new PlayerStatus();
+    public PlayerStatus OriginPlayerStatus { get { return originPlayerStatus; } }
+
     private void Awake()
     {
         if(Instance == null)
@@ -37,7 +45,7 @@ public class ConstructManager : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
-
+        SceneManager.sceneLoaded += OnSceneChanged;
         ToDictionary();
     }
 
@@ -48,7 +56,7 @@ public class ConstructManager : MonoBehaviour
             temp.ToDictionary();
         }
     }
-    public void Init()
+    public void Init()//현재는 안씀?
     {
         foreach (var temp in constructList)
         {
@@ -56,7 +64,22 @@ public class ConstructManager : MonoBehaviour
         }
     }
 
-
+    public List<IStatModifier> ReturnStatEffectList()//게임매니저에서 호출 받아서 자기가 적용시킬 스테이터스에 사용하기
+    {
+        List<IStatModifier> tempList= new List<IStatModifier>();
+        foreach(var building in constructList)
+        {
+            foreach(var effect in building.buildEffects)
+            {
+                if (building.isBuildConstructed == true)
+                {
+                    tempList.Add(effect);
+                }
+                
+            }
+        }
+        return tempList;
+    }
     public void BuildButtonPressed(string buildID)
     {
         foreach (var temp in constructList)
@@ -69,7 +92,10 @@ public class ConstructManager : MonoBehaviour
     }
 
     
-
+    public void TempGameStart()
+    {
+        SceneManager.LoadScene("TestScene");
+    }
 
     public void ShowBuildPanel()
     {
@@ -91,7 +117,7 @@ public class ConstructManager : MonoBehaviour
         }
         string costText="";
         buildingRequireText.text = requireText;
-        foreach (var temp in buildingInfo.buildCostDic)
+        foreach (var temp in buildingInfo.BuildCostDic)
         {
             costText += "\""+temp.Key+"\""+":"+temp.Value.ToString()+"";
             
@@ -119,9 +145,117 @@ public class ConstructManager : MonoBehaviour
             buildInfoBuildButton.interactable = true;
         }
     }
-    
 
-    
+    public bool TryGetPlayer()
+    {
+        playerManager = FindObjectOfType<PlayerManager>();
+        if (playerManager == null)
+        {
+            return false;
+        }
+        else
+        {
 
+            return true;
+        }
+    }
+    public void SetPlayer()
+    {
+        ModifieStat();
+        SetFinalStatusToPlayer();
+    }
+
+    //public void AddStatEffect(BuildEffect buildEffect)//만들어 넣었지만 쓰진 않을듯? 
+    //{
+    //    buildEffects.Add(buildEffect);
+    //}
+    public void ModifieStat()
+    {
+        float speedSum = originPlayerStatus.moveSpeed;
+        float maxHPSum = originPlayerStatus.maxHP;
+        float gatherSpeedSum = originPlayerStatus.gatheringSpeed;
+        float gatherDelaySum = originPlayerStatus.gatheringDelay;
+        float damageSum = originPlayerStatus.playerDamage;
+        float gatherRangeSum = originPlayerStatus.itemDetectionRange;
+
+
+        foreach (var building in constructList) {
+            if (building.isBuildConstructed == true)
+            {
+                foreach (var buildeffect in building.buildEffects)
+                {
+                    switch (buildeffect)
+                    {
+                        case Speed speed:
+                            speedSum += buildeffect.ReturnFinalStat(originPlayerStatus.moveSpeed);
+
+                            break;
+                        case MaxHp maxHP:
+                            maxHPSum += buildeffect.ReturnFinalStat(originPlayerStatus.maxHP);
+
+                            break;
+                        case GatheringSpeed gatheringSpeed:
+                            gatherSpeedSum += buildeffect.ReturnFinalStat(originPlayerStatus.gatheringSpeed);
+                            break;
+                        case GatheringDelay gatheringDelay:
+                            gatherDelaySum += buildeffect.ReturnFinalStat(originPlayerStatus.gatheringDelay);
+                            break;
+                        case Damage damage:
+                            damageSum += buildeffect.ReturnFinalStat(originPlayerStatus.playerDamage);
+                            break;
+                        case ItemDetectionRange itemDetectionRange:
+                            gatherRangeSum += buildeffect.ReturnFinalStat(originPlayerStatus.itemDetectionRange);
+                            break;
+                        default:
+
+                            break;
+
+                    }
+                }
+            }
+            //else
+            //{
+            //
+            //}
+        }
+
+        playerStatus = originPlayerStatus.Clone();
+        playerStatus.moveSpeed += speedSum;
+        playerStatus.maxHP += maxHPSum;
+        playerStatus.gatheringSpeed += gatherSpeedSum;
+        playerStatus.gatheringDelay += gatherDelaySum;
+        playerStatus.playerDamage += damageSum;
+        playerStatus.itemDetectionRange += gatherRangeSum;
+
+
+
+
+
+    }
+
+
+
+    public void SetFinalStatusToPlayer()
+    {
+        playerManager.SetPlayerStatus(playerStatus);
+
+
+    }
+    
+    private void OnSceneChanged(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "TestScene")
+        {
+            if (TryGetPlayer()==true)//플레이어가 있으면
+            {
+                Debug.Log("scenecallback");
+                SetPlayer();
+            }
+            else
+            {
+                return;
+            }
+        }
+    }
 
 }
