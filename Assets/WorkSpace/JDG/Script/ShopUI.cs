@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -20,7 +21,7 @@ namespace JDG
         [SerializeField] private Image _resourceIcon2;
         [SerializeField] private TextMeshProUGUI _resourceText1;
         [SerializeField] private TextMeshProUGUI _resourceText2;
-        public System.Action OnShopClosed;
+        private Action _onShopClosed;
 
         [Header("UI창 위치 조정")]
         [SerializeField] private Vector3 _offset;
@@ -30,12 +31,14 @@ namespace JDG
             HideShopUI();
         }
 
+        public Action OnShopClosed { get { return _onShopClosed; } set { _onShopClosed = value; } }
+
         public void OpenShopUI(List<RelicDataSO> relics, Vector3 worldPos)
         {
             _root.SetActive(true);
             transform.position = worldPos + _offset;
             _slotPrefab = Resources.Load<GameObject>("WorldMap/RelicSlot");
-
+            Debug.Log(relics.Count);
             foreach (Transform child in _slotParent)
             {
                 Destroy(child.gameObject);
@@ -45,14 +48,27 @@ namespace JDG
             {
                 GameObject obj = Instantiate(_slotPrefab, _slotParent);
                 ShopItemSlot shopSlot = obj.GetComponent<ShopItemSlot>();
-                shopSlot.SetShopItemSlot(relic._relicName, relic._relicImage, relic._relicPrice._resourceicon, relic._relicPrice._value);
+                shopSlot.SetShopItemSlot(relic);
             }
         }
 
         public void HideShopUI()
         {
+            Debug.Log("닫기 버튼 눌림");
             _root.SetActive(false);
             OnShopClosed?.Invoke();
+        }
+
+        public void On10RepairButtonClicked()
+        {
+            //체력 회복 및 보유 자원 감소
+            Debug.Log("체력 10% 회복");
+        }
+
+        public void On100RepairButtonClicked()
+        {
+            //체력 회복 및 보유 자원 감소
+            Debug.Log("체력 100% 회복");
         }
     }
 }
