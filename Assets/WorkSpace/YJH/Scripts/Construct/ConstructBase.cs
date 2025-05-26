@@ -24,12 +24,13 @@ public class ConstructBase :ScriptableObject//,IConstruct
     public Dictionary<string, int> BuildCostDic {  get { return buildCostDic; } }
 
 
-    public string buildEffectDirection;//이거 addressable아니면 resource.load인데 애드레서블은 사실상 사용을 못하고 resource는 많이 사용하면 메모리 먹음 그냥 직접 대입이 맞을듯
+    //public string buildEffectDirection;//이거 addressable아니면 resource.load인데 애드레서블은 사실상 사용을 못하고 resource는 많이 사용하면 메모리 먹음 그냥 직접 대입이 맞을듯
     public Vector3 buildPosition=new Vector3();
-    public string buildIconDirection;//이것도 직접이 맞을듯
+    public Sprite buildIcon;
+    public Sprite buildingImage;
     public string buildType;
     public bool isbuildRepeatable;
-    public string buildPrefabDirection;//이것도 직접이 맞을듯 
+    //public string buildPrefabDirection;//이것도 직접이 맞을듯 
     public List<BuildEffect> buildEffects=new List<BuildEffect>();
     public int spawnIndex;
     
@@ -58,6 +59,7 @@ public class ConstructBase :ScriptableObject//,IConstruct
     
     public void ConstructEnd()
     {
+        Debug.Log("buildcomplete");
         isBuildConstructed = true;
     }
     public bool TryConstruct()
