@@ -319,15 +319,30 @@ public class FirebaseAuthMgr : MonoBehaviour
         }
     }
 
-    private IEnumerator InitPlayerCurrency() // 회원가입 시 재화 초기값 설정
+    private IEnumerator InitPlayerCurrency() // 회원가입 시 초기값 설정
     {
-        // 초기 인게임 재화 생성
+        // 초기 인게임 재화 생성(크레딧)
         var DBTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardIngameCurrency").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
-        // 초기 메타 재화 생성
+        // 초기 메타 재화 생성(프리팹)
         DBTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardMetaCurrency").SetValueAsync(0);
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+        // 초기 메타 재화 생성(설계도)
+        DBTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardBluePrint").SetValueAsync(0);
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+        // 매치 진행 횟수
+        DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("playCount").SetValueAsync(0);
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+        // 매치 승리 횟수
+        DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("winCount").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
     }

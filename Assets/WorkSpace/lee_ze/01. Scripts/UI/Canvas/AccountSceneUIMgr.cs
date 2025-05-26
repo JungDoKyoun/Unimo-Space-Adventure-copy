@@ -28,4 +28,9 @@ public class AccountSceneUIMgr : MonoBehaviour
 
         modeSelectionCanvas.SetActive(hasUser);
     }
+
+    private void OnDestroy()
+    {
+        startButton.onClick.RemoveListener(() => SetCanvas(FirebaseAuthMgr.HasUser));
+    }
 }

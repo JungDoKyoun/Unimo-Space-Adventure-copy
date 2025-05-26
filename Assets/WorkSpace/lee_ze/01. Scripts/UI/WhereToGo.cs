@@ -23,7 +23,7 @@ public class WhereToGo : MonoBehaviour
     {
         worldMap = GameObject.Find("World Map");
 
-        mainButton.onClick.AddListener(() => GoToMain());
+        mainButton.onClick.AddListener(() => SceneControl.Instance.GoToMain());
 
         worldMapButton.onClick.AddListener(() => ShowWorldMap());
     }
@@ -35,14 +35,9 @@ public class WhereToGo : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void GoToMain()
-    {
-        SceneManager.LoadScene("Account");
-    }
-
     private void OnDisable()
     {
-        mainButton.onClick.RemoveListener(() => GoToMain());
+        mainButton.onClick.RemoveListener(() => SceneControl.Instance.GoToMain());
 
         worldMapButton.onClick.RemoveListener(() => ShowWorldMap());
     }
