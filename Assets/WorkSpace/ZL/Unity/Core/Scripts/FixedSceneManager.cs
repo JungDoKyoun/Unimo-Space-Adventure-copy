@@ -10,13 +10,6 @@ namespace ZL.Unity
 {
     public static partial class FixedSceneManager
     {
-        public static void LoadScene(string sceneName)
-        {
-            FixedSelection.SetActiveObject(null);
-
-            SceneManager.LoadScene(sceneName);
-        }
-
         public static void LoadScene(MonoBehaviour instance, float delay, string sceneName)
         {
             instance.StartCoroutine(LoadSceneRoutine(delay, sceneName));
@@ -30,6 +23,13 @@ namespace ZL.Unity
             }
 
             LoadScene(sceneName);
+        }
+
+        public static void LoadScene(string sceneName)
+        {
+            FixedSelection.SetActiveObject(null);
+
+            SceneManager.LoadScene(sceneName);
         }
     }
 }

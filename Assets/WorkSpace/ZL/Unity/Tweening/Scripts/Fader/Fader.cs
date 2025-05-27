@@ -40,39 +40,50 @@ namespace ZL.Unity.Tweening
 
         [SerializeField]
 
-        [UsingCustomProperty]
-
-        [PropertyField]
-
-        [ReadOnlyWhenEditMode]
-
-        [Button(nameof(ToggleFaded))]
-
-        private bool isFadedIn = false;
-
-        [Space]
-
-        [SerializeField]
-
         private UnityEvent onFadeInEvent = null;
 
-        public UnityEvent OnFadeInEvent => onFadeInEvent;
+        public UnityEvent OnFadeInEvent
+        {
+            get => onFadeInEvent;
+        }
 
         [Space]
 
         [SerializeField]
+
+        //[UsingCustomProperty]
+
+        //[ReadOnlyWhenEditMode]
+
+        //[Button(nameof(FadeIn))]
+
+        //[DefaultPropertyField]
 
         private UnityEvent onFadedInEvent = null;
 
-        public UnityEvent OnFadedInEvent => onFadedInEvent;
+        public UnityEvent OnFadedInEvent
+        {
+            get => onFadedInEvent;
+        }
 
         [Space]
 
         [SerializeField]
 
+        //[UsingCustomProperty]
+
+        //[ReadOnlyWhenEditMode]
+
+        //[Button(nameof(FadeOut))]
+
+        //[DefaultPropertyField]
+
         private UnityEvent onFadeOutEvent = null;
 
-        public UnityEvent OnFadeOutEvent => onFadeOutEvent;
+        public UnityEvent OnFadeOutEvent
+        {
+            get => onFadeOutEvent;
+        }
 
         [Space]
 
@@ -80,59 +91,34 @@ namespace ZL.Unity.Tweening
 
         private UnityEvent onFadedOutEvent = null;
 
-        public UnityEvent OnFadedOutEvent => onFadedOutEvent;
-
-        private void Start()
+        public UnityEvent OnFadedOutEvent
         {
-            if (isFadedIn == true)
-            {
-                tweener.Value = 1f;
-
-                gameObject.SetActive(true);
-            }
-
-            else
-            {
-                tweener.Value = 0f;
-
-                gameObject.SetActive(false);
-            }
-        }
-
-        public void ToggleFaded()
-        {
-            if (isFadedIn == true)
-            {
-                FadeOut();
-            }
-
-            else
-            {
-                FadeIn();
-            }
+            get => onFadedOutEvent;
         }
 
         /// <summary>
         /// Fade alpha from 0 to 1.<br/>
         /// 알파를 0에서 1으로 페이드합니다.<br/>
         /// </summary>
-        /// <param name="duration">
+        /// <param name = "duration">
         /// Fade time;<br/>
         /// -1 = Use tweener defaults<br/>
         /// 페이드 시간;<br/>
         /// -1 = Tweener 기본값 사용<br/>
         /// </param>
-        public void FadeIn(float duration = -1f)
+        public void FadeIn()
         {
             faderGroup?.SwapCurrent(this);
 
             gameObject.SetActive(true);
 
-            isFadedIn = true;
-
             onFadeInEvent.Invoke();
 
-            tweener.Tween(1f, duration).OnComplete(OnFadedIn);
+            tweener.SetEndValue(1f);
+
+            tweener.Play();
+
+            tweener.Current.OnComplete(OnFadedIn);
         }
 
         private void OnFadedIn()
@@ -144,19 +130,21 @@ namespace ZL.Unity.Tweening
         /// Fade alpha from 1 to 0.<br/>
         /// 알파를 1에서 0으로 페이드합니다.<br/>
         /// </summary>
-        /// <param name="duration">
+        /// <param name = "duration">
         /// Fade time;<br/>
         /// -1 = Use tweener defaults<br/>
         /// 페이드 시간;<br/>
         /// -1 = Tweener 기본값 사용<br/>
         /// </param>
-        public void FadeOut(float duration = -1f)
+        public void FadeOut()
         {
-            isFadedIn = false;
-
             onFadeOutEvent.Invoke();
 
-            tweener.Tween(0f, duration).OnComplete(OnFadedOut);
+            tweener.SetEndValue(0f);
+
+            tweener.Play();
+
+            tweener.Current.OnComplete(OnFadedOut);
         }
 
         private void OnFadedOut()

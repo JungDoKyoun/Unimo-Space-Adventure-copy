@@ -6,6 +6,8 @@ namespace ZL.Unity
 
         Singleton,
 
+        UIBuilder,
+
         Default = 0,
 
         SceneDirector,

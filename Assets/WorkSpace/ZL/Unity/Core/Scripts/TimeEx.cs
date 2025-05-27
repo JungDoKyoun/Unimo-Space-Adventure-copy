@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ZL.Unity
 {
-    public static partial class FixedTime
+    public static partial class TimeEx
     {
         public static bool IsPaused { get; private set; } = false;
 
@@ -28,7 +28,7 @@ namespace ZL.Unity
 
         private static int pauseCount = 0;
 
-        static FixedTime()
+        static TimeEx()
         {
             timeScale = Time.timeScale;
         }

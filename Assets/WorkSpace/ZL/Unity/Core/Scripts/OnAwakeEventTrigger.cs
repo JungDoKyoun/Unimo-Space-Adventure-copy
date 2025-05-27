@@ -23,7 +23,7 @@ namespace ZL.Unity
         {
             onAwakeEvent.Invoke();
 
-            Destroy(this);
+            enabled = false;
         }
     }
 }

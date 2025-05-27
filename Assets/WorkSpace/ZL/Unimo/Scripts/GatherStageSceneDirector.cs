@@ -4,9 +4,9 @@ using System.Collections;
 
 using UnityEngine;
 
-using ZL.Unity.Directing;
+using UnityEngine.Events;
 
-using ZL.Unity.UI;
+using ZL.Unity.Directing;
 
 namespace ZL.Unity.Unimo
 {
@@ -37,18 +37,8 @@ namespace ZL.Unity.Unimo
         [ReadOnlyWhenPlayMode]
 
         private PlayerManager player = null;
-
+        
         [Space]
-
-        [SerializeField]
-
-        private SliderValueDisplayer fuelBar = null;
-
-        [SerializeField]
-
-        private float fuelMax = 100f;
-
-        /*[Space]
 
         [SerializeField]
 
@@ -78,15 +68,23 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private RandomSpawner gatheringSpawner1 = null;*/
+        private RandomSpawner gatheringSpawner1 = null;
+
+        [Space]
+
+        [SerializeField]
+
+        private UnityEvent onStageClearEvent = null;
+
+        [Space]
+
+        [SerializeField]
+
+        private UnityEvent onStageFailEvent = null;
 
         public Transform EnemyTarget { get; private set; } = null;
 
         private int collectedResourceAmount = 0;
-
-        private float fuel = 0f;
-
-        private bool isPlaying = true;
 
         protected override void Awake()
         {
@@ -95,29 +93,17 @@ namespace ZL.Unity.Unimo
             player.OnPlayerDead += StageFail;
 
             EnemyTarget = player.transform;
-
-            fuelBar.Slider.maxValue = fuelMax;
-
-            fuelBar.Slider.value = fuel = fuelMax;
         }
 
-        private void Update()
+        protected override IEnumerator Start()
         {
-            if (isPlaying == false)
-            {
-                return;
-            }
+            yield return base.Start();
 
-            fuel -= stageData.FuelDrainAmount * Time.deltaTime;
+            monster1Spawner1.SetActive(true);
 
-            fuelBar.Slider.value = fuel;
+            monster2Spawner1.SetActive(true);
 
-            if (fuel <= 0f)
-            {
-                fuel = 0f;
-
-                StageFail();
-            }
+            gatheringSpawner1.SetActive(true);
         }
 
         public void GetResource(int value)
@@ -133,66 +119,36 @@ namespace ZL.Unity.Unimo
             }
         }
 
-        public void GetFuel(float value)
+        public void StageClear()
         {
-            fuel += value;
-
-            if (fuel > fuelMax)
-            {
-                fuel = fuelMax;
-            }
-        }
-
-        private void StageClear()
-        {
-            StartCoroutine(StageClearRoutine());
-        }
-
-        private IEnumerator StageClearRoutine()
-        {
-            isPlaying = false;
-
-            // UI 등장
-            FixedDebug.Log("스테이지 클리어");
-
-            FadeOut();
+            TimeEx.Pause();
 
             GameStateManager.IsClear = true;
 
             if (FirebaseDataBaseMgr.Instance != null)
             {
-                yield return FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(stageData.RewardIngameCurrency);
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(stageData.RewardIngameCurrency));
 
-                yield return FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(stageData.RewardMetaCurrency);
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(stageData.RewardMetaCurrency));
             }
 
-            FixedSceneManager.LoadScene(this, fadeDuration, "Station");
+            onStageClearEvent.Invoke();
         }
 
-        private void StageFail()
+        public void StageFail()
         {
-            StartCoroutine(StageFailRoutine());
-        }
-
-        private IEnumerator StageFailRoutine()
-        {
-            isPlaying = false;
-
-            // UI 등장
-            FixedDebug.Log("스테이지 실패");
-
-            FadeOut();
-
-            GameStateManager.IsRestoreMap = false;
+            TimeEx.Pause();
 
             GameStateManager.IsClear = false;
 
+            GameStateManager.IsRestoreMap = false;
+
             if (FirebaseDataBaseMgr.Instance != null)
             {
-                yield return FirebaseDataBaseMgr.Instance.InitIngameCurrency();
+                StartCoroutine(FirebaseDataBaseMgr.Instance.InitIngameCurrency());
             }
 
-            FixedSceneManager.LoadScene(this, fadeDuration, "Station");
+            onStageFailEvent.Invoke();
         }
     }
 }

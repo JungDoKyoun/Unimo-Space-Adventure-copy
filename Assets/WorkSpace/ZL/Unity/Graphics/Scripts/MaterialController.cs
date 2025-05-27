@@ -6,7 +6,10 @@ namespace ZL.Unity.GFX
     {
         public abstract Material[] Materials { get; }
 
-        public Material Material => Materials[0];
+        public Material Material
+        {
+            get => Materials[0];
+        }
 
         public Material Get(int index)
         {

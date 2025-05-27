@@ -80,7 +80,7 @@ namespace ZL.Unity.UI
             get => onDragEvent;
         }
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
 
         [Space]
 
@@ -120,7 +120,7 @@ namespace ZL.Unity.UI
             Gizmos.DrawLine(startPoint, endPoint);
         }
 
-#endif
+        #endif
 
         public void OnPointerDown(PointerEventData eventData)
         {

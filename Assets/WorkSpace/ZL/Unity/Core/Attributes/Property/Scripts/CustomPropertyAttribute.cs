@@ -7,6 +7,8 @@ using System.Reflection;
 #if UNITY_EDITOR
 
 using UnityEditor;
+using UnityEditorInternal;
+
 
 #endif
 
@@ -26,9 +28,41 @@ namespace ZL.Unity
 
         protected const int defaultFontSize = 12;
 
-        protected static readonly Color defaultTextColor;
+        public static Color DefaultTextColor
+        {
+            get
+            {
+                if (EditorGUIUtility.isProSkin == true)
+                {
+                    return new Color(0.769f, 0.769f, 0.769f, 1f);
+                }
 
-        protected static readonly GUIStyle defaultLabelStyle;
+                else
+                {
+                    return new Color(0.035f, 0.035f, 0.03f, 1f);
+                }
+            }
+        }
+
+        private static GUIStyle defaultLabelStyle = null;
+
+        protected static GUIStyle DefaultLabelStyle
+        {
+            get
+            {
+                if (defaultLabelStyle == null)
+                {
+                    defaultLabelStyle = new GUIStyle()
+                    {
+                        fontSize = defaultFontSize,
+                    };
+
+                    defaultLabelStyle.normal.textColor = DefaultTextColor;
+                }
+
+                return defaultLabelStyle;
+            }
+        }
 
         #if UNITY_EDITOR
 
@@ -42,26 +76,6 @@ namespace ZL.Unity
 
                 return nameTag;
             }
-        }
-
-        static CustomPropertyAttribute()
-        {
-            if (EditorGUIUtility.isProSkin == true)
-            {
-                defaultTextColor = new Color(0.769f, 0.769f, 0.769f, 1f);
-            }
-            
-            else
-            {
-                defaultTextColor = new Color(0.035f, 0.035f, 0.03f, 1f);
-            }
-
-            defaultLabelStyle = new GUIStyle()
-            {
-                fontSize = defaultFontSize,
-            };
-            
-            defaultLabelStyle.normal.textColor = defaultTextColor;
         }
 
         protected virtual void Initialize(Drawer drawer)
@@ -104,6 +118,8 @@ namespace ZL.Unity
             public int IndentLevel { get; set; }
 
             public bool IsPropertyFieldDrawn { get; set; }
+
+            private UnityEventDrawer unityEventDrawer = null;
 
             public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
             {
@@ -175,6 +191,13 @@ namespace ZL.Unity
                 Margin(EditorGUI.GetPropertyHeight(Property, PropertyLabel, true) + 2f);
             }
 
+            public void DrawDefaultPropertyField()
+            {
+                var editor = Editor.CreateEditor(Property.serializedObject.targetObject);
+
+                editor.OnInspectorGUI();
+            }
+
             public void DrawLayerField()
             {
                 Property.intValue = EditorGUI.LayerField(drawPosition, PropertyLabel, Property.intValue);
@@ -196,7 +219,7 @@ namespace ZL.Unity
 
             public void DrawText(GUIContent label)
             {
-                DrawText(defaultLabelStyle.CalcSize(label).y, label, defaultLabelStyle);
+                DrawText(DefaultLabelStyle.CalcSize(label).y, label, DefaultLabelStyle);
             }
 
             public void DrawText(GUIContent label, GUIStyle style)
@@ -206,7 +229,7 @@ namespace ZL.Unity
 
             public void DrawText(float height, GUIContent label)
             {
-                DrawText(height, label, defaultLabelStyle);
+                DrawText(height, label, DefaultLabelStyle);
             }
 
             public void DrawText(float height, GUIContent label, GUIStyle style)

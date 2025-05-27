@@ -20,7 +20,7 @@ namespace ZL.Unity.GFX
 
         [ReadOnlyWhenPlayMode]
 
-        private Graphic graphic = null;
+        private Graphic targetGraphic = null;
 
         [Space]
 
@@ -39,12 +39,12 @@ namespace ZL.Unity.GFX
         {
             if (isShared == false)
             {
-                graphic.material = new Material(graphic.material);
+                targetGraphic.material = new Material(targetGraphic.material);
             }
 
             materials = new Material[1]
             {
-                graphic.material
+                targetGraphic.material
             };
         }
     }

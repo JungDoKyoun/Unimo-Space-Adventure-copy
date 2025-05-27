@@ -32,7 +32,10 @@ namespace ZL.Unity.Server.Photon
 
     public sealed class PhotonServerManager : MonoBehaviourPunCallbacks, ISingleton<PhotonServerManager>
     {
-        public PhotonServerManager Instance => ISingleton<PhotonServerManager>.Instance;
+        public PhotonServerManager Instance
+        {
+            get => ISingleton<PhotonServerManager>.Instance;
+        }
 
         [Space]
 

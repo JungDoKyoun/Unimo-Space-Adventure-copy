@@ -6,6 +6,8 @@ namespace ZL.Unity.UI
 {
     [AddComponentMenu("ZL/UI/Force Layout Rebuilder")]
 
+    [DefaultExecutionOrder((int)ScriptExecutionOrder.UIBuilder)]
+
     public sealed class ForceLayoutRebuilder : MonoBehaviour
     {
         [Space]

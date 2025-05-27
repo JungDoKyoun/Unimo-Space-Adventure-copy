@@ -53,12 +53,12 @@ namespace ZL.Unity
 
         public void Pause()
         {
-            FixedTime.Pause();
+            TimeEx.Pause();
         }
 
         public void Resume()
         {
-            FixedTime.Resume();
+            TimeEx.Resume();
         }
 
         public void Quit()

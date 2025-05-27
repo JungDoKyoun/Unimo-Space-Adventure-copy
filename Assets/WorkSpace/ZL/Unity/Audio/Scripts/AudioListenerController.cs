@@ -20,7 +20,7 @@ namespace ZL.Unity.Audio
 
         private float volume = 0f;
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
 
         private void OnValidate()
         {
@@ -41,7 +41,7 @@ namespace ZL.Unity.Audio
             pause = AudioListener.pause;
         }
 
-#endif
+        #endif
 
         private void Awake()
         {

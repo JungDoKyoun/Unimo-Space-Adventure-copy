@@ -1,4 +1,4 @@
-using System.Collections;
+//using System.Collections;
 
 using TMPro;
 
@@ -6,9 +6,11 @@ using UnityEngine;
 
 namespace ZL.Unity.UI
 {
-    [AddComponentMenu("ZL/UI/Force TMP Mesh Updater")]
+    [AddComponentMenu("ZL/UI/TMP Force Mesh Updater")]
 
-    public sealed class ForceTMPMeshUpdater : MonoBehaviour
+    [DefaultExecutionOrder((int)ScriptExecutionOrder.UIBuilder)]
+
+    public sealed class TMPForceMeshUpdater : MonoBehaviour
     {
         [Space]
 
@@ -30,21 +32,18 @@ namespace ZL.Unity.UI
 
         private TMP_Text text = null;
 
-        private void OnEnable()
-        {
-            ForceMeshUpdate();
-        }
-
         public void ForceMeshUpdate()
         {
-            StartCoroutine(ForceMeshUpdateRoutine());
+            //StartCoroutine(ForceMeshUpdateRoutine());
+
+            text.ForceMeshUpdate();
         }
 
-        private IEnumerator ForceMeshUpdateRoutine()
+        /*private IEnumerator ForceMeshUpdateRoutine()
         {
             yield return null;
 
             text.ForceMeshUpdate();
-        }
+        }*/
     }
 }

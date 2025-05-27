@@ -18,15 +18,11 @@ namespace ZL.Unity.GFX
 
         [ReadOnlyWhenPlayMode]
 
-        #pragma warning disable CS0108
-
-        private Renderer renderer = null;
-
-        #pragma warning restore CS0108
+        private Renderer targetRenderer = null;
 
         public override Material[] Materials
         {
-            get => renderer.materials;
+            get => targetRenderer.materials;
         }
     }
 }

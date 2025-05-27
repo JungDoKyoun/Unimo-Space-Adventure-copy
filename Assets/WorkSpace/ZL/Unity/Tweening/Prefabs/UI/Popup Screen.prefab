@@ -65,11 +65,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   valueTweener:
+    endValue: 0
     duration: 0
     delay: 0
-    ease: 0
+    ease: 1
     isIndependentUpdate: 1
-    loopCount: 1
+    loops: 1
     loopType: 0
     onStartEvent:
       m_PersistentCalls:
@@ -218,7 +219,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6850177955203313329, guid: 7d741e7fc535c1845ab3694a76f619de, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 500
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 6850177955203313329, guid: 7d741e7fc535c1845ab3694a76f619de, type: 3}
       propertyPath: m_LocalPosition.x
