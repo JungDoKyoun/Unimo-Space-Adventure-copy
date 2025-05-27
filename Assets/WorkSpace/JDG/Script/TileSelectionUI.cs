@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,12 +24,9 @@ namespace JDG
         [SerializeField] private Vector3 _offSet;
 
         [Header("필요한 컴포넌트")]
-        [SerializeField] private Camera _worldCam;
-        [SerializeField] private EventTileConfig _eventTileConfig;
+        private EventTileConfig _eventTileConfig;
         private ShopUI _shopUI;
-
-        [Header("이벤트 아이템 갯수 및 스크립트 이벤트 선택지 갯수")]
-        [SerializeField] private int _itemCount;
+        private ScriptEventUI _scriptEventUI;
 
         private Vector3 _uiPos;
         private HexRenderer _currentTile;
@@ -40,11 +38,13 @@ namespace JDG
             HideUI();
         }
 
-        public void Init(PlayerController playerController, HexGridLayout hexGird)
+        public void Init(PlayerController playerController, HexGridLayout hexGird, EventTileConfig tileConfig)
         {
             _playerController = playerController;
             _hexGrid = hexGird;
+            _eventTileConfig = tileConfig;
             _shopUI = UIManager.Instance.ShopUI;
+            _scriptEventUI = UIManager.Instance.ScriptEventUI;
         }
 
         public void ShowUI(HexRenderer tile, Vector3 wordPos = default)
@@ -111,7 +111,7 @@ namespace JDG
             _playerController.UpdateFog();
         }
 
-        public void OnActionButtonClicked(int itemSlot = 0)
+        public void OnActionButtonClicked()
         {
             if (_currentTile == null)
                 return;
@@ -125,16 +125,21 @@ namespace JDG
 
             else if (_currentTile.TileData.TileType == TileType.Event)
             {
-                //나중에 이벤트 발동 함수 넣으면됨
                 _currentTile.TileData.IsCleared = true;
                 MovePlayerTo(_currentTile);
 
                 if (_currentTile.TileData.EventType == EventType.Shop)
                 {
-                    itemSlot = _itemCount;
                     EventDataSO eventData = GetRandomEvent(EventType.Shop);
-                    List<RelicDataSO> relicDatas = GetRandomRelics(eventData._relicDatas, itemSlot);
+                    List<RelicDataSO> relicDatas = GetRandomRelics(eventData._relicDatas, _shopUI.ItemCount);
                     StartCoroutine(WaitAndOpenShop(relicDatas));
+                }
+                else if(_currentTile.TileData.EventType == EventType.script)
+                {
+                    Debug.Log("들어옴");
+                    EventDataSO eventData = GetRandomEvent(EventType.script);
+                    List<ChoiceDataSO> choiceDatas = GetRandomChoice(eventData._eventChoices, _scriptEventUI.ChoiceCount);
+                    StartCoroutine(WaitAndOpenScriptEvent(eventData, choiceDatas));
                 }
             }
             else
@@ -157,8 +162,23 @@ namespace JDG
             {
                 if (eve._eventType == type && eve._eventData.Count > 0)
                 {
-                    int random = Random.Range(0, eve._eventData.Count);
-                    return eve._eventData[random];
+                    float totalPercent = 0;
+                    foreach(var per in eve._eventData)
+                    {
+                        totalPercent += per._eventWeight;
+                    }
+
+                    float random = Random.Range(0, totalPercent);
+                    float current = 0;
+
+                    foreach(var data in eve._eventData)
+                    {
+                        current += data._eventWeight;
+                        if(current >= random)
+                        {
+                            return data;
+                        }
+                    }
                 }
             }
             return null;
@@ -181,11 +201,35 @@ namespace JDG
             return result;
         }
 
+        private List<ChoiceDataSO> GetRandomChoice(List<ChoiceDataSO> choiceDatas, int count)
+        {
+            List<ChoiceDataSO> copy = new List<ChoiceDataSO>(choiceDatas);
+            List<ChoiceDataSO> result = new List<ChoiceDataSO>();
+
+            int maxCount = Mathf.Min(count, copy.Count);
+
+            for(int i = 0; i < maxCount; i++)
+            {
+                int random = Random.Range(0, copy.Count);
+                result.Add(copy[random]);
+                copy.RemoveAt(random);
+            }
+            return result;
+        }
+
         private IEnumerator WaitAndOpenShop(List<RelicDataSO> relics)
         {
             yield return new WaitUntil(() => !_playerController.IsMoving);
 
             _shopUI.OpenShopUI(relics, _uiPos);
+            UIManager.Instance.IsUIOpen = true;
+        }
+
+        private IEnumerator WaitAndOpenScriptEvent(EventDataSO eventData, List<ChoiceDataSO> choices)
+        {
+            yield return new WaitUntil(() => !_playerController.IsMoving);
+
+            _scriptEventUI.OpenScriptEventUI(eventData, choices, _uiPos);
             UIManager.Instance.IsUIOpen = true;
         }
     }

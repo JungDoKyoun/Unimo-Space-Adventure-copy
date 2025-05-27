@@ -172,7 +172,7 @@ namespace JDG
 
             if (_tileSelectionUI != null)
             {
-                _tileSelectionUI.Init(player, this);
+                _tileSelectionUI.Init(player, this, _eventTileConfig);
             }
 
             SceneLoader.Instance.Init(this, player);
@@ -498,7 +498,7 @@ namespace JDG
 
             if (_tileSelectionUI != null)
             {
-                _tileSelectionUI.Init(player, this);
+                _tileSelectionUI.Init(player, this, _eventTileConfig);
             }
             SceneLoader.Instance.Init(this, player);
 

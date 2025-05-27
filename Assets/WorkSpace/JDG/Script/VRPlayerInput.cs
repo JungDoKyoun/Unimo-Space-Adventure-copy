@@ -49,7 +49,7 @@ namespace JDG
 
             RaycastHit hit;
 
-            if (_rightRayInteractor.TryGetCurrent3DRaycastHit(out hit))
+            if (rayInteractor.TryGetCurrent3DRaycastHit(out hit))
             {
                 //GameObject hitObj = hit.collider.gameObject;
 

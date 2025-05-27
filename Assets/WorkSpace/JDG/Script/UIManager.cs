@@ -11,6 +11,7 @@ namespace JDG
         [SerializeField] TopBarUI _topBarUI;
         [SerializeField] TileSelectionUI _tileSelectionUI;
         [SerializeField] ShopUI _shopUI;
+        [SerializeField] ScriptEventUI _scriptEventUI;
         private bool _isUIOpen = false;
 
         private void Awake()
@@ -38,6 +39,7 @@ namespace JDG
         public TopBarUI TopBarUI => _topBarUI;
         public TileSelectionUI TileSelectionUI => _tileSelectionUI;
         public ShopUI ShopUI => _shopUI;
+        public ScriptEventUI ScriptEventUI => _scriptEventUI;
         public bool IsUIOpen { get { return _isUIOpen; } set { _isUIOpen = value; } }
     }
 }
