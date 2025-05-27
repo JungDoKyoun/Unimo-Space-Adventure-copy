@@ -10,6 +10,7 @@ namespace JDG
         [Header("플레이어 이동 관련")]
         [SerializeField] private float _moveSpeed;
         [SerializeField] private int _viewRange;
+        [SerializeField] private float _rotationSpeed;
 
         private HexGridLayout _hexGridLayout;
         private Vector3 _targetPos;
@@ -33,6 +34,10 @@ namespace JDG
             if(!_isMoving)
             {
                 _targetPos = targetPos + Vector3.up;
+                Vector3 dir = (targetPos - transform.position).normalized;
+                dir.y = 0;
+                Quaternion targetRo = Quaternion.LookRotation(dir);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRo, _rotationSpeed * Time.deltaTime);
                 _isMoving = true;
             }
         }
