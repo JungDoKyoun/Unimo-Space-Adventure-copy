@@ -6,6 +6,7 @@ using Firebase.Database;
 using Firebase.Auth;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
 
 public class FirebaseDataBaseMgr : MonoBehaviour
 {
@@ -28,6 +29,18 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI rewardMetaCurrencyText;
+
+    private static float rate;
+
+    public static float Rate
+    {
+        get => rate;
+
+        private set
+        {
+            rate = value;
+        }
+    }
 
     private void Awake()
     {
@@ -55,13 +68,11 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         Debug.Log("user 대기중");
 
-        yield return new WaitUntil(() => FirebaseAuthMgr.user != null);
-
-        Debug.Log(FirebaseAuthMgr.IsFirebaseReady);
+        yield return new WaitUntil(() => FirebaseAuthMgr.User != null);
 
         this.dbRef = FirebaseAuthMgr.dbRef;
 
-        this.user = FirebaseAuthMgr.user;
+        this.user = FirebaseAuthMgr.User;
 
         StartCoroutine(ShowUserIngameCurrency());
 
@@ -220,7 +231,53 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #endregion
 
-    #region Tile management
+    #region Winning Rate
+    
+    public IEnumerator SetWinningRate()
+    {
+        float playCount = 0;
+
+        float winCount = 0;
+
+        float winningRate = 0;
+
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("playCount").GetValueAsync();
+
+        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
+
+        if (getTask.Result.Exists == true)
+        {
+            playCount = float.Parse(getTask.Result.Value.ToString());
+        }
+
+        getTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("winCount").GetValueAsync();
+
+        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
+
+        if (getTask.Result.Exists == true)
+        {
+            winCount = float.Parse(getTask.Result.Value.ToString());
+        }
+
+        if (playCount > 0)
+        {
+            winningRate = (winCount / playCount) * 100;
+        }
+        else
+        {
+            winningRate = 0;
+        }
+
+        Rate = winningRate;
+
+        var DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("winningRate").SetValueAsync(winningRate);
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+    }
+
+    #endregion
+
+    #region Tile management(예정)
 
 
 
@@ -232,5 +289,4 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
-
 }
