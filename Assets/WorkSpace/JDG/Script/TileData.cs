@@ -13,19 +13,19 @@ namespace JDG
         private TileVisibility _tileVisibility;
         private EnvironmentType _environmentType;
         private bool _isCleared;
-        private int _level;
+        private DifficultyType _difficultyType;
         private string _sceneName;
         private ModeType _modeType;
         private EventType _eventType;
 
-        public TileData(Vector2Int coord, TileType tileType, TileVisibility tileVisibility, EnvironmentType environmentType, bool isCleared, int level, string sceneName = "")
+        public TileData(Vector2Int coord, TileType tileType, TileVisibility tileVisibility, EnvironmentType environmentType, bool isCleared, DifficultyType difficultyType, string sceneName = "")
         {
             _coord = coord;
             _tileType = tileType;
             _tileVisibility = tileVisibility;
             _environmentType = environmentType;
             _isCleared = isCleared;
-            _level = level;
+            _difficultyType = difficultyType;
             _sceneName = sceneName;
         }
 
@@ -34,7 +34,7 @@ namespace JDG
         public TileVisibility TileVisibility { get { return _tileVisibility; } set { _tileVisibility = value; } }
         public EnvironmentType EnvironmentType { get { return _environmentType; } set { _environmentType = value; } }
         public bool IsCleared { get { return _isCleared; } set { _isCleared = value; } }
-        public int Level { get { return _level; } set { _level = value; } }
+        public DifficultyType DifficultyType { get { return _difficultyType; } set { _difficultyType = value; } }
         public string SceneName { get { return _sceneName; } set { _sceneName = value; } }
         public ModeType ModeType { get { return _modeType; } set { _modeType = value; } }
         public EventType EventType { get { return _eventType; } set { _eventType = value; } }
@@ -49,7 +49,7 @@ namespace JDG
                 { "TileVisibility", (int)TileVisibility },
                 { "EnvironmentType", (int)EnvironmentType },
                 { "IsCleared", IsCleared },
-                { "Level", Level },
+                { "DifficultyType", (int)DifficultyType },
                 { "SceneName", SceneName }
             };
         }
@@ -61,11 +61,11 @@ namespace JDG
             TileVisibility visibility = (TileVisibility)Convert.ToInt32(dict["TileVisibility"]);
             EnvironmentType envType = (EnvironmentType)Convert.ToInt32(dict["EnvironmentType"]);
             bool isCleared = Convert.ToBoolean(dict["IsCleared"]);
-            int level = Convert.ToInt32(dict["Level"]);
+            DifficultyType difficultyType = (DifficultyType)Convert.ToInt32(dict["Level"]);
             string sceneName = dict["SceneName"]?.ToString();
             string modeName = dict["ModeName"]?.ToString();
 
-            return new TileData(coord, tileType, visibility, envType, isCleared, level, sceneName);
+            return new TileData(coord, tileType, visibility, envType, isCleared, difficultyType, sceneName);
         }
     }
 }
