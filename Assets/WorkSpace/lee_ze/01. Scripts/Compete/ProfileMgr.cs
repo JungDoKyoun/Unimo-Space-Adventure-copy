@@ -31,7 +31,8 @@ public class ProfileMgr : MonoBehaviour
     {
         yield return StartCoroutine(FirebaseDataBaseMgr.Instance.SetWinningRate());
 
-        playerWinningRate.text = FirebaseDataBaseMgr.Rate.ToString("F1") + "%"; // 소수점 1자리 표시
+        playerWinningRate.text = FirebaseDataBaseMgr.PlayCount.ToString("F0") + "전" + " / " + FirebaseDataBaseMgr.WinCount.ToString("F0") + "승" + " / " + $"{(FirebaseDataBaseMgr.PlayCount - FirebaseDataBaseMgr.WinCount).ToString("F0")}" + "패" +
+            "\n" + FirebaseDataBaseMgr.WinningRate.ToString("F1") + "%"; // 소수점 1자리 표시
     }
 
     private void OnDestroy()
