@@ -35,7 +35,6 @@ namespace JDG
         [Header("플레이어 관련")]
         [SerializeField] private VRPlayerInput _vRPlayerInput;
         private GameObject _playerPrefab;
-        [SerializeField] private int _viewRange = 1;
         private GameObject _playerInstance;
 
         [Header("UI 관련")]
@@ -164,7 +163,7 @@ namespace JDG
 
             var player = _playerInstance.GetComponent<PlayerController>();
             player.Init(this);
-            _tileSelectionUI = FindObjectOfType<TileSelectionUI>();
+            _tileSelectionUI = UIManager.Instance.TileSelectionUI;
 
             if (_vRPlayerInput != null)
             {
@@ -173,13 +172,13 @@ namespace JDG
 
             if (_tileSelectionUI != null)
             {
-                _tileSelectionUI.Init(player, this);
+                _tileSelectionUI.Init(player, this, _eventTileConfig);
             }
 
             SceneLoader.Instance.Init(this, player);
 
             AssignTileRoles();
-            UpdateFog();
+            player.UpdateFog();
         }
 
 
@@ -225,7 +224,7 @@ namespace JDG
             return Mathf.Max(Mathf.Abs(ax - bx), Mathf.Abs(ay - by), Mathf.Abs(az - bz));
         }
 
-        public void UpdateFog()
+        public void UpdateFog(int viewRange)
         {
             foreach (var pair in _hexMap)
             {
@@ -234,7 +233,7 @@ namespace JDG
 
                 var dis = HexDistance(coord, _playerCoord);
 
-                if (dis <= _viewRange)
+                if (dis <= viewRange)
                 {
                     hex.SetVisibility(TileVisibility.Visible);
                 }
@@ -295,9 +294,9 @@ namespace JDG
                     _hexMap[coord].TileData.SceneName = "BossScene";
                     //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
                     //int dis = HexDistance(_baseCoord, coord);
-                    //int level = GetLevelByDistance(dis);
-                    //_hexMap[coord].TileData.Level = level;
-                    //_hexMap[coord].TileData.SceneName = $"BossScene_{level}";
+                    //DifficultyType difficultyType = GetDifficultyTypeByDistance(dis);
+                    //_hexMap[coord].TileData.DifficultyType = difficultyType;
+                    //_hexMap[coord].TileData.SceneName = $"BossScene_{difficultyType}";
 
                     placedBosses.Add(coord);
                     candidateCoords.Remove(coord);
@@ -317,9 +316,9 @@ namespace JDG
                             _hexMap[coord].TileData.SceneName = "BossScene";
                             //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
                             //int dis = HexDistance(_baseCoord, coord);
-                            //int level = GetLevelByDistance(dis);
-                            //_hexMap[coord].TileData.Level = level;
-                            //_hexMap[coord].TileData.SceneName = $"BossScene_{level}";
+                            //DifficultyType difficultyType = GetDifficultyTypeByDistance(dis);
+                            //_hexMap[coord].TileData.DifficultyType = difficultyType;
+                            //_hexMap[coord].TileData.SceneName = $"BossScene_{difficultyType}";
 
                             placedBosses.Add(coord);
                             candidateCoords.Remove(coord);
@@ -397,16 +396,16 @@ namespace JDG
                     }
                     //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
                     //int dis = HexDistance(_baseCoord, coord);
-                    //int level = GetLevelByDistance(dis);
-                    //_hexMap[coord].TileData.Level = level;
+                    //DifficultyType difficultyType = GetDifficultyTypeByDistance(dis);
+                    //_hexMap[coord].TileData.DifficultyType = difficultyType;
 
                     //if (modeType == ModeType.Explore)
                     //{
-                    //    _hexMap[coord].TileData.SceneName = $"ExploreScene_{level}";
+                    //    _hexMap[coord].TileData.SceneName = $"ExploreScene_{difficultyType}";
                     //}
                     //else if (modeType == ModeType.Gather)
                     //{
-                    //    _hexMap[coord].TileData.SceneName = $"GatherScene_{level}";
+                    //    _hexMap[coord].TileData.SceneName = $"GatherScene_{difficultyType}";
                     //}
 
                     candidateCoords.RemoveAt(randomIndex);
@@ -490,7 +489,7 @@ namespace JDG
 
             var player = _playerInstance.GetComponent<PlayerController>();
             player.Init(this);
-            _tileSelectionUI = FindObjectOfType<TileSelectionUI>();
+            _tileSelectionUI = UIManager.Instance.TileSelectionUI;
 
             if (_vRPlayerInput != null)
             {
@@ -499,11 +498,11 @@ namespace JDG
 
             if (_tileSelectionUI != null)
             {
-                _tileSelectionUI.Init(player, this);
+                _tileSelectionUI.Init(player, this, _eventTileConfig);
             }
             SceneLoader.Instance.Init(this, player);
 
-            UpdateFog();
+            player.UpdateFog();
         }
 
         public void CalculateMapOrigin()
@@ -513,18 +512,18 @@ namespace JDG
             _mapOrigin = -centerPos;
         }
 
-        private int GetLevelByDistance(int distance)
+        private DifficultyType GetDifficultyTypeByDistance(int distance)
         {
-            int level = 0;
+            DifficultyType difficultyType = DifficultyType.None;
 
             foreach (var entry in _difficultyEntries)
             {
                 if (distance >= entry.Distance)
                 {
-                    level = entry.Level;
+                    difficultyType = entry.DifficultyType;
                 }
             }
-            return level;
+            return difficultyType;
         }
 
         private void AssignNearbyShopTile(Vector2Int bossCoord, List<Vector2Int> candidateCoords)

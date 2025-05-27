@@ -16,7 +16,7 @@ namespace JDG
         [SerializeField] private ActionBasedController _leftInputController;
 
         [Header("UI ฐüทร")]
-        [SerializeField] TileSelectionUI _tileSelectionUI;
+        TileSelectionUI _tileSelectionUI;
 
         private PlayerController _playerController;
         private HexGridLayout _hexGridLayout;
@@ -31,6 +31,7 @@ namespace JDG
         {
             _playerController = playerController;
             _hexGridLayout = hexGridLayout;
+            _tileSelectionUI = UIManager.Instance.TileSelectionUI;
         }
 
         private bool IsTriggerPressed(ActionBasedController controller)
@@ -48,25 +49,25 @@ namespace JDG
 
             RaycastHit hit;
 
-            if (_rightRayInteractor.TryGetCurrent3DRaycastHit(out hit))
+            if (rayInteractor.TryGetCurrent3DRaycastHit(out hit))
             {
-                GameObject hitObj = hit.collider.gameObject;
+                //GameObject hitObj = hit.collider.gameObject;
 
-                if (hitObj.TryGetComponent<Button>(out Button button))
-                {
-                    if (IsTriggerPressed(inputController))
-                    {
-                        button.onClick.Invoke();
-                        return;
-                    }
-                }
+                //if (hitObj.TryGetComponent<Button>(out Button button))
+                //{
+                //    if (IsTriggerPressed(inputController))
+                //    {
+                //        button.onClick.Invoke();
+                //        return;
+                //    }
+                //}
 
                 Vector3 hitPos = hit.point;
                 Vector2Int hitcoord = _hexGridLayout.GetCoordinateFromPosition(hitPos);
 
                 if (IsTriggerPressed(inputController))
                 {
-                    if (_tileSelectionUI != null && _tileSelectionUI.IsUIOpen)
+                    if (_tileSelectionUI != null && UIManager.Instance.IsUIOpen)
                         return;
 
                     if (hit.collider.TryGetComponent<WorldMapRenderer>(out WorldMapRenderer renderer))

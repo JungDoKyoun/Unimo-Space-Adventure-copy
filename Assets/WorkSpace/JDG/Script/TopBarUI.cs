@@ -29,7 +29,6 @@ namespace JDG
             _remainingTime = _timeLimitMax;
 
             UpdateUI(_curHP, _remainingTime);
-
         }
 
         public void UpdateUI(int HP, int Time)
