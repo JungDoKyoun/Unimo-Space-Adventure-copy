@@ -107,6 +107,41 @@ public partial class PlayerManager : MonoBehaviourPun
             {
                 moveSoundSource?.Stop();
             }
+        } else if (PhotonNetwork.IsConnected == true && photonView.IsMine == true)
+        {
+            Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
+
+            if (playerMoveDirection.magnitude > float.Epsilon)
+            {
+                isMoveSoundPlay = true;
+
+                //Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
+
+            }
+            else
+            {
+                isMoveSoundPlay = false;
+
+                //Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
+
+                //GetRotate(transform.forward);
+            }
+
+            //Debug.Log(headDirection);
+
+            GetRotate(headDirection);
+
+            transform.position += moveSpeed * Time.deltaTime * playerMoveDirection;// + pushSpeed * Time.deltaTime * playerPushDirection;
+
+            if (isMoveSoundPlay)
+            {
+                moveSoundSource?.Play();
+            }
+
+            else
+            {
+                moveSoundSource?.Stop();
+            }
         }
     }
 
