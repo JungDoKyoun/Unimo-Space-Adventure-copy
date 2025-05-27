@@ -133,7 +133,14 @@ public class ConstructManager : MonoBehaviour
         }
     }
 
-    
+    public void ActivePanel(GameObject panel)
+    {
+        panel.SetActive(true);
+    }
+    public void DeactivePanel(GameObject panel)
+    {
+        panel.SetActive(false);
+    }
     public void TempGameStart()
     {
         SceneManager.LoadScene("TestScene");
@@ -205,8 +212,8 @@ public class ConstructManager : MonoBehaviour
     }
     public void SetPlayer()
     {
-        Debug.Log("player!");
-        ModifieStat();
+        //Debug.Log("player!");
+        ActiveBuildEffect();
         SetFinalStatusToPlayer();
     }
 
@@ -214,7 +221,7 @@ public class ConstructManager : MonoBehaviour
     //{
     //    buildEffects.Add(buildEffect);
     //}
-    public void ModifieStat()
+    public void ModifieStat(BuildEffect buildeffect)
     {
         float speedSum = 0;
         float maxHPSum = 0;
@@ -224,11 +231,7 @@ public class ConstructManager : MonoBehaviour
         float gatherRangeSum = 0;
 
 
-        foreach (var building in constructList) {
-            if (building.isBuildConstructed == true)
-            {
-                foreach (var buildeffect in building.buildEffects)
-                {
+     
                     switch (buildeffect)
                     {
                         case Speed speed:
@@ -257,13 +260,7 @@ public class ConstructManager : MonoBehaviour
                             break;
 
                     }
-                }
-            }
-            //else
-            //{
-            //
-            //}
-        }
+          
 
         playerStatus = originPlayerStatus.Clone();
         playerStatus.moveSpeed += speedSum;
@@ -278,7 +275,41 @@ public class ConstructManager : MonoBehaviour
 
 
     }
+    public void ModifieUtillity(BuildEffect buildEffect)
+    {
+        
+    }
+    public void ModifieSkill(BuildEffect buildEffect)
+    {
 
+    }
+
+    public void ActiveBuildEffect()
+    {
+        foreach (var building in constructList)
+        {
+            if (building.isBuildConstructed == true)
+            {
+                foreach (var buildeffect in building.buildEffects)
+                {
+                    switch (buildeffect)
+                    {
+                        case IStatModifier statModifier:
+                            ModifieStat(buildeffect);
+                            break;
+                            
+
+
+                        default:
+                            break;
+                    }
+
+
+
+                }
+            }
+        }
+    }
 
 
     public void SetFinalStatusToPlayer()
@@ -290,11 +321,11 @@ public class ConstructManager : MonoBehaviour
     
     private void OnSceneChanged(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "TestScene")
+        if (scene.name == "TestScene")//씬이름으로 변경
         {
             if (TryGetPlayer()==true)//플레이어가 있으면
             {
-                Debug.Log("scenecallback");
+                //Debug.Log("scenecallback");
                 SetPlayer();
             }
             else

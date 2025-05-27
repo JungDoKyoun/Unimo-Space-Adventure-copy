@@ -16,7 +16,7 @@ public partial class PlayerManager
 
         MoveStart();
 
-        currentHealth = maxHP;
+        currentHealth = maxHP;//기획 의도를 보니 이 코드는 조정이 필요함 한 스테이지에서 까인 체력은 안돌아오는듯?
     }
 
     private void Update()
