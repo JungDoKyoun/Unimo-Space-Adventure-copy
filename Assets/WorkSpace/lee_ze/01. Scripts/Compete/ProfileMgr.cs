@@ -20,7 +20,18 @@ public class ProfileMgr : MonoBehaviour
 
         homeButton.onClick.AddListener(() => SceneControl.Instance.GoToMain());
 
-        playerDisplayName.text = FirebaseAuthMgr.user.DisplayName;
+        playerDisplayName.text = FirebaseAuthMgr.User.DisplayName;
+
+        Debug.Log(FirebaseAuthMgr.User.DisplayName);
+
+        StartCoroutine(SetupProfile());
+    }
+
+    private IEnumerator SetupProfile()
+    {
+        yield return StartCoroutine(FirebaseDataBaseMgr.Instance.SetWinningRate());
+
+        playerWinningRate.text = FirebaseDataBaseMgr.Rate.ToString("F1") + "%"; // 소수점 1자리 표시
     }
 
     private void OnDestroy()

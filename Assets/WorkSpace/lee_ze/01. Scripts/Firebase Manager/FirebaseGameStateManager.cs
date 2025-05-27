@@ -21,11 +21,11 @@ public class FirebaseGameStateManager : MonoBehaviour
     {
         yield return new WaitUntil(() => FirebaseAuthMgr.IsFirebaseReady);
 
-        yield return new WaitUntil(() => FirebaseAuthMgr.user != null);
+        yield return new WaitUntil(() => FirebaseAuthMgr.User != null);
 
         dbRef = FirebaseAuthMgr.dbRef;
 
-        user = FirebaseAuthMgr.user;
+        user = FirebaseAuthMgr.User;
     }
 
     public void SaveGameStateToFirebase(Dictionary<Vector2Int, TileData> tileDataDict, Vector2Int playerCoord)
