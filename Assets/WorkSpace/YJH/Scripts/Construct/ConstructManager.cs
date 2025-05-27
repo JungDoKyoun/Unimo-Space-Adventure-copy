@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Firebase.Database;
+using Firebase.Extensions;
 
 public class ConstructManager : MonoBehaviour
 {
@@ -50,6 +52,8 @@ public class ConstructManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneChanged;
         OnConstructCostChange += SetConstructCostText;
+
+            
         ToDictionary();
     }
 
@@ -101,7 +105,7 @@ public class ConstructManager : MonoBehaviour
         }
     }
 
-    public List<IStatModifier> ReturnStatEffectList()//게임매니저에서 호출 받아서 자기가 적용시킬 스테이터스에 사용하기
+    public List<IStatModifier> ReturnStatEffectList()//게임매니저에서 호출 받아서 자기가 적용시킬 스테이터스에 사용하기, 현재는 사용 X
     {
         List<IStatModifier> tempList= new List<IStatModifier>();
         foreach(var building in constructList)
