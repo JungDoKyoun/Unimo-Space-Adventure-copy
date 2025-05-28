@@ -3,7 +3,7 @@ using UnityEngine;
 using ZL.Unity;
 
 using ZL.Unity.Unimo;
-
+using Photon.Pun;
 public class EnergyBolt : MonoBehaviour, IAttackType
 {
     [SerializeField]
@@ -72,6 +72,7 @@ public class EnergyBolt : MonoBehaviour, IAttackType
 
     public AudioClip HitSound { get => hitSound; set => hitSound = value; }
 
+    
     public void Shoot(Vector3 fireDirection)
     {
         Vector3 tempVelocity = new Vector3(fireDirection.x, 0, fireDirection.z);
@@ -132,11 +133,20 @@ public class EnergyBolt : MonoBehaviour, IAttackType
         {
             damageable.TakeDamage(damage, other.ClosestPoint(transform.position));
 
-            var hitEffect = Instantiate(this.hitEffect, transform.position, Quaternion.identity);
+            if (PhotonNetwork.IsConnected == false)
+            {
+                var hitEffectTemp = Instantiate(this.hitEffect, transform.position, Quaternion.identity);
+                Destroy(hitEffectTemp, 2f);
+            }
+            else
+            {
+                var hitEffectTemp = PhotonNetwork.Instantiate(this.hitEffect.name, transform.position, Quaternion.identity);
+                Destroy(hitEffectTemp, 2f);
+            }
 
-            Destroy(hitEffect, 2f);
 
-            Destroy(gameObject);
+
+                Destroy(gameObject);
         }
     }
 }

@@ -289,7 +289,14 @@ public partial class PlayerManager
 
                 Vector3 spawnPos = firePos + right * offsetIndex * spacing;
 
-                PlayerAttack(spawnPos);
+                if (PhotonNetwork.IsConnected)
+                {
+                    photonView.RPC("PlayerAttack", RpcTarget.All, spawnPos);
+                }
+                else
+                {
+                    PlayerAttack(spawnPos);
+                }
             }
 
             playerOwnEnergy %= playerAttackType.EnergyCost;
@@ -315,12 +322,19 @@ public partial class PlayerManager
             bullet.GetComponent<IAttackType>().Shoot(firePos - transform.position);
         }
     }
-
+    [PunRPC]
     public void PlayerAttack(Vector3 firePosition)
     {
         playerOwnEnergy -= playerAttackType.EnergyCost;
-
-        var bullet = Instantiate(attackPrefab, firePosition, Quaternion.identity);
+        GameObject bullet;
+        if (PhotonNetwork.IsConnected)
+        {
+            bullet = Instantiate(attackPrefab, firePosition, Quaternion.identity);
+        }
+        else
+        {
+            bullet = PhotonNetwork.Instantiate(attackPrefab.name, firePosition, Quaternion.identity);
+        }
 
         //bullet.transform.LookAt(targetEnemyObject.transform);
 
@@ -331,7 +345,7 @@ public partial class PlayerManager
 
         else
         {
-            bullet.GetComponent<IAttackType>().Shoot(firePos-transform.position);
+            bullet.GetComponent<IAttackType>().Shoot(firePos - transform.position);
         }
     }
    
@@ -395,7 +409,7 @@ public partial class PlayerManager
         gatheringEffect.SetActive(false);
     }
 
-    [PunRPC]
+    //[PunRPC]
     private void FindItemUpdate()
     {
         
