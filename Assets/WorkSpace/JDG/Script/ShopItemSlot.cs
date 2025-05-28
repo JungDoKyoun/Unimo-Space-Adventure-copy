@@ -24,7 +24,7 @@ namespace JDG
             _relicData = data;
             _relicName.text = data._relicName;
             _relicIcon.sprite = data._relicImage;
-            _resourceIcon.sprite = data._relicPrice._resourceicon;
+            _resourceIcon.sprite = data._relicPrice._resourceData._resourcesIcon;
             _relicPrice.text = data._relicPrice._value.ToString();
 
             _isBuy = false;
@@ -34,7 +34,7 @@ namespace JDG
 
         public void OnBuyButtonClicked()
         {
-            ResourcesType resourcesType = _relicData._relicPrice._resourceType; //아이템 자원 타입
+            ResourcesType resourcesType = _relicData._relicPrice._resourceData._resourcesType; //아이템 자원 타입
             int relicPrice = _relicData._relicPrice._value; //아이템 가격
             Debug.Log("구매 완료");
 

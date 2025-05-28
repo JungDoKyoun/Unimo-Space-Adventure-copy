@@ -57,7 +57,7 @@ namespace JDG
 
             var env = TileEnvironmentManager.Instance.GetEnvironmentInfo(tile.TileData.EnvironmentType);
             var display = TileDisplayInfoManager.Instance.GetDisplayInfo(tile.TileData.TileType, tile.TileData.ModeType);
-            var rewards = RewardManager.Instance.GetTileRewardRuleSO(tile.TileData.TileType, tile.TileData.ModeType);
+            var rewards = RewardManager.Instance.GetTileRewards(tile.TileData.TileType, tile.TileData.ModeType, tile.TileData.DifficultyType);
             if (env != null)
             {
                 _envImage.sprite = env.EnviromentIcon;
@@ -81,10 +81,24 @@ namespace JDG
             {
                 GameObject obj = Instantiate(_rewardPrefab, _rewardParent);
                 RewardSlot rewardSlot = obj.GetComponent<RewardSlot>();
+                Vector2Int temp = RewardManager.Instance.GetRewardRange(tile.TileData.DifficultyType);
 
                 if (rewardSlot != null)
                 {
-                    rewardSlot.SetRewardSlot(reward.RewardIcon, reward.RewardName, reward.RewardAmount);
+                    Sprite icon = null;
+                    string name = "";
+
+                    if(reward._rewardType == RewardType.Resource && reward._resourceData != null)
+                    {
+                        icon = reward._resourceData._resourcesIcon;
+                        name = reward._resourceData._resourcesName;
+                    }
+                    else if(reward._rewardType == RewardType.Relic && reward._relicDatas != null)
+                    {
+                        icon = reward._relicDatas.
+                    }
+
+                    rewardSlot.SetRewardSlot(reward._rewardIcon, reward._rewardName, $"{temp.x} ~ {temp.y}");
                 }
             }
 

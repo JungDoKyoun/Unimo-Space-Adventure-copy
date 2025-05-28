@@ -4,11 +4,10 @@ using UnityEngine;
 
 namespace JDG
 {
-    [CreateAssetMenu(fileName = "ResourceCostSO", menuName = "SO/EventSO/ResourceCost")]
-    public class ResourceCostSO : ScriptableObject
+    [System.Serializable]
+    public class ResourceCost
     {
-        public ResourcesType _resourceType;
+        public ResourceDataSO _resourceData;
         public int _value;
-        public Sprite _resourceicon;
     }
 }
