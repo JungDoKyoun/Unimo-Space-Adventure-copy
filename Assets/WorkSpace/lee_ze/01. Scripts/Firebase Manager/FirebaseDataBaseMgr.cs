@@ -36,6 +36,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private static float winCount;
 
+    #region properties
+
     public static float WinningRate
     {
         get => winningRate;
@@ -66,6 +68,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         }
     }
 
+    #endregion
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -90,8 +94,6 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     {
         yield return new WaitUntil(() => FirebaseAuthMgr.IsFirebaseReady == true);
 
-        Debug.Log("user 대기중");
-
         yield return new WaitUntil(() => FirebaseAuthMgr.User != null);
 
         this.dbRef = FirebaseAuthMgr.dbRef;
@@ -101,6 +103,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         StartCoroutine(ShowUserIngameCurrency());
 
         StartCoroutine(ShowUserMetaCurrency());
+
+        StartCoroutine(UpdateWinningRate());
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) // 씬 바뀔 때 마다 수행되는 것
@@ -258,7 +262,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #region Winning Rate
     
-    public IEnumerator SetWinningRate()
+    public IEnumerator UpdateWinningRate() // 전적 업데이트 함수. PvP 스테이지 끝날 때 호출해야 함
     {
         float playCount = 0;
 
@@ -273,6 +277,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         if (getTask.Result.Exists == true)
         {
             playCount = float.Parse(getTask.Result.Value.ToString());
+
+            PlayCount = playCount;
         }
 
         getTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("winCount").GetValueAsync();
@@ -282,6 +288,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         if (getTask.Result.Exists == true)
         {
             winCount = float.Parse(getTask.Result.Value.ToString());
+
+            WinCount = winCount;
         }
 
         if (playCount > 0)
@@ -293,15 +301,11 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             winningRate = 0;
         }
 
+        WinningRate = winningRate;
+
         var DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("winningRate").SetValueAsync(winningRate);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
-
-        PlayCount = playCount;
-
-        WinCount = winCount;
-
-        WinningRate = winningRate;
     }
 
     #endregion
