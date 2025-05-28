@@ -141,7 +141,7 @@ public class EnergyBolt : MonoBehaviour, IAttackType
             else
             {
                 var hitEffectTemp = PhotonNetwork.Instantiate(this.hitEffect.name, transform.position, Quaternion.identity);
-                Destroy(hitEffectTemp, 2f);
+                PhotonNetwork.Destroy(hitEffectTemp);
             }
 
 
