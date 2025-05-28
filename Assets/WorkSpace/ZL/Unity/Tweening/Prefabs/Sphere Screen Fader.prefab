@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2801203670978303102}
   - component: {fileID: 4025118530809431066}
   - component: {fileID: 3642788267879884235}
+  - component: {fileID: 4456700184494976832}
   m_Layer: 0
   m_Name: Sphere Screen Fader
   m_TagString: Untagged
@@ -146,22 +147,37 @@ MonoBehaviour:
       m_Calls: []
   onFadedInEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 0
+      m_Calls: []
   onFadeOutEvent:
     m_PersistentCalls:
       m_Calls: []
   onFadedOutEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4456700184494976832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4177013193622062567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c41287b4a002104e98bccb7feb817e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onStartEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4025118530809431066}
+        m_TargetAssemblyTypeName: ZL.Unity.Tweening.MaterialAlphaTweener, Assembly-CSharp
+        m_MethodName: set_Value
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 1
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

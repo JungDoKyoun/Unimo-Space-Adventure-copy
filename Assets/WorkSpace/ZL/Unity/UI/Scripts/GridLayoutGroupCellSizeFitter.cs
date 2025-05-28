@@ -44,16 +44,7 @@ namespace ZL.Unity.UI
 
         [Button(nameof(Fit))]
 
-        private Axis axis = 0;
-
-        [Flags]
-
-        public enum Axis
-        {
-            Horizontal = 1,
-
-            Vertical = 2,
-        }
+        private GridAxis axis = 0;
 
         private void Reset()
         {
@@ -64,12 +55,12 @@ namespace ZL.Unity.UI
         {
             Vector2 cellSize = gridLayoutGroup.cellSize;
 
-            if (axis.HasFlag(Axis.Horizontal) == true)
+            if (axis.HasFlag(GridAxis.Horizontal) == true)
             {
                 cellSize.y = container.rect.height - gridLayoutGroup.padding.vertical;
             }
 
-            if (axis.HasFlag(Axis.Vertical) == true)
+            if (axis.HasFlag(GridAxis.Vertical) == true)
             {
                 cellSize.x = container.rect.width - gridLayoutGroup.padding.horizontal;
             }

@@ -22,6 +22,8 @@ namespace ZL.Unity.UI
 
         [Alias("Text (UI)")]
 
+        [PropertyField]
+
         private TMP_Text textUI = null;
 
         public override string Text

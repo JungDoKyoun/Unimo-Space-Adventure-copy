@@ -6,7 +6,7 @@ namespace ZL.Unity
 {
     [AddComponentMenu("ZL/On Disable Event Trigger")]
 
-    public class OnDisableEventTrigger : MonoBehaviour
+    public sealed class OnDisableEventTrigger : MonoBehaviour
     {
         [Space]
 
@@ -19,7 +19,7 @@ namespace ZL.Unity
             get => onDisableEvent;
         }
 
-        protected virtual void OnDisable()
+        private void OnDisable()
         {
             onDisableEvent.Invoke();
         }
