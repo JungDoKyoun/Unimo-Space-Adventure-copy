@@ -20,10 +20,12 @@ public class ConstructManager : MonoBehaviour
     [SerializeField] TMP_Text buildingRequireText;
     [SerializeField] TMP_Text buildingCostText;
     
-    [SerializeField] GameObject BuildPanel;
+    //[SerializeField] List<Button> buildButtons = new List<Button>();
+    //[SerializeField] GameObject BuildPanel;
+
     [SerializeField] TMP_Text constructCostText;
 
-    [SerializeField] List<Button> buildButtons = new List<Button>();
+    
     [SerializeField] Button buildInfoBuildButton;
 
     public List<ConstructBase> ConstructList { get { return constructList;  } private set { constructList = value; } }
@@ -146,14 +148,14 @@ public class ConstructManager : MonoBehaviour
         SceneManager.LoadScene("TestScene");
     }
 
-    public void ShowBuildPanel()
-    {
-        BuildPanel.SetActive(true); 
-    }
-    public void DeActiveBuildPanel()
-    {
-        BuildPanel.SetActive(false);
-    }
+    //public void ShowBuildPanel()
+    //{
+    //    BuildPanel.SetActive(true); 
+    //}
+    //public void DeActiveBuildPanel()
+    //{
+    //    BuildPanel.SetActive(false);
+    //}
     public void ShowBuildInfoPanel(ConstructBase buildingInfo)
     {
         var requireText= "";

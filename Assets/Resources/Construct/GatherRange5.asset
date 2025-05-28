@@ -10,17 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c881d80a990beb04abdae6ae484decaf, type: 3}
-  m_Name: testR
+  m_Name: GatherRange5
   m_EditorClassIdentifier: 
-  isBuildConstructed: 1
-  buildID: testR
-  buildName: testR
-  buildRequires: []
-  buildUnlocks:
-  - test
-  buildCosts:
-  - key: aa
-    value: 2
+  isBuildConstructed: 0
+  buildID: GatherRange5
+  buildName: GatherRange5
+  buildRequires:
+  - GatherRange4
+  buildUnlocks: []
+  buildCosts: []
   buildPosition: {x: 0, y: 0, z: 0}
   buildIcon: {fileID: 0}
   buildingImage: {fileID: 0}
@@ -28,4 +26,4 @@ MonoBehaviour:
   isbuildRepeatable: 0
   buildEffects: []
   spawnIndex: 0
-  buildingDescription: "\uD14C\uC2A4\uD2B8\uC6A9 \uD544\uC694 \uAC74"
+  buildingDescription: 
