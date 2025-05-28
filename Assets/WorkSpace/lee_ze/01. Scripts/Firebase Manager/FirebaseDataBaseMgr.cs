@@ -6,6 +6,7 @@ using Firebase.Database;
 using Firebase.Auth;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
 
 public class FirebaseDataBaseMgr : MonoBehaviour
 {
@@ -28,6 +29,46 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI rewardMetaCurrencyText;
+
+    private static float winningRate;
+
+    private static float playCount;
+
+    private static float winCount;
+
+    #region properties
+
+    public static float WinningRate
+    {
+        get => winningRate;
+
+        private set
+        {
+            winningRate = value;
+        }
+    }
+
+    public static float PlayCount
+    {
+        get => playCount;
+
+        private set
+        {
+            playCount = value;
+        }
+    }
+
+    public static float WinCount
+    {
+        get => winCount;
+
+        private set
+        {
+            winCount = value;
+        }
+    }
+
+    #endregion
 
     private void Awake()
     {
@@ -53,25 +94,24 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     {
         yield return new WaitUntil(() => FirebaseAuthMgr.IsFirebaseReady == true);
 
-        Debug.Log("user 대기중");
-
-        yield return new WaitUntil(() => FirebaseAuthMgr.user != null);
-
-        Debug.Log(FirebaseAuthMgr.IsFirebaseReady);
+        yield return new WaitUntil(() => FirebaseAuthMgr.User != null);
 
         this.dbRef = FirebaseAuthMgr.dbRef;
 
-        this.user = FirebaseAuthMgr.user;
+        this.user = FirebaseAuthMgr.User;
 
         StartCoroutine(ShowUserIngameCurrency());
 
         StartCoroutine(ShowUserMetaCurrency());
+
+        StartCoroutine(UpdateWinningRate());
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) // 씬 바뀔 때 마다 수행되는 것
     {
         if (user != null)
         {
+            // 재화 업데이트
             StartCoroutine(ShowUserIngameCurrency());
 
             StartCoroutine(ShowUserMetaCurrency());
@@ -220,7 +260,57 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #endregion
 
-    #region Tile management
+    #region Winning Rate
+    
+    public IEnumerator UpdateWinningRate() // 전적 업데이트 함수. PvP 스테이지 끝날 때 호출해야 함
+    {
+        float playCount = 0;
+
+        float winCount = 0;
+
+        float winningRate = 0;
+
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("playCount").GetValueAsync();
+
+        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
+
+        if (getTask.Result.Exists == true)
+        {
+            playCount = float.Parse(getTask.Result.Value.ToString());
+
+            PlayCount = playCount;
+        }
+
+        getTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("winCount").GetValueAsync();
+
+        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
+
+        if (getTask.Result.Exists == true)
+        {
+            winCount = float.Parse(getTask.Result.Value.ToString());
+
+            WinCount = winCount;
+        }
+
+        if (playCount > 0)
+        {
+            winningRate = (winCount / playCount) * 100;
+        }
+        else
+        {
+            winningRate = 0;
+        }
+
+        WinningRate = winningRate;
+
+        var DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("winningRate").SetValueAsync(winningRate);
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+    }
+
+    #endregion
+
+    #region Tile management(예정)
 
 
 
@@ -232,5 +322,4 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
-
 }
