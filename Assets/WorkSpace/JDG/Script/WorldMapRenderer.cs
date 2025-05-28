@@ -9,7 +9,7 @@ namespace JDG
         [SerializeField] private Camera _wolrdCam;
         [SerializeField] private RenderTexture _renderTexture;
         [SerializeField] private HexGridLayout _hexGridLayout;
-        [SerializeField] private TileSelectionUI _tileSelectionUI;
+        private TileSelectionUI _tileSelectionUI;
 
         public void HandleRayHit(RaycastHit hit)
         {
@@ -21,7 +21,7 @@ namespace JDG
             float py = uv.y * texheight;
 
             Vector3 screenPos = new Vector3(px, py, 0);
-
+            _tileSelectionUI = UIManager.Instance.TileSelectionUI;
 
             Ray ray = _wolrdCam.ScreenPointToRay(screenPos);
             if (Physics.Raycast(ray, out RaycastHit worldHit, 100f))

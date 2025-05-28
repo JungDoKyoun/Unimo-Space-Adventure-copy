@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,27 +24,27 @@ namespace JDG
         [SerializeField] private Vector3 _offSet;
 
         [Header("필요한 컴포넌트")]
-        [SerializeField] private Camera _worldCam;
-        [SerializeField] private EventTileConfig _eventTileConfig;
-        [SerializeField] private ShopUI _shopUI;
+        private EventTileConfig _eventTileConfig;
+        private ShopUI _shopUI;
+        private ScriptEventUI _scriptEventUI;
 
         private Vector3 _uiPos;
         private HexRenderer _currentTile;
         private PlayerController _playerController;
         private HexGridLayout _hexGrid;
-        private bool _isUIOpen = false;
 
         private void Start()
         {
             HideUI();
         }
 
-        public bool IsUIOpen => _isUIOpen;
-
-        public void Init(PlayerController playerController, HexGridLayout hexGird)
+        public void Init(PlayerController playerController, HexGridLayout hexGird, EventTileConfig tileConfig)
         {
             _playerController = playerController;
             _hexGrid = hexGird;
+            _eventTileConfig = tileConfig;
+            _shopUI = UIManager.Instance.ShopUI;
+            _scriptEventUI = UIManager.Instance.ScriptEventUI;
         }
 
         public void ShowUI(HexRenderer tile, Vector3 wordPos = default)
@@ -52,7 +53,7 @@ namespace JDG
             transform.position = wordPos + _offSet;
             _uiPos = wordPos;
             _root.SetActive(true);
-            _isUIOpen = true;
+            UIManager.Instance.IsUIOpen = true;
 
             var env = TileEnvironmentManager.Instance.GetEnvironmentInfo(tile.TileData.EnvironmentType);
             var display = TileDisplayInfoManager.Instance.GetDisplayInfo(tile.TileData.TileType, tile.TileData.ModeType);
@@ -89,7 +90,7 @@ namespace JDG
 
             if (tile.TileData.IsCleared || tile.TileData.TileType == TileType.Event || tile.TileData.TileType == TileType.Base)
             {
-                _actionButtonName.text = "a";
+                _actionButtonName.text = "이동";
             }
             else
             {
@@ -100,17 +101,17 @@ namespace JDG
         public void HideUI()
         {
             _root.SetActive(false);
-            _isUIOpen = false;
+            UIManager.Instance.IsUIOpen = false;
         }
 
         private void MovePlayerTo(HexRenderer tile)
         {
             Vector3 target = _hexGrid.GetPositionForHexFromCoordinate(tile.TileData.Coord);
             _playerController.MoveTo(target);
-            _hexGrid.UpdateFog();
+            _playerController.UpdateFog();
         }
 
-        public void OnActionButtonClicked(int itmeSlot = 0)
+        public void OnActionButtonClicked()
         {
             if (_currentTile == null)
                 return;
@@ -124,15 +125,21 @@ namespace JDG
 
             else if (_currentTile.TileData.TileType == TileType.Event)
             {
-                //나중에 이벤트 발동 함수 넣으면됨
                 _currentTile.TileData.IsCleared = true;
                 MovePlayerTo(_currentTile);
 
                 if (_currentTile.TileData.EventType == EventType.Shop)
                 {
                     EventDataSO eventData = GetRandomEvent(EventType.Shop);
-                    List<RelicDataSO> relicDatas = GetRandomRelics(eventData._relicDatas, itmeSlot);
+                    List<RelicDataSO> relicDatas = GetRandomRelics(eventData._relicDatas, _shopUI.ItemCount);
                     StartCoroutine(WaitAndOpenShop(relicDatas));
+                }
+                else if(_currentTile.TileData.EventType == EventType.script)
+                {
+                    Debug.Log("들어옴");
+                    EventDataSO eventData = GetRandomEvent(EventType.script);
+                    List<ChoiceDataSO> choiceDatas = GetRandomChoice(eventData._eventChoices, _scriptEventUI.ChoiceCount);
+                    StartCoroutine(WaitAndOpenScriptEvent(eventData, choiceDatas));
                 }
             }
             else
@@ -146,7 +153,7 @@ namespace JDG
         public void OnCancleButtonClicked()
         {
             HideUI();
-            _isUIOpen = false;
+            UIManager.Instance.IsUIOpen = false;
         }
 
         private EventDataSO GetRandomEvent(EventType type)
@@ -155,8 +162,23 @@ namespace JDG
             {
                 if (eve._eventType == type && eve._eventData.Count > 0)
                 {
-                    int random = Random.Range(0, eve._eventData.Count);
-                    return eve._eventData[random];
+                    float totalPercent = 0;
+                    foreach(var per in eve._eventData)
+                    {
+                        totalPercent += per._eventWeight;
+                    }
+
+                    float random = Random.Range(0, totalPercent);
+                    float current = 0;
+
+                    foreach(var data in eve._eventData)
+                    {
+                        current += data._eventWeight;
+                        if(current >= random)
+                        {
+                            return data;
+                        }
+                    }
                 }
             }
             return null;
@@ -166,10 +188,27 @@ namespace JDG
         {
             List<RelicDataSO> copy = new List<RelicDataSO>(relicDatas);
             List<RelicDataSO> result = new List<RelicDataSO>();
+            Debug.Log(relicDatas.Count);
 
             int maxCount = Mathf.Min(count, copy.Count);
 
             for (int i = 0; i < maxCount; i++)
+            {
+                int random = Random.Range(0, copy.Count);
+                result.Add(copy[random]);
+                copy.RemoveAt(random);
+            }
+            return result;
+        }
+
+        private List<ChoiceDataSO> GetRandomChoice(List<ChoiceDataSO> choiceDatas, int count)
+        {
+            List<ChoiceDataSO> copy = new List<ChoiceDataSO>(choiceDatas);
+            List<ChoiceDataSO> result = new List<ChoiceDataSO>();
+
+            int maxCount = Mathf.Min(count, copy.Count);
+
+            for(int i = 0; i < maxCount; i++)
             {
                 int random = Random.Range(0, copy.Count);
                 result.Add(copy[random]);
@@ -183,13 +222,15 @@ namespace JDG
             yield return new WaitUntil(() => !_playerController.IsMoving);
 
             _shopUI.OpenShopUI(relics, _uiPos);
-            _shopUI.OnShopClosed -= ClearUIFlag;
-            _shopUI.OnShopClosed += ClearUIFlag;
+            UIManager.Instance.IsUIOpen = true;
         }
 
-        private void ClearUIFlag()
+        private IEnumerator WaitAndOpenScriptEvent(EventDataSO eventData, List<ChoiceDataSO> choices)
         {
-            _isUIOpen = false;
+            yield return new WaitUntil(() => !_playerController.IsMoving);
+
+            _scriptEventUI.OpenScriptEventUI(eventData, choices, _uiPos);
+            UIManager.Instance.IsUIOpen = true;
         }
     }
 }

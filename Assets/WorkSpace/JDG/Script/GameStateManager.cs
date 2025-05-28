@@ -48,7 +48,7 @@ namespace JDG
                 Vector2Int coord = data.Key;
                 TileData tiledata = data.Value.TileData;
 
-                _tileSaveData[coord] = new TileData(tiledata.Coord, tiledata.TileType, tiledata.TileVisibility, tiledata.EnvironmentType, tiledata.IsCleared ,tiledata.Level, tiledata.SceneName);
+                _tileSaveData[coord] = new TileData(tiledata.Coord, tiledata.TileType, tiledata.TileVisibility, tiledata.EnvironmentType, tiledata.IsCleared ,tiledata.DifficultyType, tiledata.SceneName);
 
                 if (tiledata.TileType == TileType.Mode)
                     _tileSaveData[coord].ModeType = tiledata.ModeType;
