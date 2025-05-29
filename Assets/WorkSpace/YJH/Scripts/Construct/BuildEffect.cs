@@ -12,4 +12,8 @@ public class BuildEffect :ScriptableObject,IStatModifier
     {
         return baseStat;
     }
+
+    
+
+
 }

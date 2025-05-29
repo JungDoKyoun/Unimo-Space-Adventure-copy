@@ -4,13 +4,13 @@ namespace JDG
 {
     public enum DifficultyType
     {
-        None, Easy, Normal, Hard
+        Easy, Normal, Hard
     }
 
     [System.Serializable]
     public class DifficultyEntry
     {
-        public DifficultyType DifficultyType;
-        public int Distance;
+        public DifficultyType _difficultyType;
+        public int _distance;
     }
 }

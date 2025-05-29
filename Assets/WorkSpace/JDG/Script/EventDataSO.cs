@@ -5,11 +5,6 @@ using UnityEngine.UI;
 
 namespace JDG
 {
-    public enum ResourcesType
-    {
-        None, Gold
-    }
-
     [CreateAssetMenu(fileName = "EventDataSO", menuName = "SO/EventSO/EventDataSO")]
     public class EventDataSO : ScriptableObject
     {

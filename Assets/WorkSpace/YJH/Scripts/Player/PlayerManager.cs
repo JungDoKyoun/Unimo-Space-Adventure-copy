@@ -1,10 +1,16 @@
 using UnityEngine;
+using ZL.Unity.Unimo;
 
 public partial class PlayerManager 
 {
     [SerializeField]
     
-    private PlayerStatus playerStatus;
+    private static PlayerStatus playerStatus = new PlayerStatus();
+    private static PlayerStatus originStatus = new PlayerStatus();
+    public static PlayerStatus PlayerStatus {  get { return playerStatus; } set { playerStatus = value; } }
+    public static PlayerStatus OriginStatus { get { return originStatus; } }
+    
+
 
     private void Start()
     {
@@ -12,7 +18,7 @@ public partial class PlayerManager
 
         MoveStart();
 
-        currentHealth = maxHP;
+        currentHealth = maxHP;//기획 의도를 보니 이 코드는 조정이 필요함 한 스테이지에서 까인 체력은 안돌아오는듯?
     }
 
     private void Update()
@@ -41,7 +47,15 @@ public partial class PlayerManager
 
         //baseSpeed = playerStatus.baseSpeed;
     }
+    public void SetPlayerStatus(PlayerStatus status)
+    {
+        playerStatus = status;
+        SetPlayerStatus();
+    }
+    public void ActiveRelic(string type,float value)//string? enum? 
+    {
 
+    }
     private void OnTriggerEnter(Collider other)
     {
         //Debug.Log(other.gameObject.layer);
@@ -51,10 +65,18 @@ public partial class PlayerManager
         if (other.gameObject.layer == LayerMask.NameToLayer("Energy"))
         {
             //Debug.Log("tri");
-
-            GetEnergy(3);
-
-            Destroy(other.gameObject);
+            var temp = other.GetComponent<IEnergy>();
+            GetEnergy(temp.energy);
+            if(temp is IDamageable)
+            {
+                (temp as IDamageable).TakeDamage(0, Vector3.zero);
+            }
+            else
+            {
+                Debug.Log("bug");
+            }
+            
+            //Destroy(other.gameObject);
         }
     }
     private void OnTriggerStay(Collider other)

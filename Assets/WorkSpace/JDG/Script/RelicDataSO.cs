@@ -19,7 +19,7 @@ namespace JDG
         public string _relicName;
         public Sprite _relicImage;
         public string _relicDesc;
-        public ResourceCostSO _relicPrice;
+        public ResourceCost _relicPrice;
         public List<RelicEffect> _relicEffects;
     }
 

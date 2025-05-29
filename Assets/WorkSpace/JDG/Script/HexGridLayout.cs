@@ -146,7 +146,7 @@ namespace JDG
                 hexRenderer.Height = _height;
                 hexRenderer.SetMaterial(_material);
 
-                var data = new TileData(coord, TileType.None, TileVisibility.Hidden, TileEnvironmentManager.Instance.GetRandomEnvironment(), false, 0);
+                var data = new TileData(coord, TileType.None, TileVisibility.Hidden, TileEnvironmentManager.Instance.GetRandomEnvironment(), false, DifficultyType.Easy);
                 hexRenderer.SetTileData(data);
 
                 hexRenderer.DrawMesh();
@@ -456,7 +456,6 @@ namespace JDG
 
         public void RestoreMapState(Dictionary<Vector2Int, TileData> mapData, Vector2Int playerCoord)
         {
-            Debug.Log("ºÏ±¸");
             _hexMap.Clear();
 
             foreach (var pair in mapData)
@@ -514,13 +513,13 @@ namespace JDG
 
         private DifficultyType GetDifficultyTypeByDistance(int distance)
         {
-            DifficultyType difficultyType = DifficultyType.None;
+            DifficultyType difficultyType = DifficultyType.Easy;
 
             foreach (var entry in _difficultyEntries)
             {
-                if (distance >= entry.Distance)
+                if (distance >= entry._distance)
                 {
-                    difficultyType = entry.DifficultyType;
+                    difficultyType = entry._difficultyType;
                 }
             }
             return difficultyType;
