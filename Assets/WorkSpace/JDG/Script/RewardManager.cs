@@ -42,34 +42,30 @@ namespace JDG
 
             foreach(RewardData data in datas)
             {
-                int random = GetRandomRewardAmount(difficultyType);
-
                 RewardData copy = new RewardData
                 {
                     _rewardType = data._rewardType,
-                    _rewardAmount = random
+                    _resourceData = data._resourceData,
+                    _relicData = data._relicData,
+                    _rewardAmount = 0
                 };
-
-                if (data._rewardType == RewardType.Resource)
-                {
-                    copy._resourceData = data._resourceData;
-                }
-                else if (data._rewardType == RewardType.Relic)
-                {
-                    copy._relicData = data._relicData;
-                }
 
                 result.Add(copy);
             }
             return result;
         }
 
-        private int GetRandomRewardAmount(DifficultyType difficulty)
+        private int GetRandomRewardAmount(DifficultyType difficulty, ResourcesType resourcesType)
         {
-            var temp = _rewardTableSO._rewardEntries.Find(e => e._difficultyType == difficulty);
-            if (temp == null)
+            var entry =_rewardTableSO._rewardEntries.Find(e => e._difficultyType == difficulty);
+            if (entry == null)
                 return 1;
-            return Random.Range(temp._minReward, temp._maxReward);
+
+            var reward = entry._rewardAmounts.Find(e => e._resourcesType == resourcesType);
+            if (reward == null)
+                return 1;
+
+            return Random.Range(reward._minReward, reward._maxReward);
         }
 
         private List<RewardData> GetTileRewardRuleSO(TileType tileType, ModeType modeType)
@@ -86,14 +82,21 @@ namespace JDG
             return new List<RewardData>();
         }
 
-        public Vector2Int GetRewardRange(DifficultyType difficulty)
+        public Vector2Int GetRewardRange(DifficultyType difficulty, ResourcesType resourcesType)
         {
-            var temp = _rewardTableSO._rewardEntries.Find(e => e._difficultyType == difficulty);
-            if(temp == null)
+            var entry = _rewardTableSO._rewardEntries.Find(e => e._difficultyType == difficulty);
+            if(entry == null)
             {
                 return new Vector2Int(1, 1);
             }
-            return new Vector2Int(temp._minReward, temp._maxReward);
+
+            var reward = entry._rewardAmounts.Find(e => e._resourcesType == resourcesType);
+            if (reward == null)
+            {
+                return new Vector2Int(1, 1);
+            }
+
+            return new Vector2Int(reward._minReward, reward._maxReward);
         }
     }
 }

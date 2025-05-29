@@ -15,6 +15,13 @@ namespace JDG
     public class DifficultyRewardEntry
     {
         public DifficultyType _difficultyType;
+        public List<RewardAmount> _rewardAmounts;
+    }
+
+    [System.Serializable]
+    public class RewardAmount
+    {
+        public ResourcesType _resourcesType;
         public int _minReward;
         public int _maxReward;
     }

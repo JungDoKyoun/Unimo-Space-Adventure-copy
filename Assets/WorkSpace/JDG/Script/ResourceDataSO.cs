@@ -6,7 +6,7 @@ namespace JDG
 {
     public enum ResourcesType
     {
-        None
+        None, IngameCurrency, MetaCurrency, Blueprint
     }
 
     [CreateAssetMenu(fileName = "ResourceDataSO", menuName = "SO/EventSO/ResourceDataSO")]
