@@ -55,7 +55,7 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
             roomOptions: options
         );
 
-        Debug.Log("방 생성");
+        Debug.Log("방 생성됨");
     }
 
     public override void OnConnectedToMaster() // 서버 연결 되면 호출되는 이벤트 함수
@@ -65,7 +65,9 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause) // 서버 연결 끊어지면 호출되는 이벤트 함수
     {
-        Debug.Log(11 + cause);
+        Debug.Log(11);
+
+        Debug.Log(cause);
     }
 
     public override void OnJoinedRoom()
@@ -75,7 +77,9 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        Debug.Log(13 + message);
+        Debug.Log(13);
+
+        Debug.Log(message);
     }
 
     private void OnDestroy()

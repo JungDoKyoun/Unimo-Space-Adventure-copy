@@ -6,7 +6,6 @@ using Firebase.Database;
 using Firebase.Auth;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System;
 
 public class FirebaseDataBaseMgr : MonoBehaviour
 {
@@ -29,6 +28,12 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI rewardMetaCurrencyText;
+
+    private static int ingameCurrency;
+
+    private static int metaCurrency;
+
+    private static int bluePrint;
 
     private static float winningRate;
 
@@ -65,6 +70,36 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         private set
         {
             winCount = value;
+        }
+    }
+
+    public static int IngameCurrency
+    {
+        get => ingameCurrency;
+
+        private set
+        {
+            ingameCurrency = value;
+        }
+    }
+
+    public static int MetaCurrency
+    {
+        get => metaCurrency;
+
+        private set
+        {
+            metaCurrency = value;
+        }
+    }
+
+    public static int Blueprint
+    {
+        get => bluePrint;
+
+        private set
+        {
+            bluePrint = value;
         }
     }
 
@@ -250,12 +285,14 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         {
             Debug.LogWarning(message: $"reason : {DBTask.Exception}");
         }
-
         else
         {
             // 업데이트 된 재화 디스플레이
             StartCoroutine(ShowUserMetaCurrency());
         }
+
+        // MetaCurrency 캐싱
+        MetaCurrency = newMetaCurrency;
     }
 
     #endregion
