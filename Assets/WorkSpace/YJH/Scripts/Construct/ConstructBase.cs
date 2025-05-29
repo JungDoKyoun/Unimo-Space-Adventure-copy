@@ -69,7 +69,7 @@ public class ConstructBase :ScriptableObject//,IConstruct
             Debug.Log("buildrequire");
             return false;
         }
-        if (IsBuildCostEnough(new Dictionary<string, int>()) == false)//딕셔너리 파이어베이스 받아서 넣기
+        if (IsBuildCostEnough(ConstructManager.Instance.OwnBuildCostDic))//딕셔너리 파이어베이스 받아서 넣기
         {
             Debug.Log("notenoughcost");
             return false;

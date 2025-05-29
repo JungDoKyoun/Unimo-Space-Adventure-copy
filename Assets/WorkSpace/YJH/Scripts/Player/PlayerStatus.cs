@@ -41,4 +41,24 @@ public class PlayerStatus
 
         return clone;
     }
+
+
+    public static PlayerStatus operator +(PlayerStatus a, PlayerStatus b)
+    {
+        if (a == null || b == null) 
+        { 
+            return null; 
+        }
+        return new PlayerStatus
+        {
+            currentHealth = a.currentHealth + b.currentHealth,
+            maxHP = a.maxHP + b.maxHP,
+            playerDamage = a.playerDamage + b.playerDamage,
+            itemDetectionRange = a.itemDetectionRange + b.itemDetectionRange,
+            gatheringSpeed = a.gatheringSpeed + b.gatheringSpeed,
+            moveSpeed = a.moveSpeed + b.moveSpeed,
+            gatheringDelay = a.gatheringDelay + b.gatheringDelay
+        };
+    }
+
 }

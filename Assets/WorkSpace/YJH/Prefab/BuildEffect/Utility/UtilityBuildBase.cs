@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UtilityBuildBase : MonoBehaviour,IUtilityBuildEffect
+public class UtilityBuildBase : ConstructBase,IUtilityBuildEffect
 {
     public virtual Delegate IUtilityBuildEffect()
     {

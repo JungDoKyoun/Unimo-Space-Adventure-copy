@@ -555,6 +555,54 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!1 &1628196232
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1628196234}
+  - component: {fileID: 1628196233}
+  m_Layer: 0
+  m_Name: firebase
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1628196233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1628196232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 833d697eba93267408344543a8ada31a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rewardIngameCurrencyField: {fileID: 0}
+  rewardMetaCurrencyField: {fileID: 0}
+  rewardIngameCurrencyText: {fileID: 0}
+  rewardMetaCurrencyText: {fileID: 0}
+--- !u!4 &1628196234
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1628196232}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 911.7791, y: 148.63985, z: -17.753468}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1997100681
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,6 +715,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4046972278137472058, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4848018663994990095, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.00093449425
+      objectReference: {fileID: 0}
+    - target: {fileID: 4848018663994990095, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.00093449425
+      objectReference: {fileID: 0}
+    - target: {fileID: 4848018663994990095, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.066037714
+      objectReference: {fileID: 0}
+    - target: {fileID: 4848018663994990095, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190097
+      objectReference: {fileID: 0}
     - target: {fileID: 6721671520805846563, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
       propertyPath: m_text
       value: Speed5
@@ -696,3 +764,4 @@ SceneRoots:
   - {fileID: 53396399}
   - {fileID: 1997100682}
   - {fileID: 4889432606576618957}
+  - {fileID: 1628196234}

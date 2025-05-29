@@ -50,7 +50,10 @@ public partial class PlayerManager
         playerStatus = status;
         SetPlayerStatus();
     }
+    public void ActiveRelic(string type,float value)//string? enum? 
+    {
 
+    }
     private void OnTriggerEnter(Collider other)
     {
         //Debug.Log(other.gameObject.layer);

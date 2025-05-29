@@ -11,6 +11,7 @@ public class ConstructManager : MonoBehaviour
 {
     [SerializeField] List<Transform> spawnPoints= new List<Transform>();
     [SerializeField] List<ConstructBase> constructList = new List<ConstructBase>();
+    [SerializeField] List<UtilityBuildBase> utilityConstructList = new List<UtilityBuildBase>();
 
     [Header("UI")]
     [SerializeField] GameObject buildingInfoPanel;
@@ -40,6 +41,7 @@ public class ConstructManager : MonoBehaviour
     public PlayerStatus playerStatus = new PlayerStatus();
     [SerializeField] PlayerStatus originPlayerStatus = new PlayerStatus();
     public PlayerStatus OriginPlayerStatus { get { return originPlayerStatus; } }
+    public Dictionary<string, int> OwnBuildCostDic { get { return  ownBuildCostDic; } }
 
     private void Awake()
     {
@@ -54,7 +56,7 @@ public class ConstructManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneChanged;
         OnConstructCostChange += SetConstructCostText;
-
+        SetOwnCost();
             
         ToDictionary();
     }
@@ -75,6 +77,7 @@ public class ConstructManager : MonoBehaviour
     }
     public void SetConstructCostText()
     {
+        Debug.Log("costupdate");
         string tempText = "";
         foreach (var buildCost in ownBuildCostDic)
         {
@@ -99,6 +102,12 @@ public class ConstructManager : MonoBehaviour
             Debug.Log("buildcom");
             building.ConstructEnd();
             spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
+            int costNum;
+            FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency",out costNum) ? costNum : 0 );
+            
+            
+            //블루 프린트 함수 추가하기
+
             //건설이 완료되었다는 뜻이니까 
             //건설 반영을 해야 함
             //어떻게 해야 할까?
@@ -251,7 +260,7 @@ public class ConstructManager : MonoBehaviour
                             gatherDelaySum += buildeffect.ReturnFinalStat(originPlayerStatus.gatheringDelay);
                             break;
                         case Damage damage:
-                            Debug.Log("adddmg");
+                           // Debug.Log("adddmg");
                             damageSum += buildeffect.ReturnFinalStat(originPlayerStatus.playerDamage);
                             break;
                         case ItemDetectionRange itemDetectionRange:
@@ -277,11 +286,11 @@ public class ConstructManager : MonoBehaviour
 
 
     }
-    public void ModifieUtillity(BuildEffect buildEffect)
+    public void ModifieUtillity(IUtilityBuildEffect buildEffect)
     {
-        
+        buildEffect.IUtilityBuildEffect();
     }
-    public void ModifieSkill(BuildEffect buildEffect)
+    public void ModifieSkill()//별도 인터페이스?
     {
 
     }
@@ -294,26 +303,24 @@ public class ConstructManager : MonoBehaviour
             {
                 foreach (var buildeffect in building.buildEffects)
                 {
-                    switch (buildeffect)
-                    {
-                        case IStatModifier statModifier:
-                            ModifieStat(buildeffect);
-                            break;
-                            
-
-
-                        default:
-                            break;
-                    }
+                    ModifieStat(buildeffect);
 
 
 
                 }
             }
         }
+       
     }
 
-
+    public void SetOwnCost()
+    {
+        FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(0);
+        ownBuildCostDic.Add("Blueprint", FirebaseDataBaseMgr.Blueprint);
+        ownBuildCostDic.Add("MetaCurrency", FirebaseDataBaseMgr.MetaCurrency);
+        OnConstructCostChange.Invoke();
+        
+    }
     public void SetFinalStatusToPlayer()
     {
         playerManager.SetPlayerStatus(playerStatus);
