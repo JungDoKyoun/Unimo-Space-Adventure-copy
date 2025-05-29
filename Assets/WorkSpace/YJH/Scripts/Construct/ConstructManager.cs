@@ -316,7 +316,14 @@ public class ConstructManager : MonoBehaviour
 
     public void SetOwnCost()
     {
-        FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(0);
+        if (FirebaseDataBaseMgr.Instance == null)
+        {
+            Debug.Log("firenull!");
+        }
+        else
+        {
+            FirebaseDataBaseMgr.Instance.StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(0));
+        }
         ownBuildCostDic.Add("Blueprint", FirebaseDataBaseMgr.Blueprint);
         ownBuildCostDic.Add("MetaCurrency", FirebaseDataBaseMgr.MetaCurrency);
         OnConstructCostChange.Invoke();

@@ -109,7 +109,7 @@ public class ConstructBase :ScriptableObject//,IConstruct
             {
                 if (a.buildID == b)
                 {
-                    if (isBuildConstructed == false)
+                    if (a.isBuildConstructed == false)
                     {
                         return false;
                     }
