@@ -226,7 +226,7 @@ public class ConstructManager : MonoBehaviour
     {
         //Debug.Log("player!");
         ActiveBuildEffect();
-        SetFinalStatusToPlayer();
+        //SetFinalStatusToPlayer();
     }
 
     //public void AddStatEffect(BuildEffect buildEffect)//만들어 넣었지만 쓰진 않을듯? 
@@ -274,7 +274,7 @@ public class ConstructManager : MonoBehaviour
                     }
           
 
-        playerStatus = originPlayerStatus.Clone();
+        playerStatus = originPlayerStatus.Clone();// 이거 그냥 더할 양만큼 준비하는게 나을지도? 갈아끼는 식 말고
         playerStatus.moveSpeed += speedSum;
         playerStatus.maxHP += maxHPSum;
         playerStatus.gatheringSpeed += gatherSpeedSum;
@@ -343,7 +343,7 @@ public class ConstructManager : MonoBehaviour
             if (TryGetPlayer()==true)//플레이어가 있으면
             {
                 //Debug.Log("scenecallback");
-                SetPlayer();
+                //SetPlayer();
             }
             else
             {
