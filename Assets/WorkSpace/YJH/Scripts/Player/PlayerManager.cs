@@ -7,7 +7,7 @@ public partial class PlayerManager
     
     private static PlayerStatus playerStatus;
     private static PlayerStatus originStatus;
-    public static PlayerStatus PlayerStatus {  get { return playerStatus; } }
+    public static PlayerStatus PlayerStatus {  get { return playerStatus; } set { playerStatus = value; } }
     public static PlayerStatus OriginStatus { get { return originStatus; } }
     
 
