@@ -93,12 +93,13 @@ namespace JDG
                         icon = reward._resourceData._resourcesIcon;
                         name = reward._resourceData._resourcesName;
                     }
-                    else if(reward._rewardType == RewardType.Relic && reward._relicDatas != null)
+                    else if(reward._rewardType == RewardType.Relic && reward._relicData != null)
                     {
-                        icon = reward._relicDatas.
+                        icon = reward._relicData._relicImage;
+                        name = reward._relicData._relicName;
                     }
 
-                    rewardSlot.SetRewardSlot(reward._rewardIcon, reward._rewardName, $"{temp.x} ~ {temp.y}");
+                    rewardSlot.SetRewardSlot(icon, name, $"{temp.x} ~ {temp.y}");
                 }
             }
 

@@ -6,7 +6,7 @@ namespace JDG
 {
     public enum ResourcesType
     {
-        None, Gold
+        None
     }
 
     [CreateAssetMenu(fileName = "ResourceDataSO", menuName = "SO/EventSO/ResourceDataSO")]

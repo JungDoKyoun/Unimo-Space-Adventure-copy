@@ -5,7 +5,7 @@ namespace JDG
 {
     public enum RelicEffectType
     {
-        None
+        useful, harmful
     }
 
     public enum TargetType

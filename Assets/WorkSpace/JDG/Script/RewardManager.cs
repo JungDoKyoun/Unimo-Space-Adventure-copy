@@ -47,11 +47,18 @@ namespace JDG
                 RewardData copy = new RewardData
                 {
                     _rewardType = data._rewardType,
-                    _rewardIcon = data._rewardIcon,
-                    _rewardName = data._rewardName,
-                    _rewardAmount = random,
-                    _relicDatas = new List<RelicDataSO>(data._relicDatas)
+                    _rewardAmount = random
                 };
+
+                if (data._rewardType == RewardType.Resource)
+                {
+                    copy._resourceData = data._resourceData;
+                }
+                else if (data._rewardType == RewardType.Relic)
+                {
+                    copy._relicData = data._relicData;
+                }
+
                 result.Add(copy);
             }
             return result;
