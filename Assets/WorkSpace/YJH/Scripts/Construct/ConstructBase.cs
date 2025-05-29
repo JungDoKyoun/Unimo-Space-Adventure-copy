@@ -69,7 +69,7 @@ public class ConstructBase :ScriptableObject//,IConstruct
             Debug.Log("buildrequire");
             return false;
         }
-        if (IsBuildCostEnough(ConstructManager.Instance.OwnBuildCostDic))//딕셔너리 파이어베이스 받아서 넣기
+        if (IsBuildCostEnough(ConstructManager.Instance.OwnBuildCostDic)==false)//딕셔너리 파이어베이스 받아서 넣기
         {
             Debug.Log("notenoughcost");
             return false;
@@ -83,16 +83,18 @@ public class ConstructBase :ScriptableObject//,IConstruct
         
         return true;
     }
-    public bool IsBuildCostEnough(Dictionary<string,int> ownCostDic)
+    public bool IsBuildCostEnough(Dictionary<string,int> ownCostDic)// 이쪽 수정 필요
     {
         foreach(var pair in buildCostDic)
         {
             if (ownCostDic.ContainsKey(pair.Key) == false)
             {
+                Debug.Log("no cost");
                 return false;
             }
             if (ownCostDic[pair.Key]<pair.Value)
             {
+                Debug.Log("notenough cost");
                 return false;
             }
         }

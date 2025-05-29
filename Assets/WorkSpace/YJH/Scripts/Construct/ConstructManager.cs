@@ -102,6 +102,7 @@ public class ConstructManager : MonoBehaviour
             Debug.Log("buildcom");
             building.ConstructEnd();
             spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
+            buildInfoBuildButton.interactable = false;
             int costNum;
             FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency",out costNum) ? costNum : 0 );
             
