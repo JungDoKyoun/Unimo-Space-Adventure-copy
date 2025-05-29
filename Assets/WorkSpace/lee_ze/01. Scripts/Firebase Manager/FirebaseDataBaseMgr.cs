@@ -155,7 +155,14 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #region Currency management
 
-    // >>>>>>>>> Ingame Currency
+    // >>>>>>>>> Ingame Currency <<<<<<<<<
+
+    public IEnumerator InitIngameCurrency() // 게임 클리어 실패 시 인게임 재화 초기화
+    {
+        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardIngameCurrency").SetValueAsync(0);
+
+        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
+    }
 
     private IEnumerator ShowUserIngameCurrency()
     {
@@ -170,23 +177,6 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
             if(rewardIngameCurrencyText != null) rewardIngameCurrencyText.text = savedValue.ToString();
         }
-    }
-
-    public void SaveCurrencyInDataBase() // 전체 재화 저장 >> 버튼 이벤트 함수로 호출
-    {
-        if (rewardIngameCurrencyField != null) StartCoroutine(UpdateRewardIngameCurrency(int.Parse(rewardIngameCurrencyField.text))); // reward를 인자값으로 주면 해당 값을 더하게 해야됨.
-        else Debug.Log("Ingame empty");
-
-        if (rewardMetaCurrencyField != null) StartCoroutine(UpdateRewardMetaCurrency(int.Parse(rewardMetaCurrencyField.text)));
-        else Debug.Log("Meta empty");
-    }
-
-    // 게임 클리어 실패 시 인게임 재화 초기화
-    public IEnumerator InitIngameCurrency()
-    {
-        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardIngameCurrency").SetValueAsync(0);
-
-        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
     }
 
     /// <summary>
@@ -232,8 +222,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         }
     }
 
-
-    // >>>>>>>>> Meta Currency
+    // >>>>>>>>> Meta Currency <<<<<<<<<
 
     private IEnumerator ShowUserMetaCurrency()
     {
@@ -295,10 +284,57 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         MetaCurrency = newMetaCurrency;
     }
 
+    // >>>>>>>>> BluePrint <<<<<<<<<
+
+    /// <summary>
+    /// 인자값: 재화 추가 시 >> 양수 | 재화 사용 시 >> 음수
+    /// </summary>
+    /// <param name="bluePrintToAdd"></param>
+    /// <returns></returns>
+    public IEnumerator UpdateRewardBluePrint(int bluePrintToAdd) // Blue Print 재화 저장 함수(더할 값)
+    {
+        int tempBluePrint = 0;
+
+        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardBluePrint").GetValueAsync(); // 현재 설계도 불러오기
+
+        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
+
+        if (getTask.Exception != null) // 불러오기 실패 시 나가기
+        {
+            Debug.LogWarning($"[Get] reason : {getTask.Exception}");
+
+            yield break;
+        }
+
+        if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue)) // string으로 불러온 ingame currency를 tryparse로 savedValue에 저장
+        {
+            tempBluePrint = savedValue; // tempIngameCurrency = 기존 재화
+        }
+
+        int newBluePrint = tempBluePrint + bluePrintToAdd; // 재화 최신화
+
+        var DBTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardBluePrint").SetValueAsync(newBluePrint); // 최신화 된 재화 DB 저장
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+        if (DBTask.Exception != null)
+        {
+            Debug.LogWarning(message: $"reason : {DBTask.Exception}");
+        }
+
+        else
+        {
+            // 업데이트 된 재화 디스플레이
+        }
+
+        // BluePrint 캐싱
+        Blueprint = newBluePrint;
+    }
+
     #endregion
 
     #region Winning Rate
-    
+
     public IEnumerator UpdateWinningRate() // 전적 업데이트 함수. PvP 스테이지 끝날 때 호출해야 함
     {
         float playCount = 0;
