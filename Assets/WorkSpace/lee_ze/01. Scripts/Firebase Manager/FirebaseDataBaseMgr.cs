@@ -30,17 +30,45 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI rewardMetaCurrencyText;
 
-    private static float rate;
+    private static float winningRate;
 
-    public static float Rate
+    private static float playCount;
+
+    private static float winCount;
+
+    #region properties
+
+    public static float WinningRate
     {
-        get => rate;
+        get => winningRate;
 
         private set
         {
-            rate = value;
+            winningRate = value;
         }
     }
+
+    public static float PlayCount
+    {
+        get => playCount;
+
+        private set
+        {
+            playCount = value;
+        }
+    }
+
+    public static float WinCount
+    {
+        get => winCount;
+
+        private set
+        {
+            winCount = value;
+        }
+    }
+
+    #endregion
 
     private void Awake()
     {
@@ -66,8 +94,6 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     {
         yield return new WaitUntil(() => FirebaseAuthMgr.IsFirebaseReady == true);
 
-        Debug.Log("user 대기중");
-
         yield return new WaitUntil(() => FirebaseAuthMgr.User != null);
 
         this.dbRef = FirebaseAuthMgr.dbRef;
@@ -77,12 +103,15 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         StartCoroutine(ShowUserIngameCurrency());
 
         StartCoroutine(ShowUserMetaCurrency());
+
+        StartCoroutine(UpdateWinningRate());
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) // 씬 바뀔 때 마다 수행되는 것
     {
         if (user != null)
         {
+            // 재화 업데이트
             StartCoroutine(ShowUserIngameCurrency());
 
             StartCoroutine(ShowUserMetaCurrency());
@@ -233,7 +262,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #region Winning Rate
     
-    public IEnumerator SetWinningRate()
+    public IEnumerator UpdateWinningRate() // 전적 업데이트 함수. PvP 스테이지 끝날 때 호출해야 함
     {
         float playCount = 0;
 
@@ -248,6 +277,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         if (getTask.Result.Exists == true)
         {
             playCount = float.Parse(getTask.Result.Value.ToString());
+
+            PlayCount = playCount;
         }
 
         getTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("winCount").GetValueAsync();
@@ -257,6 +288,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         if (getTask.Result.Exists == true)
         {
             winCount = float.Parse(getTask.Result.Value.ToString());
+
+            WinCount = winCount;
         }
 
         if (playCount > 0)
@@ -268,7 +301,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             winningRate = 0;
         }
 
-        Rate = winningRate;
+        WinningRate = winningRate;
 
         var DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("winningRate").SetValueAsync(winningRate);
 
