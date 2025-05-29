@@ -5,8 +5,8 @@ public partial class PlayerManager
 {
     [SerializeField]
     
-    private static PlayerStatus playerStatus;
-    private static PlayerStatus originStatus;
+    private static PlayerStatus playerStatus = new PlayerStatus();
+    private static PlayerStatus originStatus = new PlayerStatus();
     public static PlayerStatus PlayerStatus {  get { return playerStatus; } set { playerStatus = value; } }
     public static PlayerStatus OriginStatus { get { return originStatus; } }
     

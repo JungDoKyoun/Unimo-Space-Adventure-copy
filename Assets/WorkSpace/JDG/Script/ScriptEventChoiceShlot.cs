@@ -4,6 +4,7 @@ using UnityEngine;
 using JDG;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.UI;
 
 namespace JDG
 {
@@ -12,7 +13,10 @@ namespace JDG
         [Header("슬롯 생성시 필요한 것들")]
         [SerializeField] private RectTransform _textTransform;
         [SerializeField] private RectTransform _maskAreaTransform;
+        [SerializeField] private Button _button;
         [SerializeField] private TextMeshProUGUI _choiceText;
+        [SerializeField] private Sprite _buttonUsefulImage;
+        [SerializeField] private Sprite _buttonharmfulImage;
 
         [Header("글자 속도 조정")]
         [SerializeField] private float _scrollSpeed;
@@ -35,6 +39,15 @@ namespace JDG
 
         public void SetScriptEventChoiceShlot(ChoiceDataSO choiceData)
         {
+            if(choiceData._eventEffects._choiceEffectType == ChoiceEffectType.useful)
+            {
+                _button.image.sprite = _buttonUsefulImage;
+            }
+            else if(choiceData._eventEffects._choiceEffectType == ChoiceEffectType.harmful)
+            {
+                _button.image.sprite = _buttonharmfulImage;
+            }
+
             _choiceText.text = $"{choiceData._choiceName} : {choiceData._choiceDesc}";
         }
 

@@ -71,18 +71,18 @@ namespace JDG
             {
                 FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(-_repair1Price);
 
-                //체력 회복 코드 넣기
-                int maxHP = 100; //맥스 HP받아오면 그걸로 고치기
-                int tenPer = maxHP / 10;
+                Debug.Log(PlayerManager.PlayerStatus);
+                float maxHP = PlayerManager.PlayerStatus.maxHP;
 
-                //인트 a 지우고 현재 체력 넣으면됨
-                int a = 0;
-                a += tenPer;
-                if(a >= maxHP)
+                float tenPer = maxHP / 10;
+
+                float currentHP = PlayerManager.PlayerStatus.currentHealth;
+                currentHP += tenPer;
+                if(currentHP >= maxHP)
                 {
-                    a = maxHP;
+                    currentHP = maxHP;
                 }
-                Debug.Log(a);
+                Debug.Log(currentHP);
             }
 
             Debug.Log("체력 10% 회복");
@@ -95,17 +95,15 @@ namespace JDG
             {
                 FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(-_repair2Price);
 
-                //체력 회복 코드 넣기
-                int maxHP = 100; //맥스 HP받아오면 그걸로 고치기
+                float maxHP = PlayerManager.PlayerStatus.maxHP ;
 
-                //인트 a 지우고 현재 체력 넣으면됨
-                int a = 0;
-                a += maxHP;
-                if(a >= maxHP)
+                float currentHP = PlayerManager.PlayerStatus.currentHealth;
+                currentHP += maxHP;
+                if(currentHP >= maxHP)
                 {
-                    a = maxHP;
+                    currentHP = maxHP;
                 }
-                Debug.Log(a);
+                Debug.Log(currentHP);
             }
             Debug.Log("체력 100% 회복");
         }

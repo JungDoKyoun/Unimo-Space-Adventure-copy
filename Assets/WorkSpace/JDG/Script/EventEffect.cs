@@ -7,7 +7,7 @@ namespace JDG
 {
     public enum ChoiceEffectType
     {
-        beneficialeffect, harmfuleffect
+        useful, harmful
     }
 
     [System.Serializable]
