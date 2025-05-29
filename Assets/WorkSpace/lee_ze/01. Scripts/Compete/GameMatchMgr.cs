@@ -1,14 +1,24 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
-using ZL.Unity;
 
 public class GameMatchMgr : MonoBehaviourPunCallbacks
 {
+    [SerializeField]
+    private GameObject profileCanvas;
+
+    [SerializeField]
+    private GameObject matchingCanvas;
+
     private Button quickMatchButton;
+
+    private Button stopMatchButton;
+
+    //private bool isMatching = false;
+
+    public static bool IsMatching { get; private set; } = false;
 
     string gameVersion = "1";
 
@@ -19,12 +29,16 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        ConnectToServer();
+
         StartCoroutine(SetQuickMatchButton());
 
-        ConnectToServer();
+        SetStopMatchButton();
+
+        SetCanvas();
     }
 
-    private void ConnectToServer()
+    private void ConnectToServer() // 서버 접속
     {
         if (PhotonNetwork.IsConnected == false)
         {
@@ -34,20 +48,38 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
         }
     }
 
+    #region Canvas
+
+    private void SetIsMatching()
+    {
+        IsMatching = !IsMatching;
+    }
+
+    private void SetCanvas()
+    {
+        profileCanvas.SetActive(!IsMatching);
+
+        matchingCanvas.SetActive(IsMatching);
+    }
+
     private IEnumerator SetQuickMatchButton() // 퀵매치 버튼에 할당
     {
         quickMatchButton = GameObject.Find("Profile Canvas").transform.Find("Buttons/Quick Match Button").GetComponent<Button>();
 
         quickMatchButton.interactable = false;
 
-        yield return new WaitUntil(() => PhotonNetwork.IsConnected == true);
+        yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady == true);
 
         quickMatchButton.interactable = true;
+
+        quickMatchButton.onClick.AddListener(() => SetIsMatching());
+
+        quickMatchButton.onClick.AddListener(() => SetCanvas());
 
         quickMatchButton.onClick.AddListener(() => QuickMatch());
     }
 
-    public void QuickMatch()
+    private void QuickMatch()
     {
         RoomOptions options = new RoomOptions
         {
@@ -62,6 +94,26 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
             roomOptions: options
         );
     }
+
+    private void SetStopMatchButton()
+    {
+        stopMatchButton = GameObject.Find("Matching Canvas").transform.Find("Stop Match Button").GetComponent<Button>();
+
+        stopMatchButton.onClick.AddListener(() => StopMatch());
+
+        stopMatchButton.onClick.AddListener(() => SetIsMatching());
+
+        stopMatchButton.onClick.AddListener(() => SetCanvas());
+    }
+
+    public void StopMatch()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    #endregion
+
+    #region Photon
 
     public override void OnConnectedToMaster() // 서버 연결 되면 호출되는 이벤트 함수
     {
@@ -87,8 +139,25 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
         Debug.Log(message);
     }
 
+    public override void OnLeftRoom()
+    {
+        Debug.Log(14);
+    }
+
+    #endregion
+
     private void OnDestroy()
     {
+        quickMatchButton.onClick.RemoveListener(() => SetIsMatching());
+
+        quickMatchButton.onClick.RemoveListener(() => SetCanvas());
+
         quickMatchButton.onClick.RemoveListener(() => QuickMatch());
+
+        stopMatchButton.onClick.RemoveListener(() => StopMatch());
+
+        stopMatchButton.onClick.RemoveListener(() => SetIsMatching());
+
+        stopMatchButton.onClick.RemoveListener(() => SetCanvas());
     }
 }
