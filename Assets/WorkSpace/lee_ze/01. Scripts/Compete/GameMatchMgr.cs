@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
+using ZL.Unity;
 
 public class GameMatchMgr : MonoBehaviourPunCallbacks
 {
@@ -18,7 +19,7 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        SetQuickMatchButton();
+        StartCoroutine(SetQuickMatchButton());
 
         ConnectToServer();
     }
@@ -33,9 +34,15 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
         }
     }
 
-    private void SetQuickMatchButton() // 퀵매치 버튼에 할당
+    private IEnumerator SetQuickMatchButton() // 퀵매치 버튼에 할당
     {
         quickMatchButton = GameObject.Find("Profile Canvas").transform.Find("Buttons/Quick Match Button").GetComponent<Button>();
+
+        quickMatchButton.interactable = false;
+
+        yield return new WaitUntil(() => PhotonNetwork.IsConnected == true);
+
+        quickMatchButton.interactable = true;
 
         quickMatchButton.onClick.AddListener(() => QuickMatch());
     }
@@ -54,8 +61,6 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
             roomOptions: options
         );
-
-        Debug.Log("방 생성됨");
     }
 
     public override void OnConnectedToMaster() // 서버 연결 되면 호출되는 이벤트 함수
