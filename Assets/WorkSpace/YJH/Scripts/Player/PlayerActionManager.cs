@@ -327,7 +327,7 @@ public partial class PlayerManager
     {
         playerOwnEnergy -= playerAttackType.EnergyCost;
         GameObject bullet;
-        if (PhotonNetwork.IsConnected)
+        if (PhotonNetwork.IsConnected == false)
         {
             bullet = Instantiate(attackPrefab, firePosition, Quaternion.identity);
         }

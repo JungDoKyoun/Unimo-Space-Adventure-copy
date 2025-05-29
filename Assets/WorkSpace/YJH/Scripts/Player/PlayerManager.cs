@@ -1,4 +1,5 @@
 using UnityEngine;
+using ZL.Unity.Unimo;
 
 public partial class PlayerManager 
 {
@@ -63,10 +64,18 @@ public partial class PlayerManager
         if (other.gameObject.layer == LayerMask.NameToLayer("Energy"))
         {
             //Debug.Log("tri");
-
-            GetEnergy(3);
-
-            Destroy(other.gameObject);
+            var temp = other.GetComponent<IEnergy>();
+            GetEnergy(temp.energy);
+            if(temp is IDamageable)
+            {
+                (temp as IDamageable).TakeDamage(0, Vector3.zero);
+            }
+            else
+            {
+                Debug.Log("bug");
+            }
+            
+            //Destroy(other.gameObject);
         }
     }
     private void OnTriggerStay(Collider other)
