@@ -3,6 +3,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameMatchMgr : MonoBehaviourPunCallbacks
 {
@@ -16,9 +17,11 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
     private Button stopMatchButton;
 
-    //private bool isMatching = false;
+    private Image star;
 
     public static bool IsMatching { get; private set; } = false;
+
+    public static bool IsMatched { get; private set; } = false;
 
     string gameVersion = "1";
 
@@ -35,7 +38,11 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
         SetStopMatchButton();
 
+        star = GameObject.Find("Matching Canvas").transform.Find("Matching Panel/Star").GetComponent<Image>();
+
         SetCanvas();
+
+        SetStar(IsMatched);
     }
 
     private void ConnectToServer() // 서버 접속
@@ -62,21 +69,16 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
         matchingCanvas.SetActive(IsMatching);
     }
 
-    private IEnumerator SetQuickMatchButton() // 퀵매치 버튼에 할당
+    private void SetStar(bool isMatched)
     {
-        quickMatchButton = GameObject.Find("Profile Canvas").transform.Find("Buttons/Quick Match Button").GetComponent<Button>();
-
-        quickMatchButton.interactable = false;
-
-        yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady == true);
-
-        quickMatchButton.interactable = true;
-
-        quickMatchButton.onClick.AddListener(() => SetIsMatching());
-
-        quickMatchButton.onClick.AddListener(() => SetCanvas());
-
-        quickMatchButton.onClick.AddListener(() => QuickMatch());
+        if (isMatched == false)
+        {
+            star.color = new Color32(150, 150, 150, 255);
+        }
+        else
+        {
+            star.color = Color.white;
+        }
     }
 
     private void QuickMatch()
@@ -95,20 +97,50 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
         );
     }
 
+    public void StopMatch()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    private IEnumerator SetQuickMatchButton() // 퀵매치 버튼에 할당
+    {
+        quickMatchButton = GameObject.Find("Profile Canvas").transform.Find("Buttons/Quick Match Button").GetComponent<Button>();
+
+        quickMatchButton.GetComponentInChildren<TextMeshProUGUI>().text = "서버 접속 중...";
+
+        quickMatchButton.interactable = false;
+
+        yield return new WaitUntil(() => PhotonNetwork.IsConnectedAndReady == true && PhotonNetwork.NetworkClientState == ClientState.ConnectedToMasterServer);
+
+        quickMatchButton.GetComponentInChildren<TextMeshProUGUI>().text = "퀵 매치";
+
+        quickMatchButton.interactable = true;
+
+        quickMatchButton.onClick.AddListener(() => SetIsMatching());
+
+        quickMatchButton.onClick.AddListener(() => SetCanvas());
+
+        quickMatchButton.onClick.AddListener(() => QuickMatch());
+    }
+
+    private IEnumerator StartMatch()
+    {
+        yield return new WaitForSeconds(3f); // 3초 뒤에 게임 시작
+
+        Debug.Log("Game Start");
+
+        // TODO: 씬 넘어가는 스크립트
+    }
+
     private void SetStopMatchButton()
     {
-        stopMatchButton = GameObject.Find("Matching Canvas").transform.Find("Stop Match Button").GetComponent<Button>();
+        stopMatchButton = GameObject.Find("Matching Canvas").transform.Find("Under Bar Panel/Stop Match Button").GetComponent<Button>();
 
         stopMatchButton.onClick.AddListener(() => StopMatch());
 
         stopMatchButton.onClick.AddListener(() => SetIsMatching());
 
-        stopMatchButton.onClick.AddListener(() => SetCanvas());
-    }
-
-    public void StopMatch()
-    {
-        PhotonNetwork.LeaveRoom();
+        stopMatchButton.onClick.AddListener(() => SetCanvas()); 
     }
 
     #endregion
@@ -127,9 +159,29 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
         Debug.Log(cause);
     }
 
-    public override void OnJoinedRoom()
+    public override void OnJoinedRoom() // 입장 한 사람에게 호출됨
     {
-        Debug.Log(12);
+        IsMatched = PhotonNetwork.CurrentRoom.PlayerCount < PhotonNetwork.CurrentRoom.MaxPlayers ? false : true;
+
+        if (IsMatched == true)
+        {
+            stopMatchButton.interactable = false;
+        }
+
+        SetStar(IsMatched);
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer) // 새로운 사람이 방에 들어오면 방에 있는 사람에게 호출됨
+    {
+        // 이 함수가 호출 됐다는 뜻은 본인이 방장이고 매칭이 됐다는 뜻
+
+        IsMatched = true;
+
+        stopMatchButton.interactable = false;
+
+        SetStar(IsMatched);
+
+        StartCoroutine(StartMatch());
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
