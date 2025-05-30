@@ -15,23 +15,32 @@ namespace JDG
         [SerializeField] private ActionBasedController _rightInputController;
         [SerializeField] private ActionBasedController _leftInputController;
 
-        [Header("UI 관련")]
-        TileSelectionUI _tileSelectionUI;
+        [Header("레이저 포인터 관련")]
+        [SerializeField] private float _pointScale;
+        private GameObject _redRayHitPointPrefab;
+        private GameObject _redRightRayHitPointInstance;
+        private GameObject _redLeftRayHitPointInstance;
 
         private PlayerController _playerController;
         private HexGridLayout _hexGridLayout;
 
         private void Update()
         {
-            TryRayInteract(_rightRayInteractor, _rightInputController);
-            TryRayInteract(_leftRayInteractor, _leftInputController);
+            ShowAllPoint();
+            PressButton();
         }
 
         public void Init(PlayerController playerController, HexGridLayout hexGridLayout)
         {
             _playerController = playerController;
             _hexGridLayout = hexGridLayout;
-            _tileSelectionUI = UIManager.Instance.TileSelectionUI;
+            _redRayHitPointPrefab = Resources.Load<GameObject>("WorldMap/RedRayHitPoint");
+            _redRightRayHitPointInstance = Instantiate(_redRayHitPointPrefab);
+            _redRightRayHitPointInstance.transform.localScale = new Vector3(_pointScale, _pointScale, 0);
+            _redRightRayHitPointInstance.SetActive(false);
+            _redLeftRayHitPointInstance = Instantiate(_redRayHitPointPrefab);
+            _redLeftRayHitPointInstance.transform.localScale = new Vector3(_pointScale, _pointScale, 0);
+            _redLeftRayHitPointInstance.SetActive(false);
         }
 
         private bool IsTriggerPressed(ActionBasedController controller)
@@ -39,44 +48,80 @@ namespace JDG
             if (controller?.activateAction.action == null)
                 return false;
 
-            return controller.activateAction.action.triggered;
+            return controller.activateAction.action.WasPressedThisFrame();
         }
 
-        private void TryRayInteract(XRRayInteractor rayInteractor, ActionBasedController inputController)
+        private void TryRayInteract(XRRayInteractor rayInteractor)
         {
-            if (rayInteractor == null || inputController == null || _hexGridLayout == null)
+            if (rayInteractor == null || _hexGridLayout == null)
                 return;
 
             RaycastHit hit;
 
             if (rayInteractor.TryGetCurrent3DRaycastHit(out hit))
             {
-                //GameObject hitObj = hit.collider.gameObject;
-
-                //if (hitObj.TryGetComponent<Button>(out Button button))
-                //{
-                //    if (IsTriggerPressed(inputController))
-                //    {
-                //        button.onClick.Invoke();
-                //        return;
-                //    }
-                //}
-
                 Vector3 hitPos = hit.point;
                 Vector2Int hitcoord = _hexGridLayout.GetCoordinateFromPosition(hitPos);
 
-                if (IsTriggerPressed(inputController))
+                if (hit.collider.TryGetComponent<WorldMapRenderer>(out WorldMapRenderer renderer))
                 {
-                    if (_tileSelectionUI != null && UIManager.Instance.IsUIOpen)
-                        return;
-
-                    if (hit.collider.TryGetComponent<WorldMapRenderer>(out WorldMapRenderer renderer))
-                    {
-                        renderer.HandleRayHit(hit);
-                        return;
-                    }
+                    renderer.HandleRayHit(hit);
+                    return;
                 }
             }
+        }
+
+        private void PressButton()
+        {
+            if (UIManager.Instance.IsUIOpen)
+                return;
+
+            if (IsTriggerPressed(_rightInputController))
+            {
+                TryRayInteract(_rightRayInteractor);
+            }
+            else if (IsTriggerPressed(_leftInputController))
+            {
+                TryRayInteract(_leftRayInteractor);
+            }
+        }
+
+        private void ShowRayPoin(XRRayInteractor rayInteractor, GameObject pointInstance)
+        {
+            if (rayInteractor == null)
+                return;
+
+            RaycastHit hit;
+
+            if(rayInteractor.TryGetCurrent3DRaycastHit(out hit))
+            {
+                if(hit.collider.GetComponent<WorldMapRenderer>())
+                {
+                    pointInstance.SetActive(true);
+                    pointInstance.transform.position = hit.point;
+                }
+                else
+                {
+                    pointInstance.SetActive(false);
+                }
+            }
+            else
+            {
+                pointInstance.SetActive(false);
+            }
+        }
+
+        private void ShowAllPoint()
+        {
+            if (UIManager.Instance.IsUIOpen)
+            {
+                _redLeftRayHitPointInstance.SetActive(false);
+                _redRightRayHitPointInstance.SetActive(false);
+                return;
+            }
+
+            ShowRayPoin(_rightRayInteractor, _redRightRayHitPointInstance);
+            ShowRayPoin(_leftRayInteractor, _redLeftRayHitPointInstance);
         }
     }
 }
