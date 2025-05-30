@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3300607974161936295}
   - component: {fileID: 2928958625989118855}
   - component: {fileID: 4399000754721671752}
+  - component: {fileID: 6729900865163382429}
   m_Layer: 0
   m_Name: Blur Volume
   m_TagString: Untagged
@@ -64,7 +65,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   valueTweener:
     endValue: 0
-    duration: 0.5
+    duration: 1
     delay: 0
     ease: 1
     isIndependentUpdate: 1
@@ -77,3 +78,30 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   volume: {fileID: 2928958625989118855}
+--- !u!114 &6729900865163382429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964762022188869920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e0d534a45c04ba47bb42b52a2528b08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onAwakeEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4399000754721671752}
+        m_TargetAssemblyTypeName: ZL.Unity.PostProcessing.VolumeWeightTweener, Assembly-CSharp
+        m_MethodName: set_Value
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

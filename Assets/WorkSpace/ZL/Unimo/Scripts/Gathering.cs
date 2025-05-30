@@ -62,7 +62,7 @@ namespace ZL.Unity.Unimo
         {
             CancelInvoke();
 
-            GatherStageSceneDirector.Instance.GetResource(gatheringData.ResourceAmount);
+            ++GatheringManager.Instance.GatheringCount;
 
             Disappear();
         }

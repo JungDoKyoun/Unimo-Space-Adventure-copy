@@ -1,3 +1,5 @@
+using System.Collections;
+
 using UnityEngine;
 
 using UnityEngine.Events;
@@ -30,7 +32,7 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private float fuelConsumption = 0f;
+        private float fuelConsumptionAmount = 0f;
 
         [Space]
 
@@ -66,9 +68,40 @@ namespace ZL.Unity.Unimo
             Fuel = fuelMax;
         }
 
-        private void Update()
+        public void StartConsumption()
         {
-            Fuel -= fuelConsumption * Time.deltaTime;
+            if (consumptionRoutine != null)
+            {
+                return;
+            }
+
+            consumptionRoutine = ConsumptionRoutine();
+
+            StartCoroutine(consumptionRoutine);
+        }
+
+        public void StopConsumption()
+        {
+            if (consumptionRoutine == null)
+            {
+                return;
+            }
+
+            StopCoroutine(consumptionRoutine);
+
+            consumptionRoutine = null;
+        }
+
+        private IEnumerator consumptionRoutine = null;
+
+        private IEnumerator ConsumptionRoutine()
+        {
+            while (true)
+            {
+                yield return null;
+
+                Fuel -= fuelConsumptionAmount * Time.deltaTime;
+            }
         }
     }
 }

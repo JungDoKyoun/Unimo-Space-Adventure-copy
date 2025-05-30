@@ -24,6 +24,16 @@ namespace ZL.Unity.Tweening
 
         [ReadOnlyWhenPlayMode]
 
+        [PropertyField]
+
+        [Margin]
+
+        [ReadOnlyWhenEditMode]
+
+        [Button(nameof(FadeIn))]
+
+        [Button(nameof(FadeOut))]
+
         private ObjectValueTweener<FloatTweener, float, float, FloatOptions> tweener = null;
 
         [SerializeField]

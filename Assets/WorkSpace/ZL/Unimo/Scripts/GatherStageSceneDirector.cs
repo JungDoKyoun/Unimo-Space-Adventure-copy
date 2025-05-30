@@ -26,6 +26,16 @@ namespace ZL.Unity.Unimo
 
         private GatherStageData stageData = null;
 
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private RewardData rewardData = null;
+
         [Space]
 
         [SerializeField]
@@ -37,7 +47,19 @@ namespace ZL.Unity.Unimo
         [ReadOnlyWhenPlayMode]
 
         private PlayerManager player = null;
-        
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private Clock stagePlayTimeClock = null;
+
         [Space]
 
         [SerializeField]
@@ -84,8 +106,6 @@ namespace ZL.Unity.Unimo
 
         public Transform EnemyTarget { get; private set; } = null;
 
-        private int collectedResourceAmount = 0;
-
         protected override void Awake()
         {
             base.Awake();
@@ -99,24 +119,15 @@ namespace ZL.Unity.Unimo
         {
             yield return base.Start();
 
+            stagePlayTimeClock.SetActive(true);
+
             monster1Spawner1.SetActive(true);
 
             monster2Spawner1.SetActive(true);
 
             gatheringSpawner1.SetActive(true);
-        }
 
-        public void GetResource(int value)
-        {
-            collectedResourceAmount += value;
-
-            // UI 업데이트
-            FixedDebug.Log($"자원 채집: {collectedResourceAmount}/{stageData.TargetResourceAmount}");
-
-            if (collectedResourceAmount >= stageData.TargetResourceAmount)
-            {
-                StageClear();
-            }
+            PlayerFuelManager.Instance.StartConsumption();
         }
 
         public void StageClear()
@@ -125,11 +136,13 @@ namespace ZL.Unity.Unimo
 
             GameStateManager.IsClear = true;
 
+            rewardData.SetReward();
+
             if (FirebaseDataBaseMgr.Instance != null)
             {
-                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(stageData.RewardIngameCurrency));
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(RewardData.InGameCurrencyAmount));
 
-                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(stageData.RewardMetaCurrency));
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(RewardData.OutGameCurrencyAmount));
             }
 
             onStageClearEvent.Invoke();

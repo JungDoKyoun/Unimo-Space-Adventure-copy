@@ -2,16 +2,14 @@ namespace ZL.Unity
 {
     public enum ScriptExecutionOrder
     {
-        Min = -99,
+        Min = -100,
 
         Singleton,
 
-        UIBuilder,
+        Tweener,
 
         Default = 0,
 
         SceneDirector,
-
-        Max = 99
     }
 }

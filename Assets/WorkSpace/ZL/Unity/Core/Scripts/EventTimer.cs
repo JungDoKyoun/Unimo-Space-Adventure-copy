@@ -34,11 +34,6 @@ namespace ZL.Unity
 
         public void Invoke()
         {
-            Invoke(time);
-        }
-
-        public void Invoke(float time)
-        {
             Invoke(nameof(OnTime), time);
         }
 

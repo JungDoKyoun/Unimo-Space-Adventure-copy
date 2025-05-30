@@ -10,6 +10,8 @@ using UnityEngine.Events;
 
 namespace ZL.Unity.Tweening
 {
+    [DefaultExecutionOrder((int)ScriptExecutionOrder.Tweener)]
+
     public abstract class ObjectValueTweener<TValueTweener, T1, T2, TPlugOptions> : MonoBehaviour
 
         where TValueTweener : ValueTweener<T1, T2, TPlugOptions>
