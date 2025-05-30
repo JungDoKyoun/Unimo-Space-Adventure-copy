@@ -5,12 +5,12 @@ namespace JDG
 {
     public enum RelicEffectType
     {
-        None
+        None, Useful, Harmful
     }
 
     public enum TargetType
     {
-        None
+        None, IngameCurrency, MetaCurrency, Blueprint, MaxHP, CurrentHP, MaxFuel, CurrentFuel
     }
 
     [CreateAssetMenu(fileName = "RelicDataSO", menuName = "SO/EventSO/RelicDataSO")]

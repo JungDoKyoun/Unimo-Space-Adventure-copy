@@ -16,12 +16,14 @@ namespace JDG
         [SerializeField] private Button _button;
         [SerializeField] private TextMeshProUGUI _choiceText;
         [SerializeField] private Sprite _buttonUsefulImage;
-        [SerializeField] private Sprite _buttonharmfulImage;
+        [SerializeField] private Sprite _buttonHarmfulImage;
+        [SerializeField] private Sprite _buttonUseAndHarmfulImage;
 
         [Header("글자 속도 조정")]
         [SerializeField] private float _scrollSpeed;
         [SerializeField] private float _pauseTime;
 
+        private ChoiceDataSO _choiceData;
         private Coroutine _scrollCo;
         private float _defaultX;
         private float _scrollLength;
@@ -38,13 +40,47 @@ namespace JDG
 
         public void SetScriptEventChoiceShlot(ChoiceDataSO choiceData)
         {
-            if(choiceData._eventEffects._choiceEffectType == ChoiceEffectType.useful)
+            _choiceData = choiceData;
+            bool isUseful = false;
+            bool isHarmful = false;
+
+            foreach (var probEffect in choiceData._probabilisticEffect)
+            {
+                foreach (var effect in probEffect._effects)
+                {
+                    if (effect._choiceEffectType == ChoiceEffectType.Useful)
+                    {
+
+                        isUseful = true;
+                    }
+                    else if (effect._choiceEffectType == ChoiceEffectType.Harmful)
+                    {
+                        isHarmful = true;
+                    }
+                    else if (effect._choiceEffectType == ChoiceEffectType.None)
+                    {
+                        isUseful = true;
+                    }
+
+                    if (isUseful && isHarmful)
+                        break;
+                }
+
+                if (isUseful && isHarmful)
+                    break;
+            }
+
+            if (isUseful && isHarmful)
+            {
+                _button.image.sprite = _buttonUseAndHarmfulImage;
+            }
+            else if(isUseful)
             {
                 _button.image.sprite = _buttonUsefulImage;
             }
-            else if(choiceData._eventEffects._choiceEffectType == ChoiceEffectType.harmful)
+            else if(isHarmful)
             {
-                _button.image.sprite = _buttonharmfulImage;
+                _button.image.sprite = _buttonHarmfulImage;
             }
 
             _choiceText.text = $"{choiceData._choiceName} : {choiceData._choiceDesc}";
@@ -72,6 +108,34 @@ namespace JDG
 
         public void OnClickChoice()
         {
+            if (_choiceData == null)
+                return;
+
+            ChoiceDataSO data = _choiceData;
+            float random = Random.value;
+            float temp = 0f;
+
+            if (data._probabilisticEffect == null || data._probabilisticEffect.Count == 0)
+            {
+                UIManager.Instance.ScriptEventUI.HideUI();
+                return;
+            }
+
+            foreach (var prob in data._probabilisticEffect)
+            {
+                temp += prob._probability;
+
+                if(random <= temp)
+                {
+                    foreach(var effect in prob._effects)
+                    {
+                        EffectExecutor.ExecuteEffect(effect);
+                    }
+
+                    break;
+                }
+            }
+
             UIManager.Instance.ScriptEventUI.HideUI();
         }
 

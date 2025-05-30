@@ -12,6 +12,13 @@ namespace JDG
         public List<string> _eventRequiredRelics;
         public List<string> _eventRequiredBuildings;
         public ResourceCost _eventRequiredCurrency;
-        public EventEffect _eventEffects;
+        public List<ProbabilisticEffect> _probabilisticEffect;
+    }
+
+    [System.Serializable]
+    public class ProbabilisticEffect
+    {
+        [Range(0f, 1f)] public float _probability;
+        public List<EventEffect> _effects;   
     }
 }
