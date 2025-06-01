@@ -36,8 +36,6 @@ namespace ZL.Unity.Unimo
 
         private RewardData rewardData = null;
 
-        [Space]
-
         [SerializeField]
 
         [UsingCustomProperty]
@@ -47,6 +45,16 @@ namespace ZL.Unity.Unimo
         [ReadOnlyWhenPlayMode]
 
         private PlayerManager player = null;
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private GameObject spawners = null;
 
         [Space]
 
@@ -59,38 +67,6 @@ namespace ZL.Unity.Unimo
         [ReadOnlyWhenPlayMode]
 
         private Clock stagePlayTimeClock = null;
-
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
-        private RandomSpawner monster1Spawner1 = null;
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
-        private RandomSpawner monster2Spawner1 = null;
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
-        private RandomSpawner gatheringSpawner1 = null;
 
         [Space]
 
@@ -119,13 +95,9 @@ namespace ZL.Unity.Unimo
         {
             yield return base.Start();
 
+            spawners.SetActive(true);
+
             stagePlayTimeClock.SetActive(true);
-
-            monster1Spawner1.SetActive(true);
-
-            monster2Spawner1.SetActive(true);
-
-            gatheringSpawner1.SetActive(true);
 
             PlayerFuelManager.Instance.StartConsumption();
         }

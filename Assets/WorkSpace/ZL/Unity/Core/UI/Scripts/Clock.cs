@@ -1,8 +1,8 @@
+using System;
+
 using System.Collections;
 
 using UnityEngine;
-
-using ZL.CS;
 
 using ZL.Unity.Coroutines;
 
@@ -12,7 +12,7 @@ namespace ZL.Unity
 {
     [AddComponentMenu("ZL/Clock")]
 
-    [ExecuteInEditMode]
+    //[ExecuteInEditMode]
 
     public sealed class Clock : MonoBehaviour
     {
@@ -44,15 +44,7 @@ namespace ZL.Unity
             {
                 hour = value;
 
-                if (hour > 23)
-                {
-                    hour = 0;
-                }
-
-                else if (hour < 0)
-                {
-                    hour = 59;
-                }
+                Refresh();
             }
         }
 
@@ -68,29 +60,15 @@ namespace ZL.Unity
             {
                 minute = value;
 
-                if (minute >= 60)
-                {
-                    Hour += (int)(minute * MathFEx.OneOver60);
-
-                    minute %= 60;
-                }
-
-                else if (minute < 0)
-                {
-                    int hour = Mathf.CeilToInt(-minute * MathFEx.OneOver60);
-
-                    Hour -= hour;
-
-                    minute += hour * 60;
-                }
+                Refresh();
             }
         }
 
         [SerializeField]
 
-        private float seconds = 0f;
+        private int seconds = 0;
 
-        public float Seconds
+        public int Seconds
         {
             get => seconds;
 
@@ -98,21 +76,7 @@ namespace ZL.Unity
             {
                 seconds = value;
 
-                if (seconds >= 60f)
-                {
-                    Minute += (int)(seconds * MathFEx.OneOver60);
-
-                    seconds %= 60f;
-                }
-
-                else if (seconds < 0f)
-                {
-                    int minute = Mathf.CeilToInt(-seconds * MathFEx.OneOver60);
-
-                    Minute -= minute;
-
-                    seconds += minute * 60f;
-                }
+                Refresh();
             }
         }
 
@@ -176,13 +140,11 @@ namespace ZL.Unity
 
         private bool isBlinked = false;
 
+        private TimeSpan timeSpan = TimeSpan.Zero;
+
         private void OnValidate()
         {
-            Seconds = seconds;
-
-            Minute = minute;
-
-            Hour = hour;
+            Refresh();
         }
 
         private void OnEnable()
@@ -203,11 +165,19 @@ namespace ZL.Unity
 
             #endif
 
-            Seconds += Time.deltaTime * timeSpeed;
+            timeSpan += TimeSpan.FromSeconds(timeSpeed * Time.deltaTime);
         }
 
         public void Refresh()
         {
+            timeSpan = new TimeSpan(hour, minute, seconds);
+
+            hour = timeSpan.Hours;
+
+            minute = timeSpan.Minutes;
+
+            seconds = timeSpan.Seconds;
+
             if (timeStampText == null)
             {
                 return;
@@ -226,7 +196,7 @@ namespace ZL.Unity
 
         public string GetTimeStamp()
         {
-            return string.Format(timeStampFormat, hour, minute, (int)seconds);
+            return string.Format(timeStampFormat, hour, minute, seconds);
         }
 
         public void StartBlinking()
@@ -261,7 +231,7 @@ namespace ZL.Unity
             {
                 if (syncBlinking == true)
                 {
-                    if (seconds % 1f < 0.5f)
+                    if (timeSpan.TotalSeconds < 0.5)
                     {
                         isBlinked = false;
                     }

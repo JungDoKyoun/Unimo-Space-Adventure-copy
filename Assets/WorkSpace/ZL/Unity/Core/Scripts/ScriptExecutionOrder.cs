@@ -8,6 +8,8 @@ namespace ZL.Unity
 
         Tweener,
 
+        Awake,
+
         Default = 0,
 
         SceneDirector,
