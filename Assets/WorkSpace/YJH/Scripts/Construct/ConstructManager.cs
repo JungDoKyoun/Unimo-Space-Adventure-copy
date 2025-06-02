@@ -36,6 +36,7 @@ public class ConstructManager : MonoBehaviour
 
 
     public List<ConstructBase> ConstructList { get { return constructList;  } private set { constructList = value; } }
+    public static List<string> buildedList= new List<string>();    
     public static ConstructManager Instance { get; private set; }
 
     public delegate void onConstructCostChange();
@@ -64,7 +65,7 @@ public class ConstructManager : MonoBehaviour
         Instance = this;
         OnConstructCostChange += SetConstructCostText;
         SetOwnCost();
-            DecideProgress();
+        DecideProgress();
         ToDictionary();
     }
     
@@ -94,6 +95,7 @@ public class ConstructManager : MonoBehaviour
 
         constructCostText.text = tempText;
     }
+
     public void TryConstruct(ConstructBase building)
     {
         if(building == null)
@@ -112,6 +114,7 @@ public class ConstructManager : MonoBehaviour
             buildInfoBuildButton.interactable = false;
             int costNum;
             FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency",out costNum) ? -costNum : 0 );
+            SetPlayer();
             DecideProgress();
             
             //블루 프린트 함수 추가하기
@@ -134,6 +137,7 @@ public class ConstructManager : MonoBehaviour
             if (building.isBuildConstructed == true)
             {
                 buildedBuildingNum++;
+                buildedList.Add(building.buildID);
             }
             
             
@@ -141,7 +145,15 @@ public class ConstructManager : MonoBehaviour
 
         buildStateProgress=(float)buildedBuildingNum/buildingNum;
         Debug.Log(buildStateProgress);
+        DebugBuildedList();
         ChangeBuildStateImage();
+    }
+    public void DebugBuildedList()
+    {
+        foreach (var building in buildedList)
+        {
+            Debug.Log(building);
+        }
     }
     public void ChangeBuildStateImage()
     {
@@ -193,7 +205,9 @@ public class ConstructManager : MonoBehaviour
     }
     public void TempGameStart()
     {
+        SetPlayer();
         SceneManager.LoadScene("TestScene");
+        
     }
 
     //public void ShowBuildPanel()
@@ -349,7 +363,9 @@ public class ConstructManager : MonoBehaviour
                 }
             }
         }
-       
+
+
+        SetFinalStatusToPlayer();
     }
 
     public void SetOwnCost()
