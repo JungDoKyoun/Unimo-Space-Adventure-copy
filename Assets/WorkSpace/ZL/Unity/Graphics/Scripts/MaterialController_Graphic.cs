@@ -6,6 +6,8 @@ namespace ZL.Unity.GFX
 {
     [AddComponentMenu("ZL/GFX/Material Controller (Graphic)")]
 
+    [DefaultExecutionOrder((int)ScriptExecutionOrder.Awake)]
+
     public sealed class MaterialController_Graphic : MaterialController
     {
         [Space]
@@ -28,11 +30,9 @@ namespace ZL.Unity.GFX
 
         private bool isShared = false;
 
-        private Material[] materials;
-
-        public override Material[] Materials
+        public override Material Material
         {
-            get => materials;
+            get => targetGraphic.material;
         }
 
         private void Awake()
@@ -41,11 +41,6 @@ namespace ZL.Unity.GFX
             {
                 targetGraphic.material = new Material(targetGraphic.material);
             }
-
-            materials = new Material[1]
-            {
-                targetGraphic.material
-            };
         }
     }
 }

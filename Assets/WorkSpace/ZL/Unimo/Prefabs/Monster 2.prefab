@@ -221,6 +221,7 @@ Transform:
   - {fileID: 5166824108105122194}
   - {fileID: 4256795630923087701}
   - {fileID: 380766402272293962}
+  - {fileID: 7629386314814512650}
   m_Father: {fileID: 1829995321276097704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7452098469681872726
@@ -290,13 +291,13 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
-    - key: OnAttack
+    - key: Shoot
       value:
         m_PersistentCalls:
           m_Calls:
           - m_Target: {fileID: 4978132335410082396}
             m_TargetAssemblyTypeName: ZL.Unity.Unimo.Monster2, Assembly-CSharp
-            m_MethodName: OnAttack
+            m_MethodName: Shoot
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -336,7 +337,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5252705873885771371}
-  m_LocalEulerAnglesHint: {x: -2.5108705, y: 2.3424522e-23, z: -2.5024324e-22}
+  m_LocalEulerAnglesHint: {x: 0, y: 3.38988e-29, z: -6.735086e-37}
 --- !u!1 &1421275657547777330
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,7 +375,7 @@ Transform:
   - {fileID: 5460178299476072764}
   - {fileID: 4685775343074401916}
   m_Father: {fileID: 7901400648256779}
-  m_LocalEulerAnglesHint: {x: -15, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98021, y: -1.272222e-14, z: 0}
 --- !u!1 &3579520534247840360
 GameObject:
   m_ObjectHideFlags: 0
@@ -405,7 +406,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5252705873885771371}
-  m_LocalEulerAnglesHint: {x: 31.51922, y: -6.1111355, z: 116.93354}
+  m_LocalEulerAnglesHint: {x: -22.521019, y: 45.904667, z: 110.36058}
 --- !u!1 &4031377738750284925
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,7 +437,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5252705873885771371}
-  m_LocalEulerAnglesHint: {x: 31.519176, y: 6.111147, z: -116.9335}
+  m_LocalEulerAnglesHint: {x: -22.521011, y: -45.90469, z: -110.36056}
 --- !u!1 &4117245260252885838
 GameObject:
   m_ObjectHideFlags: 0
@@ -467,7 +468,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5252705873885771371}
-  m_LocalEulerAnglesHint: {x: -70.26533, y: -20.93764, z: 136.83948}
+  m_LocalEulerAnglesHint: {x: -89.61999, y: 0.0025748827, z: -65.3292}
 --- !u!1 &4279234209718346519
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,7 +499,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5252705873885771371}
-  m_LocalEulerAnglesHint: {x: 18.96363, y: 3.9422765e-23, z: -1.3266008e-22}
+  m_LocalEulerAnglesHint: {x: 0, y: 3.38988e-29, z: -6.735086e-37}
 --- !u!1 &4298376830231223515
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,7 +518,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1829995321276097704
 Transform:
   m_ObjectHideFlags: 0
@@ -532,7 +533,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2568585099480790707}
-  - {fileID: 7629386314814512650}
   - {fileID: 3057050897555738153}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -602,7 +602,6 @@ MonoBehaviour:
   enemyData: {fileID: 11400000, guid: d9198271e05b01e4ab109616646f2fd4, type: 2}
   lifeTime: 20
   rotationSpeed: 180
-  enemyTargetDitection: {fileID: 11400000, guid: d7a9da5c0f72b84479a3485c4403336a, type: 2}
   stopDistance: 10
   projectileName: Monster 2 Projectile
   attackCooldown: 5
@@ -702,7 +701,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5252705873885771371}
-  m_LocalEulerAnglesHint: {x: -70.26533, y: 20.93764, z: -136.83948}
+  m_LocalEulerAnglesHint: {x: -89.61999, y: -0.0025748827, z: 65.3292}
 --- !u!1 &7810443431824148139
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,26 +763,18 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5252705873885771371}
-  m_LocalEulerAnglesHint: {x: -6.0151067, y: 1.6570695e-14, z: 3.0241168e-15}
+  m_LocalEulerAnglesHint: {x: 50.000015, y: 1.9792265e-14, z: 3.2968144e-15}
 --- !u!1001 &1516290338430488201
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1829995321276097704}
+    m_TransformParent: {fileID: 2568585099480790707}
     m_Modifications:
     - target: {fileID: 781232824022357859, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
       propertyPath: m_Name
       value: Fake Shadow
-      objectReference: {fileID: 0}
-    - target: {fileID: 9001557012747604099, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.5000004
-      objectReference: {fileID: 0}
-    - target: {fileID: 9001557012747604099, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000004
       objectReference: {fileID: 0}
     - target: {fileID: 9001557012747604099, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
       propertyPath: m_LocalPosition.x

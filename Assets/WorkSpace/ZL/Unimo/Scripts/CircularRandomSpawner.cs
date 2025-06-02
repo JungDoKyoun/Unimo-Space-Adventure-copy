@@ -33,7 +33,7 @@ namespace ZL.Unity.Unimo
 
             pooledObject.transform.SetPositionAndRotation(position, eulerAngles);
 
-            pooledObject.SetActive(true);
+            pooledObject.gameObject.SetActive(true);
         }
     }
 }

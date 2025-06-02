@@ -32,6 +32,27 @@ namespace ZL.Unity
             get => targetFrameRatePref;
         }
 
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [PropertyField]
+
+        [Button(nameof(Pause))]
+
+        [Button(nameof(Resume))]
+
+        [Button(nameof(Quit))]
+
+        private float timeScale = 1f;
+
+        private void OnValidate()
+        {
+            TimeEx.TimeScale = timeScale;
+        }
+
         protected override void Awake()
         {
             base.Awake();

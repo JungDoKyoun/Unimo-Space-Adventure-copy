@@ -19,7 +19,7 @@ namespace ZL.Unity
         {
             if (delay > 0f)
             {
-                yield return WaitForSecondsCache.Get(delay);
+                yield return WaitForSecondsRealtimeCache.Get(delay);
             }
 
             LoadScene(sceneName);
@@ -28,6 +28,8 @@ namespace ZL.Unity
         public static void LoadScene(string sceneName)
         {
             FixedSelection.SetActiveObject(null);
+
+            TimeEx.Resume();
 
             SceneManager.LoadScene(sceneName);
         }

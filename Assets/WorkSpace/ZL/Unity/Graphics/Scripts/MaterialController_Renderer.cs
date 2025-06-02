@@ -20,7 +20,18 @@ namespace ZL.Unity.GFX
 
         private Renderer targetRenderer = null;
 
-        public override Material[] Materials
+        [Space]
+
+        [SerializeField]
+
+        private int index = 0;
+
+        public override Material Material
+        {
+            get => Materials[index];
+        }
+
+        public Material[] Materials
         {
             get => targetRenderer.materials;
         }

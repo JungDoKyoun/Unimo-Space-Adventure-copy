@@ -12,7 +12,7 @@ namespace ZL.Unity.Unimo
     {
         private void FixedUpdate()
         {
-            if (Target == null)
+            if (Destination == null)
             {
                 return;
             }
@@ -24,7 +24,7 @@ namespace ZL.Unity.Unimo
 
             if (rotationSpeed != 0f)
             {
-                rigidbody.LookTowards(Target, Axis.Y, rotationSpeed);
+                rigidbody.LookTowards(Destination, Axis.Y, rotationSpeed);
             }
 
             if (enemyData.MoveSpeed != 0f)

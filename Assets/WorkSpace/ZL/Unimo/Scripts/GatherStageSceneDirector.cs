@@ -10,7 +10,7 @@ using ZL.Unity.Directing;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Gather Stage Scene Director")]
+    [AddComponentMenu("ZL/Unimo/Gather Stage Scene Director (Singleton)")]
 
     public sealed class GatherStageSceneDirector : SceneDirector<GatherStageSceneDirector>
     {
@@ -56,8 +56,6 @@ namespace ZL.Unity.Unimo
 
         private GameObject spawners = null;
 
-        [Space]
-
         [SerializeField]
 
         [UsingCustomProperty]
@@ -80,15 +78,11 @@ namespace ZL.Unity.Unimo
 
         private UnityEvent onStageFailEvent = null;
 
-        public Transform EnemyTarget { get; private set; } = null;
-
         protected override void Awake()
         {
             base.Awake();
 
             player.OnPlayerDead += StageFail;
-
-            EnemyTarget = player.transform;
         }
 
         protected override IEnumerator Start()
@@ -97,7 +91,7 @@ namespace ZL.Unity.Unimo
 
             spawners.SetActive(true);
 
-            stagePlayTimeClock.SetActive(true);
+            stagePlayTimeClock.gameObject.SetActive(true);
 
             PlayerFuelManager.Instance.StartConsumption();
         }

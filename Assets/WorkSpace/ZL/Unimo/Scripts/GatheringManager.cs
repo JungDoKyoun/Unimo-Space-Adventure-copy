@@ -10,7 +10,7 @@ using ZL.Unity.Singleton;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Gathering Manager")]
+    [AddComponentMenu("ZL/Unimo/Gathering Manager (Singleton)")]
 
     public sealed class GatheringManager : MonoSingleton<GatheringManager>
     {

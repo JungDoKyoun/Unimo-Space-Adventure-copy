@@ -12,8 +12,6 @@ namespace ZL.Unity
 {
     [AddComponentMenu("ZL/Clock")]
 
-    //[ExecuteInEditMode]
-
     public sealed class Clock : MonoBehaviour
     {
         [Space]
@@ -144,6 +142,8 @@ namespace ZL.Unity
 
         private void OnValidate()
         {
+            timeSpan = new TimeSpan(hour, minute, seconds);
+
             Refresh();
         }
 
@@ -154,24 +154,13 @@ namespace ZL.Unity
 
         private void Update()
         {
-            Refresh();
-
-            #if UNITY_EDITOR
-
-            if (Application.isPlaying == false)
-            {
-                return;
-            }
-
-            #endif
-
             timeSpan += TimeSpan.FromSeconds(timeSpeed * Time.deltaTime);
+
+            Refresh();
         }
 
         public void Refresh()
         {
-            timeSpan = new TimeSpan(hour, minute, seconds);
-
             hour = timeSpan.Hours;
 
             minute = timeSpan.Minutes;
@@ -231,7 +220,7 @@ namespace ZL.Unity
             {
                 if (syncBlinking == true)
                 {
-                    if (timeSpan.TotalSeconds < 0.5)
+                    if (timeSpan.Milliseconds < 500)
                     {
                         isBlinked = false;
                     }

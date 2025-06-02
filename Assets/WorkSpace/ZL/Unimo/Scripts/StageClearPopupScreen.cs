@@ -42,33 +42,33 @@ namespace ZL.Unity.Unimo
 
         private void OnEnable()
         {
-            inGameCurrencyAmountText.SetActive(false);
-
-            outGameCurrencyAmountText.SetActive(false);
-
-            bluePrintCountText.SetActive(false);
-
             stagePlayTimeText.text = $"«√∑π¿Ã Ω√∞£: {stagePlayTimeClock.GetTimeStamp()}";
+
+            inGameCurrencyAmountText.gameObject.SetActive(false);
 
             if (RewardData.InGameCurrencyAmount != 0)
             {
                 inGameCurrencyAmountText.text = $"»πµÊ ¿Œ ∞‘¿” ¿Á»≠: {RewardData.InGameCurrencyAmount}";
 
-                inGameCurrencyAmountText.SetActive(true);
+                inGameCurrencyAmountText.gameObject.SetActive(true);
             }
+
+            outGameCurrencyAmountText.gameObject.SetActive(false);
 
             if (RewardData.OutGameCurrencyAmount != 0)
             {
                 outGameCurrencyAmountText.text = $"»πµÊ æ∆øÙ ∞‘¿” ¿Á»≠: {RewardData.OutGameCurrencyAmount}";
 
-                outGameCurrencyAmountText.SetActive(true);
+                outGameCurrencyAmountText.gameObject.SetActive(true);
             }
+
+            bluePrintCountText.gameObject.SetActive(false);
 
             if (RewardData.BluePrintCount != 0)
             {
                 bluePrintCountText.text = $"»πµÊ º≥∞Ëµµ: {RewardData.BluePrintCount}";
 
-                bluePrintCountText.SetActive(true);
+                bluePrintCountText.gameObject.SetActive(true);
             }
 
             content.ForceRebuildLayout();

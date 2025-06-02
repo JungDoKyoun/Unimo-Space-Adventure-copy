@@ -6,7 +6,7 @@ using ZL.Unity.Singleton;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Reward Data Manager")]
+    [AddComponentMenu("ZL/Unimo/Reward Data Manager (Singleton)")]
 
     public sealed class RewardDataManager : MonoSingleton<RewardDataManager>
     {

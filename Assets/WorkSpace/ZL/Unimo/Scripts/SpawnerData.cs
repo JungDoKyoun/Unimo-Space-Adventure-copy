@@ -16,7 +16,6 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        // 생성하는 오브젝트 종류
         private string spawnObject = "";
 
         public string SpawnObject
@@ -26,7 +25,6 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        // 오브젝트 생성주기 최소값
         private float objectSpawnMinTime = 0f;
 
         public float ObjectSpawnMinTime
@@ -36,7 +34,6 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        // 오브젝트 생성주기최댓값
         private float objectSpawnMaxTime = 0f;
 
         public float ObjectSpawnMaxTime
@@ -46,7 +43,6 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        // 오브젝트 생성 개수 최소값
         private int objectSpawnMinCount = 0;
 
         public int ObjectSpawnMinCount
@@ -56,7 +52,6 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        // 오브젝트 생성 개수 최댓값
         private int objectSpawnMaxCount = 0;
 
         public int ObjectSpawnMaxCount
@@ -66,8 +61,7 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        // 오브젝트 생성 제한 기준 개수
-        private int objectCountLimits = 0;
+        private int objectCountLimits = -1;
 
         public int ObjectCountLimits
         {
