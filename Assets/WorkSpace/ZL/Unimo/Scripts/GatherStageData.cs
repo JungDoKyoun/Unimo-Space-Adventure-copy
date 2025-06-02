@@ -16,38 +16,20 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private int targetResourceAmount = 0;
+        private int targetGatheringCount = 0;
 
-        public int TargetResourceAmount
+        public int TargetGatheringCount
         {
-            get => targetResourceAmount;
+            get => targetGatheringCount;
         }
 
         [SerializeField]
 
-        private int rewardIngameCurrency = 0;
+        private float fuelConsumptionAmount = 0f;
 
-        public int RewardIngameCurrency
+        public float FuelConsumptionAmount
         {
-            get => rewardIngameCurrency;
-        }
-
-        [SerializeField]
-
-        private int rewardMetaCurrency = 0;
-
-        public int RewardMetaCurrency
-        {
-            get => rewardMetaCurrency;
-        }
-
-        [SerializeField]
-
-        private float fuelDrainAmount = 0f;
-
-        public float FuelDrainAmount
-        {
-            get => fuelDrainAmount;
+            get => fuelConsumptionAmount;
         }
 
         public override List<string> GetHeader()
@@ -56,25 +38,17 @@ namespace ZL.Unity.Unimo
             {
                 "name",
 
-                nameof(targetResourceAmount),
+                nameof(targetGatheringCount),
 
-                nameof(rewardIngameCurrency),
-
-                nameof(rewardMetaCurrency),
-
-                nameof(fuelDrainAmount),
+                nameof(fuelConsumptionAmount),
             };
         }
 
         public override void Import(GstuSpreadSheet sheet)
         {
-            targetResourceAmount = int.Parse(sheet[name, nameof(targetResourceAmount)].value);
+            targetGatheringCount = int.Parse(sheet[name, nameof(targetGatheringCount)].value);
 
-            rewardIngameCurrency = int.Parse(sheet[name, nameof(rewardIngameCurrency)].value);
-
-            rewardMetaCurrency = int.Parse(sheet[name, nameof(rewardMetaCurrency)].value);
-
-            fuelDrainAmount = float.Parse(sheet[name, nameof(fuelDrainAmount)].value);
+            fuelConsumptionAmount = float.Parse(sheet[name, nameof(fuelConsumptionAmount)].value);
         }
 
         public override List<string> Export()
@@ -83,13 +57,9 @@ namespace ZL.Unity.Unimo
             {
                 name,
 
-                targetResourceAmount.ToString(),
+                targetGatheringCount.ToString(),
 
-                rewardIngameCurrency.ToString(),
-
-                rewardMetaCurrency.ToString(),
-
-                fuelDrainAmount.ToString(),
+                fuelConsumptionAmount.ToString(),
             };
         }
     }

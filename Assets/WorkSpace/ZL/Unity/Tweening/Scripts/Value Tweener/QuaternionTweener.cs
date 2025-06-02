@@ -20,25 +20,29 @@ namespace ZL.Unity.Tweening
 
         private RotateMode rotateMode = RotateMode.Fast;
 
-        public RotateMode RotateMode
+        public void SetRotateMode(int rotateMode)
         {
-            get => rotateMode;
+            SetRotateMode((RotateMode)rotateMode);
+        }
 
-            set => rotateMode = value;
+        public void SetRotateMode(RotateMode rotateMode)
+        {
+            this.rotateMode = rotateMode;
+        }
+
+        public override void Play()
+        {
+            if (rotateMode == RotateMode.Fast)
+            {
+                Current.SetRotateMode(rotateMode);
+            }
+
+            base.Play();
         }
 
         protected override TweenerCore<Quaternion, Vector3, QuaternionOptions> To(DOGetter<Quaternion> getter, DOSetter<Quaternion> setter, in Vector3 endValue, float duration)
         {
             return DOTween.To(getter, setter, endValue, duration);
-        }
-
-        public override TweenerCore<Quaternion, Vector3, QuaternionOptions> Tween(Vector3 endValue, float duration = -1)
-        {
-            base.Tween(endValue, duration);
-
-            Current.SetRotateMode(rotateMode);
-
-            return Current;
         }
     }
 }

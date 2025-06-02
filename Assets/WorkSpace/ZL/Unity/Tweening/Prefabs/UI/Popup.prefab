@@ -32,8 +32,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 5}
-  m_SizeDelta: {x: -100.00001, y: -100}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6858551520006753187
 GameObject:
@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 8868706449352093494}
   - component: {fileID: 6250606063434649940}
   - component: {fileID: 5079933775566996444}
-  - component: {fileID: 802053971080595653}
+  - component: {fileID: 5499886121532901893}
   m_Layer: 5
   m_Name: Popup
   m_TagString: Untagged
@@ -75,7 +75,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 505}
+  m_SizeDelta: {x: 1000, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3334879346700714636
 CanvasRenderer:
@@ -140,11 +140,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   valueTweener:
+    endValue: {x: 0, y: 0, z: 0}
     duration: 0
     delay: 0
-    ease: 0
+    ease: 1
     isIndependentUpdate: 1
-    loopCount: 0
+    loops: 1
     loopType: 0
     onStartEvent:
       m_PersistentCalls:
@@ -193,10 +194,10 @@ MonoBehaviour:
   keyFrames:
     index: 0
     loopPattern: 0
-    list:
+    items:
     - {x: 0, y: 0, z: 0}
     - {x: 1, y: 1, z: 1}
---- !u!114 &802053971080595653
+--- !u!114 &5499886121532901893
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -222,4 +223,16 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 5079933775566996444}
+        m_TargetAssemblyTypeName: ZL.Unity.Tweening.LocalScaleKeyFrameTweener, Assembly-CSharp
+        m_MethodName: SetKeyFrame
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2

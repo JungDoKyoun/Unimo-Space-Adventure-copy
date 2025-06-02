@@ -55,7 +55,7 @@ namespace ZL.Unity.Unimo
         {
             animator.SetBool("IsMoving", false);
 
-            if (Target == null)
+            if (Destination == null)
             {
                 return;
             }
@@ -67,10 +67,10 @@ namespace ZL.Unity.Unimo
 
             if (rotationSpeed != 0f)
             {
-                rigidbody.LookTowards(Target, Axis.Y, rotationSpeed);
+                rigidbody.LookTowards(Destination, Axis.Y, rotationSpeed);
             }
 
-            if (Vector3.Distance(transform.position, Target.position) <= stopDistance)
+            if (Vector3.Distance(transform.position, Destination.position) <= stopDistance)
             {
                 return;
             }
@@ -79,9 +79,11 @@ namespace ZL.Unity.Unimo
             {
                 animator.SetBool("IsMoving", true);
 
-                var forwardMove = rigidbody.rotation * Vector3.forward * enemyData.MoveSpeed * Time.fixedDeltaTime;
+                var movementSpeed = enemyData.MoveSpeed * Time.fixedDeltaTime;
 
-                rigidbody.MovePosition(rigidbody.position + forwardMove);
+                var nextPosition = rigidbody.position + rigidbody.rotation * Vector3.forward * movementSpeed;
+
+                rigidbody.MovePosition(nextPosition);
             }
         }
 
@@ -94,7 +96,7 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
-            if (Target == null)
+            if (Destination == null)
             {
                 return;
             }
@@ -104,7 +106,7 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
-            if (Vector3.Distance(transform.position, Target.position) > attackDistance)
+            if (Vector3.Distance(transform.position, Destination.position) > attackDistance)
             {
                 return;
             }
@@ -114,13 +116,13 @@ namespace ZL.Unity.Unimo
             animator.SetTrigger("Attack");
         }
 
-        public void OnAttack()
+        public void Shoot()
         {
             var projectile = ObjectPoolManager.Instance.Cloning(projectileName);
 
             projectile.transform.SetPositionAndRotation(muzzle);
 
-            projectile.SetActive(true);
+            projectile.gameObject.SetActive(true);
         }
 
         public void GiveDamage(IDamageable damageable, Vector3 contact)

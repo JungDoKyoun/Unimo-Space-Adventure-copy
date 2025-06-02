@@ -27,22 +27,20 @@ namespace ZL.Unity.Collections
 
         private LoopPattern loopPattern = LoopPattern.Clamp;
 
-        [Space]
-
         [SerializeField]
 
-        private List<T> list = new List<T>();
+        private List<T> items = new List<T>();
 
         public int Count
         {
-            get => list.Count;
+            get => items.Count;
         }
 
         public bool TryGetCurrent(out T current)
         {
             if (Count != 0)
             {
-                current = list[index.Loop(0, Count - 1, loopPattern)];
+                current = items[index.Loop(0, Count - 1, loopPattern)];
 
                 return true;
             }
