@@ -9,7 +9,7 @@ using Firebase.Extensions;
 
 public class ConstructManager : MonoBehaviour
 {
-    [SerializeField] List<Transform> spawnPoints= new List<Transform>();
+    //[SerializeField] List<Transform> spawnPoints= new List<Transform>();
     [SerializeField] List<ConstructBase> constructList = new List<ConstructBase>();
     [SerializeField] List<UtilityBuildBase> utilityConstructList = new List<UtilityBuildBase>();
 
@@ -20,16 +20,23 @@ public class ConstructManager : MonoBehaviour
     [SerializeField] TMP_Text buildingInfoText;
     [SerializeField] TMP_Text buildingRequireText;
     [SerializeField] TMP_Text buildingCostText;
-    
+    [SerializeField] TMP_Text constructCostText;
+    [SerializeField] Button buildInfoBuildButton;
+
+    [Header("건설완료 화면 관련")]
+    [SerializeField] Image buildStateImage;
+    [SerializeField] List<Sprite> buildStateImageList= new List<Sprite>();
+    private float buildStateProgress = 0;
     //[SerializeField] List<Button> buildButtons = new List<Button>();
     //[SerializeField] GameObject BuildPanel;
 
-    [SerializeField] TMP_Text constructCostText;
 
-    
-    [SerializeField] Button buildInfoBuildButton;
+    [SerializeField] PlayerStatus originPlayerStatus = new PlayerStatus();
+    public PlayerStatus playerStatus = new PlayerStatus();
+
 
     public List<ConstructBase> ConstructList { get { return constructList;  } private set { constructList = value; } }
+    public static List<string> buildedList= new List<string>();    
     public static ConstructManager Instance { get; private set; }
 
     public delegate void onConstructCostChange();
@@ -37,30 +44,31 @@ public class ConstructManager : MonoBehaviour
 
 
     private Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
-    private PlayerManager playerManager;
-    public PlayerStatus playerStatus = new PlayerStatus();
-    [SerializeField] PlayerStatus originPlayerStatus = new PlayerStatus();
+    //private PlayerManager playerManager;
+    
+    
     public PlayerStatus OriginPlayerStatus { get { return originPlayerStatus; } }
     public Dictionary<string, int> OwnBuildCostDic { get { return  ownBuildCostDic; } }
 
     private void Awake()
     {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-        DontDestroyOnLoad(gameObject);
-        SceneManager.sceneLoaded += OnSceneChanged;
+        //if(Instance == null)
+        //{
+        //    Instance = this;
+        //}
+        //else
+        //{
+        //    Destroy(gameObject);
+        //}
+        //DontDestroyOnLoad(gameObject);
+        //SceneManager.sceneLoaded += OnSceneChanged;
+        Instance = this;
         OnConstructCostChange += SetConstructCostText;
         SetOwnCost();
-            
+        DecideProgress();
         ToDictionary();
     }
-
+    
     public void ToDictionary()
     {
         foreach(var temp in constructList)
@@ -87,25 +95,27 @@ public class ConstructManager : MonoBehaviour
 
         constructCostText.text = tempText;
     }
+
     public void TryConstruct(ConstructBase building)
     {
         if(building == null)
         {
             return;
         }
-        else if(building.TryConstruct()==false)
+        else if(building.TryConstruct(constructList)==false)
         {
             return;
         }
         else
         {
-            Debug.Log("buildcom");
+            //Debug.Log("buildcom");
             building.ConstructEnd();
-            spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
+            //spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
             buildInfoBuildButton.interactable = false;
             int costNum;
-            FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency",out costNum) ? costNum : 0 );
-            
+            FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency",out costNum) ? -costNum : 0 );
+            SetPlayer();
+            DecideProgress();
             
             //블루 프린트 함수 추가하기
 
@@ -116,7 +126,47 @@ public class ConstructManager : MonoBehaviour
             //반영 하는건 뒤 패널을 편집하는 방식으로 이미지를 이용해서 덮어 씌우기? 동일한 이미지를 여러개 다른 버전으로 만들면 될 거 같다
         }
     }
+    public void DecideProgress()
+    {
+        Debug.Log("changeimage");
+        int buildingNum = 0;
+        int buildedBuildingNum = 0;
+        foreach (var building in constructList)
+        {
+            buildingNum++;
+            if (building.isBuildConstructed == true)
+            {
+                buildedBuildingNum++;
+                buildedList.Add(building.buildID);
+            }
+            
+            
+        }
 
+        buildStateProgress=(float)buildedBuildingNum/buildingNum;
+        Debug.Log(buildStateProgress);
+        DebugBuildedList();
+        ChangeBuildStateImage();
+    }
+    public void DebugBuildedList()
+    {
+        foreach (var building in buildedList)
+        {
+            Debug.Log(building);
+        }
+    }
+    public void ChangeBuildStateImage()
+    {
+        Debug.Log(buildStateImageList.Count);
+        for(int i=0;i<buildStateImageList.Count;i++)
+        {
+            if((1.0f/buildStateImageList.Count)*i<=buildStateProgress && buildStateProgress < (1.0f / buildStateImageList.Count)*(i+1))
+            {
+                buildStateImage.sprite = buildStateImageList[i];
+                Debug.Log("changeto");
+            }
+        }
+    }
     public List<IStatModifier> ReturnStatEffectList()//게임매니저에서 호출 받아서 자기가 적용시킬 스테이터스에 사용하기, 현재는 사용 X
     {
         List<IStatModifier> tempList= new List<IStatModifier>();
@@ -155,7 +205,9 @@ public class ConstructManager : MonoBehaviour
     }
     public void TempGameStart()
     {
+        SetPlayer();
         SceneManager.LoadScene("TestScene");
+        
     }
 
     //public void ShowBuildPanel()
@@ -199,7 +251,7 @@ public class ConstructManager : MonoBehaviour
     }
     public void DecideCanBuild(ConstructBase buildingInfo)
     {
-        if (buildingInfo.TryConstruct() == false)
+        if (buildingInfo.TryConstruct(constructList) == false)
         {
             buildInfoBuildButton.interactable = false;
         }
@@ -209,19 +261,19 @@ public class ConstructManager : MonoBehaviour
         }
     }
 
-    public bool TryGetPlayer()
-    {
-        playerManager = FindObjectOfType<PlayerManager>();
-        if (playerManager == null)
-        {
-            return false;
-        }
-        else
-        {
-
-            return true;
-        }
-    }
+    //public bool TryGetPlayer()// 이제 안쓸듯
+    //{
+    //    playerManager = FindObjectOfType<PlayerManager>();
+    //    if (playerManager == null)
+    //    {
+    //        return false;
+    //    }
+    //    else
+    //    {
+    //
+    //        return true;
+    //    }
+    //}
     public void SetPlayer()
     {
         //Debug.Log("player!");
@@ -311,45 +363,54 @@ public class ConstructManager : MonoBehaviour
                 }
             }
         }
-       
+
+
+        SetFinalStatusToPlayer();
     }
 
     public void SetOwnCost()
     {
+
+
         if (FirebaseDataBaseMgr.Instance == null)
         {
-            Debug.Log("firenull!");
+            //Debug.Log("firenull!");
+
         }
         else
         {
             FirebaseDataBaseMgr.Instance.StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(0));
+            ownBuildCostDic.Add("Blueprint", FirebaseDataBaseMgr.Blueprint);
+            ownBuildCostDic.Add("MetaCurrency", FirebaseDataBaseMgr.MetaCurrency);
+            OnConstructCostChange.Invoke();
+
         }
-        ownBuildCostDic.Add("Blueprint", FirebaseDataBaseMgr.Blueprint);
-        ownBuildCostDic.Add("MetaCurrency", FirebaseDataBaseMgr.MetaCurrency);
-        OnConstructCostChange.Invoke();
+        Debug.Log(FirebaseDataBaseMgr.Blueprint);
+        Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
+        
         
     }
     public void SetFinalStatusToPlayer()
     {
-        playerManager.SetPlayerStatus(playerStatus);
+        PlayerManager.PlayerStatus=playerStatus;//유물 생각하면 나중에 더하는게 맞을지도? 연산자 오버로딩도 되있겠다.
 
 
     }
     
     private void OnSceneChanged(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "TestScene")//씬이름으로 변경
-        {
-            if (TryGetPlayer()==true)//플레이어가 있으면
-            {
-                //Debug.Log("scenecallback");
-                //SetPlayer();
-            }
-            else
-            {
-                return;
-            }
-        }
+        //if (scene.name == "TestScene")//씬이름으로 변경
+        //{
+        //    if (TryGetPlayer()==true)//플레이어가 있으면
+        //    {
+        //        //Debug.Log("scenecallback");
+        //        //SetPlayer();
+        //    }
+        //    else
+        //    {
+        //        return;
+        //    }
+        //}
     }
 
 }

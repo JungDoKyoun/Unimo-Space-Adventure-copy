@@ -10,15 +10,15 @@ public partial class PlayerManager
     public static PlayerStatus PlayerStatus {  get { return playerStatus; } set { playerStatus = value; } }
     public static PlayerStatus OriginStatus { get { return originStatus; } }
     
-
-
+    
     private void Start()
     {
         ActionStart();
 
         MoveStart();
 
-        currentHealth = maxHP;//기획 의도를 보니 이 코드는 조정이 필요함 한 스테이지에서 까인 체력은 안돌아오는듯?
+        //currentHealth = maxHP;//기획 의도를 보니 이 코드는 조정이 필요함 한 스테이지에서 까인 체력은 안돌아오는듯?
+        SetPlayerStatus(playerStatus);
     }
 
     private void Update()

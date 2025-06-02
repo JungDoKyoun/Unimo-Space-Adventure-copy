@@ -62,9 +62,9 @@ public class ConstructBase :ScriptableObject//,IConstruct
         Debug.Log("buildcomplete");
         isBuildConstructed = true;
     }
-    public bool TryConstruct()
+    public bool TryConstruct(List<ConstructBase> constructBases)
     {
-        if (IsRequiredFulFilled() == false)
+        if (IsRequiredFulFilled(constructBases) == false)
         {
             Debug.Log("buildrequire");
             return false;
@@ -101,9 +101,9 @@ public class ConstructBase :ScriptableObject//,IConstruct
         return true;
     }
 
-    public bool IsRequiredFulFilled()
+    public bool IsRequiredFulFilled(List<ConstructBase> constructBases )
     {
-        foreach(var a in ConstructManager.Instance.ConstructList)
+        foreach(var a in constructBases)
         {
             foreach (var b in buildRequires)
             {
