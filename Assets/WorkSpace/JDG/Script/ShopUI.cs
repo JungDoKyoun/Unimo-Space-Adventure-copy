@@ -67,7 +67,7 @@ namespace JDG
         public void On10RepairButtonClicked()
         {
             //소지금 감소
-            if(FirebaseDataBaseMgr.IngameCurrency >= _repair1Price)
+            if(ConditionChecker.IsEnoughPlayerResource(_repair1Price, ResourcesType.IngameCurrency))
             {
                 FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(-_repair1Price);
 
@@ -86,7 +86,7 @@ namespace JDG
 
         public void On100RepairButtonClicked()
         {
-            if (FirebaseDataBaseMgr.IngameCurrency >= _repair1Price)
+            if (ConditionChecker.IsEnoughPlayerResource(_repair2Price, ResourcesType.IngameCurrency))
             {
                 FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(-_repair2Price);
 

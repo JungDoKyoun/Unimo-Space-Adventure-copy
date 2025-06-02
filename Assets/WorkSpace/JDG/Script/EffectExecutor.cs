@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class EffectExecutor
+namespace JDG
 {
-    private static Dictionary<EffectType, IEffect> _effectMap;
+    public static class EffectExecutor
+    {
+        private static Dictionary<EffectType, IEffect> _effectMap;
 
         static EffectExecutor()
         {
@@ -21,13 +23,14 @@ public static class EffectExecutor
 
         }
 
-    public static void ExecuteEffect(EventEffect eventEffect)
-    {
-        var effectType = eventEffect._effectType;
-
-        if (_effectMap.TryGetValue(effectType, out IEffect effect))
+        public static void ExecuteEffect(EventEffect eventEffect)
         {
-            effect.Execute(eventEffect);
+            var effectType = eventEffect._effectType;
+
+            if (_effectMap.TryGetValue(effectType, out IEffect effect))
+            {
+                effect.Execute(eventEffect);
+            }
         }
     }
 }
