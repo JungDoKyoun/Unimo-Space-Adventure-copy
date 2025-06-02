@@ -15,13 +15,6 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     FirebaseUser user;
 
-    [Header("Save")]
-    [SerializeField]
-    private TMP_InputField rewardIngameCurrencyField;
-
-    [SerializeField]
-    private TMP_InputField rewardMetaCurrencyField;
-
     [Header("Display")]
     [SerializeField]
     private TextMeshProUGUI rewardIngameCurrencyText;

@@ -151,7 +151,6 @@ namespace JDG
                 }
                 else if(_currentTile.TileData.EventType == EventType.script)
                 {
-                    Debug.Log("µé¾î¿È");
                     EventDataSO eventData = GetRandomEvent(EventType.script);
                     List<ChoiceDataSO> choiceDatas = GetRandomChoice(eventData._eventChoices, _scriptEventUI.ChoiceCount);
                     StartCoroutine(WaitAndOpenScriptEvent(eventData, choiceDatas));
@@ -203,7 +202,6 @@ namespace JDG
         {
             List<RelicDataSO> copy = new List<RelicDataSO>(relicDatas);
             List<RelicDataSO> result = new List<RelicDataSO>();
-            Debug.Log(relicDatas.Count);
 
             int maxCount = Mathf.Min(count, copy.Count);
 

@@ -34,7 +34,6 @@ namespace JDG
             float textLength = tmp.preferredWidth;
             float maskAreaLength = _maskAreaTransform.rect.width;
             _scrollLength = Mathf.Max(0, textLength - maskAreaLength);
-            Debug.Log($"textLength: {textLength}, maskLength: {maskAreaLength}, scrollLength: {_scrollLength}");
         }
 
         public void SetScriptEventChoiceShlot(ChoiceDataSO choiceData)

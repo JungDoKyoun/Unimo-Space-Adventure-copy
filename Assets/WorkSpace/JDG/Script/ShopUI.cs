@@ -71,7 +71,6 @@ namespace JDG
             {
                 FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(-_repair1Price);
 
-                Debug.Log(PlayerManager.PlayerStatus);
                 float maxHP = PlayerManager.PlayerStatus.maxHP;
 
                 float tenPer = maxHP / 10;
@@ -82,15 +81,11 @@ namespace JDG
                 {
                     currentHP = maxHP;
                 }
-                Debug.Log(currentHP);
             }
-
-            Debug.Log("체력 10% 회복");
         }
 
         public void On100RepairButtonClicked()
         {
-            //소지금 감소
             if (FirebaseDataBaseMgr.IngameCurrency >= _repair1Price)
             {
                 FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(-_repair2Price);
@@ -103,9 +98,7 @@ namespace JDG
                 {
                     currentHP = maxHP;
                 }
-                Debug.Log(currentHP);
             }
-            Debug.Log("체력 100% 회복");
         }
     }
 }
