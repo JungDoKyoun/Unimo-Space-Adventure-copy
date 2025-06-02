@@ -9,7 +9,7 @@ using Firebase.Extensions;
 
 public class ConstructManager : MonoBehaviour
 {
-    [SerializeField] List<Transform> spawnPoints= new List<Transform>();
+    //[SerializeField] List<Transform> spawnPoints= new List<Transform>();
     [SerializeField] List<ConstructBase> constructList = new List<ConstructBase>();
     [SerializeField] List<UtilityBuildBase> utilityConstructList = new List<UtilityBuildBase>();
 
@@ -20,17 +20,20 @@ public class ConstructManager : MonoBehaviour
     [SerializeField] TMP_Text buildingInfoText;
     [SerializeField] TMP_Text buildingRequireText;
     [SerializeField] TMP_Text buildingCostText;
+    [SerializeField] TMP_Text constructCostText;
+    [SerializeField] Button buildInfoBuildButton;
 
+    [Header("건설완료 화면 관련")]
     [SerializeField] Image buildStateImage;
     [SerializeField] List<Sprite> buildStateImageList= new List<Sprite>();
     private float buildStateProgress = 0;
     //[SerializeField] List<Button> buildButtons = new List<Button>();
     //[SerializeField] GameObject BuildPanel;
 
-    [SerializeField] TMP_Text constructCostText;
 
-    
-    [SerializeField] Button buildInfoBuildButton;
+    [SerializeField] PlayerStatus originPlayerStatus = new PlayerStatus();
+    public PlayerStatus playerStatus = new PlayerStatus();
+
 
     public List<ConstructBase> ConstructList { get { return constructList;  } private set { constructList = value; } }
     public static ConstructManager Instance { get; private set; }
@@ -41,8 +44,8 @@ public class ConstructManager : MonoBehaviour
 
     private Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
     //private PlayerManager playerManager;
-    public PlayerStatus playerStatus = new PlayerStatus();
-    [SerializeField] PlayerStatus originPlayerStatus = new PlayerStatus();
+    
+    
     public PlayerStatus OriginPlayerStatus { get { return originPlayerStatus; } }
     public Dictionary<string, int> OwnBuildCostDic { get { return  ownBuildCostDic; } }
 
@@ -58,9 +61,10 @@ public class ConstructManager : MonoBehaviour
         //}
         //DontDestroyOnLoad(gameObject);
         //SceneManager.sceneLoaded += OnSceneChanged;
+        Instance = this;
         OnConstructCostChange += SetConstructCostText;
         SetOwnCost();
-            
+            DecideProgress();
         ToDictionary();
     }
     
@@ -96,15 +100,15 @@ public class ConstructManager : MonoBehaviour
         {
             return;
         }
-        else if(building.TryConstruct()==false)
+        else if(building.TryConstruct(constructList)==false)
         {
             return;
         }
         else
         {
-            Debug.Log("buildcom");
+            //Debug.Log("buildcom");
             building.ConstructEnd();
-            spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
+            //spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
             buildInfoBuildButton.interactable = false;
             int costNum;
             FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency",out costNum) ? -costNum : 0 );
@@ -121,6 +125,7 @@ public class ConstructManager : MonoBehaviour
     }
     public void DecideProgress()
     {
+        Debug.Log("changeimage");
         int buildingNum = 0;
         int buildedBuildingNum = 0;
         foreach (var building in constructList)
@@ -134,16 +139,19 @@ public class ConstructManager : MonoBehaviour
             
         }
 
-        buildStateProgress=buildedBuildingNum%buildingNum;
+        buildStateProgress=(float)buildedBuildingNum/buildingNum;
+        Debug.Log(buildStateProgress);
         ChangeBuildStateImage();
     }
     public void ChangeBuildStateImage()
     {
+        Debug.Log(buildStateImageList.Count);
         for(int i=0;i<buildStateImageList.Count;i++)
         {
             if((1.0f/buildStateImageList.Count)*i<=buildStateProgress && buildStateProgress < (1.0f / buildStateImageList.Count)*(i+1))
             {
                 buildStateImage.sprite = buildStateImageList[i];
+                Debug.Log("changeto");
             }
         }
     }
@@ -229,7 +237,7 @@ public class ConstructManager : MonoBehaviour
     }
     public void DecideCanBuild(ConstructBase buildingInfo)
     {
-        if (buildingInfo.TryConstruct() == false)
+        if (buildingInfo.TryConstruct(constructList) == false)
         {
             buildInfoBuildButton.interactable = false;
         }
@@ -346,17 +354,24 @@ public class ConstructManager : MonoBehaviour
 
     public void SetOwnCost()
     {
+
+
         if (FirebaseDataBaseMgr.Instance == null)
         {
-            Debug.Log("firenull!");
+            //Debug.Log("firenull!");
+
         }
         else
         {
             FirebaseDataBaseMgr.Instance.StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(0));
+            ownBuildCostDic.Add("Blueprint", FirebaseDataBaseMgr.Blueprint);
+            ownBuildCostDic.Add("MetaCurrency", FirebaseDataBaseMgr.MetaCurrency);
+            OnConstructCostChange.Invoke();
+
         }
-        ownBuildCostDic.Add("Blueprint", FirebaseDataBaseMgr.Blueprint);
-        ownBuildCostDic.Add("MetaCurrency", FirebaseDataBaseMgr.MetaCurrency);
-        OnConstructCostChange.Invoke();
+        Debug.Log(FirebaseDataBaseMgr.Blueprint);
+        Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
+        
         
     }
     public void SetFinalStatusToPlayer()
