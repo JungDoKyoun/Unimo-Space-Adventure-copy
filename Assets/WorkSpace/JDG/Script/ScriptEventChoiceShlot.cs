@@ -11,10 +11,12 @@ namespace JDG
     public class ScriptEventChoiceShlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [Header("슬롯 생성시 필요한 것들")]
-        [SerializeField] private RectTransform _textTransform;
+        [SerializeField] private RectTransform _nameTextTransform;
+        [SerializeField] private RectTransform _descTextTransform;
         [SerializeField] private RectTransform _maskAreaTransform;
         [SerializeField] private Button _button;
-        [SerializeField] private TextMeshProUGUI _choiceText;
+        [SerializeField] private TextMeshProUGUI _choiceName;
+        [SerializeField] private TextMeshProUGUI _choiceDesc;
         [SerializeField] private Sprite _buttonUsefulImage;
         [SerializeField] private Sprite _buttonHarmfulImage;
         [SerializeField] private Sprite _buttonUseAndHarmfulImage;
@@ -24,18 +26,26 @@ namespace JDG
         [SerializeField] private float _pauseTime;
 
         private ChoiceDataSO _choiceData;
-        private Coroutine _scrollCo;
-        private float _defaultX;
-        private float _scrollLength;
-        private bool _isScroll = false;
+        private Coroutine _nameScrollCo;
+        private Coroutine _descScrollCo;
+        private float _nameDefaultX;
+        private float _descDefaultX;
+        private float _nameScrollLength;
+        private float _descScrollLength;
+        private bool _isNameScroll = false;
+        private bool _isDescScroll = false;
 
         private void Start()
         {
-            _defaultX = _textTransform.anchoredPosition.x;
-            var tmp = _textTransform.GetComponent<TextMeshProUGUI>();
-            float textLength = tmp.preferredWidth;
+            _nameDefaultX = _nameTextTransform.anchoredPosition.x;
+            var nameTmp = _nameTextTransform.GetComponent<TextMeshProUGUI>();
+            float nameTextLength = nameTmp.preferredWidth;
             float maskAreaLength = _maskAreaTransform.rect.width;
-            _scrollLength = Mathf.Max(0, textLength - maskAreaLength);
+            _nameScrollLength = Mathf.Max(0, nameTextLength - maskAreaLength);
+            _descDefaultX = _descTextTransform.anchoredPosition.x;
+            var descTmp = _descTextTransform.GetComponent<TextMeshProUGUI>();
+            float descTextLength = descTmp.preferredWidth;
+            _descScrollLength = Mathf.Max(0, descTextLength - maskAreaLength);
         }
 
         public void SetScriptEventChoiceShlot(ChoiceDataSO choiceData)
@@ -83,27 +93,48 @@ namespace JDG
                 _button.image.sprite = _buttonHarmfulImage;
             }
 
-            _choiceText.text = $"{choiceData._choiceName} : {choiceData._choiceDesc}";
+            _choiceName.text = choiceData._choiceName;
+            _choiceDesc.text = choiceData._choiceDesc;
+
+            if(!ConditionChecker.IsChoiceAvailable(choiceData))
+            {
+                _button.interactable = false;
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (_scrollLength > 0 && !_isScroll)
+            if (_nameScrollLength > 0 && _nameScrollCo == null)
             {
-                _scrollCo = StartCoroutine(ScrollTextCo());
+                _isNameScroll = true;
+                _nameScrollCo = StartCoroutine(ScrollTextCo(_nameTextTransform, _nameDefaultX, _nameScrollLength));
+            }
+
+            if(_descScrollLength > 0 && _descScrollCo == null)
+            {
+                _isDescScroll = true;
+                _descScrollCo = StartCoroutine(ScrollTextCo(_descTextTransform, _descDefaultX, _descScrollLength));
             }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if(_scrollCo != null)
+            if(_nameScrollCo != null)
             {
-                StopCoroutine(_scrollCo);
-                _scrollCo = null;
+                StopCoroutine(_nameScrollCo);
+                _nameScrollCo = null;
             }
 
-            _isScroll = false;
-            _textTransform.anchoredPosition = new Vector2(_defaultX, _textTransform.anchoredPosition.y);
+            if (_descScrollCo != null)
+            {
+                StopCoroutine(_descScrollCo);
+                _descScrollCo = null;
+            }
+
+            _isNameScroll = false;
+            _isDescScroll = false;
+            _nameTextTransform.anchoredPosition = new Vector2(_nameDefaultX, _nameTextTransform.anchoredPosition.y);
+            _descTextTransform.anchoredPosition = new Vector2(_descDefaultX, _descTextTransform.anchoredPosition.y);
         }
 
         public void OnClickChoice()
@@ -139,23 +170,21 @@ namespace JDG
             UIManager.Instance.ScriptEventUI.HideUI();
         }
 
-        private IEnumerator ScrollTextCo()
+        private IEnumerator ScrollTextCo(RectTransform textTransform, float defaultX, float scrollLength)
         {
             while(true)
             {
                 yield return null;
-                _isScroll = true;
 
-                while (_textTransform.anchoredPosition.x > _defaultX - _scrollLength)
+                while (textTransform.anchoredPosition.x > defaultX - scrollLength)
                 {
-                    _textTransform.anchoredPosition -= new Vector2(_scrollSpeed * Time.deltaTime, 0);
+                    textTransform.anchoredPosition -= new Vector2(_scrollSpeed * Time.deltaTime, 0);
                     yield return null;
                 }
 
                 yield return new WaitForSeconds(_pauseTime);
 
-                _isScroll = false;
-                _textTransform.anchoredPosition = new Vector2(_defaultX, _textTransform.anchoredPosition.y);
+                textTransform.anchoredPosition = new Vector2(defaultX, textTransform.anchoredPosition.y);
 
                 yield return new WaitForSeconds(_pauseTime);
             }

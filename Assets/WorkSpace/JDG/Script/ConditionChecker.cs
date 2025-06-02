@@ -19,6 +19,22 @@ namespace JDG
                 return 0;
         }
 
+        public static bool IsEnoughPlayerResource(List<ResourceCost> resourceCosts)
+        {
+            if (resourceCosts == null || resourceCosts.Count == 0)
+                return true;
+
+            foreach (ResourceCost resourceCost in resourceCosts)
+            {
+                int playerResource = GetPlayerResource(resourceCost._resourceData._resourcesType);
+
+                if (resourceCost._value > playerResource)
+                    return false;
+            }
+
+            return true;
+        }
+
         public static bool IsEnoughPlayerResource(int resourceCost, ResourcesType resourcesType)
         {
             int playerResource = GetPlayerResource(resourcesType);
@@ -34,9 +50,9 @@ namespace JDG
             if (buildings == null || buildings.Count == 0)
                 return true;
 
-            List<string> playerBuildings = new List<string>(); //new List<string>();에 플레이어 건물 목록 가져오기
+            List<string> playerBuildings = ConstructManager.buildedList;
 
-            foreach(string building in buildings)
+            foreach (string building in buildings)
             {
                 if (!playerBuildings.Contains(building))
                     return false;
@@ -52,13 +68,23 @@ namespace JDG
 
             List<string> playerRelic = new List<string>(); //플레이어 유물 목록 가져와서 비교
 
-            foreach(string relic in relics)
+            foreach (string relic in relics)
             {
                 if (!playerRelic.Contains(relic))
                     return false;
             }
 
             return true;
+        }
+
+        public static bool IsChoiceAvailable(ChoiceDataSO choiceData)
+        {
+            if (choiceData == null)
+                return false;
+
+            return IsEnoughPlayerResource(choiceData._eventRequiredCurrency)
+                && IsPlayerHasBuilding(choiceData._eventRequiredBuildings)
+                && IsPlayerHasRelic(choiceData._eventRequiredRelics);
         }
     }
 }

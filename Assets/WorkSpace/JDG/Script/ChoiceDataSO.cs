@@ -11,7 +11,7 @@ namespace JDG
         public string _choiceDesc;
         public List<string> _eventRequiredRelics;
         public List<string> _eventRequiredBuildings;
-        public ResourceCost _eventRequiredCurrency;
+        public List<ResourceCost> _eventRequiredCurrency;
         public List<ProbabilisticEffect> _probabilisticEffect;
     }
 
