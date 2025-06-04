@@ -15,8 +15,6 @@ public class ShowTips : MonoBehaviour
         }
         else
         {
-            Debug.Log(TipsFromSpreadSheet.tips);
-
             gameTip.text = "Tips \n\n" + TipsFromSpreadSheet.tips[Random.Range(0, TipsFromSpreadSheet.tips.Length)];
         }
     }
