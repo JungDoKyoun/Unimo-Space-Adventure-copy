@@ -4,6 +4,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class GameMatchMgr : MonoBehaviourPunCallbacks
 {
