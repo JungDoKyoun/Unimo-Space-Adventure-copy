@@ -1,5 +1,3 @@
-using DG.Tweening.Core;
-
 using DG.Tweening.Plugins.Options;
 
 using UnityEngine;
@@ -22,7 +20,7 @@ namespace ZL.Unity.Tweening
 
         [Essential]
 
-        [ReadOnlyWhenPlayMode]
+        [ReadOnly(true)]
 
         private MaterialController materialController = null;
 
@@ -69,11 +67,11 @@ namespace ZL.Unity.Tweening
             color = material.color;
         }
 
-        public override TweenerCore<float, float, FloatOptions> Tween(float endValue, float duration = -1f)
+        public override void Play()
         {
             color = material.color;
 
-            return ValueTweener.Tween(endValue, duration);
+            base.Play();
         }
     }
 }

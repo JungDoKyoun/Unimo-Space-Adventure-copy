@@ -12,7 +12,10 @@ namespace ZL.Unity.Tweening
 
     public sealed class AudioListenerVolumeTweener : ObjectValueTweener<FloatTweener, float, float, FloatOptions>, ISingleton<AudioListenerVolumeTweener>
     {
-        public static AudioListenerVolumeTweener Instance => ISingleton<AudioListenerVolumeTweener>.Instance;
+        public static AudioListenerVolumeTweener Instance
+        {
+            get => ISingleton<AudioListenerVolumeTweener>.Instance;
+        }
 
         public override float Value
         {

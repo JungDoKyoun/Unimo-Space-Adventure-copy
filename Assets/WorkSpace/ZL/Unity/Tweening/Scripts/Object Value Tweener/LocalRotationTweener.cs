@@ -1,3 +1,5 @@
+using DG.Tweening;
+
 using DG.Tweening.Plugins.Options;
 
 using UnityEngine;
@@ -13,6 +15,11 @@ namespace ZL.Unity.Tweening
             get => transform.localRotation;
 
             set => transform.localRotation = value;
+        }
+
+        public void SetRotateMode(RotateMode rotateMode)
+        {
+            ValueTweener.SetRotateMode(rotateMode);
         }
     }
 }

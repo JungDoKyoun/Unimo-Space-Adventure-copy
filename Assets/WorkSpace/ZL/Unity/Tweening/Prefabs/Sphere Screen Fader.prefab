@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2801203670978303102}
   - component: {fileID: 4025118530809431066}
   - component: {fileID: 3642788267879884235}
+  - component: {fileID: 4456700184494976832}
   m_Layer: 0
   m_Name: Sphere Screen Fader
   m_TagString: Untagged
@@ -98,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 937969108aee15743b974901bf128d20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 271125717899168263}
+  targetRenderer: {fileID: 271125717899168263}
 --- !u!114 &4025118530809431066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,11 +113,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   valueTweener:
-    duration: 0
+    endValue: 0
+    duration: 2
     delay: 0
-    ease: 0
+    ease: 1
     isIndependentUpdate: 1
-    loopCount: 1
+    loops: 1
     loopType: 0
     onStartEvent:
       m_PersistentCalls:
@@ -140,7 +142,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tweener: {fileID: 4025118530809431066}
   faderGroup: {fileID: 0}
-  isFadedIn: 1
   onFadeInEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -153,3 +154,30 @@ MonoBehaviour:
   onFadedOutEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4456700184494976832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4177013193622062567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c41287b4a002104e98bccb7feb817e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onStartEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4025118530809431066}
+        m_TargetAssemblyTypeName: ZL.Unity.Tweening.MaterialAlphaTweener, Assembly-CSharp
+        m_MethodName: set_Value
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 1
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

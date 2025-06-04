@@ -12,7 +12,7 @@ namespace ZL.Unity
 
         }
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
 
         protected override void SetCondition(Drawer drawer)
         {
@@ -26,6 +26,6 @@ namespace ZL.Unity
             drawer.IsEnabled = property.boxedValue.Equals(targetValue) == condition;
         }
 
-#endif
+        #endif
     }
 }

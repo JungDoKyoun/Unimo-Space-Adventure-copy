@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 using ZL.Unity.Coroutines;
+
 using ZL.Unity.Pooling;
 
 namespace ZL.Unity.Unimo
@@ -21,10 +22,27 @@ namespace ZL.Unity.Unimo
 
         protected SpawnerData spawnerData = null;
 
+        [SerializeField]
+
+        private float initialSpawnInterval = 0f;
+
+        [Space]
+
+        [SerializeField]
+
+        private bool startSpawningOnEnable = true;
+
+        private float spawnInterval = 0f;
+
         private int spawnedCount = 0;
 
-        private void Start()
+        private void OnEnable()
         {
+            if (startSpawningOnEnable == false)
+            {
+                return;
+            }
+
             StartSpawning();
         }
 
@@ -56,11 +74,19 @@ namespace ZL.Unity.Unimo
 
         private IEnumerator SpawningRoutine()
         {
+            spawnInterval = initialSpawnInterval;
+
+            if (spawnInterval == -1f)
+            {
+                spawnInterval = Random.Range(spawnerData.ObjectSpawnMinCount, spawnerData.ObjectSpawnMaxCount);
+            }
+
             while (true)
             {
-                float interval = Random.Range(spawnerData.ObjectSpawnMinTime, spawnerData.ObjectSpawnMaxTime);
-
-                yield return WaitForSecondsCache.Get(interval);
+                if (spawnInterval != 0f)
+                {
+                    yield return WaitForSecondsCache.Get(spawnInterval);
+                }
 
                 int spawnCount = Random.Range(spawnerData.ObjectSpawnMinCount, spawnerData.ObjectSpawnMaxCount);
 
@@ -73,6 +99,8 @@ namespace ZL.Unity.Unimo
 
                     Spawn();
                 }
+
+                spawnInterval = Random.Range(spawnerData.ObjectSpawnMinTime, spawnerData.ObjectSpawnMaxTime);
             }
         }
 

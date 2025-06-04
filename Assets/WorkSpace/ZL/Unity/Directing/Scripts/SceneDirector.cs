@@ -39,6 +39,15 @@ namespace ZL.Unity.Directing
 
         protected float fadeDuration = 0f;
 
+        protected AudioListenerVolumeTweener audioListenerVolumeTweener = null;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            audioListenerVolumeTweener = AudioListenerVolumeTweener.Instance;
+        }
+
         protected virtual IEnumerator Start()
         {
             yield return WaitForSecondsCache.Get(startDelay);
@@ -57,16 +66,42 @@ namespace ZL.Unity.Directing
 
         public void FadeIn()
         {
-            AudioListenerVolumeTweener.Instance?.Tween(1f, fadeDuration);
+            if (screenFader != null)
+            {
+                screenFader.FadeOut();
+            }
 
-            screenFader?.FadeOut(fadeDuration);
+            if (audioListenerVolumeTweener != null)
+            {
+                audioListenerVolumeTweener.SetEndValue(1f);
+
+                audioListenerVolumeTweener.Play();
+            }
         }
 
         public void FadeOut()
         {
-            AudioListenerVolumeTweener.Instance?.Tween(0f, fadeDuration);
+            if (screenFader != null)
+            {
+                screenFader.FadeIn();
+            }
 
-            screenFader?.FadeIn(fadeDuration);
+            if (audioListenerVolumeTweener != null)
+            {
+                audioListenerVolumeTweener.SetEndValue(0f);
+
+                audioListenerVolumeTweener.Play();
+            }
+        }
+
+        public void Pause()
+        {
+            TimeEx.Pause();
+        }
+
+        public void Resume()
+        {
+            TimeEx.Resume();
         }
 
         public virtual void Quit()

@@ -23,7 +23,7 @@ namespace ZL.Unity
         {
             onStartEvent.Invoke();
 
-            Destroy(this);
+            enabled = false;
         }
     }
 }

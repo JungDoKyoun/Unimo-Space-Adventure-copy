@@ -2,15 +2,10 @@ using UnityEngine;
 
 namespace ZL.Unity.GFX
 {
+    [DefaultExecutionOrder((int)ScriptExecutionOrder.Awake)]
+
     public abstract class MaterialController : MonoBehaviour
     {
-        public abstract Material[] Materials { get; }
-
-        public Material Material => Materials[0];
-
-        public Material Get(int index)
-        {
-            return Materials[index];
-        }
+        public abstract Material Material { get; }
     }
 }

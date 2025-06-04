@@ -22,12 +22,12 @@ namespace ZL.CS
         /// <summary>
         /// = 1 / 60
         /// </summary>
-        public const float Normal60 = 0.016666667f;
+        public const float OneOver60 = 0.016666667f;
 
         /// <summary>
         /// = 1 / 255
         /// </summary>
-        public const float Normal255 = 0.003921569f;
+        public const float OneOver255 = 0.003921569f;
 
         public static float PercentToDecibel(int value)
         {

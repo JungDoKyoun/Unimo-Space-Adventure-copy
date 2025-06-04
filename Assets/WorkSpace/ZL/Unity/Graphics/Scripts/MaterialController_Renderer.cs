@@ -18,15 +18,22 @@ namespace ZL.Unity.GFX
 
         [ReadOnlyWhenPlayMode]
 
-        #pragma warning disable CS0108
+        private Renderer targetRenderer = null;
 
-        private Renderer renderer = null;
+        [Space]
 
-        #pragma warning restore CS0108
+        [SerializeField]
 
-        public override Material[] Materials
+        private int index = 0;
+
+        public override Material Material
         {
-            get => renderer.materials;
+            get => Materials[index];
+        }
+
+        public Material[] Materials
+        {
+            get => targetRenderer.materials;
         }
     }
 }

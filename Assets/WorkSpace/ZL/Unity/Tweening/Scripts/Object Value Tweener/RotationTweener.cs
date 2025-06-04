@@ -10,18 +10,16 @@ namespace ZL.Unity.Tweening
 
     public sealed class RotationTweener : ObjectValueTweener<QuaternionTweener, Quaternion, Vector3, QuaternionOptions>
     {
-        public RotateMode RotateMode
-        {
-            get => ValueTweener.RotateMode;
-            
-            set => ValueTweener.RotateMode = value;
-        }
-
         public override Quaternion Value
         {
             get => transform.rotation;
 
             set => transform.rotation = value;
+        }
+
+        public void SetRotateMode(RotateMode rotateMode)
+        {
+            ValueTweener.SetRotateMode(rotateMode);
         }
     }
 }

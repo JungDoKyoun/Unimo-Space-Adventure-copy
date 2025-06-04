@@ -70,19 +70,6 @@ namespace ZL.Unity.Unimo
 
         protected float rotationSpeed = 0f;
 
-        [Space]
-
-        [SerializeField]
-
-        private EnemyTargetDitection enemyTargetDitection = null;
-
-        public EnemyTargetDitection EnemyTargetDitection
-        {
-            get => enemyTargetDitection;
-
-            set => enemyTargetDitection = value;
-        }
-
         protected float currentHealth = 0f;
 
         public float CurrentHealth
@@ -90,26 +77,18 @@ namespace ZL.Unity.Unimo
             get => currentHealth;
         }
 
-        protected Transform Target
+        protected Transform Destination
         {
-            get
-            {
-                if (enemyTargetDitection != null)
-                {
-                    return enemyTargetDitection.FindTarget();
-                }
-
-                return null;
-            }
+            get => EnemyManager.Instance.Destination;
         }
 
         protected bool isStoped = true;
 
         protected virtual void OnEnable()
         {
-            if (Target != null)
+            if (Destination != null)
             {
-                var forward = Target.position - transform.position;
+                var forward = Destination.position - transform.position;
 
                 rigidbody.rotation = rigidbody.LookRotation(forward, Axis.Y);
             }
@@ -139,7 +118,7 @@ namespace ZL.Unity.Unimo
             OnDisappear();
         }
 
-        public void OnAppeared()
+        public virtual void OnAppeared()
         {
             collider.enabled = true;
 
@@ -172,7 +151,7 @@ namespace ZL.Unity.Unimo
             animator.SetTrigger("Disappear");
         }
 
-        private void OnDisappear()
+        protected virtual void OnDisappear()
         {
             collider.enabled = false;
 
