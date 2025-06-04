@@ -20,6 +20,9 @@ public class FirebaseAuthMgr : MonoBehaviour
     [SerializeField]
     private Button signUpButton;
 
+    [SerializeField]
+    private Button logoutButton;
+
     private static FirebaseUser user; // 인증된 유저 정보
 
     public static FirebaseUser User
@@ -121,6 +124,8 @@ public class FirebaseAuthMgr : MonoBehaviour
         loginButton.onClick.AddListener(() => Login());
 
         signUpButton.onClick.AddListener(() => Register());
+
+        logoutButton.onClick.AddListener(() => Logout());
     }
 
     private void OnDisable()
@@ -128,6 +133,8 @@ public class FirebaseAuthMgr : MonoBehaviour
         loginButton.onClick.RemoveListener(() => Login());
 
         signUpButton.onClick.RemoveListener(() => Register());
+
+        logoutButton.onClick.RemoveListener(() => Logout());
     }
 
     public void Login()
@@ -364,5 +371,41 @@ public class FirebaseAuthMgr : MonoBehaviour
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
     }
+    #endregion
+
+    #region 로그아웃
+
+    public void Logout()
+    {
+        if (auth != null)
+        {
+            auth.SignOut();
+
+            User = null;
+
+            hasUser = false;
+
+            emailField.text = "";
+
+            passwordField.text = "";
+
+            nicknameField.text = "";
+
+            warningText.text = "";
+
+            confirmText.text = "";
+
+            if (startButton != null) startButton.interactable = false;
+
+            if (loginButton != null) loginButton.interactable = true;
+
+            if (signUpButton != null) signUpButton.interactable = true;
+
+            Debug.Log(auth);
+
+            Debug.Log("로그아웃 완료");
+        }
+    }
+
     #endregion
 }
