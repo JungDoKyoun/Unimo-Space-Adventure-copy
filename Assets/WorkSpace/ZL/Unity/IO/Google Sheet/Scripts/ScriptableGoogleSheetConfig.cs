@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ZL.Unity.IO.GoogleSheet
 {
-    [CreateAssetMenu(menuName = "ZL/Google Sheet/Google Sheet Config (SO)", fileName = "Sheet Config")]
+    [CreateAssetMenu(menuName = "ZL/Google Sheet/Google Sheet Config", fileName = "Google Sheet Config")]
 
     public sealed class ScriptableGoogleSheetConfig : ScriptableObject
     {

@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using ZL.CS.Singleton;
+
 using ZL.Unity.Singleton;
 
 namespace ZL.Unity.Unimo
@@ -36,7 +38,27 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private SpawnerDataSheet spawnerDataSheet = null;
+        private GatheringDataSheet gatheringDataSheet = null;
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private RelicDropDataSheet relicDropTableSheet = null;
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private RewardDataSheet rewardDataSheet = null;
 
         [SerializeField]
 
@@ -48,9 +70,43 @@ namespace ZL.Unity.Unimo
 
         private SpawnPatternDataSheet spawnPatternDataSheet = null;
 
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private SpawnerDataSheet spawnerDataSheet = null;
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private StageDataSheet stageDataSheet = null;
+
         protected override void Awake()
         {
             base.Awake();
+
+            ISingleton<EnemyDataSheet>.TrySetInstance(enemyDataSheet);
+
+            ISingleton<GatheringDataSheet>.TrySetInstance(gatheringDataSheet);
+
+            ISingleton<RelicDropDataSheet>.TrySetInstance(relicDropTableSheet);
+
+            ISingleton<RewardDataSheet>.TrySetInstance(rewardDataSheet);
+
+            ISingleton<SpawnPatternDataSheet>.TrySetInstance(spawnPatternDataSheet);
+
+            ISingleton<SpawnerDataSheet>.TrySetInstance(spawnerDataSheet);
+
+            ISingleton<StageDataSheet>.TrySetInstance(stageDataSheet);
 
             if (updateDataOnAwake == true)
             {

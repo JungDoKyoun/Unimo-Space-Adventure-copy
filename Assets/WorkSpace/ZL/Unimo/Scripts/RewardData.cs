@@ -4,14 +4,21 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using ZL.CS.Singleton;
+
 using ZL.Unity.IO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {
     [CreateAssetMenu(menuName = "ZL/Unimo/SO/Reward Data", fileName = "Reward Data")]
 
-    public sealed class RewardData : ScriptableGoogleSheetData
+    public sealed class RewardData : ScriptableGoogleSheetData, ISingleton<RewardData>
     {
+        public static RewardData Instance
+        {
+            get => ISingleton<RewardData>.Instance;
+        }
+
         [Space]
 
         [SerializeField]
@@ -32,7 +39,7 @@ namespace ZL.Unity.Unimo
             get => inGameCurrencyAmountMax;
         }
 
-        public static int InGameCurrencyAmount { get; private set; } = 0;
+        public int InGameCurrencyAmount { get; private set; } = 0;
 
         [Space]
 
@@ -54,7 +61,7 @@ namespace ZL.Unity.Unimo
             get => outGameCurrencyAmountMax;
         }
 
-        public static int OutGameCurrencyAmount { get; private set; } = 0;
+        public int OutGameCurrencyAmount { get; private set; } = 0;
 
         [Space]
 
@@ -62,7 +69,32 @@ namespace ZL.Unity.Unimo
 
         private int bluePrintCount = 0;
 
-        public static int BluePrintCount { get; private set; } = 0;
+        public int BluePrintCount
+        {
+            get => bluePrintCount;
+        }
+
+        [Space]
+
+        [SerializeField]
+
+        private int relicDropCount = 0;
+
+        public int RelicDropCount
+        {
+            get => relicDropCount;
+        }
+
+        [SerializeField]
+
+        private float relicDropRate = 0f;
+
+        public float RelicDropRate
+        {
+            get => relicDropRate;
+        }
+
+        public bool IsRelicDroped { get; private set; } = false;
 
         public override List<string> GetHeader()
         {
@@ -79,6 +111,10 @@ namespace ZL.Unity.Unimo
                 nameof(outGameCurrencyAmountMax),
 
                 nameof(bluePrintCount),
+
+                nameof(relicDropCount),
+
+                nameof(relicDropRate),
             };
         }
 
@@ -93,6 +129,10 @@ namespace ZL.Unity.Unimo
             outGameCurrencyAmountMax = int.Parse(sheet[name, nameof(outGameCurrencyAmountMax)].value);
 
             bluePrintCount = int.Parse(sheet[name, nameof(bluePrintCount)].value);
+
+            relicDropCount = int.Parse(sheet[name, nameof(relicDropCount)].value);
+
+            relicDropRate = float.Parse(sheet[name, nameof(relicDropRate)].value);
         }
 
         public override List<string> Export()
@@ -110,6 +150,10 @@ namespace ZL.Unity.Unimo
                 outGameCurrencyAmountMax.ToString(),
 
                 bluePrintCount.ToString(),
+
+                relicDropCount.ToString(),
+
+                relicDropRate.ToString(),
             };
         }
 
@@ -119,7 +163,19 @@ namespace ZL.Unity.Unimo
 
             OutGameCurrencyAmount = Random.Range(outGameCurrencyAmountMin, outGameCurrencyAmountMax);
 
-            BluePrintCount = bluePrintCount;
+            IsRelicDroped = false;
+
+            if (relicDropCount == 0)
+            {
+                return;
+            }
+
+            if (RandomEx.DrawLots(relicDropRate) == false)
+            {
+                //return;
+            }
+
+            IsRelicDroped = true;
         }
     }
 }
