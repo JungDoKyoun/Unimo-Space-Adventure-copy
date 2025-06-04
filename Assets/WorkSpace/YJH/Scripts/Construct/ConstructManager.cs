@@ -52,16 +52,7 @@ public class ConstructManager : MonoBehaviour
 
     private void Awake()
     {
-        //if(Instance == null)
-        //{
-        //    Instance = this;
-        //}
-        //else
-        //{
-        //    Destroy(gameObject);
-        //}
-        //DontDestroyOnLoad(gameObject);
-        //SceneManager.sceneLoaded += OnSceneChanged;
+        
         Instance = this;
         OnConstructCostChange += SetConstructCostText;
         SetOwnCost();
@@ -326,7 +317,7 @@ public class ConstructManager : MonoBehaviour
                     }
           
 
-        playerStatus = originPlayerStatus.Clone();// 이거 그냥 더할 양만큼 준비하는게 나을지도? 갈아끼는 식 말고
+        playerStatus = new PlayerStatus();// 이거 그냥 더할 양만큼 준비하는게 나을지도? 갈아끼는 식 말고
         playerStatus.moveSpeed += speedSum;
         playerStatus.maxHP += maxHPSum;
         playerStatus.gatheringSpeed += gatherSpeedSum;
@@ -385,32 +376,18 @@ public class ConstructManager : MonoBehaviour
             OnConstructCostChange.Invoke();
 
         }
-        Debug.Log(FirebaseDataBaseMgr.Blueprint);
-        Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
+        //Debug.Log(FirebaseDataBaseMgr.Blueprint);
+        //Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
         
         
     }
     public void SetFinalStatusToPlayer()
     {
-        PlayerManager.PlayerStatus=playerStatus;//유물 생각하면 나중에 더하는게 맞을지도? 연산자 오버로딩도 되있겠다.
+        PlayerManager.PlayerStatus+=playerStatus;//유물 생각하면 나중에 더하는게 맞을지도? 연산자 오버로딩도 되있겠다.
 
 
     }
     
-    private void OnSceneChanged(Scene scene, LoadSceneMode mode)
-    {
-        //if (scene.name == "TestScene")//씬이름으로 변경
-        //{
-        //    if (TryGetPlayer()==true)//플레이어가 있으면
-        //    {
-        //        //Debug.Log("scenecallback");
-        //        //SetPlayer();
-        //    }
-        //    else
-        //    {
-        //        return;
-        //    }
-        //}
-    }
+    
 
 }

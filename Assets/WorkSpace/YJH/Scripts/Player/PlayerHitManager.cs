@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 
 using UnityEngine;
@@ -132,7 +133,14 @@ public partial class PlayerManager : IDamageable
         
         for (int i = 0; i < blinkCount; i++)
         {
-            BlinkRenderer();
+            if (PhotonNetwork.IsConnected)
+            {
+                photonView.RPC("BlinkRenderer", RpcTarget.All);
+            }
+            else
+            {
+                BlinkRenderer();
+            }
 
             yield return new WaitForSeconds(onHitBlinkTime);
         }
@@ -144,6 +152,7 @@ public partial class PlayerManager : IDamageable
         yield break;
     }
 
+    [PunRPC]
     public void BlinkRenderer()
     {
         if (bodyRenderer.enabled == false)
