@@ -6,6 +6,8 @@ namespace ZL.Unity
 {
     [AddComponentMenu("ZL/On Awake Event Trigger")]
 
+    [DefaultExecutionOrder((int)ScriptExecutionOrder.Awake)]
+
     public sealed class OnAwakeEventTrigger : MonoBehaviour
     {
         [Space]
@@ -23,7 +25,7 @@ namespace ZL.Unity
         {
             onAwakeEvent.Invoke();
 
-            Destroy(this);
+            enabled = false;
         }
     }
 }

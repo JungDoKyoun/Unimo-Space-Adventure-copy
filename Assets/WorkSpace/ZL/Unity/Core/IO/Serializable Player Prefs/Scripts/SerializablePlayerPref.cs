@@ -20,10 +20,7 @@ namespace ZL.Unity.IO
         {
             get => key;
 
-            set
-            {
-
-            }
+            set => key = value;
         }
 
         [SerializeField]

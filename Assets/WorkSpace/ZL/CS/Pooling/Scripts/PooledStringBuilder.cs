@@ -19,7 +19,7 @@ namespace ZL.CS.Pooling
 
         public static string Concat(params string[] values)
         {
-            var stringBuilder = Generate(values.Sum(s => s.Length));
+            var stringBuilder = Generate(values.Sum((s) => s.Length));
 
             var @string = stringBuilder.Concat(values);
 

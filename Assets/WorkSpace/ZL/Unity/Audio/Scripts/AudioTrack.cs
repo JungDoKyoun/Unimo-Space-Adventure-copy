@@ -1,5 +1,7 @@
 using UnityEngine;
+
 using ZL.CS;
+
 using ZL.CS.Singleton;
 
 using ZL.Unity.Singleton;
@@ -71,7 +73,7 @@ namespace ZL.Unity.Audio
 
         private bool isLooping = false;
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
 
         [HideInInspector]
 
@@ -82,7 +84,7 @@ namespace ZL.Unity.Audio
             isPlayModeShuffle = playMode == AudioTrackPlayMode.Shuffle;
         }
 
-#endif
+        #endif
 
         private void Start()
         {

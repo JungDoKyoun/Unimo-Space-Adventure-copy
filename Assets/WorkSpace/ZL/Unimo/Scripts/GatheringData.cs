@@ -25,11 +25,11 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private int resourceAmount = 0;
+        private int gainAmount = 0;
 
-        public int ResourceAmount
+        public int GainAmount
         {
-            get => resourceAmount;
+            get => gainAmount;
         }
 
         public override List<string> GetHeader()
@@ -40,7 +40,7 @@ namespace ZL.Unity.Unimo
 
                 nameof(maxHealth),
 
-                nameof(resourceAmount),
+                nameof(gainAmount),
             };
         }
 
@@ -48,7 +48,7 @@ namespace ZL.Unity.Unimo
         {
             maxHealth = float.Parse(sheet[name, nameof(maxHealth)].value);
 
-            resourceAmount = int.Parse(sheet[name, nameof(resourceAmount)].value);
+            gainAmount = int.Parse(sheet[name, nameof(gainAmount)].value);
         }
 
         public override List<string> Export()
@@ -59,7 +59,7 @@ namespace ZL.Unity.Unimo
 
                 maxHealth.ToString(),
 
-                resourceAmount.ToString(),
+                gainAmount.ToString(),
             };
         }
     }

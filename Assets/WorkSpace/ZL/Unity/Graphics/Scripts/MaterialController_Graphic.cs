@@ -20,7 +20,7 @@ namespace ZL.Unity.GFX
 
         [ReadOnlyWhenPlayMode]
 
-        private Graphic graphic = null;
+        private Graphic targetGraphic = null;
 
         [Space]
 
@@ -28,24 +28,17 @@ namespace ZL.Unity.GFX
 
         private bool isShared = false;
 
-        private Material[] materials;
-
-        public override Material[] Materials
+        public override Material Material
         {
-            get => materials;
+            get => targetGraphic.material;
         }
 
         private void Awake()
         {
             if (isShared == false)
             {
-                graphic.material = new Material(graphic.material);
+                targetGraphic.material = new Material(targetGraphic.material);
             }
-
-            materials = new Material[1]
-            {
-                graphic.material
-            };
         }
     }
 }

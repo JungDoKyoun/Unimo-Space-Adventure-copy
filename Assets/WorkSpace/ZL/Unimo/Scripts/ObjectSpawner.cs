@@ -83,7 +83,7 @@ namespace ZL.Unity.Unimo
 
                     pooledObject.transform.position = position;
 
-                    pooledObject.SetActive(true);
+                    pooledObject.gameObject.SetActive(true);
                 }
             }
         }

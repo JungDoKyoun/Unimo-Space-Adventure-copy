@@ -17,10 +17,7 @@ namespace ZL.Unity.Pooling
         {
             get => this;
 
-            set
-            {
-
-            }
+            set { }
         }
     }
 }
