@@ -231,7 +231,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 9111094735351220513}
-  - {fileID: 2609077586317718642}
+  - {fileID: 7581913992109800265}
   - {fileID: 8166737490361794327}
   m_Father: {fileID: 6098649047416525602}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -403,38 +403,6 @@ MonoBehaviour:
   enemyData: {fileID: 11400000, guid: e420c9c71f6d5f242bc5f8b9673e52bf, type: 2}
   lifeTime: 20
   rotationSpeed: 90
---- !u!1 &9024337807900310774
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2609077586317718642}
-  m_Layer: 0
-  m_Name: Black Portal
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &2609077586317718642
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9024337807900310774}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1921983263851888649}
-  m_Father: {fileID: 2166149487534242662}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &990193866455805844
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -509,69 +477,65 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9001557012747604099, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
   m_PrefabInstance: {fileID: 990193866455805844}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &8222498889817618441
+--- !u!1001 &8970268376694157527
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 2609077586317718642}
+    m_TransformParent: {fileID: 2166149487534242662}
     m_Modifications:
-    - target: {fileID: 7543651097898661888, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
+    - target: {fileID: 1532513690866338718, guid: 4dbf722a5ed98784ab988f3e78f9e580, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7543651097898661888, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
+    - target: {fileID: 1532513690866338718, guid: 4dbf722a5ed98784ab988f3e78f9e580, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7543651097898661888, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
+    - target: {fileID: 1532513690866338718, guid: 4dbf722a5ed98784ab988f3e78f9e580, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7543651097898661888, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
+    - target: {fileID: 1532513690866338718, guid: 4dbf722a5ed98784ab988f3e78f9e580, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7543651097898661888, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
+    - target: {fileID: 1532513690866338718, guid: 4dbf722a5ed98784ab988f3e78f9e580, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7543651097898661888, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
+    - target: {fileID: 1532513690866338718, guid: 4dbf722a5ed98784ab988f3e78f9e580, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7543651097898661888, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
+    - target: {fileID: 1532513690866338718, guid: 4dbf722a5ed98784ab988f3e78f9e580, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7543651097898661888, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
+    - target: {fileID: 1532513690866338718, guid: 4dbf722a5ed98784ab988f3e78f9e580, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7543651097898661888, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
+    - target: {fileID: 1532513690866338718, guid: 4dbf722a5ed98784ab988f3e78f9e580, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7543651097898661888, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
+    - target: {fileID: 1532513690866338718, guid: 4dbf722a5ed98784ab988f3e78f9e580, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8087840629484875825, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
+    - target: {fileID: 3832165327490923181, guid: 4dbf722a5ed98784ab988f3e78f9e580, type: 3}
       propertyPath: m_Name
-      value: VFX_MON000_BlackPortal
-      objectReference: {fileID: 0}
-    - target: {fileID: 8087840629484875825, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+      value: Black Portal
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
---- !u!4 &1921983263851888649 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 4dbf722a5ed98784ab988f3e78f9e580, type: 3}
+--- !u!4 &7581913992109800265 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 7543651097898661888, guid: adc9f61ef640e5f4e9261ea0f591828d, type: 3}
-  m_PrefabInstance: {fileID: 8222498889817618441}
+  m_CorrespondingSourceObject: {fileID: 1532513690866338718, guid: 4dbf722a5ed98784ab988f3e78f9e580, type: 3}
+  m_PrefabInstance: {fileID: 8970268376694157527}
   m_PrefabAsset: {fileID: 0}

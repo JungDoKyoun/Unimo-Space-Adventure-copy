@@ -16,7 +16,7 @@ namespace ZL.Unity.Phys
 
         [SerializeField]
 
-        private float radius = 3f;
+        private float radius = 1f;
 
         [Space]
 
@@ -31,7 +31,7 @@ namespace ZL.Unity.Phys
             set => angle = value;
         }
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
 
         [Space]
 
@@ -87,6 +87,8 @@ namespace ZL.Unity.Phys
 
             var center = transform.position;
 
+            var radius = this.radius * transform.lossyScale.GetMaxAxis();
+
             var start = Quaternion.Euler(0f, -angle * 0.5f, 0f) * transform.forward;
 
             if (isWireGizmo == true)
@@ -122,7 +124,7 @@ namespace ZL.Unity.Phys
 
             Vector3 direction = target.position - transform.position;
 
-            if (direction.magnitude > radius)
+            if (direction.magnitude > radius * transform.lossyScale.GetMaxAxis())
             {
                 return false;
             }

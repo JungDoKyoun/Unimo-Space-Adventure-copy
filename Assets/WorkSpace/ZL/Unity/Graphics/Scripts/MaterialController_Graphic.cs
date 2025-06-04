@@ -6,8 +6,6 @@ namespace ZL.Unity.GFX
 {
     [AddComponentMenu("ZL/GFX/Material Controller (Graphic)")]
 
-    [DefaultExecutionOrder((int)ScriptExecutionOrder.Awake)]
-
     public sealed class MaterialController_Graphic : MaterialController
     {
         [Space]
