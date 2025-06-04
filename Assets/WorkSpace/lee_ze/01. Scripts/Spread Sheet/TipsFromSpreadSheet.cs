@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine;
-using TMPro;
 
-// Matching Canvas에 들어가있음
 public class TipsFromSpreadSheet : MonoBehaviour
 {
     private readonly string ADDRESS = "https://docs.google.com/spreadsheets/d/1231BLcYGttF61TDv2BWnKyUDi_ziXN1d";
@@ -13,26 +11,11 @@ public class TipsFromSpreadSheet : MonoBehaviour
 
     private readonly long SHEET_ID = 219602961;
 
-    public string[] tips;
-
-    [SerializeField]
-    private TextMeshProUGUI gameTip;
+    public static string[] tips;
 
     private void Start()
     {
         StartCoroutine(LoadData());
-    }
-
-    private void ShowTipWhenReady()
-    {
-        if (gameTip == null)
-        {
-            gameTip = GameObject.Find("Matching Canvas")?.transform.Find("Under Bar Panel/Game Tips").GetComponent<TextMeshProUGUI>();
-        }
-        else
-        {
-            gameTip.text = "Tip \n\n" + tips[Random.Range(0, tips.Length)];
-        }
     }
 
     private IEnumerator LoadData()
@@ -68,8 +51,6 @@ public class TipsFromSpreadSheet : MonoBehaviour
         }
 
         tips = tipsList.ToArray();
-
-        ShowTipWhenReady();
     }
 
     private static string GetTSVAdress(string address, string range, long sheetID)
