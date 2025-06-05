@@ -102,7 +102,7 @@ namespace JDG
     {
         public void Execute(EventEffect eventEffect)
         {
-            int maxFule = PlayerFuelManager.Instance.; 
+            float maxFule = 100f; 
 
             float currentFuel = PlayerFuelManager.Instance.Fuel;
 
