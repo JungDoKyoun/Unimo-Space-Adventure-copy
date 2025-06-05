@@ -98,7 +98,8 @@ namespace JDG
                 if(hit.collider.GetComponent<WorldMapRenderer>())
                 {
                     pointInstance.SetActive(true);
-                    pointInstance.transform.position = hit.point;
+                    Vector3 hitPos = hit.point - new Vector3(0, 0, 0.1f);
+                    pointInstance.transform.position = hitPos;
                 }
                 else
                 {

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89e3dadb615bb3446bcf0e1b1600c8a3, type: 3}
+  m_Name: Choice1
+  m_EditorClassIdentifier: 
+  _choiceName: "(\uD504\uB9AC\uD339 20 \uC18C\uBAA8)\uC218\uB9AC\uB97C \uBC1B\uB294\uB2E4."
+  _choiceDesc: "80% \uD655\uB960\uB85C HP \uC804\uBD80 \uD68C\uBCF5 \uD639\uC740 
+    20% \uD655\uB960\uB85C (-10) HP \uC190\uC2E4 "
+  _eventRequiredRelics: []
+  _eventRequiredBuildings:
+  - a
+  _eventRequiredCurrency: []
+  _probabilisticEffect:
+  - _probability: 0.8
+    _effects:
+    - _choiceEffectType: 1
+      _effectType: 4
+      _target: 5
+      _value: 1000
+      _relicData: {fileID: 0}
+  - _probability: 0.2
+    _effects:
+    - _choiceEffectType: 2
+      _effectType: 4
+      _target: 5
+      _value: -10
+      _relicData: {fileID: 0}

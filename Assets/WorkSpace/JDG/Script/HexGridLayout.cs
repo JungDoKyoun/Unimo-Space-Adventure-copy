@@ -291,7 +291,7 @@ namespace JDG
                     int randomIndex = Random.Range(0, valid.Count);
                     var coord = valid[randomIndex];
                     _hexMap[coord].TileData.TileType = TileType.Boss;
-                    _hexMap[coord].TileData.SceneName = "BossScene";
+                    _hexMap[coord].TileData.SceneName = "Boss Stage 1";
                     //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
                     //int dis = HexDistance(_baseCoord, coord);
                     //DifficultyType difficultyType = GetDifficultyTypeByDistance(dis);
@@ -392,7 +392,7 @@ namespace JDG
                     }
                     else if (modeType == ModeType.Gather)
                     {
-                        _hexMap[coord].TileData.SceneName = "Gather Stage Scene";
+                        _hexMap[coord].TileData.SceneName = "Gather Stage 1";
                     }
                     //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
                     //int dis = HexDistance(_baseCoord, coord);
