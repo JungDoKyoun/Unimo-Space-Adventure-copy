@@ -22,6 +22,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI rewardMetaCurrencyText;
 
+    [SerializeField]
+    private TextMeshProUGUI rewardBluePrintText;
+
     private static int ingameCurrency;
 
     private static int metaCurrency;
@@ -132,7 +135,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         StartCoroutine(ShowUserMetaCurrency());
 
-        StartCoroutine(UpdateWinningRate());
+        StartCoroutine(SetCurrentWinningRate());
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) // 씬 바뀔 때 마다 수행되는 것
@@ -213,6 +216,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             // 업데이트 된 재화 디스플레이
             StartCoroutine(ShowUserIngameCurrency());
         }
+
+        // IngameCurrency 캐싱
+        IngameCurrency = newIngameCurrency;
     }
 
     // >>>>>>>>> Meta Currency <<<<<<<<<
@@ -279,6 +285,21 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     // >>>>>>>>> BluePrint <<<<<<<<<
 
+    private IEnumerator ShowUserBluePrint()
+    {
+        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardBluePrint").GetValueAsync();
+
+        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
+
+        if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
+        {
+            // 여기에 디스플레이
+            rewardBluePrintText = GameObject.Find("Reward Blueprint")?.GetComponent<TextMeshProUGUI>();
+
+            if (rewardBluePrintText != null) rewardBluePrintText.text = savedValue.ToString();
+        }
+    }
+
     /// <summary>
     /// 인자값: 재화 추가 시 >> 양수 | 재화 사용 시 >> 음수
     /// </summary>
@@ -318,6 +339,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         else
         {
             // 업데이트 된 재화 디스플레이
+            StartCoroutine(ShowUserBluePrint());
         }
 
         // BluePrint 캐싱
@@ -328,7 +350,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #region Winning Rate
 
-    public IEnumerator UpdateWinningRate() // 전적 업데이트 함수. PvP 스테이지 끝날 때 호출해야 함
+    public IEnumerator SetCurrentWinningRate() // 전적 업데이트 함수.
     {
         float playCount = 0;
 
@@ -370,6 +392,25 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         WinningRate = winningRate;
 
         var DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("winningRate").SetValueAsync(winningRate);
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+    }
+
+    // PvP 승자 결과 나올 때 호출되어야 할 함수
+    public IEnumerator UpdateWinningRate(bool winner)
+    {
+        PlayCount++;
+
+        var DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("playCount").SetValueAsync(PlayCount);
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+        if (winner == true)
+        {
+            WinCount++;
+
+            DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("winCount").SetValueAsync(WinCount);
+        }
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
     }
