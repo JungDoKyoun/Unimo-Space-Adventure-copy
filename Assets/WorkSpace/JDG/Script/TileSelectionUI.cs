@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using ZL.Unity.Unimo;
 
 namespace JDG
 {
@@ -27,6 +28,7 @@ namespace JDG
         private EventTileConfig _eventTileConfig;
         private ShopUI _shopUI;
         private ScriptEventUI _scriptEventUI;
+        [SerializeField] private RewardDataSheet _rewardDataSheet;
 
         private Vector3 _uiPos;
         private HexRenderer _currentTile;
@@ -77,29 +79,33 @@ namespace JDG
 
             _rewardPrefab = Resources.Load<GameObject>("WorldMap/RewardSlot");
 
-            foreach (RewardData reward in rewards)
+            string key = tile.TileData.SceneName;
+
+            //Debug.Log(_rewardDataSheet.DataDictionary.TryGetValue(key, out var rewardData));
+            if(_rewardDataSheet.DataDictionary.TryGetValue(key, out var rewardData))
             {
-                GameObject obj = Instantiate(_rewardPrefab, _rewardParent);
-                RewardSlot rewardSlot = obj.GetComponent<RewardSlot>();
-                Vector2Int temp = RewardManager.Instance.GetRewardRange(tile.TileData.DifficultyType, reward._resourceData._resourcesType);
-
-                if (rewardSlot != null)
+                if (rewardData.InGameCurrencyAmountMin > 0)
                 {
-                    Sprite icon = null;
-                    string name = "";
+                    CreateRewardSlot("InGameCurrency", rewardData.InGameCurrencyAmountMin, rewardData.InGameCurrencyAmountMax, "InGameCurrencyIcon");
+                }
 
-                    if(reward._rewardType == RewardType.Resource && reward._resourceData != null)
-                    {
-                        icon = reward._resourceData._resourcesIcon;
-                        name = reward._resourceData._resourcesName;
-                        rewardSlot.SetRewardSlot(icon, name, $"{temp.x} ~ {temp.y}");
-                    }
-                    else if(reward._rewardType == RewardType.Relic && reward._relicData != null)
-                    {
-                        icon = reward._relicData._relicImage;
-                        name = reward._relicData._relicName;
-                        rewardSlot.SetRewardSlot(icon, name, "1");
-                    }
+                // 아웃게임 재화
+                if (rewardData.OutGameCurrencyAmountMin > 0)
+                {
+                    CreateRewardSlot("OutGameCurrency", rewardData.OutGameCurrencyAmountMin, rewardData.OutGameCurrencyAmountMax, "OutGameCurrencyIcon");
+                }
+
+                // 설계도
+                if (rewardData.BluePrintCount > 0)
+                {
+                    Debug.Log(rewardData.BluePrintCount);
+                    CreateRewardSlot("BluePrint", rewardData.BluePrintCount, rewardData.BluePrintCount, "BluePrintIcon");
+                }
+
+                // 유물
+                if (rewardData.RelicDropCount > 0)
+                {
+                    CreateRewardSlot("랜덤유물", 0, rewardData.RelicDropCount, "RelicIcon");
                 }
             }
 
@@ -110,6 +116,31 @@ namespace JDG
             else
             {
                 _actionButtonName.text = "시작";
+            }
+        }
+
+        private void CreateRewardSlot(string name, int min, int max, string iconName)
+        {
+            if (min <= 0 && max <= 0)
+                return;
+
+            GameObject obj = Instantiate(_rewardPrefab, _rewardParent);
+            RewardSlot rewardSlot = obj.GetComponent<RewardSlot>();
+            Sprite icon = Resources.Load<Sprite>($"WorldMap/Reward/{iconName}");
+
+            if(rewardSlot != null)
+            {
+                string count = "";
+
+                if(min == max)
+                {
+                    count = $"{min}";
+                }
+                else
+                {
+                    count = $"{min} ~ {max}";
+                    rewardSlot.SetRewardSlot(icon, name, count);
+                }
             }
         }
 

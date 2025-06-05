@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ZL.Unity.Unimo;
 
 namespace JDG
 {
@@ -101,20 +102,18 @@ namespace JDG
     {
         public void Execute(EventEffect eventEffect)
         {
-            int maxFule = 100; //100자리에 맥스연료 받아올수 있으면 넣으면됨
+            int maxFule = PlayerFuelManager.Instance.; 
 
-            int currentFuel = 20; //20자리에 현재연료 받아와 넣어야됨;
+            float currentFuel = PlayerFuelManager.Instance.Fuel;
 
             currentFuel += eventEffect._value;
 
-            int tmep = currentFuel;
+            float tmep = currentFuel;
 
             if(currentFuel >= maxFule)
             {
                 currentFuel = maxFule;
             }
-
-            Debug.Log("현재 연료 변화");
         }
     }
 }
