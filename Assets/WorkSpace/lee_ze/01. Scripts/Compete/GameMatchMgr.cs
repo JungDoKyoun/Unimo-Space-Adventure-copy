@@ -65,16 +65,13 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
     #region Canvas
 
-    private void SetIsMatching()
-    {
-        IsMatching = !IsMatching;
-    }
-
     private void SetCanvas()
     {
         profileCanvas.SetActive(!IsMatching);
 
         matchingCanvas.SetActive(IsMatching);
+
+        IsMatching = !IsMatching;
     }
 
     private void SetStar(bool isMatched)
@@ -153,8 +150,6 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
         quickMatchButton.interactable = true;
 
-        quickMatchButton.onClick.AddListener(() => SetIsMatching());
-
         quickMatchButton.onClick.AddListener(() => SetCanvas());
 
         quickMatchButton.onClick.AddListener(() => QuickMatch());
@@ -178,8 +173,6 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
         stopMatchButton = GameObject.Find("Matching Canvas").transform.Find("Under Bar Panel/Stop Match Button").GetComponent<Button>();
 
         stopMatchButton.onClick.AddListener(() => StopMatch());
-
-        stopMatchButton.onClick.AddListener(() => SetIsMatching());
 
         stopMatchButton.onClick.AddListener(() => SetCanvas()); 
     }
@@ -249,15 +242,11 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
     private void OnDestroy()
     {
-        quickMatchButton.onClick.RemoveListener(() => SetIsMatching());
-
         quickMatchButton.onClick.RemoveListener(() => SetCanvas());
 
         quickMatchButton.onClick.RemoveListener(() => QuickMatch());
 
         stopMatchButton.onClick.RemoveListener(() => StopMatch());
-
-        stopMatchButton.onClick.RemoveListener(() => SetIsMatching());
 
         stopMatchButton.onClick.RemoveListener(() => SetCanvas());
     }
