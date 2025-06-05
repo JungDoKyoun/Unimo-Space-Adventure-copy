@@ -4,8 +4,6 @@ using System.Collections;
 
 using UnityEngine;
 
-using UnityEngine.Events;
-
 using ZL.Unity.Directing;
 
 namespace ZL.Unity.Unimo
@@ -15,26 +13,6 @@ namespace ZL.Unity.Unimo
     public sealed class GatherStageSceneDirector : SceneDirector<GatherStageSceneDirector>
     {
         [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
-        private GatherStageData stageData = null;
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
-        private RewardData rewardData = null;
 
         [SerializeField]
 
@@ -70,13 +48,49 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private UnityEvent onStageClearEvent = null;
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        [PropertyField]
+
+        [ReadOnly(false)]
+
+        [Button(nameof(StageClear))]
+
+        private GameObject stageClearPopupScreen = null;
 
         [Space]
 
         [SerializeField]
 
-        private UnityEvent onStageFailEvent = null;
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        [PropertyField]
+
+        [ReadOnly(false)]
+
+        [Button(nameof(StageFail))]
+
+        private GameObject stageFailPopupScreen = null;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private GameObject relicSelectionScreen = null;
 
         protected override void Awake()
         {
@@ -98,23 +112,77 @@ namespace ZL.Unity.Unimo
 
         public void StageClear()
         {
+            if (stageClearRoutine != null)
+            {
+                return;
+            }
+
+            stageClearRoutine = StageClearRoutine();
+
+            StartCoroutine(stageClearRoutine);
+        }
+
+        private IEnumerator stageClearRoutine = null;
+
+        private IEnumerator StageClearRoutine()
+        {
             TimeEx.Pause();
 
             GameStateManager.IsClear = true;
 
-            rewardData.SetReward();
+            RewardData.Instance.SetReward();
 
             if (FirebaseDataBaseMgr.Instance != null)
             {
-                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(RewardData.InGameCurrencyAmount));
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(RewardData.Instance.InGameCurrencyAmount));
 
-                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(RewardData.OutGameCurrencyAmount));
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(RewardData.Instance.OutGameCurrencyAmount));
             }
 
-            onStageClearEvent.Invoke();
+            stageClearPopupScreen.SetActive(true);
+
+            while (stageClearPopupScreen.activeSelf == true)
+            {
+                yield return null;
+            }
+
+            if (RewardData.Instance.IsRelicDroped == true)
+            {
+                int relicDropCount = RewardData.Instance.RelicDropCount;
+
+                RelicDropData.Instance.Drop(relicDropCount);
+
+                foreach (var relic in RelicDropData.Instance.DropedRelics)
+                {
+                    Debug.Log(relic);
+                }
+
+                relicSelectionScreen.SetActive(true);
+
+                while (relicSelectionScreen.activeSelf == true)
+                {
+                    yield return null;
+                }
+            }
+
+            LoadScene("Station");
         }
 
         public void StageFail()
+        {
+            if (stageFailRoutine != null)
+            {
+                return;
+            }
+
+            stageFailRoutine = StageFailRoutine();
+
+            StartCoroutine(stageFailRoutine);
+        }
+
+        private IEnumerator stageFailRoutine = null;
+
+        private IEnumerator StageFailRoutine()
         {
             TimeEx.Pause();
 
@@ -127,7 +195,14 @@ namespace ZL.Unity.Unimo
                 StartCoroutine(FirebaseDataBaseMgr.Instance.InitIngameCurrency());
             }
 
-            onStageFailEvent.Invoke();
+            stageFailPopupScreen.SetActive(true);
+
+            while (stageFailPopupScreen.activeSelf == true)
+            {
+                yield return null;
+            }
+
+            LoadScene("Station");
         }
     }
 }

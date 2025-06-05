@@ -46,27 +46,29 @@ namespace ZL.Unity.Unimo
 
             inGameCurrencyAmountText.gameObject.SetActive(false);
 
-            if (RewardData.InGameCurrencyAmount != 0)
+            var rewardData = RewardData.Instance;
+
+            if (rewardData.InGameCurrencyAmount != 0)
             {
-                inGameCurrencyAmountText.text = $"»πµÊ ¿Œ ∞‘¿” ¿Á»≠: {RewardData.InGameCurrencyAmount}";
+                inGameCurrencyAmountText.text = $"»πµÊ ¿Œ ∞‘¿” ¿Á»≠: {rewardData.InGameCurrencyAmount}";
 
                 inGameCurrencyAmountText.gameObject.SetActive(true);
             }
 
             outGameCurrencyAmountText.gameObject.SetActive(false);
 
-            if (RewardData.OutGameCurrencyAmount != 0)
+            if (rewardData.OutGameCurrencyAmount != 0)
             {
-                outGameCurrencyAmountText.text = $"»πµÊ æ∆øÙ ∞‘¿” ¿Á»≠: {RewardData.OutGameCurrencyAmount}";
+                outGameCurrencyAmountText.text = $"»πµÊ æ∆øÙ ∞‘¿” ¿Á»≠: {rewardData.OutGameCurrencyAmount}";
 
                 outGameCurrencyAmountText.gameObject.SetActive(true);
             }
 
             bluePrintCountText.gameObject.SetActive(false);
 
-            if (RewardData.BluePrintCount != 0)
+            if (rewardData.BluePrintCount != 0)
             {
-                bluePrintCountText.text = $"»πµÊ º≥∞Ëµµ: {RewardData.BluePrintCount}";
+                bluePrintCountText.text = $"»πµÊ º≥∞Ëµµ: {rewardData.BluePrintCount}";
 
                 bluePrintCountText.gameObject.SetActive(true);
             }

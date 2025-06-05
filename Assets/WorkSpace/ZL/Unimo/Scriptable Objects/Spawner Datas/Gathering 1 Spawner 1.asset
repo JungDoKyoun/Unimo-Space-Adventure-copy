@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c31c7870470a4444a3eba02f9a4a4e8, type: 3}
-  m_Name: Gather Stage Data Sheet Config
+  m_Script: {fileID: 11500000, guid: c7b03740066862d4fab04b8f44de4b07, type: 3}
+  m_Name: Gathering 1 Spawner 1
   m_EditorClassIdentifier: 
-  sheetId: 1ZV8a2LAC0z-c2Opz6MzjKfL2UmjNFljsZlZXn5BdHsU
-  worksheetName: Gather Stage Date Sheet
-  startCell: A1
-  endCell: Z100
-  titleColumn: A
-  titleRow: 1
+  spawnObject: Gathering 1
+  objectSpawnMinTime: 1
+  objectSpawnMaxTime: 1
+  objectSpawnMinCount: 1
+  objectSpawnMaxCount: 1
+  objectCountLimits: 10

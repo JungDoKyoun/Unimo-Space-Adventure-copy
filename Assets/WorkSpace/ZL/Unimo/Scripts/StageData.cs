@@ -4,24 +4,22 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using ZL.CS.Singleton;
+
 using ZL.Unity.IO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {
-    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Gather Stage Data", fileName = "Gather Stage Data")]
+    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Stage Data", fileName = "Stage Data")]
 
-    public sealed class GatherStageData : ScriptableGoogleSheetData
+    public sealed class StageData : ScriptableGoogleSheetData, ISingleton<StageData>
     {
-        [Space]
-
-        [SerializeField]
-
-        private int targetGatheringCount = 0;
-
-        public int TargetGatheringCount
+        public static StageData Instance
         {
-            get => targetGatheringCount;
+            get => ISingleton<StageData>.Instance;
         }
+
+        [Space]
 
         [SerializeField]
 
@@ -32,23 +30,32 @@ namespace ZL.Unity.Unimo
             get => fuelConsumptionAmount;
         }
 
+        [SerializeField]
+
+        private int targetGatheringCount = 0;
+
+        public int TargetGatheringCount
+        {
+            get => targetGatheringCount;
+        }
+
         public override List<string> GetHeader()
         {
             return new List<string>()
             {
                 "name",
 
-                nameof(targetGatheringCount),
-
                 nameof(fuelConsumptionAmount),
+                
+                nameof(targetGatheringCount),
             };
         }
 
         public override void Import(GstuSpreadSheet sheet)
         {
-            targetGatheringCount = int.Parse(sheet[name, nameof(targetGatheringCount)].value);
-
             fuelConsumptionAmount = float.Parse(sheet[name, nameof(fuelConsumptionAmount)].value);
+
+            targetGatheringCount = int.Parse(sheet[name, nameof(targetGatheringCount)].value);
         }
 
         public override List<string> Export()
@@ -57,9 +64,9 @@ namespace ZL.Unity.Unimo
             {
                 name,
 
-                targetGatheringCount.ToString(),
-
                 fuelConsumptionAmount.ToString(),
+
+                targetGatheringCount.ToString(),
             };
         }
     }

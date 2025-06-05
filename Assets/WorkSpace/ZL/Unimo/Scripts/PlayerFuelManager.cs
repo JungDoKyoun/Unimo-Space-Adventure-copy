@@ -28,17 +28,23 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private float fuelMax = 0f;
-
-        [SerializeField]
-
-        private float fuelConsumptionAmount = 0f;
+        private UnityEvent onFuelEmptyEvent = null;
 
         [Space]
 
         [SerializeField]
 
-        private UnityEvent onFuelEmptyEvent = null;
+        [UsingCustomProperty]
+
+        [Alias("Fuel Max (Temp)")]
+
+        private float fuelMax = 0f;
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Alias("Fuel (Debugging)")]
 
         private float fuel = 0f;
 
@@ -59,13 +65,15 @@ namespace ZL.Unity.Unimo
             }
         }
 
-        protected override void Awake()
-        {
-            base.Awake();
+        private float fuelConsumptionAmount = 0f;
 
+        private void Start()
+        {
             fuelBar.Slider.maxValue = fuelMax;
 
             Fuel = fuelMax;
+
+            fuelConsumptionAmount = StageData.Instance.FuelConsumptionAmount;
         }
 
         public void StartConsumption()
