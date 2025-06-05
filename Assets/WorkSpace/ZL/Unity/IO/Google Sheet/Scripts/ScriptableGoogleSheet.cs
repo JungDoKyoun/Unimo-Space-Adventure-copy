@@ -4,16 +4,31 @@ using System;
 
 using System.Collections.Generic;
 
+using System.IO;
+
+#if UNITY_EDITOR
+
+using UnityEditor;
+
+#endif
+
 using UnityEngine;
 
-using UnityObject = UnityEngine.Object;
+using ZL.CS.Singleton;
 
 namespace ZL.Unity.IO.GoogleSheet
 {
-    public abstract class ScriptableGoogleSheet<TGoogleSheetData> : ScriptableObject
+    public abstract class ScriptableGoogleSheet<TScriptableGoogleSheet, TGoogleSheetData> : ScriptableObject, ISingleton<TScriptableGoogleSheet>
 
-        where TGoogleSheetData : UnityObject, IGoogleSheetData
+        where TScriptableGoogleSheet : ScriptableGoogleSheet<TScriptableGoogleSheet, TGoogleSheetData>
+
+        where TGoogleSheetData : ScriptableObject, IGoogleSheetData
     {
+        public static TScriptableGoogleSheet Instance
+        {
+            get => ISingleton<TScriptableGoogleSheet>.Instance;
+        }
+
         [Space]
 
         [SerializeField]
@@ -33,6 +48,10 @@ namespace ZL.Unity.IO.GoogleSheet
         [Button(nameof(Read))]
 
         [Button(nameof(Write))]
+
+        [Margin]
+
+        [Button(nameof(Create))]
 
         private bool containsMergedCells = false;
 
@@ -111,5 +130,22 @@ namespace ZL.Unity.IO.GoogleSheet
                 FixedDebug.Log($"Successfully written '{name}' to Google sheet.");
             }
         }
+
+        #if UNITY_EDITOR
+
+        public void Create()
+        {
+            var assetPath = AssetDatabase.GetAssetPath(this);
+
+            var folderPath = Path.GetDirectoryName(assetPath);
+
+            var data = ScriptableObjectEx.CreateAndSaveAsset<TGoogleSheetData>(folderPath);
+
+            Array.Resize(ref datas, datas.Length + 1);
+
+            datas[^1] = data;
+        }
+
+        #endif
     }
 }

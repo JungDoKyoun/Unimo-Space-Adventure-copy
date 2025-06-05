@@ -4,9 +4,9 @@ using ZL.Unity.IO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {
-    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Reward Data Sheet", fileName = "Reward Data Sheet")]
+    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Reward Data Sheet (Singleton)", fileName = "Reward Data Sheet (Singleton)")]
 
-    public sealed class RewardDataSheet : ScriptableGoogleSheet<RewardData>
+    public sealed class RewardDataSheet : ScriptableGoogleSheet<RewardDataSheet, RewardData>
     {
 
     }

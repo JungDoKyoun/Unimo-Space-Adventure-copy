@@ -58,15 +58,10 @@ namespace ZL.Unity.Unimo
             }
         }
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            targetGatheringCount = 10;
-        }
-
         private void Start()
         {
+            targetGatheringCount = StageData.Instance.TargetGatheringCount;
+
             GatheringCount = 0;
         }
     }
