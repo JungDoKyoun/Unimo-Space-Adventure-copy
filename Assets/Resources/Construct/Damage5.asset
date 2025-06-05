@@ -10,21 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c881d80a990beb04abdae6ae484decaf, type: 3}
-  m_Name: GatherRange4
+  m_Name: Damage5
   m_EditorClassIdentifier: 
   isBuildConstructed: 0
-  buildID: GatherRange4
-  buildName: GatherRange4
-  buildingDescription: 
+  buildID: Damage+3
+  buildName: Damage+3
+  buildingDescription: "\uD14C\uC2A4\uD2B8\uC6A9 1"
   buildRequires:
-  - GatherRange3
+  - testR
   buildUnlocks: []
-  buildCosts: []
+  buildCosts:
+  - key: 
+    value: 0
   buildPosition: {x: 0, y: 0, z: 0}
-  buildIcon: {fileID: 0}
-  buildingImage: {fileID: 0}
+  buildIcon: {fileID: 21300000, guid: 03586867610d40440b7cb238dac12510, type: 3}
+  buildingImage: {fileID: 21300000, guid: dc6823b6c89d30d4ba8902ca8ef39c38, type: 3}
   buildType: 
   isbuildRepeatable: 0
   buildEffects:
-  - {fileID: 11400000, guid: 976d5f72424155c43be69b422b2a6201, type: 2}
-  spawnIndex: 0
+  - {fileID: 11400000, guid: 95ddeaa650c84874da096b7cec32c553, type: 2}
+  spawnIndex: 1

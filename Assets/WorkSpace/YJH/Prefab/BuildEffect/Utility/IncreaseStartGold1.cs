@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class IncreaseStartGold1 : IUtilityBuildEffect
 {
-   
-    
+    public object Target { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public string MethodName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
     public Action IUtilityBuildEffect()
     {
 

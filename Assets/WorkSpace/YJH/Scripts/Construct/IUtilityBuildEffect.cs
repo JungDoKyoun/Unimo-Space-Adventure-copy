@@ -6,7 +6,8 @@ using UnityEngine;
 
 public interface IUtilityBuildEffect
 {
-    
+    System.Object Target {  get; set; }
+    string MethodName {  get; set; }
     Action IUtilityBuildEffect();
 
 

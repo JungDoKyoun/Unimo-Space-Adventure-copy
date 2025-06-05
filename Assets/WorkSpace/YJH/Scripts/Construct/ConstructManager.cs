@@ -125,7 +125,11 @@ public class ConstructManager : MonoBehaviour
             if (building.isBuildConstructed == true)
             {
                 buildedBuildingNum++;
-                buildedList.Add(building.buildID);
+                if (buildedList.Contains(building.buildID)==false)
+                {
+                    buildedList.Add(building.buildID);
+                }
+                
             }
             
             
