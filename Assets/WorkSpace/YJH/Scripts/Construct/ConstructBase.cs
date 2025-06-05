@@ -17,6 +17,7 @@ public class ConstructBase :ScriptableObject//,IConstruct
     public bool isBuildConstructed;
     public string buildID;
     public string buildName;
+    public string buildingDescription;
     public List<string> buildRequires=new List<string>();//필요한 건물 buildid
     public List<string> buildUnlocks=new List<string>();
     public List<BuildCost> buildCosts=new List<BuildCost>();//이 건물이 필요한 코스트
@@ -34,7 +35,7 @@ public class ConstructBase :ScriptableObject//,IConstruct
     public List<BuildEffect> buildEffects=new List<BuildEffect>();
     public int spawnIndex;
     
-    public string buildingDescription;
+    //public string buildingDescription;
 
 
     public void Init()//현재는 안씀?

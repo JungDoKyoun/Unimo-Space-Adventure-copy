@@ -42,7 +42,7 @@ public class ConstructManager : MonoBehaviour
     public delegate void onConstructCostChange();
     public event onConstructCostChange OnConstructCostChange;
 
-
+    private static bool isBuildEffectAplly=false;
     private Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
     //private PlayerManager playerManager;
     
@@ -59,7 +59,10 @@ public class ConstructManager : MonoBehaviour
         DecideProgress();
         ToDictionary();
     }
-    
+    private void OnDestroy()
+    {
+        OnConstructCostChange -= SetConstructCostText;
+    }
     public void ToDictionary()
     {
         foreach(var temp in constructList)
@@ -67,16 +70,10 @@ public class ConstructManager : MonoBehaviour
             temp.ToDictionary();
         }
     }
-    public void Init()//현재는 안씀?
-    {
-        foreach (var temp in constructList)
-        {
-            temp.Init();
-        }
-    }
+    
     public void SetConstructCostText()
     {
-        Debug.Log("costupdate");
+        //Debug.Log("costupdate");
         string tempText = "";
         foreach (var buildCost in ownBuildCostDic)
         {
@@ -105,7 +102,7 @@ public class ConstructManager : MonoBehaviour
             buildInfoBuildButton.interactable = false;
             int costNum;
             FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency",out costNum) ? -costNum : 0 );
-            SetPlayer();
+            //SetPlayer();
             DecideProgress();
             
             //블루 프린트 함수 추가하기
@@ -119,7 +116,7 @@ public class ConstructManager : MonoBehaviour
     }
     public void DecideProgress()
     {
-        Debug.Log("changeimage");
+        //Debug.Log("changeimage");
         int buildingNum = 0;
         int buildedBuildingNum = 0;
         foreach (var building in constructList)
@@ -135,7 +132,7 @@ public class ConstructManager : MonoBehaviour
         }
 
         buildStateProgress=(float)buildedBuildingNum/buildingNum;
-        Debug.Log(buildStateProgress);
+       // Debug.Log(buildStateProgress);
         DebugBuildedList();
         ChangeBuildStateImage();
     }
@@ -143,7 +140,7 @@ public class ConstructManager : MonoBehaviour
     {
         foreach (var building in buildedList)
         {
-            Debug.Log(building);
+            //Debug.Log(building);
         }
     }
     public void ChangeBuildStateImage()
@@ -154,7 +151,7 @@ public class ConstructManager : MonoBehaviour
             if((1.0f/buildStateImageList.Count)*i<=buildStateProgress && buildStateProgress < (1.0f / buildStateImageList.Count)*(i+1))
             {
                 buildStateImage.sprite = buildStateImageList[i];
-                Debug.Log("changeto");
+                //Debug.Log("changeto");
             }
         }
     }
@@ -199,6 +196,11 @@ public class ConstructManager : MonoBehaviour
         SetPlayer();
         SceneManager.LoadScene("TestScene");
         
+    }
+    public void GameStartButtonPressed()
+    {
+        SetPlayer();
+
     }
 
     //public void ShowBuildPanel()
@@ -267,8 +269,12 @@ public class ConstructManager : MonoBehaviour
     //}
     public void SetPlayer()
     {
-        //Debug.Log("player!");
-        ActiveBuildEffect();
+        if (isBuildEffectAplly == false)
+        {
+            //Debug.Log("player!");
+            ActiveBuildEffect();
+            isBuildEffectAplly = true;
+        }
         //SetFinalStatusToPlayer();
     }
 

@@ -99,7 +99,14 @@ public partial class PlayerManager : IDamageable
     {
         isOnHit = true;
 
-        PlayHitEffect(contact);
+        if (PhotonNetwork.IsConnected == true)
+        {
+            photonView.RPC("PlayHitEffect", RpcTarget.All, contact);
+        }
+        else
+        {
+            PlayHitEffect(contact);
+        }
 
         currentHealth -= damage;//데미지 입음
 

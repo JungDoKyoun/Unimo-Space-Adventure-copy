@@ -3,13 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UtilityBuildBase : ConstructBase,IUtilityBuildEffect
+[CreateAssetMenu(fileName = "ConstructInfo", menuName = "ScriptableObject/UtilityConstruct")]
+public class UtilityBuildBase : ConstructBase
 {
-    public virtual Delegate IUtilityBuildEffect()
-    {
-        return null;
-    }
-
+    [SerializeField] IUtilityBuildEffect buildEffect;
+    
     
     
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public interface IUtilityBuildEffect
 {
     
-    Delegate IUtilityBuildEffect();
+    Action IUtilityBuildEffect();
 
 
 }
