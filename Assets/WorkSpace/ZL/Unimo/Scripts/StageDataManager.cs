@@ -1,4 +1,10 @@
+using JDG;
+
+using System.Collections;
+
 using UnityEngine;
+
+using UnityEngine.Events;
 
 using ZL.CS.Singleton;
 
@@ -6,7 +12,7 @@ using ZL.Unity.Singleton;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Stage Data Manager (Singleton)")]
+    [AddComponentMenu("ZL/Unimo/Stage Manager (Singleton)")]
 
     public sealed class StageDataManager : MonoSingleton<StageDataManager>
     {
@@ -34,7 +40,51 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private RelicDropData relicDropTable = null;
+        private RelicDropTable relicDropTable = null;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private PlayerManager player = null;
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private GameObject spawners = null;
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private GameObject stagePlayTimeClock = null;
+
+        [Space]
+
+        [SerializeField]
+
+        private UnityEvent onStageClearEvent = null;
+
+        [Space]
+
+        [SerializeField]
+
+        private UnityEvent onStageFailEvent = null;
 
         protected override void Awake()
         {
@@ -44,7 +94,7 @@ namespace ZL.Unity.Unimo
 
             ISingleton<RewardData>.TrySetInstance(rewardData);
 
-            ISingleton<RelicDropData>.TrySetInstance(relicDropTable);
+            ISingleton<RelicDropTable>.TrySetInstance(relicDropTable);
         }
 
         protected override void OnDestroy()
@@ -55,7 +105,68 @@ namespace ZL.Unity.Unimo
 
             ISingleton<RewardData>.Release(rewardData);
 
-            ISingleton<RelicDropData>.Release(relicDropTable);
+            ISingleton<RelicDropTable>.Release(relicDropTable);
+        }
+
+        public void StartStage()
+        {
+            player.OnPlayerDead += StageFail;
+
+            spawners.SetActive(true);
+
+            stagePlayTimeClock.SetActive(true);
+
+            StartCoroutine(ConsumFuelRoutine());
+        }
+
+        private IEnumerator ConsumFuelRoutine()
+        {
+            while (true)
+            {
+                yield return null;
+
+                PlayerFuelManager.Fuel -= stageData.FuelConsumptionAmount * Time.deltaTime;
+            }
+        }
+
+        public void StageClear()
+        {
+            GameStateManager.IsClear = true;
+
+            rewardData.SetReward();
+
+            if (FirebaseDataBaseMgr.Instance != null)
+            {
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(rewardData.InGameCurrencyAmount));
+
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(rewardData.OutGameCurrencyAmount));
+            }
+
+            if (rewardData.IsRelicDroped == true)
+            {
+                int relicDropCount = rewardData.RelicDropCount;
+
+                relicDropTable.Drop(relicDropCount);
+
+                foreach (var relic in relicDropTable.DropedRelics)
+                {
+                    Debug.Log(relic);
+                }
+            }
+
+            onStageClearEvent.Invoke();
+        }
+
+        public void StageFail()
+        {
+            GameStateManager.IsClear = false;
+
+            GameStateManager.IsRestoreMap = false;
+
+            if (FirebaseDataBaseMgr.Instance != null)
+            {
+                StartCoroutine(FirebaseDataBaseMgr.Instance.InitIngameCurrency());
+            }
         }
     }
 }

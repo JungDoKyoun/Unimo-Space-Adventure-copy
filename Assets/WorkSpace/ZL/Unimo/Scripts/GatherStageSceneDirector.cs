@@ -22,65 +22,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private PlayerManager player = null;
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
-        private GameObject spawners = null;
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
-        private Clock stagePlayTimeClock = null;
-
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
-        [PropertyField]
-
-        [ReadOnly(false)]
-
-        [Button(nameof(StageClear))]
-
         private GameObject stageClearPopupScreen = null;
-
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
-        [PropertyField]
-
-        [ReadOnly(false)]
-
-        [Button(nameof(StageFail))]
-
-        private GameObject stageFailPopupScreen = null;
-
-        [Space]
 
         [SerializeField]
 
@@ -92,52 +34,42 @@ namespace ZL.Unity.Unimo
 
         private GameObject relicSelectionScreen = null;
 
-        protected override void Awake()
-        {
-            base.Awake();
+        [Space]
 
-            player.OnPlayerDead += StageFail;
-        }
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private GameObject stageFailPopupScreen = null;
 
         protected override IEnumerator Start()
         {
             yield return base.Start();
 
-            spawners.SetActive(true);
-
-            stagePlayTimeClock.gameObject.SetActive(true);
-
-            PlayerFuelManager.Instance.StartConsumption();
+            StageDataManager.Instance.StartStage();
         }
 
-        public void StageClear()
+        public void StageClearDirection()
         {
-            if (stageClearRoutine != null)
+            if (stageClearDirectionRoutine != null)
             {
                 return;
             }
 
-            stageClearRoutine = StageClearRoutine();
+            stageClearDirectionRoutine = StageClearDirectionRoutine();
 
-            StartCoroutine(stageClearRoutine);
+            StartCoroutine(stageClearDirectionRoutine);
         }
 
-        private IEnumerator stageClearRoutine = null;
+        private IEnumerator stageClearDirectionRoutine = null;
 
-        private IEnumerator StageClearRoutine()
+        private IEnumerator StageClearDirectionRoutine()
         {
             TimeEx.Pause();
-
-            GameStateManager.IsClear = true;
-
-            RewardData.Instance.SetReward();
-
-            if (FirebaseDataBaseMgr.Instance != null)
-            {
-                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(RewardData.Instance.InGameCurrencyAmount));
-
-                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(RewardData.Instance.OutGameCurrencyAmount));
-            }
 
             stageClearPopupScreen.SetActive(true);
 
@@ -148,15 +80,6 @@ namespace ZL.Unity.Unimo
 
             if (RewardData.Instance.IsRelicDroped == true)
             {
-                int relicDropCount = RewardData.Instance.RelicDropCount;
-
-                RelicDropData.Instance.Drop(relicDropCount);
-
-                foreach (var relic in RelicDropData.Instance.DropedRelics)
-                {
-                    Debug.Log(relic);
-                }
-
                 relicSelectionScreen.SetActive(true);
 
                 while (relicSelectionScreen.activeSelf == true)
@@ -168,32 +91,23 @@ namespace ZL.Unity.Unimo
             LoadScene("Station");
         }
 
-        public void StageFail()
+        public void StageFailDirection()
         {
-            if (stageFailRoutine != null)
+            if (stageFailDirectionRoutine != null)
             {
                 return;
             }
 
-            stageFailRoutine = StageFailRoutine();
+            stageFailDirectionRoutine = StageFailDirectionRoutine();
 
-            StartCoroutine(stageFailRoutine);
+            StartCoroutine(stageFailDirectionRoutine);
         }
 
-        private IEnumerator stageFailRoutine = null;
+        private IEnumerator stageFailDirectionRoutine = null;
 
-        private IEnumerator StageFailRoutine()
+        private IEnumerator StageFailDirectionRoutine()
         {
             TimeEx.Pause();
-
-            GameStateManager.IsClear = false;
-
-            GameStateManager.IsRestoreMap = false;
-
-            if (FirebaseDataBaseMgr.Instance != null)
-            {
-                StartCoroutine(FirebaseDataBaseMgr.Instance.InitIngameCurrency());
-            }
 
             stageFailPopupScreen.SetActive(true);
 

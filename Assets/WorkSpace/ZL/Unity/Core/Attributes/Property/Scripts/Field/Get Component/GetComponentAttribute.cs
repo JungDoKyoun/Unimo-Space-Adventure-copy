@@ -17,7 +17,7 @@ namespace ZL.Unity
         {
             if (isTypeValid == false)
             {
-                drawer.DrawErrorBox($"{NameTag} Field type is invalid.");
+                drawer.DrawErrorBox($"{AttributeNameTag} Field type is invalid.");
 
                 return;
             }

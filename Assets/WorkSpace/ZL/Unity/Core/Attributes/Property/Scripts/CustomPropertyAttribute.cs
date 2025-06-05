@@ -7,8 +7,8 @@ using System.Reflection;
 #if UNITY_EDITOR
 
 using UnityEditor;
-using UnityEditorInternal;
 
+using UnityEditorInternal;
 
 #endif
 
@@ -28,19 +28,20 @@ namespace ZL.Unity
 
         protected const int defaultFontSize = 12;
 
-        public static Color DefaultTextColor
+        protected static Color DefaultTextColor
         {
             get
             {
+                #if UNITY_EDITOR
+
                 if (EditorGUIUtility.isProSkin == true)
                 {
                     return new Color(0.769f, 0.769f, 0.769f, 1f);
                 }
 
-                else
-                {
-                    return new Color(0.035f, 0.035f, 0.03f, 1f);
-                }
+                #endif
+
+                return new Color(0.035f, 0.035f, 0.03f, 1f);
             }
         }
 
@@ -66,15 +67,15 @@ namespace ZL.Unity
 
         #if UNITY_EDITOR
 
-        private string nameTag = null;
+        private string attributeNameTag = null;
 
-        public string NameTag
+        protected string AttributeNameTag
         {
             get
             {
-                nameTag ??= $"[{GetType().Name.RemoveFromBehind("Attribute")}]";
+                attributeNameTag ??= $"[{GetType().Name.RemoveFromBehind("Attribute")}]";
 
-                return nameTag;
+                return attributeNameTag;
             }
         }
 
@@ -119,8 +120,6 @@ namespace ZL.Unity
 
             public bool IsPropertyFieldDrawn { get; set; }
 
-            private UnityEventDrawer unityEventDrawer = null;
-
             public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
             {
                 drawPosition = position;
@@ -131,12 +130,12 @@ namespace ZL.Unity
 
                 PropertyLabel = label;
 
-                if (TargetObject == null)
+                TargetObject = property.serializedObject.targetObject;
+
+                TargetComponent = TargetObject as Component;
+
+                if (attributes == null)
                 {
-                    TargetObject = property.serializedObject.targetObject;
-
-                    TargetComponent = TargetObject as Component;
-
                     attributes = fieldInfo.GetCustomAttributes<CustomPropertyAttribute>();
 
                     foreach (var attribute in attributes)
@@ -186,9 +185,17 @@ namespace ZL.Unity
 
             public void DrawPropertyField()
             {
-                EditorGUI.PropertyField(drawPosition, Property, PropertyLabel, true);
+                try
+                {
+                    EditorGUI.PropertyField(drawPosition, Property, PropertyLabel, true);
 
-                Margin(EditorGUI.GetPropertyHeight(Property, PropertyLabel, true) + 2f);
+                    Margin(EditorGUI.GetPropertyHeight(Property, PropertyLabel, true) + 2f);
+                }
+
+                catch
+                {
+
+                }
             }
 
             public void DrawDefaultPropertyField()

@@ -48,7 +48,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private RelicDropDataSheet relicDropTableSheet = null;
+        private RelicDropTableSheet relicDropTableSheet = null;
 
         [SerializeField]
 
@@ -90,6 +90,16 @@ namespace ZL.Unity.Unimo
 
         private StageDataSheet stageDataSheet = null;
 
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private StringTableSheet stringTableSheet = null;
+
         protected override void Awake()
         {
             base.Awake();
@@ -98,7 +108,7 @@ namespace ZL.Unity.Unimo
 
             ISingleton<GatheringDataSheet>.TrySetInstance(gatheringDataSheet);
 
-            ISingleton<RelicDropDataSheet>.TrySetInstance(relicDropTableSheet);
+            ISingleton<RelicDropTableSheet>.TrySetInstance(relicDropTableSheet);
 
             ISingleton<RewardDataSheet>.TrySetInstance(rewardDataSheet);
 
@@ -107,6 +117,8 @@ namespace ZL.Unity.Unimo
             ISingleton<SpawnerDataSheet>.TrySetInstance(spawnerDataSheet);
 
             ISingleton<StageDataSheet>.TrySetInstance(stageDataSheet);
+
+            ISingleton<StringTableSheet>.TrySetInstance(stringTableSheet);
 
             if (updateDataOnAwake == true)
             {
@@ -118,9 +130,19 @@ namespace ZL.Unity.Unimo
         {
             enemyDataSheet.Read();
 
-            spawnerDataSheet.Read();
+            gatheringDataSheet.Read();
+
+            relicDropTableSheet.Read();
+
+            rewardDataSheet.Read();
 
             spawnPatternDataSheet.Read();
+
+            spawnerDataSheet.Read();
+
+            stageDataSheet.Read();
+
+            stringTableSheet.Read();
         }
     }
 }

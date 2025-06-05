@@ -1,8 +1,4 @@
-using System.Collections;
-
 using UnityEngine;
-
-using UnityEngine.Events;
 
 using ZL.Unity.Singleton;
 
@@ -24,31 +20,23 @@ namespace ZL.Unity.Unimo
 
         private SliderValueDisplayer fuelBar = null;
 
-        [Space]
+        private static float fuelMax = 0f;
 
-        [SerializeField]
+        public static float FuelMax
+        {
+            get => fuelMax;
 
-        private UnityEvent onFuelEmptyEvent = null;
+            set
+            {
+                fuelMax = value;
 
-        [Space]
+                Fuel = fuel;
+            }
+        }
 
-        [SerializeField]
+        private static float fuel = 0f;
 
-        [UsingCustomProperty]
-
-        [Alias("Fuel Max (Temp)")]
-
-        private float fuelMax = 0f;
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Alias("Fuel (Debugging)")]
-
-        private float fuel = 0f;
-
-        public float Fuel
+        public static float Fuel
         {
             get => fuel;
 
@@ -56,60 +44,20 @@ namespace ZL.Unity.Unimo
             {
                 fuel = Mathf.Clamp(value, 0f, fuelMax);
 
-                fuelBar.Slider.value = fuel;
+                Instance.fuelBar.Slider.value = fuel;
 
                 if (fuel == 0f)
                 {
-                    onFuelEmptyEvent.Invoke();
+                    StageDataManager.Instance.StageFail();
                 }
             }
         }
 
-        private float fuelConsumptionAmount = 0f;
-
-        private void Start()
+        public void Initialize()
         {
-            fuelBar.Slider.maxValue = fuelMax;
+            fuelBar.Slider.maxValue = 100f;
 
             Fuel = fuelMax;
-
-            fuelConsumptionAmount = StageData.Instance.FuelConsumptionAmount;
-        }
-
-        public void StartConsumption()
-        {
-            if (consumptionRoutine != null)
-            {
-                return;
-            }
-
-            consumptionRoutine = ConsumptionRoutine();
-
-            StartCoroutine(consumptionRoutine);
-        }
-
-        public void StopConsumption()
-        {
-            if (consumptionRoutine == null)
-            {
-                return;
-            }
-
-            StopCoroutine(consumptionRoutine);
-
-            consumptionRoutine = null;
-        }
-
-        private IEnumerator consumptionRoutine = null;
-
-        private IEnumerator ConsumptionRoutine()
-        {
-            while (true)
-            {
-                yield return null;
-
-                Fuel -= fuelConsumptionAmount * Time.deltaTime;
-            }
         }
     }
 }

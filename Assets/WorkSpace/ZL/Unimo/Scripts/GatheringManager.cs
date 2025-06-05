@@ -2,8 +2,6 @@ using TMPro;
 
 using UnityEngine;
 
-using UnityEngine.Events;
-
 using ZL.CS;
 
 using ZL.Unity.Singleton;
@@ -26,12 +24,6 @@ namespace ZL.Unity.Unimo
 
         private TextMeshProUGUI gatherProgressTextUI = null;
 
-        [Space]
-
-        [SerializeField]
-
-        private UnityEvent onGatherCompleteEvent = null;
-
         private int targetGatheringCount = 0;
 
         public int TargetGatheringCount
@@ -53,7 +45,7 @@ namespace ZL.Unity.Unimo
 
                 if (gatheringCount >= targetGatheringCount)
                 {
-                    onGatherCompleteEvent.Invoke();
+                    StageDataManager.Instance.StageClear();
                 }
             }
         }

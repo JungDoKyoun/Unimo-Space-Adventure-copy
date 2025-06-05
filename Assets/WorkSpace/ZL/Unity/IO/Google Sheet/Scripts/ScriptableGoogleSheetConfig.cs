@@ -12,6 +12,10 @@ namespace ZL.Unity.IO.GoogleSheet
 
         [SerializeField]
 
+        [UsingCustomProperty]
+
+        [Essential]
+
         private string sheetId = "";
 
         public string SheetID
@@ -21,12 +25,18 @@ namespace ZL.Unity.IO.GoogleSheet
 
         [SerializeField]
 
-        private string worksheetName = "Sheet";
+        [UsingCustomProperty]
+
+        [Essential]
+
+        private string worksheetName = "";
 
         public string WorksheetName
         {
             get => worksheetName;
         }
+
+        [Space]
 
         [SerializeField]
 

@@ -256,12 +256,9 @@ MonoBehaviour:
   startDelay: 0
   screenFader: {fileID: 1079363286}
   fadeDuration: 2
-  player: {fileID: 960589846}
-  spawners: {fileID: 1985032566}
-  stagePlayTimeClock: {fileID: 515242639}
   stageClearPopupScreen: {fileID: 782895251}
-  stageFailPopupScreen: {fileID: 4127281114031812114}
   relicSelectionScreen: {fileID: 6631525378305361780}
+  stageFailPopupScreen: {fileID: 4127281114031812114}
 --- !u!4 &64986603
 Transform:
   m_ObjectHideFlags: 0
@@ -449,23 +446,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fuelBar: {fileID: 1731148032}
-  onFuelEmptyEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 64986602}
-        m_TargetAssemblyTypeName: ZL.Unity.Unimo.GatherStageSceneDirector, Assembly-CSharp
-        m_MethodName: StageFail
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  fuelMax: 100
-  fuel: 0
 --- !u!4 &106345702
 Transform:
   m_ObjectHideFlags: 0
@@ -560,7 +540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolDictionary:
     items:
-    - key: Energy
+    - key: Energy 1
       value:
         prefab: {fileID: 0}
         parent: {fileID: 1194197490}
@@ -920,7 +900,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7734899054036944379, guid: a3ad64d3e8ae4dd42a402ace39c43b7c, type: 3}
   m_PrefabInstance: {fileID: 515242638}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 515242641}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dbb1016b73bce384095028df9fd5435f, type: 3}
@@ -929,6 +909,11 @@ MonoBehaviour:
 --- !u!224 &515242640 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3881199270716669869, guid: a3ad64d3e8ae4dd42a402ace39c43b7c, type: 3}
+  m_PrefabInstance: {fileID: 515242638}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &515242641 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6353543194209813373, guid: a3ad64d3e8ae4dd42a402ace39c43b7c, type: 3}
   m_PrefabInstance: {fileID: 515242638}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &626797763
@@ -942,7 +927,7 @@ GameObject:
   - component: {fileID: 626797765}
   - component: {fileID: 626797764}
   m_Layer: 0
-  m_Name: Stage Data Manager
+  m_Name: Stage Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -963,6 +948,39 @@ MonoBehaviour:
   stageData: {fileID: 11400000, guid: 4425d876430e06447bab19342a58d9b0, type: 2}
   rewardData: {fileID: 11400000, guid: 62a02291f364e054ba991cc95097ba59, type: 2}
   relicDropTable: {fileID: 11400000, guid: 6d624b9da4551414dbdc6e468c281701, type: 2}
+  player: {fileID: 960589846}
+  spawners: {fileID: 1985032566}
+  stagePlayTimeClock: {fileID: 515242641}
+  onStageClearEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 64986602}
+        m_TargetAssemblyTypeName: ZL.Unity.Unimo.GatherStageSceneDirector, Assembly-CSharp
+        m_MethodName: StageClearDirection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onStageFailEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 64986602}
+        m_TargetAssemblyTypeName: ZL.Unity.Unimo.GatherStageSceneDirector, Assembly-CSharp
+        m_MethodName: StageFailDirection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &626797765
 Transform:
   m_ObjectHideFlags: 0
@@ -1207,7 +1225,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -1403,21 +1421,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gatherProgressTextUI: {fileID: 1978084713}
-  onGatherCompleteEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 64986602}
-        m_TargetAssemblyTypeName: ZL.Unity.Unimo.GatherStageSceneDirector, Assembly-CSharp
-        m_MethodName: StageClear
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!4 &773755635
 Transform:
   m_ObjectHideFlags: 0
@@ -1905,7 +1908,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1194197490}
   m_Layer: 0
-  m_Name: Energy
+  m_Name: Energy 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2500,7 +2503,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1801009046}
   m_Layer: 0
-  m_Name: Gathering
+  m_Name: Gathering 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3533,7 +3536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 989094065091301861, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 170.08
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 989094065091301861, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
       propertyPath: m_AnchoredPosition.y

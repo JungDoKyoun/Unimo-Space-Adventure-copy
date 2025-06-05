@@ -33,6 +33,10 @@ namespace ZL.Unity.IO.GoogleSheet
 
         [SerializeField]
 
+        [UsingCustomProperty]
+
+        [Button("CreateNewConfig")]
+
         private ScriptableGoogleSheetConfig sheetConfig = null;
 
         [Space]
@@ -51,7 +55,7 @@ namespace ZL.Unity.IO.GoogleSheet
 
         [Margin]
 
-        [Button(nameof(Create))]
+        [Button("AddNewData")]
 
         private bool containsMergedCells = false;
 
@@ -88,6 +92,46 @@ namespace ZL.Unity.IO.GoogleSheet
 
         private int requestCount = 0;
 
+        #if UNITY_EDITOR
+
+        private string DirectoryPath
+        {
+            get
+            {
+                var assetPath = AssetDatabase.GetAssetPath(this);
+
+                return Path.GetDirectoryName(assetPath);
+            }
+        }
+
+        public void CreateNewConfig()
+        {
+            sheetConfig = CreateInstance<ScriptableGoogleSheetConfig>();
+
+            AssetDatabaseEx.CreateAsset(sheetConfig, DirectoryPath, name + " Config");
+
+            AssetDatabase.SaveAssets();
+
+            EditorUtility.SetDirty(this);
+        }
+
+        public void AddNewData()
+        {
+            var data = CreateInstance<TGoogleSheetData>();
+
+            Array.Resize(ref datas, datas.Length + 1);
+
+            datas[^1] = data;
+
+            AssetDatabaseEx.CreateAsset(data, DirectoryPath, 1);
+
+            AssetDatabase.SaveAssets();
+
+            EditorUtility.SetDirty(this);
+        }
+
+        #endif
+
         public void Read()
         {
             SpreadsheetManager.Read(sheetConfig.GetSearch(), OnReadSuccessful, containsMergedCells);
@@ -113,7 +157,7 @@ namespace ZL.Unity.IO.GoogleSheet
 
             requestCount = datas.Length + 1;
 
-            SpreadsheetManager.Write(sheetConfig.GetSearch($"{column}{row++}"), new ValueRange(datas[0].GetHeader()), OnWriteSuccessful);
+            SpreadsheetManager.Write(sheetConfig.GetSearch($"{column}{row++}"), new ValueRange(datas[0].GetHeaders()), OnWriteSuccessful);
 
             for (int i = 0; i < datas.Length; ++i)
             {
@@ -130,22 +174,5 @@ namespace ZL.Unity.IO.GoogleSheet
                 FixedDebug.Log($"Successfully written '{name}' to Google sheet.");
             }
         }
-
-        #if UNITY_EDITOR
-
-        public void Create()
-        {
-            var assetPath = AssetDatabase.GetAssetPath(this);
-
-            var folderPath = Path.GetDirectoryName(assetPath);
-
-            var data = ScriptableObjectEx.CreateAndSaveAsset<TGoogleSheetData>(folderPath);
-
-            Array.Resize(ref datas, datas.Length + 1);
-
-            datas[^1] = data;
-        }
-
-        #endif
     }
 }
