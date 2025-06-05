@@ -37,10 +37,12 @@ namespace JDG
             _redRayHitPointPrefab = Resources.Load<GameObject>("WorldMap/RedRayHitPoint");
             _redRightRayHitPointInstance = Instantiate(_redRayHitPointPrefab);
             _redRightRayHitPointInstance.transform.localScale = new Vector3(_pointScale, _pointScale, 0);
+            _redRightRayHitPointInstance.transform.position = new Vector3(-100, -100, -100);
             _redRightRayHitPointInstance.SetActive(false);
             _redLeftRayHitPointInstance = Instantiate(_redRayHitPointPrefab);
             _redLeftRayHitPointInstance.transform.localScale = new Vector3(_pointScale, _pointScale, 0);
             _redLeftRayHitPointInstance.SetActive(false);
+            _redLeftRayHitPointInstance.transform.position = new Vector3(-100, -100, -100);
         }
 
         private bool IsTriggerPressed(ActionBasedController controller)

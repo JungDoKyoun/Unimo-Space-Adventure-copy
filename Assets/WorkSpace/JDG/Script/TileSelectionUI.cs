@@ -58,6 +58,7 @@ namespace JDG
             UIManager.Instance.IsUIOpen = true;
 
             var env = TileEnvironmentManager.Instance.GetEnvironmentInfo(tile.TileData.EnvironmentType);
+            Debug.Log(env);
             var display = TileDisplayInfoManager.Instance.GetDisplayInfo(tile.TileData.TileType, tile.TileData.ModeType);
             var rewards = RewardManager.Instance.GetTileRewards(tile.TileData.TileType, tile.TileData.ModeType, tile.TileData.DifficultyType);
             if (env != null)
@@ -81,7 +82,6 @@ namespace JDG
 
             string key = tile.TileData.SceneName;
 
-            //Debug.Log(_rewardDataSheet.DataDictionary.TryGetValue(key, out var rewardData));
             if(_rewardDataSheet.DataDictionary.TryGetValue(key, out var rewardData))
             {
                 if (rewardData.InGameCurrencyAmountMin > 0)
@@ -105,7 +105,7 @@ namespace JDG
                 // 유물
                 if (rewardData.RelicDropCount > 0)
                 {
-                    CreateRewardSlot("랜덤유물", 0, rewardData.RelicDropCount, "RelicIcon");
+                    CreateRewardSlot("랜덤유물", 0, rewardData.RelicDropCount, "RandomRelicIcon");
                 }
             }
 

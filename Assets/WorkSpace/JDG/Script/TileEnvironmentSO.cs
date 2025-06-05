@@ -7,7 +7,7 @@ namespace JDG
 {
     public enum EnvironmentType
     {
-        None
+        None, Fire, Water, Air
     }
 
     [CreateAssetMenu(fileName = "TileEnvironmentSO", menuName = "SO/TileSO/TileEnvironmentSO")]
