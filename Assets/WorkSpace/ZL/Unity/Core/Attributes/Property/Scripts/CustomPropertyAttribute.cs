@@ -32,6 +32,8 @@ namespace ZL.Unity
         {
             get
             {
+                #if UNITY_EDITOR
+
                 if (EditorGUIUtility.isProSkin == true)
                 {
                     return new Color(0.769f, 0.769f, 0.769f, 1f);
@@ -41,6 +43,12 @@ namespace ZL.Unity
                 {
                     return new Color(0.035f, 0.035f, 0.03f, 1f);
                 }
+
+                #else
+
+                return default;
+
+                #endif
             }
         }
 
@@ -64,7 +72,7 @@ namespace ZL.Unity
             }
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
 
         private string nameTag = null;
 
@@ -350,6 +358,6 @@ namespace ZL.Unity
             }
         }
 
-        #endif
+#endif
     }
 }

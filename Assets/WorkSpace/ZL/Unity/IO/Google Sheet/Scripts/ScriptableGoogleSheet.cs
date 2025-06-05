@@ -51,7 +51,11 @@ namespace ZL.Unity.IO.GoogleSheet
 
         [Margin]
 
+        #if UNITY_EDITOR
+
         [Button(nameof(Create))]
+
+        #endif
 
         private bool containsMergedCells = false;
 

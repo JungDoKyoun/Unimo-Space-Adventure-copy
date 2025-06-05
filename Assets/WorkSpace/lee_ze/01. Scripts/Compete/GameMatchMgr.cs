@@ -4,7 +4,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
 using TMPro;
-using System;
+using UnityEngine.SceneManagement;
 
 public class GameMatchMgr : MonoBehaviourPunCallbacks
 {
@@ -162,11 +162,15 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
     private IEnumerator StartMatch()
     {
+        if (PhotonNetwork.IsMasterClient == false)
+        {
+            yield break;
+        }
+
         yield return new WaitForSeconds(3f); // 3초 뒤에 게임 시작
 
-        Debug.Log("Game Start");
-
         // TODO: 씬 넘어가는 스크립트
+        PhotonNetwork.LoadLevel("Test");
     }
 
     private void SetStopMatchButton()
@@ -222,7 +226,11 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
         SetPlayerCheckBox();
 
-        StartCoroutine(StartMatch());
+        // 방장만 호출하는 메서드(게임 시작)
+        if (PhotonNetwork.IsMasterClient == true)
+        {
+            StartCoroutine(StartMatch());
+        }
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
