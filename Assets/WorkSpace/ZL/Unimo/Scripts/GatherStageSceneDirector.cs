@@ -6,11 +6,9 @@ using UnityEngine;
 
 using ZL.Unity.Directing;
 
-using ZL.Unity.UI;
-
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Gather Stage Scene Director")]
+    [AddComponentMenu("ZL/Unimo/Gather Stage Scene Director (Singleton)")]
 
     public sealed class GatherStageSceneDirector : SceneDirector<GatherStageSceneDirector>
     {
@@ -24,31 +22,47 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private GatherStageData stageData = null;
-
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
         private PlayerManager player = null;
 
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private GameObject spawners = null;
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
+        private Clock stagePlayTimeClock = null;
+
         [Space]
 
         [SerializeField]
 
-        private SliderValueDisplayer fuelBar = null;
+        [UsingCustomProperty]
 
-        [SerializeField]
+        [Essential]
 
-        private float fuelMax = 100f;
+        [ReadOnlyWhenPlayMode]
 
-        /*[Space]
+        [PropertyField]
+
+        [ReadOnly(false)]
+
+        [Button(nameof(StageClear))]
+
+        private GameObject stageClearPopupScreen = null;
+
+        [Space]
 
         [SerializeField]
 
@@ -58,7 +72,15 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private RandomSpawner monster1Spawner1 = null;
+        [PropertyField]
+
+        [ReadOnly(false)]
+
+        [Button(nameof(StageFail))]
+
+        private GameObject stageFailPopupScreen = null;
+
+        [Space]
 
         [SerializeField]
 
@@ -68,131 +90,119 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private RandomSpawner monster2Spawner1 = null;
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
-        private RandomSpawner gatheringSpawner1 = null;*/
-
-        public Transform EnemyTarget { get; private set; } = null;
-
-        private int collectedResourceAmount = 0;
-
-        private float fuel = 0f;
-
-        private bool isPlaying = true;
+        private GameObject relicSelectionScreen = null;
 
         protected override void Awake()
         {
             base.Awake();
 
             player.OnPlayerDead += StageFail;
-
-            EnemyTarget = player.transform;
-
-            fuelBar.Slider.maxValue = fuelMax;
-
-            fuelBar.Slider.value = fuel = fuelMax;
         }
 
-        private void Update()
+        protected override IEnumerator Start()
         {
-            if (isPlaying == false)
+            yield return base.Start();
+
+            spawners.SetActive(true);
+
+            stagePlayTimeClock.gameObject.SetActive(true);
+
+            PlayerFuelManager.Instance.StartConsumption();
+        }
+
+        public void StageClear()
+        {
+            if (stageClearRoutine != null)
             {
                 return;
             }
 
-            fuel -= stageData.FuelDrainAmount * Time.deltaTime;
+            stageClearRoutine = StageClearRoutine();
 
-            fuelBar.Slider.value = fuel;
-
-            if (fuel <= 0f)
-            {
-                fuel = 0f;
-
-                StageFail();
-            }
+            StartCoroutine(stageClearRoutine);
         }
 
-        public void GetResource(int value)
-        {
-            collectedResourceAmount += value;
-
-            // UI 업데이트
-            FixedDebug.Log($"자원 채집: {collectedResourceAmount}/{stageData.TargetResourceAmount}");
-
-            if (collectedResourceAmount >= stageData.TargetResourceAmount)
-            {
-                StageClear();
-            }
-        }
-
-        public void GetFuel(float value)
-        {
-            fuel += value;
-
-            if (fuel > fuelMax)
-            {
-                fuel = fuelMax;
-            }
-        }
-
-        private void StageClear()
-        {
-            StartCoroutine(StageClearRoutine());
-        }
+        private IEnumerator stageClearRoutine = null;
 
         private IEnumerator StageClearRoutine()
         {
-            isPlaying = false;
-
-            // UI 등장
-            FixedDebug.Log("스테이지 클리어");
-
-            FadeOut();
+            TimeEx.Pause();
 
             GameStateManager.IsClear = true;
 
+            RewardData.Instance.SetReward();
+
             if (FirebaseDataBaseMgr.Instance != null)
             {
-                yield return FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(stageData.RewardIngameCurrency);
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(RewardData.Instance.InGameCurrencyAmount));
 
-                yield return FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(stageData.RewardMetaCurrency);
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(RewardData.Instance.OutGameCurrencyAmount));
             }
 
-            FixedSceneManager.LoadScene(this, fadeDuration, "Station");
+            stageClearPopupScreen.SetActive(true);
+
+            while (stageClearPopupScreen.activeSelf == true)
+            {
+                yield return null;
+            }
+
+            if (RewardData.Instance.IsRelicDroped == true)
+            {
+                int relicDropCount = RewardData.Instance.RelicDropCount;
+
+                RelicDropData.Instance.Drop(relicDropCount);
+
+                foreach (var relic in RelicDropData.Instance.DropedRelics)
+                {
+                    Debug.Log(relic);
+                }
+
+                relicSelectionScreen.SetActive(true);
+
+                while (relicSelectionScreen.activeSelf == true)
+                {
+                    yield return null;
+                }
+            }
+
+            LoadScene("Station");
         }
 
-        private void StageFail()
+        public void StageFail()
         {
-            StartCoroutine(StageFailRoutine());
+            if (stageFailRoutine != null)
+            {
+                return;
+            }
+
+            stageFailRoutine = StageFailRoutine();
+
+            StartCoroutine(stageFailRoutine);
         }
+
+        private IEnumerator stageFailRoutine = null;
 
         private IEnumerator StageFailRoutine()
         {
-            isPlaying = false;
-
-            // UI 등장
-            FixedDebug.Log("스테이지 실패");
-
-            FadeOut();
-
-            GameStateManager.IsRestoreMap = false;
+            TimeEx.Pause();
 
             GameStateManager.IsClear = false;
 
+            GameStateManager.IsRestoreMap = false;
+
             if (FirebaseDataBaseMgr.Instance != null)
             {
-                yield return FirebaseDataBaseMgr.Instance.InitIngameCurrency();
+                StartCoroutine(FirebaseDataBaseMgr.Instance.InitIngameCurrency());
             }
 
-            FixedSceneManager.LoadScene(this, fadeDuration, "Station");
+            stageFailPopupScreen.SetActive(true);
+
+            while (stageFailPopupScreen.activeSelf == true)
+            {
+                yield return null;
+            }
+
+            LoadScene("Station");
         }
     }
 }

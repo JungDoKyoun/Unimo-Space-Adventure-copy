@@ -105,14 +105,5 @@ namespace ZL.Unity
         {
             return instance.gameObject.AddComponents(components);
         }
-
-        public static TComponent SetActive<TComponent>(this TComponent instance, bool value)
-
-            where TComponent : Component
-        {
-            instance.gameObject.SetActive(value);
-
-            return instance;
-        }
     }
 }

@@ -11,7 +11,7 @@ namespace ZL.Unity.Tweening
         public override Vector3 Value
         {
             get => transform.localScale;
-            
+
             set => transform.localScale = value;
         }
     }

@@ -6,7 +6,7 @@ using ZL.Unity.Singleton;
 
 namespace ZL.Unity.Pooling
 {
-    [AddComponentMenu("ZL/Pooling/Object Pool Manager")]
+    [AddComponentMenu("ZL/Pooling/Object Pool Manager (Singleton)")]
 
     public class ObjectPoolManager : MonoSingleton<ObjectPoolManager>
     {

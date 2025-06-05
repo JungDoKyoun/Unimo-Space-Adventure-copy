@@ -4,9 +4,9 @@ using ZL.Unity.IO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {
-    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Gathering Data Sheet", fileName = "Gathering Data Sheet")]
+    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Gathering Data Sheet (Singleton)", fileName = "Gathering Data Sheet (Singleton)")]
 
-    public sealed class GatheringDataSheet : ScriptableGoogleSheet<GatheringData>
+    public sealed class GatheringDataSheet : ScriptableGoogleSheet<GatheringDataSheet, GatheringData>
     {
 
     }

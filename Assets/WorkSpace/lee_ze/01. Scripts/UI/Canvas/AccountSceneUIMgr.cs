@@ -13,13 +13,19 @@ public class AccountSceneUIMgr : MonoBehaviour
 
     private Button startButton;
 
+    private Button logoutButton;
+
     private void Start()
     {
         SetCanvas(FirebaseAuthMgr.HasUser);
 
         startButton = accountCanvas.transform.Find("Account/Start Button")?.GetComponent<Button>();
 
-        startButton.onClick.AddListener(() => SetCanvas(FirebaseAuthMgr.HasUser));
+        logoutButton = modeSelectionCanvas.transform.Find("Logout Button")?.GetComponent<Button>();
+
+        startButton.onClick.AddListener(() => SetCanvas(true));
+
+        logoutButton.onClick.AddListener(() => SetCanvas(false));
     }
 
     private void SetCanvas(bool hasUser)
@@ -31,6 +37,8 @@ public class AccountSceneUIMgr : MonoBehaviour
 
     private void OnDestroy()
     {
-        startButton.onClick.RemoveListener(() => SetCanvas(FirebaseAuthMgr.HasUser));
+        startButton.onClick.RemoveListener(() => SetCanvas(true));
+
+        logoutButton.onClick.RemoveListener(() => SetCanvas(false));
     }
 }

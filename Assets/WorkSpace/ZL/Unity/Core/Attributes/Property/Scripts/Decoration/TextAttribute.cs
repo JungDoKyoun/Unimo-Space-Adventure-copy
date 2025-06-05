@@ -25,7 +25,7 @@ namespace ZL.Unity
                 richText = true,
             };
 
-            style.normal.textColor = defaultTextColor;
+            style.normal.textColor = DefaultTextColor;
         }
 
         #if UNITY_EDITOR

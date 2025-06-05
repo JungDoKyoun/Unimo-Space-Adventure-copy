@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ZL.Unity.IO.GoogleSheet
 {
-    [CreateAssetMenu(menuName = "ZL/Google Sheet/Google Sheet Config (SO)", fileName = "Sheet Config")]
+    [CreateAssetMenu(menuName = "ZL/Google Sheet/Google Sheet Config", fileName = "Google Sheet Config")]
 
     public sealed class ScriptableGoogleSheetConfig : ScriptableObject
     {
@@ -14,37 +14,55 @@ namespace ZL.Unity.IO.GoogleSheet
 
         private string sheetId = "";
 
-        public string SheetID => sheetId;
+        public string SheetID
+        {
+            get => sheetId;
+        }
 
         [SerializeField]
 
         private string worksheetName = "Sheet";
 
-        public string WorksheetName => worksheetName;
+        public string WorksheetName
+        {
+            get => worksheetName;
+        }
 
         [SerializeField]
 
         private string startCell = "A1";
 
-        public string StartCell => startCell;
+        public string StartCell
+        {
+            get => startCell;
+        }
 
         [SerializeField]
 
         private string endCell = "Z100";
 
-        public string EndCell => endCell;
+        public string EndCell
+        {
+            get => endCell;
+        }
 
         [SerializeField]
 
         private string titleColumn = "A";
 
-        public string TitleColumn => titleColumn;
+        public string TitleColumn
+        {
+            get => titleColumn;
+        }
 
         [SerializeField]
 
         private int titleRow = 1;
 
-        public int TitleRow => titleRow;
+        public int TitleRow
+        {
+            get => titleRow;
+        }
 
         public GSTU_Search GetSearch()
         {

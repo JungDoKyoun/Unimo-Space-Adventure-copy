@@ -38,12 +38,12 @@ namespace ZL.Unity.Server.Photon
 
             item.transform.SetAsLastSibling();
 
-            item.SetActive(true);
+            item.gameObject.SetActive(true);
         }
 
         public void Remove(Player player)
         {
-            playerListItemPool[player.ActorNumber].SetActive(false);
+            playerListItemPool[player.ActorNumber].gameObject.SetActive(false);
         }
     }
 }

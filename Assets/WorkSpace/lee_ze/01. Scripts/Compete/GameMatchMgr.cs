@@ -14,6 +14,13 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject matchingCanvas;
 
+    [SerializeField]
+    private GameObject playerCheckBox;
+
+    private GameObject[] tempCheckBox;
+
+    private Transform[] placeForCheckBox;
+
     private Button quickMatchButton;
 
     private Button stopMatchButton;
@@ -79,6 +86,35 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
         else
         {
             star.color = Color.white;
+        }
+    }
+
+    private void SetPlayerCheckBox()
+    {
+        if (placeForCheckBox == null)
+        {
+            placeForCheckBox = new Transform[PhotonNetwork.CurrentRoom.MaxPlayers];
+
+            tempCheckBox = new GameObject[PhotonNetwork.CurrentRoom.MaxPlayers];
+
+            for (int i = 0; i < PhotonNetwork.CurrentRoom.MaxPlayers; i++)
+            {
+                placeForCheckBox[i] = GameObject.Find("Matching Canvas").transform.Find($"Matching Panel/Player Checker/Player_{i + 1}");
+
+                tempCheckBox[i] = Instantiate(playerCheckBox, placeForCheckBox[i].position, placeForCheckBox[i].rotation, placeForCheckBox[i]);
+            }
+
+            for (int j = 0; j < PhotonNetwork.CurrentRoom.PlayerCount; j++)
+            {
+                tempCheckBox[j].GetComponent<SetPlayerCheckBox>().SetCheckBox(true);
+            }
+        }
+        else
+        {
+            for (int k = 0; k < PhotonNetwork.CurrentRoom.PlayerCount; k++)
+            {
+                tempCheckBox[k].GetComponent<SetPlayerCheckBox>().SetCheckBox(true);
+            }
         }
     }
 
@@ -170,6 +206,8 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
         }
 
         SetStar(IsMatched);
+
+        SetPlayerCheckBox();
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer) // 새로운 사람이 방에 들어오면 방에 있는 사람에게 호출됨
@@ -181,6 +219,8 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
         stopMatchButton.interactable = false;
 
         SetStar(IsMatched);
+
+        SetPlayerCheckBox();
 
         StartCoroutine(StartMatch());
     }
