@@ -14,15 +14,15 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
+        [UsingCustomProperty]
+
+        [Button(nameof(UpdateData))]
+
         private bool updateDataOnAwake = false;
 
         [Space]
 
         [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Button(nameof(UpdateData))]
 
         [Essential]
 

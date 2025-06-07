@@ -18,7 +18,7 @@ namespace ZL.Unity.Unimo
 
         [Essential]
 
-        private SliderValueDisplayer fuelBar = null;
+        private SliderValueDisplayer PlayerFuelBar = null;
 
         private static float fuelMax = 0f;
 
@@ -44,7 +44,7 @@ namespace ZL.Unity.Unimo
             {
                 fuel = Mathf.Clamp(value, 0f, fuelMax);
 
-                Instance.fuelBar.Slider.value = fuel;
+                Instance.PlayerFuelBar.Slider.value = fuel;
 
                 if (fuel == 0f)
                 {
@@ -55,7 +55,7 @@ namespace ZL.Unity.Unimo
 
         public void Initialize()
         {
-            fuelBar.Slider.maxValue = 100f;
+            PlayerFuelBar.Slider.maxValue = 100f;
 
             Fuel = fuelMax;
         }

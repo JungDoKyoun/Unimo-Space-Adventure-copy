@@ -100,6 +100,8 @@ namespace ZL.Unity.Collections
         public void Clear()
         {
             @base.Clear();
+
+            items.Clear();
         }
 
         public TKeyValuePair GetItem(TKey key)
