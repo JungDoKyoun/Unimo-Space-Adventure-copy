@@ -146,44 +146,28 @@ namespace ZL.Unity.IO.GoogleSheet
 
             dataDictionary = null;
 
-            FixedDebug.Log($"Successfully read '{name}' from Google sheet.");
-
             EditorUtility.SetDirty(this);
+
+            FixedDebug.Log($"Successfully read '{name}' from Google sheet.");
         }
 
         public void Write()
         {
-            if (requestCount != 0)
-            {
-                return;
-            }
-
-            requestCount = datas.Length + 1;
-
-            string column = sheetConfig.TitleColumn;
-
-            int row = sheetConfig.TitleRow;
-
-            SpreadsheetManager.Write(sheetConfig.GetSearch($"{column}{row++}"), new ValueRange(datas[0].GetHeaders()), OnWriteSuccessful);
+            var inputData = new ValueRange(datas[0].GetHeaders());
 
             for (int i = 0; i < datas.Length; ++i)
             {
-                var data = datas[i];
-
-                SpreadsheetManager.Write(sheetConfig.GetSearch($"{column}{row++}"), new ValueRange(data.Export()), OnWriteSuccessful);
+                inputData.Add(datas[i].Export());
             }
+            
+            SpreadsheetManager.Write(sheetConfig.GetSearch(), inputData, OnWriteSuccessful);
         }
 
         private void OnWriteSuccessful()
         {
-            if (--requestCount != 0)
-            {
-                return;
-            }
+            EditorUtility.SetDirty(this);
 
             FixedDebug.Log($"Successfully written '{name}' to Google sheet.");
-
-            EditorUtility.SetDirty(this);
         }
     }
 }

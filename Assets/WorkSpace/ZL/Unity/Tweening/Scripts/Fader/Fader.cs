@@ -61,14 +61,6 @@ namespace ZL.Unity.Tweening
 
         [SerializeField]
 
-        //[UsingCustomProperty]
-
-        //[ReadOnlyWhenEditMode]
-
-        //[Button(nameof(FadeIn))]
-
-        //[DefaultPropertyField]
-
         private UnityEvent onFadedInEvent = null;
 
         public UnityEvent OnFadedInEvent
@@ -79,14 +71,6 @@ namespace ZL.Unity.Tweening
         [Space]
 
         [SerializeField]
-
-        //[UsingCustomProperty]
-
-        //[ReadOnlyWhenEditMode]
-
-        //[Button(nameof(FadeOut))]
-
-        //[DefaultPropertyField]
 
         private UnityEvent onFadeOutEvent = null;
 

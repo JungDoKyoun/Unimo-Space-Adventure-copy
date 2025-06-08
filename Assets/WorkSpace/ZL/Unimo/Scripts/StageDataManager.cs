@@ -72,7 +72,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private GameObject stagePlayTimeClock = null;
+        private GameObject stageUIScreen = null;
 
         [Space]
 
@@ -114,7 +114,7 @@ namespace ZL.Unity.Unimo
 
             spawners.SetActive(true);
 
-            stagePlayTimeClock.SetActive(true);
+            stageUIScreen.SetActive(true);
 
             StartCoroutine(ConsumFuelRoutine());
         }
