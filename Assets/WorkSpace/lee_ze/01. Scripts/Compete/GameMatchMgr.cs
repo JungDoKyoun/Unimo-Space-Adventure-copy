@@ -67,9 +67,51 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
     private void SetCanvas()
     {
-        profileCanvas.SetActive(!IsMatching);
+        //profileCanvas.SetActive(!IsMatching);
 
-        matchingCanvas.SetActive(IsMatching);
+        //matchingCanvas.SetActive(IsMatching);
+
+        //IsMatching = !IsMatching;
+
+        var profileGroup = profileCanvas.GetComponent<CanvasGroup>();
+
+        var matchingGroup = matchingCanvas.GetComponent<CanvasGroup>();
+
+        if (profileGroup != null && matchingGroup != null)
+        {
+            if (IsMatching)
+            {
+                profileGroup.alpha = 0f;
+
+                profileGroup.interactable = false;
+
+                profileGroup.blocksRaycasts = false;
+
+                matchingGroup.alpha = 1f;
+
+                matchingGroup.interactable = true;
+
+                matchingGroup.blocksRaycasts = true;
+            }
+            else
+            {
+                profileGroup.alpha = 1f;
+
+                profileGroup.interactable = true;
+
+                profileGroup.blocksRaycasts = true;
+
+                matchingGroup.alpha = 0f;
+
+                matchingGroup.interactable = false;
+
+                matchingGroup.blocksRaycasts = false;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("CanvasGroup이 누락됨. profileCanvas와 matchingCanvas에 CanvasGroup 컴포넌트가 있는지 확인하세요.");
+        }
 
         IsMatching = !IsMatching;
     }

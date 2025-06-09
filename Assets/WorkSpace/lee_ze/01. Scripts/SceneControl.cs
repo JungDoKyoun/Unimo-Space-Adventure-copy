@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class SceneControl : MonoBehaviour
+public class SceneControl : MonoBehaviourPun
 {
     public static SceneControl Instance;
 
@@ -54,6 +55,11 @@ public class SceneControl : MonoBehaviour
 
     public void GoToMain()
     {
+        if (PhotonNetwork.IsConnected == true)
+        {
+            PhotonNetwork.Disconnect();
+        }
+
         // 계정씬(메인) 이동
         SceneManager.LoadScene("Account");
     }

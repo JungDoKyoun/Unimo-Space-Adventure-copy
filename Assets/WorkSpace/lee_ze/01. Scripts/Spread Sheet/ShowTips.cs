@@ -11,7 +11,7 @@ public class ShowTips : MonoBehaviour
     {
         if (gameTip == null)
         {
-            gameTip = GameObject.Find("Matching Canvas").transform.Find("Under Bar Panel/Game Tips").GetComponent<TextMeshProUGUI>();
+            gameTip = GameObject.Find("Matching Canvas")?.transform.Find("Under Bar Panel/Game Tips").GetComponent<TextMeshProUGUI>();
         }
         else
         {
