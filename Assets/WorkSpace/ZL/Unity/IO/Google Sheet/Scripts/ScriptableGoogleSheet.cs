@@ -14,21 +14,12 @@ using UnityEditor;
 
 using UnityEngine;
 
-using ZL.CS.Singleton;
-
 namespace ZL.Unity.IO.GoogleSheet
 {
-    public abstract class ScriptableGoogleSheet<TScriptableGoogleSheet, TGoogleSheetData> : ScriptableObject, ISingleton<TScriptableGoogleSheet>
-
-        where TScriptableGoogleSheet : ScriptableGoogleSheet<TScriptableGoogleSheet, TGoogleSheetData>
+    public abstract class ScriptableGoogleSheet<TGoogleSheetData> : ScriptableObject
 
         where TGoogleSheetData : ScriptableObject, IGoogleSheetData
     {
-        public static TScriptableGoogleSheet Instance
-        {
-            get => ISingleton<TScriptableGoogleSheet>.Instance;
-        }
-
         [Space]
 
         [SerializeField]
@@ -57,6 +48,10 @@ namespace ZL.Unity.IO.GoogleSheet
 
         [Button("AddNewData")]
 
+        [Button("ClearDatas")]
+
+        [Button("LoadAllDatasAtPath")]
+
         private bool containsMergedCells = false;
 
         [Space]
@@ -72,7 +67,7 @@ namespace ZL.Unity.IO.GoogleSheet
 
         private Dictionary<string, TGoogleSheetData> dataDictionary = null;
 
-        public Dictionary<string, TGoogleSheetData> DataDictionary
+        public TGoogleSheetData this[string key]
         {
             get
             {
@@ -86,11 +81,9 @@ namespace ZL.Unity.IO.GoogleSheet
                     }
                 }
 
-                return dataDictionary;
+                 return dataDictionary[key];
             }
         }
-
-        private int requestCount = 0;
 
         #if UNITY_EDITOR
 
@@ -130,6 +123,20 @@ namespace ZL.Unity.IO.GoogleSheet
             EditorUtility.SetDirty(this);
         }
 
+        public void ClearDatas()
+        {
+            datas = new TGoogleSheetData[0];
+
+            EditorUtility.SetDirty(this);
+        }
+
+        public void LoadAllDatasAtPath()
+        {
+            datas = AssetDatabaseEx.LoadAllAssetsAtPath<TGoogleSheetData>(DirectoryPath);
+
+            EditorUtility.SetDirty(this);
+        }
+
         #endif
 
         public void Read()
@@ -142,11 +149,13 @@ namespace ZL.Unity.IO.GoogleSheet
             for (int i = 0; i < datas.Length; ++i)
             {
                 datas[i].Import(sheet);
+
+                FixedEditorUtility.SetDirty(datas[i]);
             }
 
             dataDictionary = null;
 
-            EditorUtility.SetDirty(this);
+            FixedEditorUtility.SetDirty(this);
 
             FixedDebug.Log($"Successfully read '{name}' from Google sheet.");
         }
@@ -165,7 +174,7 @@ namespace ZL.Unity.IO.GoogleSheet
 
         private void OnWriteSuccessful()
         {
-            EditorUtility.SetDirty(this);
+            FixedEditorUtility.SetDirty(this);
 
             FixedDebug.Log($"Successfully written '{name}' to Google sheet.");
         }

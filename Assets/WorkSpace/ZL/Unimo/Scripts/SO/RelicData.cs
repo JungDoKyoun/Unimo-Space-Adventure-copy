@@ -2,7 +2,11 @@ using GoogleSheetsToUnity;
 
 using System.Collections.Generic;
 
+using System.Linq;
+
 using UnityEngine;
+
+using UnityEngine.Serialization;
 
 using ZL.CS.Collections;
 
@@ -20,13 +24,57 @@ namespace ZL.Unity.Unimo
 
         private RelicRarity rarity = RelicRarity.Normal;
 
+        public RelicRarity Rarity
+        {
+            get => rarity;
+        }
+
+        [SerializeField]
+
+        private string nameTable = "";
+
+        [SerializeField]
+
+        private string descriptionTable = "";
+
         [SerializeField]
 
         private int price = 0;
 
         [SerializeField]
 
+        [FormerlySerializedAs("relicEffects")]
+
         private RelicEffect[] relicEffects = null;
+
+        public RelicEffect[] Effects
+        {
+            get => relicEffects;
+        }
+
+        private RelicEffectType[] effectTypes = null;
+
+        public RelicEffectType[] EffectTypes
+        {
+            get
+            {
+                effectTypes ??= Effects.Select((effect) => effect.Type).ToArray();
+
+                return effectTypes;
+            }
+        }
+
+        private object[] effectValues = null;
+
+        public object[] EffectValues
+        {
+            get
+            {
+                effectValues ??= Effects.Select((effect) => (object)effect.Value).ToArray();
+
+                return effectValues;
+            }
+        }
 
         public override List<string> GetHeaders()
         {
@@ -61,7 +109,7 @@ namespace ZL.Unity.Unimo
 
                 price.ToString(),
 
-                string.Join('\n', relicEffects.ToString()),
+                string.Join('\n', relicEffects.Select((relicEffect) => relicEffect.ToString())),
             };
         }
     }

@@ -11,8 +11,6 @@ namespace ZL.Unity.Collections
     [Serializable]
 
     public sealed class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
-
-        where TKey : IComparable, IComparable<TKey>
     {
         [SerializeField]
 

@@ -8,8 +8,6 @@ using System.Reflection;
 
 using UnityEditor;
 
-using UnityEditorInternal;
-
 #endif
 
 using UnityEngine;

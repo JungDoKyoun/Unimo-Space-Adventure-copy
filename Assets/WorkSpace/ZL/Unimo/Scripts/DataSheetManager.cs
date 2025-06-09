@@ -26,8 +26,6 @@ namespace ZL.Unity.Unimo
 
         [Essential]
 
-        [ReadOnlyWhenPlayMode]
-
         private EnemyDataSheet enemyDataSheet = null;
 
         [SerializeField]
@@ -35,8 +33,6 @@ namespace ZL.Unity.Unimo
         [UsingCustomProperty]
 
         [Essential]
-
-        [ReadOnlyWhenPlayMode]
 
         private GatheringDataSheet gatheringDataSheet = null;
 
@@ -46,8 +42,6 @@ namespace ZL.Unity.Unimo
 
         [Essential]
 
-        [ReadOnlyWhenPlayMode]
-
         private RelicDropTableSheet relicDropTableSheet = null;
 
         [SerializeField]
@@ -55,8 +49,6 @@ namespace ZL.Unity.Unimo
         [UsingCustomProperty]
 
         [Essential]
-
-        [ReadOnlyWhenPlayMode]
 
         private RewardDataSheet rewardDataSheet = null;
 
@@ -66,8 +58,6 @@ namespace ZL.Unity.Unimo
 
         [Essential]
 
-        [ReadOnlyWhenPlayMode]
-
         private SpawnPatternDataSheet spawnPatternDataSheet = null;
 
         [SerializeField]
@@ -75,8 +65,6 @@ namespace ZL.Unity.Unimo
         [UsingCustomProperty]
 
         [Essential]
-
-        [ReadOnlyWhenPlayMode]
 
         private SpawnerDataSheet spawnerDataSheet = null;
 
@@ -86,8 +74,6 @@ namespace ZL.Unity.Unimo
 
         [Essential]
 
-        [ReadOnlyWhenPlayMode]
-
         private StageDataSheet stageDataSheet = null;
 
         [SerializeField]
@@ -95,8 +81,6 @@ namespace ZL.Unity.Unimo
         [UsingCustomProperty]
 
         [Essential]
-
-        [ReadOnlyWhenPlayMode]
 
         private StringTableSheet stringTableSheet = null;
 

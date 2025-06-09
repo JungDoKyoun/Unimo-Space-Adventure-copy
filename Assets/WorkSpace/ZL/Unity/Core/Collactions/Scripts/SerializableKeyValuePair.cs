@@ -9,8 +9,6 @@ namespace ZL.Unity.Collections
     [Serializable]
 
     public class SerializableKeyValuePair<TKey, TValue> : IKeyValuePair<TKey, TValue>
-
-        where TKey : IComparable, IComparable<TKey>
     {
         [SerializeField]
 

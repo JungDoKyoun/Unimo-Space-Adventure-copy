@@ -22,8 +22,6 @@ namespace ZL.Unity.Tweening
 
         [Essential]
 
-        [ReadOnlyWhenPlayMode]
-
         [PropertyField]
 
         [Margin]

@@ -6,6 +6,6 @@ namespace ZL.Unity.Unimo
 
         MaxHealth,
 
-        MoveSpeed,
+        MovementSpeed,
     }
 }

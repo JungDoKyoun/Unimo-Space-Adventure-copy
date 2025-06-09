@@ -95,7 +95,7 @@ namespace ZL.Unity.Audio
         {
             foreach (var parameterPref in parameterPrefs)
             {
-                parameterPref.OnValueChangedAction += (value) =>
+                parameterPref.OnValueChanged += (value) =>
                 {
                     audioMixer.SetVolume(parameterPref.Key, value);
                 };

@@ -1,12 +1,14 @@
 using UnityEngine;
 
+using ZL.CS.Singleton;
+
 using ZL.Unity.IO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {
     [CreateAssetMenu(menuName = "ZL/Unimo/SO/Stage Data Sheet (Singleton)", fileName = "Stage Data Sheet")]
 
-    public sealed class StageDataSheet : ScriptableGoogleSheet<StageDataSheet, StageData>
+    public sealed class StageDataSheet : ScriptableGoogleSheet<StageData>, ISingleton<StageDataSheet>
     {
 
     }

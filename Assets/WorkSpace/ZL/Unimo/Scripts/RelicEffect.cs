@@ -14,9 +14,19 @@ namespace ZL.Unity.Unimo
 
         private RelicEffectType type;
 
+        public RelicEffectType Type
+        {
+            get => type;
+        }
+
         [SerializeField]
 
         private float value;
+
+        public float Value
+        {
+            get => value;
+        }
 
         public static RelicEffect Parse(string s)
         {

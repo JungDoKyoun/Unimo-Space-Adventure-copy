@@ -1,10 +1,14 @@
 using GoogleSheetsToUnity;
 
+using System;
+
 using System.Collections.Generic;
 
 using UnityEngine;
 
 using ZL.Unity.Collections;
+
+using ZL.Unity.IO;
 
 using ZL.Unity.IO.GoogleSheet;
 
@@ -18,7 +22,32 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private SerializableDictionary<string, string> table = null;
+        private SerializableDictionary<StringTableLanguage, string> table = null;
+
+        public string this[StringTableLanguage key]
+        {
+            get => table[key];
+        }
+
+        public static StringTableLanguage Language
+        {
+            get => languagePref.Value;
+
+            set => languagePref.Value = value;
+        }
+
+        private static readonly EnumPref<StringTableLanguage> languagePref = new("Language", StringTableLanguage.Korean);
+
+        public static event Action<StringTableLanguage> OnLanguageChanged = null;
+
+        [RuntimeInitializeOnLoadMethod]
+
+        private static void Initialize()
+        {
+            languagePref.LoadValue();
+
+            languagePref.OnValueChanged += OnLanguageChanged;
+        }
 
         public override List<string> GetHeaders()
         {
@@ -29,7 +58,7 @@ namespace ZL.Unity.Unimo
 
             foreach (var key in table.Keys)
             {
-                headers.Add(key);
+                headers.Add(key.ToString());
             }
 
             return headers;
@@ -37,14 +66,17 @@ namespace ZL.Unity.Unimo
 
         public override void Import(GstuSpreadSheet sheet)
         {
-            table = new SerializableDictionary<string, string>();
+            table = new SerializableDictionary<StringTableLanguage, string>();
 
             foreach (var key in sheet.columns.secondaryKeyLink.Keys)
             {
-                table.Add(key, sheet[name, key].value);
-            }
+                if (Enum.TryParse<StringTableLanguage>(key, out var result) == false)
+                {
+                    continue;
+                }
 
-            table.Remove(nameof(name));
+                table.Add(result, sheet[name, key].value);
+            }
 
             table.Serialize();
         }
