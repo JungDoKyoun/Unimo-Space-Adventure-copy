@@ -14,15 +14,33 @@ public class ProfileMgr : MonoBehaviour
 
     private Button homeButton;
 
-    private void Start()
+    private void OnEnable()
     {
-        homeButton = GameObject.Find("Home Button").GetComponent<Button>();
+        if (homeButton == null)
+        {
+            homeButton = GameObject.Find("Home Button").GetComponent<Button>();
+        }
 
         homeButton.onClick.AddListener(() => SceneControl.Instance.GoToMain());
 
-        playerDisplayName.text = FirebaseAuthMgr.User.DisplayName;
+        if (FirebaseAuthMgr.User != null)
+        {
+            playerDisplayName.text = FirebaseAuthMgr.User.DisplayName;
+        }
 
         SetupProfile();
+    }
+
+
+    private void Start()
+    {
+        //homeButton = GameObject.Find("Home Button").GetComponent<Button>();
+
+        //homeButton.onClick.AddListener(() => SceneControl.Instance.GoToMain());
+
+        //playerDisplayName.text = FirebaseAuthMgr.User.DisplayName;
+
+        //SetupProfile();
     }
 
     private void SetupProfile()
