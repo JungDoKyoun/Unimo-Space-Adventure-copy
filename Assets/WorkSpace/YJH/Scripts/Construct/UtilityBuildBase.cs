@@ -6,8 +6,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ConstructInfo", menuName = "ScriptableObject/UtilityConstruct")]
 public class UtilityBuildBase : ConstructBase
 {
-    [SerializeField] IUtilityBuildEffect buildEffect;
-    
+    [SerializeField] UtilityBuildEffect buildEffect;
+    public UtilityBuildEffect UtilityBuildEffect { get { return buildEffect; } }
     
     
 }

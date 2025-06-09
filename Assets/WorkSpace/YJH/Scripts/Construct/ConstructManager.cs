@@ -137,7 +137,7 @@ public class ConstructManager : MonoBehaviour
 
         buildStateProgress=(float)buildedBuildingNum/buildingNum;
        // Debug.Log(buildStateProgress);
-        DebugBuildedList();
+        //DebugBuildedList();
         ChangeBuildStateImage();
     }
     public void DebugBuildedList()
@@ -182,7 +182,15 @@ public class ConstructManager : MonoBehaviour
             if (temp.buildID == buildID)
             {
                 ShowBuildInfoPanel(temp);
-                
+                return;
+            }
+        }
+        foreach (var temp in utilityConstructList)
+        {
+            if(temp.buildID == buildID)
+            {
+                ShowBuildInfoPanel(temp);
+                return;
             }
         }
     }
@@ -342,7 +350,7 @@ public class ConstructManager : MonoBehaviour
     }
     public void ModifieUtillity(IUtilityBuildEffect buildEffect)
     {
-        buildEffect.IUtilityBuildEffect();
+        
     }
     public void ModifieSkill()//별도 인터페이스?
     {
@@ -364,7 +372,13 @@ public class ConstructManager : MonoBehaviour
                 }
             }
         }
-
+        foreach (var building in utilityConstructList)
+        {
+            if (building.isBuildConstructed == true)
+            {
+                building.UtilityBuildEffect.Excute();
+            }
+        }
 
         SetFinalStatusToPlayer();
     }
