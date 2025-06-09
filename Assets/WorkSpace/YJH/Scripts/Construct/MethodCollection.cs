@@ -34,9 +34,10 @@ namespace YJH
             IEnumerator method = FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(250);
             CoroutineRunner.Instance.Run(method);
         }
-        public static void HealAfterStageEndA()
+        public static void HealAfterStageEndA()//스테이지 종료를 나타내는 이벤트가 있다면 거기에 할당하기
         {
 
+            PlayerManager.PlayerStatus.currentHealth += 1f;
         }
         public static void HealAfterStageEndB()
         {

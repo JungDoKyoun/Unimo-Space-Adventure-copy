@@ -182,7 +182,10 @@ public partial class PlayerManager
     {
         if (PhotonNetwork.IsConnected == false || photonView.IsMine==true)
         {
-            playerSpellType.UpdateTime();
+            if (playerSpellType != null)
+            {
+                playerSpellType.UpdateTime();
+            }
         }
         if (isItemNear == true)
         {

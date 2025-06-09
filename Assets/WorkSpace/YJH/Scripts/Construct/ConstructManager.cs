@@ -178,7 +178,7 @@ public class ConstructManager : MonoBehaviour
     }
     public void ChangeBuildStateImage()
     {
-        Debug.Log(buildStateImageList.Count);
+        //Debug.Log(buildStateImageList.Count);
         for(int i=0;i<buildStateImageList.Count;i++)
         {
             if((1.0f/buildStateImageList.Count)*i<=buildStateProgress && buildStateProgress < (1.0f / buildStateImageList.Count)*(i+1))
@@ -421,7 +421,7 @@ public class ConstructManager : MonoBehaviour
         {
             if (building.isBuildConstructed == true)
             {
-                //building.SetPlayerPower();
+                building.SetPlayerPower();
             }
         }
 
