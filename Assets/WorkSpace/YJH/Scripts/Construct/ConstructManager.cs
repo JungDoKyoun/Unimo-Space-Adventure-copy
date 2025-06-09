@@ -134,6 +134,19 @@ public class ConstructManager : MonoBehaviour
             
             
         }
+        foreach (var building in utilityConstructList)
+        {
+            buildingNum++;
+            if (building.isBuildConstructed == true)
+            {
+                buildedBuildingNum++;
+                if (buildedList.Contains(building.buildID) == false)
+                {
+                    buildedList.Add(building.buildID);
+                }
+
+            }
+        }
 
         buildStateProgress=(float)buildedBuildingNum/buildingNum;
        // Debug.Log(buildStateProgress);
@@ -206,6 +219,7 @@ public class ConstructManager : MonoBehaviour
     public void TempGameStart()
     {
         SetPlayer();
+        PlayerManager.SetSpellType(new Dash());
         SceneManager.LoadScene("TestScene");
         
     }
