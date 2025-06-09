@@ -231,7 +231,7 @@ public partial class PlayerManager
     }
 
     
-    public void GetEnergy(int energyNum)//멀티에서도 공격이 있나? -> 알아볼것
+    public void GetEnergy(int energyNum)//멀티에서도 공격이 있나? -> 있음
     {
         playerOwnEnergy += energyNum;
 

@@ -12,6 +12,7 @@ public class ConstructManager : MonoBehaviour
     //[SerializeField] List<Transform> spawnPoints= new List<Transform>();
     [SerializeField] List<ConstructBase> constructList = new List<ConstructBase>();
     [SerializeField] List<UtilityBuildBase> utilityConstructList = new List<UtilityBuildBase>();
+    [SerializeField] List<CombatBuildBase> combatConstructList = new List<CombatBuildBase>();
 
     [Header("UI")]
     [SerializeField] GameObject buildingInfoPanel;
@@ -49,7 +50,8 @@ public class ConstructManager : MonoBehaviour
     
     public PlayerStatus OriginPlayerStatus { get { return originPlayerStatus; } }
     public Dictionary<string, int> OwnBuildCostDic { get { return  ownBuildCostDic; } }
-
+    private ISpellType[] playerSpells = { new Dash() };
+    [SerializeField] GameObject[] attackPrefabs;
     private void Awake()
     {
         
@@ -58,6 +60,7 @@ public class ConstructManager : MonoBehaviour
         SetOwnCost();
         DecideProgress();
         ToDictionary();
+        
     }
     private void OnDestroy()
     {
@@ -147,8 +150,21 @@ public class ConstructManager : MonoBehaviour
 
             }
         }
+        foreach (var building in combatConstructList)
+        {
+            buildingNum++;
+            if (building.isBuildConstructed == true)
+            {
+                buildedBuildingNum++;
+                if (buildedList.Contains(building.buildID) == false)
+                {
+                    buildedList.Add(building.buildID);
+                }
 
-        buildStateProgress=(float)buildedBuildingNum/buildingNum;
+            }
+        }
+
+        buildStateProgress =(float)buildedBuildingNum/buildingNum;
        // Debug.Log(buildStateProgress);
         //DebugBuildedList();
         ChangeBuildStateImage();
@@ -201,6 +217,14 @@ public class ConstructManager : MonoBehaviour
         foreach (var temp in utilityConstructList)
         {
             if(temp.buildID == buildID)
+            {
+                ShowBuildInfoPanel(temp);
+                return;
+            }
+        }
+        foreach (var temp in combatConstructList)
+        {
+            if (temp.buildID == buildID)
             {
                 ShowBuildInfoPanel(temp);
                 return;
@@ -393,6 +417,14 @@ public class ConstructManager : MonoBehaviour
                 building.UtilityBuildEffect.Excute();
             }
         }
+        foreach (var building in combatConstructList)
+        {
+            if (building.isBuildConstructed == true)
+            {
+                //building.SetPlayerPower();
+            }
+        }
+
 
         SetFinalStatusToPlayer();
     }

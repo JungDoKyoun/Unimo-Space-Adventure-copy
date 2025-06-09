@@ -10,24 +10,24 @@ public enum PowerType
     Attack
 
 }
+[CreateAssetMenu(fileName = "CombatBuildBase", menuName = "ScriptableObject/CombatBuilding")]
 public class CombatBuildBase : ConstructBase
 {
-    
+    public GameObject attackPrefab;
+    public ISpellType spellType;
 
-    public void SetPlayerPower(Object powerType)
+    public void SetPlayerPower()
     {
-        switch (powerType)
+        if(attackPrefab == null&&spellType!=null)
         {
-            
-                case ISpellType:
-                SetPlayerSkill (powerType as ISpellType);
-                break;
-                case GameObject:
-                SetPlayerAttack ( powerType as GameObject );
-                break;
-                default:
-                break;
-
+            SetPlayerSkill(spellType);
+        }else if (spellType == null && attackPrefab != null)
+        {
+            SetPlayerAttack(attackPrefab);
+        }
+        else
+        {
+            return;
         }
     }
     private void SetPlayerSkill(ISpellType spell)
