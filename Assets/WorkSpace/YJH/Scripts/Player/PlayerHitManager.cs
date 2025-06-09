@@ -42,7 +42,7 @@ public partial class PlayerManager : IDamageable
 
     [SerializeField]
     
-    private float playerDamage = 5f;
+    private static float playerDamage = 5f;
 
     [SerializeField]
     

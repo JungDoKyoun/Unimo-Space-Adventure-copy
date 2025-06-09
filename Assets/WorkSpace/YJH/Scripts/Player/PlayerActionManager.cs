@@ -57,9 +57,9 @@ public partial class PlayerManager
 
     [SerializeField]
     
-    private GameObject attackPrefab;
+    private static GameObject attackPrefab;
 
-    private IAttackType playerAttackType;
+    private static IAttackType playerAttackType;
 
     //[SerializeField]
 
@@ -207,7 +207,7 @@ public partial class PlayerManager
     //    //StartCoroutine (FindEnemy());
     //}
 
-    public void SetAttackType(GameObject attackType)
+    public static void SetAttackType(GameObject attackType)
     {
         attackPrefab = attackType;
 
