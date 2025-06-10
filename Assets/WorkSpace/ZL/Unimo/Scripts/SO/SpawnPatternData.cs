@@ -44,7 +44,7 @@ namespace ZL.Unity.Unimo
         {
             return new List<string>()
             {
-                name,
+                name.ToString(),
 
                 string.Join(", ", spawnPoints),
             };

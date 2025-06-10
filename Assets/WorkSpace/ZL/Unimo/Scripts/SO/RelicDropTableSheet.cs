@@ -10,6 +10,9 @@ namespace ZL.Unity.Unimo
 
     public sealed class RelicDropTableSheet : ScriptableGoogleSheet<RelicDropTable>, ISingleton<RelicDropTableSheet>
     {
-
+        public static RelicDropTableSheet Instance
+        {
+            get => ISingleton<RelicDropTableSheet>.Instance;
+        }
     }
 }

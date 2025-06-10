@@ -2,7 +2,7 @@ using System;
 
 namespace ZL.CS
 {
-    public static partial class CharExtensions
+    public static partial class CharEx
     {
         public static string Append(this char instance, string value)
         {

@@ -1,3 +1,4 @@
+using Google.GData.Extensions;
 using GoogleSheetsToUnity;
 
 using System;
@@ -13,6 +14,8 @@ using UnityEditor;
 #endif
 
 using UnityEngine;
+
+using ZL.Unity.Collections;
 
 namespace ZL.Unity.IO.GoogleSheet
 {
@@ -54,38 +57,31 @@ namespace ZL.Unity.IO.GoogleSheet
 
         private bool containsMergedCells = false;
 
-        [Space]
-
         [SerializeField]
 
-        private TGoogleSheetData[] datas = null;
+        protected TGoogleSheetData[] datas = null;
 
         public TGoogleSheetData[] Datas
         {
             get => datas;
         }
 
-        private Dictionary<string, TGoogleSheetData> dataDictionary = null;
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Button(nameof(SerializeDatas))]
+
+        protected SerializableDictionary<string, TGoogleSheetData> dataDictionary = null;
 
         public TGoogleSheetData this[string key]
         {
-            get
-            {
-                if (dataDictionary == null)
-                {
-                    dataDictionary = new Dictionary<string, TGoogleSheetData>(datas.Length);
-
-                    foreach (var data in datas)
-                    {
-                        dataDictionary.Add(data.name, data);
-                    }
-                }
-
-                 return dataDictionary[key];
-            }
+            get => dataDictionary[key];
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
 
         private string DirectoryPath
         {
@@ -148,16 +144,30 @@ namespace ZL.Unity.IO.GoogleSheet
         {
             for (int i = 0; i < datas.Length; ++i)
             {
-                datas[i].Import(sheet);
+                var data = datas[i];
 
-                FixedEditorUtility.SetDirty(datas[i]);
+                data.Import(sheet);
+
+                FixedEditorUtility.SetDirty(data);
             }
 
-            dataDictionary = null;
-
-            FixedEditorUtility.SetDirty(this);
+            SerializeDatas();
 
             FixedDebug.Log($"Successfully read '{name}' from Google sheet.");
+        }
+
+        public virtual void SerializeDatas()
+        {
+            dataDictionary.Clear();
+
+            for (int i = 0; i < datas.Length; ++i)
+            {
+                var data = datas[i];
+
+                dataDictionary.Add(data.name, data);
+            }
+
+            FixedEditorUtility.SetDirty(this);
         }
 
         public void Write()

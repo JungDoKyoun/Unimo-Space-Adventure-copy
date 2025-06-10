@@ -41,6 +41,11 @@ namespace ZL.Unity.IO
 
         public event Action<TValue> OnValueChanged = null;
 
+        public SerializablePlayerPref()
+        {
+
+        }
+
         public SerializablePlayerPref(string key, TValue value)
         {
             this.key = key;

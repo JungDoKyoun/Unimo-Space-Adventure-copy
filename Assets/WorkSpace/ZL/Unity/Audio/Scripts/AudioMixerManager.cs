@@ -34,11 +34,11 @@ namespace ZL.Unity.Audio
 
         private AudioMixer audioMixer = null;
 
+        [Space]
+
         [SerializeField]
 
         [UsingCustomProperty]
-
-        [PropertyField]
 
         [Button(nameof(LoadVolumes))]
 
@@ -59,14 +59,16 @@ namespace ZL.Unity.Audio
             {
                 parameterPref.Value = Mathf.Clamp01(parameterPref.Value);
 
-                if (Application.isPlaying == true)
+                if (Application.isPlaying == false)
                 {
-                    SetVolume(parameterPref.Key, parameterPref.Value);
+                    continue;
                 }
+
+                SetVolume(parameterPref.Key, parameterPref.Value);
             }
         }
 
-        private void LoadAudioMixerParameters()
+        public void LoadAudioMixerParameters()
         {
             parameterPrefs.Clear();
 
@@ -89,7 +91,7 @@ namespace ZL.Unity.Audio
             EditorUtility.SetDirty(this);
         }
 
-#endif
+        #endif
 
         private void Start()
         {

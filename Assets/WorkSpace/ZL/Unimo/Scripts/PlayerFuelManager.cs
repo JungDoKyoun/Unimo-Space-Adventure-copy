@@ -1,3 +1,4 @@
+using JDG;
 using UnityEngine;
 
 using ZL.Unity.Singleton;
@@ -30,6 +31,8 @@ namespace ZL.Unity.Unimo
             {
                 fuelMax = value;
 
+                Instance.PlayerFuelBar.Slider.maxValue = fuelMax;
+
                 Fuel = fuel;
             }
         }
@@ -48,16 +51,19 @@ namespace ZL.Unity.Unimo
 
                 if (fuel == 0f)
                 {
-                    StageDataManager.Instance.StageFail();
+                    StageManager.Instance.StageFail();
                 }
             }
         }
 
-        public void Initialize()
+        private void Start()
         {
-            PlayerFuelBar.Slider.maxValue = 100f;
+            if (GameStateManager.IsClear == false)
+            {
+                fuel = 100f;
 
-            Fuel = fuelMax;
+                FuelMax = 100f;
+            }
         }
     }
 }

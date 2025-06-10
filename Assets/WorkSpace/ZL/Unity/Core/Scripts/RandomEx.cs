@@ -8,6 +8,35 @@ namespace ZL.Unity
 {
     public static partial class RandomEx
     {
+        public static bool DrawLots(float probability = 0.5f)
+        {
+            return Random.value <= probability;
+        }
+
+        public static T Range<T>(T[] array)
+        {
+            return array[Random.Range(0, array.Length)];
+        }
+
+        public static T Range<T>(List<T> list)
+        {
+            return list[Random.Range(0, list.Count)];
+        }
+
+        public static LinkedListNode<T> Range<T>(LinkedList<T> linkedList)
+        {
+            int index = Random.Range(0, linkedList.Count);
+
+            var node = linkedList.First;
+
+            for (int i = 0; i < index; ++i)
+            {
+                node = node.Next;
+            }
+
+            return node;
+        }
+
         public static Vector3 Range(in Vector3 minInclusive, in Vector3 maxInclusive)
         {
             return new Vector3()
@@ -30,35 +59,6 @@ namespace ZL.Unity
 
                 z = Random.Range(0f, 360f)
             };
-        }
-
-        public static bool DrawLots(float probability = 0.5f)
-        {
-            return Random.value <= probability;
-        }
-
-        public static T Get<T>(T[] array)
-        {
-            return array[Random.Range(0, array.Count())];
-        }
-
-        public static T Get<T>(List<T> list)
-        {
-            return list[Random.Range(0, list.Count())];
-        }
-
-        public static LinkedListNode<T> Get<T>(LinkedList<T> linkedList)
-        {
-            int index = Random.Range(0, linkedList.Count());
-
-            var node = linkedList.First;
-
-            for (int i = 0; i < index; ++i)
-            {
-                node = node.Next;
-            }
-
-            return node;
         }
     }
 }

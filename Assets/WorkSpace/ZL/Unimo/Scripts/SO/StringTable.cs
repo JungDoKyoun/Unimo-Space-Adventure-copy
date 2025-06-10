@@ -85,7 +85,7 @@ namespace ZL.Unity.Unimo
         {
             var values = new List<string>(table.Count + 1)
             {
-                name
+                name.ToString(),
             };
 
             foreach (var key in table.Values)

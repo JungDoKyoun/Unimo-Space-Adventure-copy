@@ -4,23 +4,16 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using ZL.CS.Singleton;
-
 using ZL.Unity.IO.GoogleSheet;
 
-using Random = UnityEngine.Random;
+using UnityRandom = UnityEngine.Random;
 
 namespace ZL.Unity.Unimo
 {
     [CreateAssetMenu(menuName = "ZL/Unimo/SO/Relic Drop Table", fileName = "Relic Drop Table 1")]
 
-    public sealed class RelicDropTable : ScriptableGoogleSheetData, ISingleton<RelicDropTable>
+    public sealed class RelicDropTable : ScriptableGoogleSheetData
     {
-        public static RelicDropTable Instance
-        {
-            get => ISingleton<RelicDropTable>.Instance;
-        }
-
         [Space]
 
         [SerializeField]
@@ -59,9 +52,7 @@ namespace ZL.Unity.Unimo
             get => relicDropEpic;
         }
 
-        private KeyValuePair<float, RelicRarity>[] table = null;
-
-        public RelicRarity[] DropedRelics { get; private set; } = null;
+        private KeyValuePair<RelicRarity, float>[] table = null;
 
         public override List<string> GetHeaders()
         {
@@ -94,7 +85,7 @@ namespace ZL.Unity.Unimo
         {
             return new List<string>()
             {
-                name,
+                name.ToString(),
 
                 relicDropNormal.ToString(),
 
@@ -106,20 +97,25 @@ namespace ZL.Unity.Unimo
             };
         }
 
-        public void Drop(int count)
+        public RelicData[] DropRelics(int count)
         {
-            table ??= new KeyValuePair<float, RelicRarity>[]
+            if (count == 0)
             {
-                new(relicDropNormal, RelicRarity.Normal),
-                
-                new(relicDropRare, RelicRarity.Rare),
-                
-                new(relicDropUnique, RelicRarity.Unique),
-                
-                new(relicDropEpic, RelicRarity.Epic),
+                return null;
+            }
+
+            table ??= new KeyValuePair<RelicRarity, float>[]
+            {
+                new(RelicRarity.Normal, relicDropNormal),
+
+                new(RelicRarity.Rare, relicDropRare),
+
+                new(RelicRarity.Unique, relicDropUnique),
+
+                new(RelicRarity.Epic, relicDropEpic),
             };
 
-            DropedRelics = new RelicRarity[count];
+            var result = new RelicData[count];
 
             for (int i = 0; i < count; ++i)
             {
@@ -127,16 +123,22 @@ namespace ZL.Unity.Unimo
 
                 for (int j = 0; j < table.Length; ++j)
                 {
-                    cumulative += table[j].Key;
+                    cumulative += table[j].Value;
 
-                    if (cumulative > Random.value)
+                    if (cumulative <= UnityRandom.value)
                     {
-                        DropedRelics[i] = table[j].Value;
-
-                        break;
+                        continue;
                     }
+
+                    var relicDatas = RelicDataSheet.Instance.RelicDictionary[table[j].Key];
+
+                    result[i] = RandomEx.Range(relicDatas);
+
+                    break;
                 }
             }
+
+            return result;
         }
     }
 }

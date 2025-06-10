@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ZL.CS
 {
-    public static partial class StringBuilderExtensions
+    public static partial class StringBuilderEx
     {
         public static string Concat(this StringBuilder instance, params char[] values)
         {

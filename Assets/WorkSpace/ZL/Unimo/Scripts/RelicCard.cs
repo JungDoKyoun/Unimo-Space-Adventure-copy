@@ -1,26 +1,34 @@
+using System;
+
 using TMPro;
 
 using UnityEngine;
 
 using UnityEngine.UI;
 
+using ZL.Unity.Pooling;
+
 namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Relic Card")]
 
-    public sealed class RelicCard : MonoBehaviour
+    public sealed class RelicCard : PooledObject
     {
         [Space]
 
         [SerializeField]
 
-        private RelicData relicData = null;
+        [UsingCustomProperty]
 
-        public RelicData RelicData
+        [GetComponent]
+
+        [Essential]
+
+        private Toggle toggle = null;
+
+        public Toggle Toggle
         {
-            get => relicData;
-
-            set => relicData = value;
+            get => toggle;
         }
 
         [Space]
@@ -87,6 +95,16 @@ namespace ZL.Unity.Unimo
 
         private StringTable relicDescriptionStringTable = null;
 
+        [Space]
+
+        [SerializeField]
+
+        private RelicData relicData = null;
+
+        public event Action<RelicCard> OnSelectedAction = null;
+
+        public event Action<RelicCard> OnDeselectedAction = null;
+
         private void OnEnable()
         {
             rarityHightlightImageUI.color = relicData.Rarity.GetColor();
@@ -102,9 +120,22 @@ namespace ZL.Unity.Unimo
             StringTable.OnLanguageChanged += Refresh;
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
+
+            OnSelectedAction = null;
+            
+            OnDeselectedAction = null;
+
+            toggle.isOn = false;
+
             StringTable.OnLanguageChanged -= Refresh;
+        }
+
+        public void Initialize(RelicData relicData)
+        {
+            this.relicData = relicData;
         }
 
         private void Refresh(StringTableLanguage language)
@@ -112,6 +143,19 @@ namespace ZL.Unity.Unimo
             relicNameTextUI.text = relicNameStringTable[language];
 
             relicDescriptionTextUI.text = string.Format(relicDescriptionStringTable[language], relicData.EffectValues);
+        }
+
+        public void OnSelect(bool isOn)
+        {
+            if (isOn == true)
+            {
+                OnSelectedAction?.Invoke(this);
+            }
+
+            else
+            {
+                OnDeselectedAction?.Invoke(this);
+            }
         }
     }
 }

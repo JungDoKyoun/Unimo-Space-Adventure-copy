@@ -14,7 +14,7 @@ namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Stage Manager (Singleton)")]
 
-    public sealed class StageDataManager : MonoSingleton<StageDataManager>
+    public sealed class StageManager : MonoSingleton<StageManager>
     {
         [Space]
 
@@ -32,15 +32,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private RewardData rewardData = null;
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [ReadOnlyWhenPlayMode]
-
-        private RelicDropTable relicDropTable = null;
+        private StageRewardData stageRewardData = null;
 
         [Space]
 
@@ -92,9 +84,7 @@ namespace ZL.Unity.Unimo
 
             ISingleton<StageData>.TrySetInstance(stageData);
 
-            ISingleton<RewardData>.TrySetInstance(rewardData);
-
-            ISingleton<RelicDropTable>.TrySetInstance(relicDropTable);
+            ISingleton<StageRewardData>.TrySetInstance(stageRewardData);
         }
 
         protected override void OnDestroy()
@@ -103,9 +93,7 @@ namespace ZL.Unity.Unimo
 
             ISingleton<StageData>.Release(stageData);
 
-            ISingleton<RewardData>.Release(rewardData);
-
-            ISingleton<RelicDropTable>.Release(relicDropTable);
+            ISingleton<StageRewardData>.Release(stageRewardData);
         }
 
         public void StartStage()
@@ -133,24 +121,17 @@ namespace ZL.Unity.Unimo
         {
             GameStateManager.IsClear = true;
 
-            rewardData.SetReward();
-
-            if (FirebaseDataBaseMgr.Instance != null)
+            if (stageRewardData != null)
             {
-                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(rewardData.InGameCurrencyAmount));
+                stageRewardData.DropRewards();
 
-                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(rewardData.OutGameCurrencyAmount));
-            }
-
-            if (rewardData.IsRelicDroped == true)
-            {
-                int relicDropCount = rewardData.RelicDropCount;
-
-                relicDropTable.Drop(relicDropCount);
-
-                foreach (var relic in relicDropTable.DropedRelics)
+                if (FirebaseDataBaseMgr.Instance != null)
                 {
-                    Debug.Log(relic);
+                    FixedDebug.Log("스테이지 보상 지급 코루틴 실행 (문제 생길 가능성 있음)");
+
+                    StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(stageRewardData.DropedInGameMoneyAmount));
+
+                    StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(stageRewardData.DropedOutGameMoneyAmount));
                 }
             }
 
@@ -165,8 +146,12 @@ namespace ZL.Unity.Unimo
 
             if (FirebaseDataBaseMgr.Instance != null)
             {
+                FixedDebug.Log("인 게임 재화 초기화 코루틴 실행 (문제 생길 가능성 있음)");
+
                 StartCoroutine(FirebaseDataBaseMgr.Instance.InitIngameCurrency());
             }
+
+            onStageFailEvent.Invoke();
         }
     }
 }

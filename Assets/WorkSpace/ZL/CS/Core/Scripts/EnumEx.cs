@@ -2,7 +2,7 @@ using System;
 
 namespace ZL.CS
 {
-    public static partial class EnumExtensions
+    public static partial class EnumEx
     {
         public static int ToInt<TEnum>(this TEnum instance)
 
@@ -51,6 +51,13 @@ namespace ZL.CS
         public static bool Contains(this int instance, int flags)
         {
             return (instance & (1 << flags)) != 0;
+        }
+
+        public static TEnum[] GetValues<TEnum>()
+
+            where TEnum : Enum
+        {
+            return (TEnum[])Enum.GetValues(typeof(TEnum));
         }
     }
 }

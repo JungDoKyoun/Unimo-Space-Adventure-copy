@@ -12,7 +12,7 @@ namespace ZL.Unity
 
         [SerializeField]
 
-        private SerializableDictionary<string, Sprite> table = new SerializableDictionary<string, Sprite>();
+        private SerializableDictionary<string, Sprite> table = new();
 
         public Sprite this[string key]
         {

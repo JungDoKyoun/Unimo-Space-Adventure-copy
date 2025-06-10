@@ -14,10 +14,8 @@ namespace ZL.Unity.Unimo
 
         Unique,
 
-        [EnumColor("FF9900")]
+        [EnumColor("#FF9900")]
 
         Epic,
-
-        Count,
     }
 }

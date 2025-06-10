@@ -45,7 +45,7 @@ namespace ZL.Unity.Unimo
 
                 if (gatheringCount >= targetGatheringCount)
                 {
-                    StageDataManager.Instance.StageClear();
+                    StageManager.Instance.StageClear();
                 }
             }
         }

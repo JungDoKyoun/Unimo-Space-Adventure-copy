@@ -1,5 +1,3 @@
-using JDG;
-
 using System.Collections;
 
 using UnityEngine;
@@ -50,7 +48,7 @@ namespace ZL.Unity.Unimo
         {
             yield return base.Start();
 
-            StageDataManager.Instance.StartStage();
+            StageManager.Instance.StartStage();
         }
 
         public void StageClearDirection()
@@ -78,7 +76,7 @@ namespace ZL.Unity.Unimo
                 yield return null;
             }
 
-            if (RewardData.Instance.IsRelicDroped == true)
+            if (StageRewardData.Instance.DropedRelicDatas != null)
             {
                 relicSelectionScreen.SetActive(true);
 

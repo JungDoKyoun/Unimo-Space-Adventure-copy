@@ -9,13 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 889fba82c197ece4896beb1b1d611bc9, type: 3}
-  m_Name: Gather Stage 2
+  m_Script: {fileID: 11500000, guid: 5172774794e31244384e7544c26b7a6e, type: 3}
+  m_Name: Gather Stage 3
   m_EditorClassIdentifier: 
-  inGameCurrencyAmountMin: 70
-  inGameCurrencyAmountMax: 100
-  outGameCurrencyAmountMin: 40
-  outGameCurrencyAmountMax: 70
-  bluePrintCount: 0
-  relicDropCount: 3
-  relicDropRate: 0.2
+  relicDropNormal: 0.5
+  relicDropRare: 0.25
+  relicDropUnique: 0.15
+  relicDropEpic: 0.1

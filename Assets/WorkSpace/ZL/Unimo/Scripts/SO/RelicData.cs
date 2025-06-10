@@ -31,14 +31,6 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private string nameTable = "";
-
-        [SerializeField]
-
-        private string descriptionTable = "";
-
-        [SerializeField]
-
         private int price = 0;
 
         [SerializeField]
@@ -103,7 +95,7 @@ namespace ZL.Unity.Unimo
         {
             return new List<string>()
             {
-                name,
+                name.ToString(),
 
                 ((int)rarity).ToString(),
 

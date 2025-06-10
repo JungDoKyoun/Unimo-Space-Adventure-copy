@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c31c7870470a4444a3eba02f9a4a4e8, type: 3}
-  m_Name: Reward Data Sheet Config
+  m_Script: {fileID: 11500000, guid: 08d192fddc521944b89c7ab9be650509, type: 3}
+  m_Name: Gather Stage 2
   m_EditorClassIdentifier: 
-  sheetId: 1ZV8a2LAC0z-c2Opz6MzjKfL2UmjNFljsZlZXn5BdHsU
-  worksheetName: Reward Data Sheet
-  startCell: A1
-  endCell: Z100
-  titleColumn: A
-  titleRow: 1
+  inGameMoneyAmountMin: 70
+  inGameMoneyAmountMax: 100
+  outGameMoneyAmountMin: 40
+  outGameMoneyAmountMax: 70
+  bluePrintCount: 0
+  relicChance: 0.2
+  relicCount: 3
