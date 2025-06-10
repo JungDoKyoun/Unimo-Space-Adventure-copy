@@ -146,6 +146,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             StartCoroutine(ShowUserIngameCurrency());
 
             StartCoroutine(ShowUserMetaCurrency());
+
+            //TODO: blueprint 추가 예정
         }
     }
 
@@ -399,6 +401,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     // PvP 승자 결과 나올 때 호출되어야 할 함수
     public IEnumerator UpdateWinningRate(bool winner)
     {
+        // 플레이어 전부 PlayCount 증가
         PlayCount++;
 
         var DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("playCount").SetValueAsync(PlayCount);
@@ -407,6 +410,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         if (winner == true)
         {
+            // 이긴 플레이어만 WinCount 증가
             WinCount++;
 
             DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("winCount").SetValueAsync(WinCount);
@@ -417,7 +421,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #endregion
 
-    #region Tile management(예정)
+    #region Tile management(후순위)
 
 
 

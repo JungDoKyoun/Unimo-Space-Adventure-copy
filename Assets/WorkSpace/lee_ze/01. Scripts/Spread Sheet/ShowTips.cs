@@ -9,11 +9,23 @@ public class ShowTips : MonoBehaviour
 
     private void OnEnable()
     {
+        //if (gameTip == null)
+        //{
+        //    gameTip = GameObject.Find("Matching Canvas")?.transform.Find("Under Bar Panel/Game Tips").GetComponent<TextMeshProUGUI>();
+        //}
+        //else
+        //{
+        //    gameTip.text = "Tips \n\n" + TipsFromSpreadSheet.tips[Random.Range(0, TipsFromSpreadSheet.tips.Length)];
+        //}
+    }
+
+    public void Tips()
+    {
         if (gameTip == null)
         {
             gameTip = GameObject.Find("Matching Canvas")?.transform.Find("Under Bar Panel/Game Tips").GetComponent<TextMeshProUGUI>();
         }
-        else
+        if (gameTip != null)
         {
             gameTip.text = "Tips \n\n" + TipsFromSpreadSheet.tips[Random.Range(0, TipsFromSpreadSheet.tips.Length)];
         }

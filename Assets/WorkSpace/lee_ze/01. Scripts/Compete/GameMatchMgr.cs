@@ -14,6 +14,8 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject matchingCanvas;
 
+    private TextMeshProUGUI gameTip;
+
     [SerializeField]
     private GameObject playerCheckBox;
 
@@ -110,7 +112,7 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
         }
         else
         {
-            Debug.LogWarning("CanvasGroup이 누락됨. profileCanvas와 matchingCanvas에 CanvasGroup 컴포넌트가 있는지 확인하세요.");
+            Debug.LogWarning("CanvasGroup 누락");
         }
 
         IsMatching = !IsMatching;
@@ -195,6 +197,18 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
         quickMatchButton.onClick.AddListener(() => SetCanvas());
 
         quickMatchButton.onClick.AddListener(() => QuickMatch());
+
+        quickMatchButton.onClick.AddListener(() =>
+        {
+            if (gameTip == null)
+            {
+                gameTip = GameObject.Find("Matching Canvas")?.transform.Find("Under Bar Panel/Game Tips").GetComponent<TextMeshProUGUI>();
+            }
+            if (gameTip != null)
+            {
+                gameTip.text = "Tips \n\n" + TipsFromSpreadSheet.tips[Random.Range(0, TipsFromSpreadSheet.tips.Length)];
+            }
+        });
     }
 
     private IEnumerator StartMatch()
