@@ -174,6 +174,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             rewardIngameCurrencyText = GameObject.Find("Reward Ingame Currency")?.GetComponent<TextMeshProUGUI>();
 
             if(rewardIngameCurrencyText != null) rewardIngameCurrencyText.text = savedValue.ToString();
+
+            IngameCurrency = savedValue;
         }
     }
 
@@ -236,7 +238,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             // 여기에 디스플레이
             rewardMetaCurrencyText = GameObject.Find("Reward Meta Currency")?.GetComponent<TextMeshProUGUI>();
 
-            if (rewardIngameCurrencyText != null) rewardMetaCurrencyText.text = savedValue.ToString();
+            if (rewardMetaCurrencyText != null) rewardMetaCurrencyText.text = savedValue.ToString();
+
+            MetaCurrency = savedValue;
         }
     }
 
@@ -299,6 +303,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             rewardBluePrintText = GameObject.Find("Reward Blueprint")?.GetComponent<TextMeshProUGUI>();
 
             if (rewardBluePrintText != null) rewardBluePrintText.text = savedValue.ToString();
+
+            Blueprint = savedValue;
         }
     }
 
