@@ -53,6 +53,8 @@ namespace JDG
         private Dictionary<Vector2Int, HexRenderer> _hexMap = new Dictionary<Vector2Int, HexRenderer>(); //타일 오브젝트 정보
         private List<Vector2Int> _bossNearShopCount = new List<Vector2Int>();
 
+        public GameObject a;
+
         private void Start()
         {
             if (GameStateManager.IsRestoreMap && GameStateManager.IsClear)
@@ -119,7 +121,7 @@ namespace JDG
 
             Vector2Int[] oddOffsets =
             {
-                new(x + 1, y), new(x + 1, y + 1), new(x, y + 1), new(x - 1, y), new Vector2Int(x, y -1), new(x + 1, y - 1)
+                new(x + 1, y), new(x + 1, y + 1), new(x, y + 1), new(x - 1, y), new (x, y -1), new(x + 1, y - 1)
             };
 
             var offsets = (y % 2 == 0) ? evenOffsets : oddOffsets;
@@ -159,6 +161,10 @@ namespace JDG
                 _hexMap.Add(coord, hexRenderer);
 
                 tile.transform.SetParent(transform, true);
+                Vector3 tilePos = tile.transform.position;
+                tilePos.y += 1.35f;
+                GameObject instance = Instantiate(a, tilePos, Quaternion.identity);
+                instance.transform.SetParent(tile.transform);
             }
 
             Vector3 spawnPos = GetPositionForHexFromCoordinate(_playerCoord) + Vector3.up * 1f;
@@ -551,73 +557,175 @@ namespace JDG
             }
         }
 
+        //private void AssignEnvironment()
+        //{
+        //    List<Vector2Int> availableCoords = new List<Vector2Int>();
+
+        //    foreach (var coord in _tileCoords)
+        //    {
+        //        TileType type = _hexMap[coord].TileData.TileType;
+
+        //        if (type != TileType.Event && type != TileType.Boss)
+        //        {
+        //            availableCoords.Add(coord);
+        //        }
+        //        else
+        //        {
+        //            _hexMap[coord].TileData.EnvironmentType = EnvironmentType.None;
+        //        }
+        //    }
+
+        //    availableCoords.Sort((a, b) => a.x != b.x ? a.x.CompareTo(b.x) : a.y.CompareTo(b.y));
+
+        //    List<EnvironmentType> allEvT = TileEnvironmentManager.Instance.GetAllEnvironmentTypes().FindAll(evt => evt != EnvironmentType.None);
+        //    Dictionary<EnvironmentType, int> allEnvironmentTypeCount = new Dictionary<EnvironmentType, int>();
+
+        //    foreach (var type in allEvT)
+        //    {
+        //        allEnvironmentTypeCount[type] = 0;
+        //    }
+
+        //    int totalCount = availableCoords.Count;
+        //    int eventTypeMaxCount = Mathf.CeilToInt(totalCount / allEvT.Count);
+        //    int index = 0;
+
+        //    while (index < availableCoords.Count)
+        //    {
+        //        int remain = availableCoords.Count - index;
+        //        int size = (remain < _minEnvironmentTileCount) ? remain : Random.Range(_minEnvironmentTileCount, Mathf.Min(_maxEnvironmentTileCount + 1, remain + 1));
+        //        EnvironmentType evT = GetBalancedEnviromentType(allEvT, allEnvironmentTypeCount, eventTypeMaxCount);
+
+        //        for (int i = 0; i < size && index < availableCoords.Count; i++)
+        //        {
+        //            Vector2Int coord = availableCoords[index];
+        //            _hexMap[coord].TileData.EnvironmentType = evT;
+        //            index++;
+        //        }
+        //    }
+        //}
+
+        //private EnvironmentType GetBalancedEnviromentType(List<EnvironmentType> types, Dictionary<EnvironmentType, int> envCount, int eventMaxCount)
+        //{
+        //    List<EnvironmentType> candidate = new List<EnvironmentType>();
+
+        //    foreach (var type in types)
+        //    {
+        //        if (envCount[type] < eventMaxCount)
+        //        {
+        //            candidate.Add(type);
+        //        }
+        //    }
+
+        //    if (candidate.Count == 0)
+        //    {
+        //        return types[Random.Range(0, types.Count)];
+        //    }
+
+        //    EnvironmentType chose = candidate[Random.Range(0, candidate.Count)];
+        //    envCount[chose]++;
+        //    return chose;
+        //}
+
         private void AssignEnvironment()
         {
             List<Vector2Int> availableCoords = new List<Vector2Int>();
 
-            foreach(var coord in _tileCoords)
+            foreach (var coord in _tileCoords)
             {
-                TileType type = _hexMap[coord].TileData.TileType;
+                TileType tileType = _hexMap[coord].TileData.TileType;
 
-                if (type != TileType.Event && type != TileType.Boss)
+                if (tileType != TileType.Event || tileType != TileType.Boss)
                 {
                     availableCoords.Add(coord);
                 }
                 else
                 {
-                    _hexMap[coord].TileData.EnvironmentType = EnvironmentType.None;
+                    _hexMap[coord].TileData.TileType = TileType.None;
                 }
             }
 
-            availableCoords.Sort((a, b) => a.x != b.x ? a.x.CompareTo(b.x) : a.y.CompareTo(b.y));
+            availableCoords.Sort((a, b) => a.y != b.y ? a.y.CompareTo(b.y) : a.x.CompareTo(b.x));
 
-            List<EnvironmentType> allEvT = TileEnvironmentManager.Instance.GetAllEnvironmentTypes().FindAll(evt => evt != EnvironmentType.None);
-            Dictionary<EnvironmentType, int> allEnvironmentTypeCount = new Dictionary<EnvironmentType, int>();
+            List<EnvironmentType> allEvent = TileEnvironmentManager.Instance.GetAllEnvironmentTypes().FindAll(type => type != EnvironmentType.None);
+            Dictionary<EnvironmentType, int> envTypeCount = new Dictionary<EnvironmentType, int>();
 
-            foreach(var type in allEvT)
+            foreach (var type in allEvent)
             {
-                allEnvironmentTypeCount[type] = 0;
+                envTypeCount[type] = 0;
             }
 
-            int totalCount = availableCoords.Count;
-            int eventTypeMaxCount = Mathf.CeilToInt(totalCount / allEvT.Count);
-            int index = 0;
+            int total = availableCoords.Count;
+            int maxEnvCount = Mathf.CeilToInt(total / allEvent.Count);
+            HashSet<Vector2Int> used = new HashSet<Vector2Int>();
 
-            while(index < availableCoords.Count)
+            foreach(var start in availableCoords)
             {
-                int remain = availableCoords.Count - index;
-                int size = (remain < _minEnvironmentTileCount) ? remain : Random.Range(_minEnvironmentTileCount, Mathf.Min(_maxEnvironmentTileCount + 1, remain + 1));
-                EnvironmentType evT = GetBalancedEnviromentType(allEvT, allEnvironmentTypeCount, eventTypeMaxCount);
+                EnvironmentType chosenEnv = GetBalancedEnviromentType(allEvent, envTypeCount, maxEnvCount);
+                int size = Random.Range(_minEnvironmentTileCount, _maxEnvironmentTileCount + 1);
+                List<Vector2Int> choseCoord = GetEnvironmentCluster(start, availableCoords, used, size);
 
-                for (int i = 0; i < size && index < availableCoords.Count; i++)
+                foreach(var coord in choseCoord)
                 {
-                    Vector2Int coord = availableCoords[index];
-                    _hexMap[coord].TileData.EnvironmentType = evT;
-                    index++;
+                    _hexMap[coord].TileData.EnvironmentType = chosenEnv;
+                    used.Add(coord);
                 }
+
+                if(used.Count >= total)
+                break;
             }
         }
 
-        private EnvironmentType GetBalancedEnviromentType(List<EnvironmentType> types, Dictionary<EnvironmentType, int> envCount, int eventMaxCount)
+        private EnvironmentType GetBalancedEnviromentType(List<EnvironmentType> environmentTypes, Dictionary<EnvironmentType, int> envTypeCount, int maxEnvCount)
         {
             List<EnvironmentType> candidate = new List<EnvironmentType>();
 
-            foreach(var type in types)
+            foreach(var type in environmentTypes)
             {
-                if (envCount[type] < eventMaxCount)
+                if (envTypeCount[type] < maxEnvCount)
                 {
                     candidate.Add(type);
                 }
             }
 
-            if(candidate.Count == 0)
+            if (candidate.Count == 0)
             {
-                return types[Random.Range(0, types.Count)];
+                return environmentTypes[Random.Range(0, environmentTypes.Count)];
             }
 
             EnvironmentType chose = candidate[Random.Range(0, candidate.Count)];
-            envCount[chose]++;
+            envTypeCount[chose]++;
             return chose;
+        }
+        
+        private List<Vector2Int> GetEnvironmentCluster(Vector2Int start, List<Vector2Int> availableCoords, HashSet<Vector2Int> used, int size)
+        {
+            List<Vector2Int> result = new List<Vector2Int>();
+            Queue<(Vector2Int coord, int dist)> queue = new Queue<(Vector2Int coord, int dist)>();
+            HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+
+            queue.Enqueue((start, 0));
+            visited.Add(start);
+
+            while(queue.Count > 0 && result.Count < size)
+            {
+                var (coord, dist) = queue.Dequeue();
+
+                if (!availableCoords.Contains(coord) || used.Contains(coord))
+                    continue;
+
+                result.Add(coord);
+
+                foreach(var neighbor in GetNeighbors(coord))
+                {
+                    if(availableCoords.Contains(neighbor) && !used.Contains(neighbor) && !visited.Contains(neighbor))
+                    {
+                        queue.Enqueue((neighbor, dist + 1));
+                        visited.Add(neighbor);
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
