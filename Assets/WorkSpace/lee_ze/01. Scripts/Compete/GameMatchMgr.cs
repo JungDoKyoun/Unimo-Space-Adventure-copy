@@ -14,6 +14,8 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
     [SerializeField]
     private GameObject matchingCanvas;
 
+    private TextMeshProUGUI gameTip;
+
     [SerializeField]
     private GameObject playerCheckBox;
 
@@ -65,16 +67,55 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
     #region Canvas
 
-    private void SetIsMatching()
-    {
-        IsMatching = !IsMatching;
-    }
-
     private void SetCanvas()
     {
-        profileCanvas.SetActive(!IsMatching);
+        //profileCanvas.SetActive(!IsMatching);
 
-        matchingCanvas.SetActive(IsMatching);
+        //matchingCanvas.SetActive(IsMatching);
+
+        //IsMatching = !IsMatching;
+
+        var profileGroup = profileCanvas.GetComponent<CanvasGroup>();
+
+        var matchingGroup = matchingCanvas.GetComponent<CanvasGroup>();
+
+        if (profileGroup != null && matchingGroup != null)
+        {
+            if (IsMatching)
+            {
+                profileGroup.alpha = 0f;
+
+                profileGroup.interactable = false;
+
+                profileGroup.blocksRaycasts = false;
+
+                matchingGroup.alpha = 1f;
+
+                matchingGroup.interactable = true;
+
+                matchingGroup.blocksRaycasts = true;
+            }
+            else
+            {
+                profileGroup.alpha = 1f;
+
+                profileGroup.interactable = true;
+
+                profileGroup.blocksRaycasts = true;
+
+                matchingGroup.alpha = 0f;
+
+                matchingGroup.interactable = false;
+
+                matchingGroup.blocksRaycasts = false;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("CanvasGroup ´©¶ô");
+        }
+
+        IsMatching = !IsMatching;
     }
 
     private void SetStar(bool isMatched)
@@ -153,11 +194,21 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
         quickMatchButton.interactable = true;
 
-        quickMatchButton.onClick.AddListener(() => SetIsMatching());
-
         quickMatchButton.onClick.AddListener(() => SetCanvas());
 
         quickMatchButton.onClick.AddListener(() => QuickMatch());
+
+        quickMatchButton.onClick.AddListener(() =>
+        {
+            if (gameTip == null)
+            {
+                gameTip = GameObject.Find("Matching Canvas")?.transform.Find("Under Bar Panel/Game Tips").GetComponent<TextMeshProUGUI>();
+            }
+            if (gameTip != null)
+            {
+                gameTip.text = "Tips \n\n" + TipsFromSpreadSheet.tips[Random.Range(0, TipsFromSpreadSheet.tips.Length)];
+            }
+        });
     }
 
     private IEnumerator StartMatch()
@@ -178,8 +229,6 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
         stopMatchButton = GameObject.Find("Matching Canvas").transform.Find("Under Bar Panel/Stop Match Button").GetComponent<Button>();
 
         stopMatchButton.onClick.AddListener(() => StopMatch());
-
-        stopMatchButton.onClick.AddListener(() => SetIsMatching());
 
         stopMatchButton.onClick.AddListener(() => SetCanvas()); 
     }
@@ -249,15 +298,11 @@ public class GameMatchMgr : MonoBehaviourPunCallbacks
 
     private void OnDestroy()
     {
-        quickMatchButton.onClick.RemoveListener(() => SetIsMatching());
-
         quickMatchButton.onClick.RemoveListener(() => SetCanvas());
 
         quickMatchButton.onClick.RemoveListener(() => QuickMatch());
 
         stopMatchButton.onClick.RemoveListener(() => StopMatch());
-
-        stopMatchButton.onClick.RemoveListener(() => SetIsMatching());
 
         stopMatchButton.onClick.RemoveListener(() => SetCanvas());
     }

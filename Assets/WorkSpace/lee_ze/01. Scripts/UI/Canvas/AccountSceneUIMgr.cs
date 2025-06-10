@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class AccountSceneUIMgr : MonoBehaviour
 {
     [SerializeField]
-    private GameObject accountCanvas;
+    private CanvasGroup accountGroup;
 
     [SerializeField]
-    private GameObject modeSelectionCanvas;
+    private CanvasGroup modeSelectionGroup;
 
     private Button startButton;
 
@@ -19,26 +19,42 @@ public class AccountSceneUIMgr : MonoBehaviour
     {
         SetCanvas(FirebaseAuthMgr.HasUser);
 
-        startButton = accountCanvas.transform.Find("Account/Start Button")?.GetComponent<Button>();
+        startButton = accountGroup.transform.Find("Account/Start Button")?.GetComponent<Button>();
 
-        logoutButton = modeSelectionCanvas.transform.Find("Logout Button")?.GetComponent<Button>();
+        logoutButton = modeSelectionGroup.transform.Find("Logout Button")?.GetComponent<Button>();
 
         startButton.onClick.AddListener(() => SetCanvas(true));
 
-        logoutButton.onClick.AddListener(() => SetCanvas(false));
+        logoutButton.onClick.AddListener(() =>
+        {
+            Debug.Log(FirebaseAuthMgr.HasUser);
+
+            FirebaseAuthMgr.Instance.SetButtonInteractable(FirebaseAuthMgr.HasUser);
+
+            SetCanvas(false);
+        });
     }
 
     private void SetCanvas(bool hasUser)
     {
-        accountCanvas.SetActive(!hasUser);
+        SetGroup(accountGroup, !hasUser);
 
-        modeSelectionCanvas.SetActive(hasUser);
+        SetGroup(modeSelectionGroup, hasUser);
+    }
+
+    private void SetGroup(CanvasGroup group, bool enable)
+    {
+        group.alpha = enable ? 1f : 0f;
+
+        group.interactable = enable;
+
+        group.blocksRaycasts = enable;
     }
 
     private void OnDestroy()
     {
-        startButton.onClick.RemoveListener(() => SetCanvas(true));
-
-        logoutButton.onClick.RemoveListener(() => SetCanvas(false));
+        startButton.onClick.RemoveAllListeners();
+        
+        logoutButton.onClick.RemoveAllListeners();
     }
 }

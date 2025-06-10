@@ -113,6 +113,13 @@ public class FirebaseAuthMgr : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        GetUIs();
+
+        RegisterUIEvents();
+    }
+
     private void Start()
     {
         if (startButton != null) startButton.interactable = false;
@@ -120,21 +127,15 @@ public class FirebaseAuthMgr : MonoBehaviour
         if (warningText != null) warningText.text = "";
 
         if (confirmText != null) confirmText.text = "";
-
-        loginButton.onClick.AddListener(() => Login());
-
-        signUpButton.onClick.AddListener(() => Register());
-
-        logoutButton.onClick.AddListener(() => Logout());
     }
 
     private void OnDisable()
     {
-        loginButton.onClick.RemoveListener(() => Login());
+        loginButton.onClick.RemoveListener(Login);
 
-        signUpButton.onClick.RemoveListener(() => Register());
+        signUpButton.onClick.RemoveListener(Register);
 
-        logoutButton.onClick.RemoveListener(() => Logout());
+        logoutButton.onClick.RemoveListener(Logout);
     }
 
     public void Login()
@@ -147,13 +148,68 @@ public class FirebaseAuthMgr : MonoBehaviour
         StartCoroutine(RegisterCor(emailField.text + "@unimo.com", passwordField.text, nicknameField.text));
     }
 
-    private void SetButtonInteractable() // 회원가입 or 로그인 시 << 이 버튼 비활성화 및 start 버튼 활성화
+    private void GetUIs()
     {
-        startButton.interactable = !startButton.interactable;
+        if (startButton == null) startButton = GameObject.Find("Account Canvas").transform.Find("Account/Start Button").GetComponent<Button>();
 
-        loginButton.interactable = !loginButton.interactable;
+        if (loginButton == null) loginButton = GameObject.Find("Account Canvas").transform.Find("Account/Login Button").GetComponent<Button>();
 
-        signUpButton.interactable = !signUpButton.interactable;
+        if (signUpButton == null) signUpButton = GameObject.Find("Account Canvas").transform.Find("Account/Sign Up Button").GetComponent<Button>();
+
+        if (emailField == null) emailField = GameObject.Find("Account Canvas").transform.Find("Account/Account Input Fields/ID").GetComponent<TMP_InputField>();
+
+        if (passwordField == null) passwordField = GameObject.Find("Account Canvas").transform.Find("Account/Account Input Fields/Password").GetComponent<TMP_InputField>();
+
+        if (nicknameField == null) nicknameField = GameObject.Find("Account Canvas").transform.Find("Account/Account Input Fields/Nickname").GetComponent<TMP_InputField>();
+
+        if (nicknameField == null) nicknameField = GameObject.Find("Account Canvas").transform.Find("Account/Account Input Fields/Nickname").GetComponent<TMP_InputField>();
+
+        Debug.Log("Get");
+    }
+
+    private void RegisterUIEvents()
+    {
+        loginButton.onClick.RemoveAllListeners();
+
+        signUpButton.onClick.RemoveAllListeners();
+
+        logoutButton.onClick.RemoveAllListeners();
+
+
+        loginButton.onClick.AddListener(Login);
+
+        signUpButton.onClick.AddListener(Register);
+        
+        logoutButton.onClick.AddListener(Logout);
+    }
+
+    public void SetButtonInteractable(bool value) // 회원가입 or 로그인 시 << 이 버튼 비활성화 및 start 버튼 활성화
+    {
+        if (startButton == null || loginButton == null || signUpButton == null)
+            GetUIs();
+       
+        //if (hasUser == true)
+        //{
+        //    startButton.interactable = true;
+
+        //    loginButton.interactable = false;
+
+        //    signUpButton.interactable = false;
+        //}
+        //else
+        //{
+        //    startButton.interactable = false;
+
+        //    loginButton.interactable = true;
+
+        //    signUpButton.interactable = true;
+        //}
+
+        startButton.interactable = value;
+
+        loginButton.interactable = !value;
+
+        signUpButton.interactable = !value;
     }
 
     #region 로그인 코루틴
@@ -231,7 +287,9 @@ public class FirebaseAuthMgr : MonoBehaviour
 
             confirmText.text = "nickname: " + User.DisplayName;
 
-            SetButtonInteractable();
+            Debug.Log(User.DisplayName + " 로그인");
+
+            SetButtonInteractable(hasUser);
         }
     }
 
@@ -332,7 +390,7 @@ public class FirebaseAuthMgr : MonoBehaviour
 
                         confirmText.text = "nickname: " + User.DisplayName;
 
-                        SetButtonInteractable();
+                        SetButtonInteractable(hasUser);
                     }
                 }
             }
@@ -377,6 +435,8 @@ public class FirebaseAuthMgr : MonoBehaviour
 
     public void Logout()
     {
+        GetUIs();
+
         if (auth != null)
         {
             auth.SignOut();
@@ -391,15 +451,17 @@ public class FirebaseAuthMgr : MonoBehaviour
 
             nicknameField.text = "";
 
-            warningText.text = "";
+            if (warningText != null) warningText.text = "";
 
-            confirmText.text = "";
+            if (confirmText != null) confirmText.text = "";
 
-            if (startButton != null) startButton.interactable = false;
+            //SetButtonInteractable(hasUser);
 
-            if (loginButton != null) loginButton.interactable = true;
+            //if (startButton != null) startButton.interactable = false;
 
-            if (signUpButton != null) signUpButton.interactable = true;
+            //if (loginButton != null) loginButton.interactable = true;
+
+            //if (signUpButton != null) signUpButton.interactable = true;
 
             Debug.Log(auth);
 

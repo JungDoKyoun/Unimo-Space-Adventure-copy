@@ -146,6 +146,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             StartCoroutine(ShowUserIngameCurrency());
 
             StartCoroutine(ShowUserMetaCurrency());
+
+            //TODO: blueprint 추가 예정
         }
     }
 
@@ -172,6 +174,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             rewardIngameCurrencyText = GameObject.Find("Reward Ingame Currency")?.GetComponent<TextMeshProUGUI>();
 
             if(rewardIngameCurrencyText != null) rewardIngameCurrencyText.text = savedValue.ToString();
+
+            IngameCurrency = savedValue;
         }
     }
 
@@ -234,7 +238,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             // 여기에 디스플레이
             rewardMetaCurrencyText = GameObject.Find("Reward Meta Currency")?.GetComponent<TextMeshProUGUI>();
 
-            if (rewardIngameCurrencyText != null) rewardMetaCurrencyText.text = savedValue.ToString();
+            if (rewardMetaCurrencyText != null) rewardMetaCurrencyText.text = savedValue.ToString();
+
+            MetaCurrency = savedValue;
         }
     }
 
@@ -297,6 +303,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             rewardBluePrintText = GameObject.Find("Reward Blueprint")?.GetComponent<TextMeshProUGUI>();
 
             if (rewardBluePrintText != null) rewardBluePrintText.text = savedValue.ToString();
+
+            Blueprint = savedValue;
         }
     }
 
@@ -399,6 +407,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     // PvP 승자 결과 나올 때 호출되어야 할 함수
     public IEnumerator UpdateWinningRate(bool winner)
     {
+        // 플레이어 전부 PlayCount 증가
         PlayCount++;
 
         var DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("playCount").SetValueAsync(PlayCount);
@@ -407,6 +416,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         if (winner == true)
         {
+            // 이긴 플레이어만 WinCount 증가
             WinCount++;
 
             DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("winCount").SetValueAsync(WinCount);
@@ -417,7 +427,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #endregion
 
-    #region Tile management(예정)
+    #region Tile management(후순위)
 
 
 
