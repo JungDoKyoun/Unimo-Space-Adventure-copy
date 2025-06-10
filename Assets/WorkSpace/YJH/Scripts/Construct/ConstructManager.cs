@@ -10,7 +10,7 @@ using Firebase.Extensions;
 public class ConstructManager : MonoBehaviour
 {
     //[SerializeField] List<Transform> spawnPoints= new List<Transform>();
-    [SerializeField] List<ConstructBase> constructList = new List<ConstructBase>();
+    [SerializeField] List<TechBuildBase> techConstructList = new List<TechBuildBase>();
     [SerializeField] List<UtilityBuildBase> utilityConstructList = new List<UtilityBuildBase>();
     [SerializeField] List<CombatBuildBase> combatConstructList = new List<CombatBuildBase>();
 
@@ -36,7 +36,7 @@ public class ConstructManager : MonoBehaviour
     public PlayerStatus playerStatus = new PlayerStatus();
 
 
-    public List<ConstructBase> ConstructList { get { return constructList;  } private set { constructList = value; } }
+    //public List<ConstructBase> ConstructList { get { return constructList;  } private set { constructList = value; } }
     public static List<string> buildedList= new List<string>();    
     public static ConstructManager Instance { get; private set; }
 
@@ -60,7 +60,7 @@ public class ConstructManager : MonoBehaviour
         SetOwnCost();
         DecideProgress();
         ToDictionary();
-        
+        PlayerManager.OnPlayerDead += YJH.MethodCollection.DelinkHealPlayer;
     }
     private void OnDestroy()
     {
@@ -68,7 +68,15 @@ public class ConstructManager : MonoBehaviour
     }
     public void ToDictionary()
     {
-        foreach(var temp in constructList)
+        foreach(var temp in techConstructList)
+        {
+            temp.ToDictionary();
+        }
+        foreach (var temp in utilityConstructList)
+        {
+            temp.ToDictionary();
+        }
+        foreach (var temp in combatConstructList)
         {
             temp.ToDictionary();
         }
@@ -93,12 +101,37 @@ public class ConstructManager : MonoBehaviour
         {
             return;
         }
-        else if(building.TryConstruct(constructList)==false)
+        else  
         {
-            return;
+            switch (building)
+            {
+                case TechBuildBase:
+                    if (building.TryConstruct(techConstructList)==false)
+                    {
+                        return;
+                    }
+
+                    break;
+                case UtilityBuildBase:
+                    if(building.TryConstruct(utilityConstructList)==false)
+                    {
+                        return;
+                    }
+                    break;
+                case CombatBuildBase:
+                    if(building.TryConstruct(combatConstructList) == false)
+                    {
+                        return;
+                    }
+                    break;
+                default:
+                    Debug.Log("non build type");
+                    return;
+                    
+            }
+            
         }
-        else
-        {
+        
             //Debug.Log("buildcom");
             building.ConstructEnd();
             //spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
@@ -115,14 +148,14 @@ public class ConstructManager : MonoBehaviour
             //어떻게 해야 할까?
             //건설 베이스에 스폰 인덱스가 있으니까 이 스폰 인덱스를 이용해서 스폰리스트에 접근해서 스폰 리스트 쪽에 반영
             //반영 하는건 뒤 패널을 편집하는 방식으로 이미지를 이용해서 덮어 씌우기? 동일한 이미지를 여러개 다른 버전으로 만들면 될 거 같다
-        }
+        
     }
     public void DecideProgress()
     {
         //Debug.Log("changeimage");
         int buildingNum = 0;
         int buildedBuildingNum = 0;
-        foreach (var building in constructList)
+        foreach (var building in techConstructList)
         {
             buildingNum++;
             if (building.isBuildConstructed == true)
@@ -188,25 +221,25 @@ public class ConstructManager : MonoBehaviour
             }
         }
     }
-    public List<IStatModifier> ReturnStatEffectList()//게임매니저에서 호출 받아서 자기가 적용시킬 스테이터스에 사용하기, 현재는 사용 X
-    {
-        List<IStatModifier> tempList= new List<IStatModifier>();
-        foreach(var building in constructList)
-        {
-            foreach(var effect in building.buildEffects)
-            {
-                if (building.isBuildConstructed == true)
-                {
-                    tempList.Add(effect);
-                }
-                
-            }
-        }
-        return tempList;
-    }
+    //public List<IStatModifier> ReturnStatEffectList()//게임매니저에서 호출 받아서 자기가 적용시킬 스테이터스에 사용하기, 현재는 사용 X
+    //{
+    //    List<IStatModifier> tempList= new List<IStatModifier>();
+    //    foreach(var building in constructList)
+    //    {
+    //        foreach(var effect in building.buildEffects)
+    //        {
+    //            if (building.isBuildConstructed == true)
+    //            {
+    //                tempList.Add(effect);
+    //            }
+    //            
+    //        }
+    //    }
+    //    return tempList;
+    //}
     public void BuildButtonPressed(string buildID)
     {
-        foreach (var temp in constructList)
+        foreach (var temp in techConstructList)
         {
             if (temp.buildID == buildID)
             {
@@ -294,14 +327,40 @@ public class ConstructManager : MonoBehaviour
     }
     public void DecideCanBuild(ConstructBase buildingInfo)
     {
-        if (buildingInfo.TryConstruct(constructList) == false)
+        switch (buildingInfo)
         {
-            buildInfoBuildButton.interactable = false;
+            case TechBuildBase:
+                if (buildingInfo.TryConstruct(techConstructList) == false)
+                {
+                    buildInfoBuildButton.interactable = false;
+                }
+                else
+                {
+                    buildInfoBuildButton.interactable = true;
+                }
+                break;
+            case UtilityBuildBase:
+                if (buildingInfo.TryConstruct(utilityConstructList) == false)
+                {
+                    buildInfoBuildButton.interactable = false;
+                }
+                else
+                {
+                    buildInfoBuildButton.interactable = true;
+                }
+                break;
+            case CombatBuildBase:
+                if (buildingInfo.TryConstruct(combatConstructList) == false)
+                {
+                    buildInfoBuildButton.interactable = false;
+                }
+                else
+                {
+                    buildInfoBuildButton.interactable = true;
+                }
+                break;
         }
-        else
-        {
-            buildInfoBuildButton.interactable = true;
-        }
+        
     }
 
     //public bool TryGetPlayer()// 이제 안쓸듯
@@ -397,17 +456,11 @@ public class ConstructManager : MonoBehaviour
 
     public void ActiveBuildEffect()
     {
-        foreach (var building in constructList)
+        foreach (var building in techConstructList)
         {
             if (building.isBuildConstructed == true)
             {
-                foreach (var buildeffect in building.buildEffects)
-                {
-                    ModifieStat(buildeffect);
-
-
-
-                }
+                ModifieStat(building.buildEffect);
             }
         }
         foreach (var building in utilityConstructList)

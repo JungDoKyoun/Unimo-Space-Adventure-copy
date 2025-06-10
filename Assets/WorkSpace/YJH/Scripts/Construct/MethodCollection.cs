@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using ZL.Unity.Unimo;
+using UnityEngine.SceneManagement;
+using JDG;
 namespace YJH
 {
     public static class MethodCollection
     {
+        #region 시작시 인게임 재화 추가 함수
         public static void IncreaseIngameCurrencyA()
         {
             IEnumerator method = FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(50);
@@ -34,19 +37,48 @@ namespace YJH
             IEnumerator method = FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(250);
             CoroutineRunner.Instance.Run(method);
         }
+        #endregion 
+        #region 게임종료시 힐관련 함수
+        private static void HealPlayer(float healAmount)
+        {
+            if (GameStateManager.IsClear == true)
+            {
+                PlayerManager.PlayerStatus.currentHealth += healAmount;
+            }
+        }
+        
+        public static void DelinkHealPlayer()
+        {
+            SceneManager.sceneLoaded-=HealAfterStageEndAA;
+            SceneManager.sceneLoaded-=HealAfterStageEndBB;
+            SceneManager.sceneLoaded-=HealAfterStageEndCC;
+        }
         public static void HealAfterStageEndA()//스테이지 종료를 나타내는 이벤트가 있다면 거기에 할당하기
         {
-
-            PlayerManager.PlayerStatus.currentHealth += 1f;
+            SceneManager.sceneLoaded += HealAfterStageEndAA;
         }
+        private static void HealAfterStageEndAA(Scene scene, LoadSceneMode mode)
+        {
+            HealPlayer(1);
+        }
+
         public static void HealAfterStageEndB()
         {
-
+            SceneManager.sceneLoaded += HealAfterStageEndBB;
+        }
+        private static void HealAfterStageEndBB(Scene scene, LoadSceneMode mode)
+        {
+            HealPlayer(2);
         }
         public static void HealAfterStageEndC()
         {
-
+            SceneManager.sceneLoaded += HealAfterStageEndCC;
         }
+        private static void HealAfterStageEndCC(Scene scene, LoadSceneMode mode)
+        {
+            HealPlayer(3);
+        }
+        #endregion
         public static void IncreaseRelicChanceA()
         {
 

@@ -32,16 +32,13 @@ public class ConstructBase :ScriptableObject//,IConstruct
     public string buildType;
     public bool isbuildRepeatable;
     //public string buildPrefabDirection;//이것도 직접이 맞을듯 
-    public List<BuildEffect> buildEffects=new List<BuildEffect>();
-    public int spawnIndex;
+    //public List<BuildEffect> buildEffects=new List<BuildEffect>();
+    //public int spawnIndex;
     
     //public string buildingDescription;
 
 
-    public void Init()//현재는 안씀?
-    {
-        
-    }
+    
     
     public bool IsBuildConstructed()
     {
@@ -84,6 +81,69 @@ public class ConstructBase :ScriptableObject//,IConstruct
         
         return true;
     }
+    public bool TryConstruct(List<TechBuildBase> constructBases)
+    {
+        if (IsRequiredFulFilled(constructBases) == false)
+        {
+            Debug.Log("buildrequire");
+            return false;
+        }
+        if (IsBuildCostEnough(ConstructManager.Instance.OwnBuildCostDic) == false)//딕셔너리 파이어베이스 받아서 넣기
+        {
+            Debug.Log("notenoughcost");
+            return false;
+        }
+        if (isBuildConstructed == true && isbuildRepeatable == false)
+        {
+            Debug.Log("already builded");
+            return false;
+        }
+        //ConstructEnd();
+
+        return true;
+    }
+    public bool TryConstruct(List<UtilityBuildBase> constructBases)
+    {
+        if (IsRequiredFulFilled(constructBases) == false)
+        {
+            Debug.Log("buildrequire");
+            return false;
+        }
+        if (IsBuildCostEnough(ConstructManager.Instance.OwnBuildCostDic) == false)//딕셔너리 파이어베이스 받아서 넣기
+        {
+            Debug.Log("notenoughcost");
+            return false;
+        }
+        if (isBuildConstructed == true && isbuildRepeatable == false)
+        {
+            Debug.Log("already builded");
+            return false;
+        }
+        //ConstructEnd();
+
+        return true;
+    }
+    public bool TryConstruct(List<CombatBuildBase> constructBases)
+    {
+        if (IsRequiredFulFilled(constructBases) == false)
+        {
+            Debug.Log("buildrequire");
+            return false;
+        }
+        if (IsBuildCostEnough(ConstructManager.Instance.OwnBuildCostDic) == false)//딕셔너리 파이어베이스 받아서 넣기
+        {
+            Debug.Log("notenoughcost");
+            return false;
+        }
+        if (isBuildConstructed == true && isbuildRepeatable == false)
+        {
+            Debug.Log("already builded");
+            return false;
+        }
+        //ConstructEnd();
+
+        return true;
+    }
     public bool IsBuildCostEnough(Dictionary<string,int> ownCostDic)// 이쪽 수정 필요
     {
         foreach(var pair in buildCostDic)
@@ -122,7 +182,66 @@ public class ConstructBase :ScriptableObject//,IConstruct
 
 
     }
-    
-   
-    
+    public bool IsRequiredFulFilled(List<TechBuildBase> constructBases)
+    {
+        foreach (var a in constructBases)
+        {
+            foreach (var b in buildRequires)
+            {
+                if (a.buildID == b)
+                {
+                    if (a.isBuildConstructed == false)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+
+
+    }
+    public bool IsRequiredFulFilled(List<UtilityBuildBase> constructBases)
+    {
+        foreach (var a in constructBases)
+        {
+            foreach (var b in buildRequires)
+            {
+                if (a.buildID == b)
+                {
+                    if (a.isBuildConstructed == false)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+
+
+    }
+    public bool IsRequiredFulFilled(List<CombatBuildBase> constructBases)
+    {
+        foreach (var a in constructBases)
+        {
+            foreach (var b in buildRequires)
+            {
+                if (a.buildID == b)
+                {
+                    if (a.isBuildConstructed == false)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+
+
+    }
+
+
 }
