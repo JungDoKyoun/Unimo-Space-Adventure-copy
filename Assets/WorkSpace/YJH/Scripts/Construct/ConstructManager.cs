@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Firebase.Database;
 using Firebase.Extensions;
+using System.Threading.Tasks;
 
 public class ConstructManager : MonoBehaviour
 {
@@ -44,7 +45,7 @@ public class ConstructManager : MonoBehaviour
     public event onConstructCostChange OnConstructCostChange;
 
     private static bool isBuildEffectAplly=false;
-    private Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
+    public Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
     //private PlayerManager playerManager;
     
     
@@ -137,7 +138,7 @@ public class ConstructManager : MonoBehaviour
             //spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
             buildInfoBuildButton.interactable = false;
             int costNum;
-            FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency",out costNum) ? -costNum : 0 );
+        StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
             //SetPlayer();
             DecideProgress();
             
@@ -489,18 +490,20 @@ public class ConstructManager : MonoBehaviour
         if (FirebaseDataBaseMgr.Instance == null)
         {
             //Debug.Log("firenull!");
-
+            return;
         }
         else
         {
+            
             FirebaseDataBaseMgr.Instance.StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(0));
+
             ownBuildCostDic.Add("Blueprint", FirebaseDataBaseMgr.Blueprint);
             ownBuildCostDic.Add("MetaCurrency", FirebaseDataBaseMgr.MetaCurrency);
             OnConstructCostChange.Invoke();
 
         }
-        //Debug.Log(FirebaseDataBaseMgr.Blueprint);
-        //Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
+        Debug.Log(FirebaseDataBaseMgr.Blueprint);
+        Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
         
         
     }
