@@ -6,6 +6,9 @@ using Firebase.Database;
 using Firebase.Auth;
 using JDG;
 
+/// <summary>
+/// 월드맵 진행도 저장하는 스크립트. (미사용 중)
+/// </summary>
 public class FirebaseGameStateManager : MonoBehaviour
 {
     private DatabaseReference dbRef;
