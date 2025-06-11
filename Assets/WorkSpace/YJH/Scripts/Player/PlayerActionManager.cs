@@ -2,7 +2,7 @@ using Photon.Pun;
 using System.Collections;
 
 using TMPro;
-
+using Unity.VisualScripting;
 using UnityEngine;
 
 using ZL.Unity.Unimo;
@@ -57,15 +57,15 @@ public partial class PlayerManager
 
     [SerializeField]
     
-    private GameObject attackPrefab;
+    private static GameObject attackPrefab;
 
-    private IAttackType playerAttackType;
+    private static IAttackType playerAttackType;
 
     //[SerializeField]
 
     //GameObject spellPrefab;
 
-    private ISpellType playerSpellType = null;
+    private static ISpellType playerSpellType = null;
 
     private int playerOwnEnergy = 0;
 
@@ -82,7 +82,11 @@ public partial class PlayerManager
     public event OnTargetSet OnTargetObjectSet;
 
     private Vector3 firePos;
-
+    private static PlayerManager selfManager;
+    public static PlayerManager SelfManager
+    {
+        get { return selfManager; }
+    }
     [SerializeField]
 
     private float fireRate = 0.3f;
@@ -106,7 +110,7 @@ public partial class PlayerManager
         if (PhotonNetwork.IsConnected == false)
         {
             gatheringAudioSource.clip = gatheringAudioClip;
-
+            
             //StartDetectItem();
 
             //StartFindEnemy();
@@ -116,6 +120,7 @@ public partial class PlayerManager
             detectCollider.radius = itemDetectionRange;
 
             SetAttackType(attackPrefab);
+           
 
             if (playerSpellType != null)
             {
@@ -140,10 +145,8 @@ public partial class PlayerManager
         else if (photonView.IsMine == true)
         {
             gatheringAudioSource.clip = gatheringAudioClip;
-
-            //StartDetectItem();
-
-            //StartFindEnemy();
+            
+            
 
             OnTargetObjectSet += GatheringItem;
 
@@ -177,7 +180,13 @@ public partial class PlayerManager
 
     public void ActionUpdate()
     {
-        playerSpellType.UpdateTime();
+        if (PhotonNetwork.IsConnected == false || photonView.IsMine==true)
+        {
+            if (playerSpellType != null)
+            {
+                playerSpellType.UpdateTime();
+            }
+        }
         if (isItemNear == true)
         {
             if (PhotonNetwork.IsConnected == false)
@@ -201,7 +210,7 @@ public partial class PlayerManager
     //    //StartCoroutine (FindEnemy());
     //}
 
-    public void SetAttackType(GameObject attackType)
+    public static void SetAttackType(GameObject attackType)
     {
         attackPrefab = attackType;
 
@@ -210,13 +219,13 @@ public partial class PlayerManager
         playerAttackType.Damage = playerDamage;
     }
 
-    public void SetSpellType(ISpellType spellType)
+    public static void SetSpellType(ISpellType spellType)
     {
         //Debug.Log("set spell");
 
         playerSpellType = spellType;
 
-        playerSpellType.SetPlayer(this);
+        playerSpellType.SetPlayer(selfManager);
     }
 
     public void GetItem(IGatheringObject temp)
@@ -225,7 +234,7 @@ public partial class PlayerManager
     }
 
     
-    public void GetEnergy(int energyNum)//멀티에서도 공격이 있나? -> 알아볼것
+    public void GetEnergy(int energyNum)//멀티에서도 공격이 있나? -> 있음
     {
         playerOwnEnergy += energyNum;
 
@@ -412,6 +421,10 @@ public partial class PlayerManager
     //[PunRPC]
     private void FindItemUpdate()
     {
+        if (PhotonNetwork.IsConnected == true && photonView.IsMine != true)
+        {
+            return;
+        }
         
 
             if (targetObject == null)

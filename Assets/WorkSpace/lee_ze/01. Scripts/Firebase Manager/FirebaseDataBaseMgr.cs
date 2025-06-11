@@ -146,6 +146,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             StartCoroutine(ShowUserIngameCurrency());
 
             StartCoroutine(ShowUserMetaCurrency());
+
+            StartCoroutine(ShowUserBluePrint());
         }
     }
 
@@ -169,9 +171,11 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
         {
             // 여기에 디스플레이
-            rewardIngameCurrencyText = GameObject.Find("Reward Ingame Currency")?.GetComponent<TextMeshProUGUI>();
+            rewardIngameCurrencyText = GameObject.Find("Database Get Canvas")?.transform.Find("Reward Ingame Currency").GetComponent<TextMeshProUGUI>();
 
-            if(rewardIngameCurrencyText != null) rewardIngameCurrencyText.text = savedValue.ToString();
+            if (rewardIngameCurrencyText != null) rewardIngameCurrencyText.text = savedValue.ToString();
+
+            IngameCurrency = savedValue;
         }
     }
 
@@ -232,9 +236,11 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
         {
             // 여기에 디스플레이
-            rewardMetaCurrencyText = GameObject.Find("Reward Meta Currency")?.GetComponent<TextMeshProUGUI>();
+            rewardMetaCurrencyText = GameObject.Find("Database Get Canvas")?.transform.Find("Reward Meta Currency").GetComponent<TextMeshProUGUI>();
 
-            if (rewardIngameCurrencyText != null) rewardMetaCurrencyText.text = savedValue.ToString();
+            if (rewardMetaCurrencyText != null) rewardMetaCurrencyText.text = savedValue.ToString();
+
+            MetaCurrency = savedValue;
         }
     }
 
@@ -294,9 +300,11 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
         {
             // 여기에 디스플레이
-            rewardBluePrintText = GameObject.Find("Reward Blueprint")?.GetComponent<TextMeshProUGUI>();
+            rewardBluePrintText = GameObject.Find("Database Get Canvas")?.transform.Find("Reward Blue Print").GetComponent<TextMeshProUGUI>();
 
             if (rewardBluePrintText != null) rewardBluePrintText.text = savedValue.ToString();
+
+            Blueprint = savedValue;
         }
     }
 
@@ -399,6 +407,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     // PvP 승자 결과 나올 때 호출되어야 할 함수
     public IEnumerator UpdateWinningRate(bool winner)
     {
+        // 플레이어 전부 PlayCount 증가
         PlayCount++;
 
         var DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("playCount").SetValueAsync(PlayCount);
@@ -407,6 +416,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         if (winner == true)
         {
+            // 이긴 플레이어만 WinCount 증가
             WinCount++;
 
             DBTask = dbRef.Child("users").Child(user.UserId).Child("rate").Child("winCount").SetValueAsync(WinCount);
@@ -417,7 +427,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #endregion
 
-    #region Tile management(예정)
+    #region Tile management(후순위)
 
 
 

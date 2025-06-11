@@ -17,6 +17,7 @@ public class ConstructBase :ScriptableObject//,IConstruct
     public bool isBuildConstructed;
     public string buildID;
     public string buildName;
+    public string buildingDescription;
     public List<string> buildRequires=new List<string>();//필요한 건물 buildid
     public List<string> buildUnlocks=new List<string>();
     public List<BuildCost> buildCosts=new List<BuildCost>();//이 건물이 필요한 코스트
@@ -25,22 +26,19 @@ public class ConstructBase :ScriptableObject//,IConstruct
 
 
     //public string buildEffectDirection;//이거 addressable아니면 resource.load인데 애드레서블은 사실상 사용을 못하고 resource는 많이 사용하면 메모리 먹음 그냥 직접 대입이 맞을듯
-    public Vector3 buildPosition=new Vector3();
+    public Vector3 buildPosition=new Vector3();//사용 x? 
     public Sprite buildIcon;
     public Sprite buildingImage;
     public string buildType;
     public bool isbuildRepeatable;
     //public string buildPrefabDirection;//이것도 직접이 맞을듯 
-    public List<BuildEffect> buildEffects=new List<BuildEffect>();
-    public int spawnIndex;
+    //public List<BuildEffect> buildEffects=new List<BuildEffect>();
+    //public int spawnIndex;
     
-    public string buildingDescription;
+    //public string buildingDescription;
 
 
-    public void Init()//현재는 안씀?
-    {
-        
-    }
+    
     
     public bool IsBuildConstructed()
     {
@@ -83,6 +81,69 @@ public class ConstructBase :ScriptableObject//,IConstruct
         
         return true;
     }
+    public bool TryConstruct(List<TechBuildBase> constructBases)
+    {
+        if (IsRequiredFulFilled(constructBases) == false)
+        {
+            Debug.Log("buildrequire");
+            return false;
+        }
+        if (IsBuildCostEnough(ConstructManager.Instance.OwnBuildCostDic) == false)//딕셔너리 파이어베이스 받아서 넣기
+        {
+            Debug.Log("notenoughcost");
+            return false;
+        }
+        if (isBuildConstructed == true && isbuildRepeatable == false)
+        {
+            Debug.Log("already builded");
+            return false;
+        }
+        //ConstructEnd();
+
+        return true;
+    }
+    public bool TryConstruct(List<UtilityBuildBase> constructBases)
+    {
+        if (IsRequiredFulFilled(constructBases) == false)
+        {
+            Debug.Log("buildrequire");
+            return false;
+        }
+        if (IsBuildCostEnough(ConstructManager.Instance.OwnBuildCostDic) == false)//딕셔너리 파이어베이스 받아서 넣기
+        {
+            Debug.Log("notenoughcost");
+            return false;
+        }
+        if (isBuildConstructed == true && isbuildRepeatable == false)
+        {
+            Debug.Log("already builded");
+            return false;
+        }
+        //ConstructEnd();
+
+        return true;
+    }
+    public bool TryConstruct(List<CombatBuildBase> constructBases)
+    {
+        if (IsRequiredFulFilled(constructBases) == false)
+        {
+            Debug.Log("buildrequire");
+            return false;
+        }
+        if (IsBuildCostEnough(ConstructManager.Instance.OwnBuildCostDic) == false)//딕셔너리 파이어베이스 받아서 넣기
+        {
+            Debug.Log("notenoughcost");
+            return false;
+        }
+        if (isBuildConstructed == true && isbuildRepeatable == false)
+        {
+            Debug.Log("already builded");
+            return false;
+        }
+        //ConstructEnd();
+
+        return true;
+    }
     public bool IsBuildCostEnough(Dictionary<string,int> ownCostDic)// 이쪽 수정 필요
     {
         foreach(var pair in buildCostDic)
@@ -121,7 +182,66 @@ public class ConstructBase :ScriptableObject//,IConstruct
 
 
     }
-    
-   
-    
+    public bool IsRequiredFulFilled(List<TechBuildBase> constructBases)
+    {
+        foreach (var a in constructBases)
+        {
+            foreach (var b in buildRequires)
+            {
+                if (a.buildID == b)
+                {
+                    if (a.isBuildConstructed == false)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+
+
+    }
+    public bool IsRequiredFulFilled(List<UtilityBuildBase> constructBases)
+    {
+        foreach (var a in constructBases)
+        {
+            foreach (var b in buildRequires)
+            {
+                if (a.buildID == b)
+                {
+                    if (a.isBuildConstructed == false)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+
+
+    }
+    public bool IsRequiredFulFilled(List<CombatBuildBase> constructBases)
+    {
+        foreach (var a in constructBases)
+        {
+            foreach (var b in buildRequires)
+            {
+                if (a.buildID == b)
+                {
+                    if (a.isBuildConstructed == false)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+
+
+    }
+
+
 }

@@ -51,6 +51,11 @@ public class TipsFromSpreadSheet : MonoBehaviour
         }
 
         tips = tipsList.ToArray();
+
+        for (int i = 0; i < tips.Length; i++)
+        {
+            Debug.Log($"Tip {i + 1}: {tips[i]}");
+        }
     }
 
     private static string GetTSVAdress(string address, string range, long sheetID)

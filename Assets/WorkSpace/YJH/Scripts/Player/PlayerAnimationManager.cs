@@ -12,7 +12,7 @@ public class PlayerAnimationManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerManager.OnPlayerDead += PlayDeadAnimation;
+        //Playerma.OnPlayerDead += PlayDeadAnimation;
     }
 
      public void PlayDeadAnimation()
@@ -23,7 +23,7 @@ public class PlayerAnimationManager : MonoBehaviour
     }
     private void OnDestroy()
     {
-        playerManager.OnPlayerDead-=PlayDeadAnimation;
+        //playerManager.OnPlayerDead-=PlayDeadAnimation;
     }
     IEnumerator PlayDisappear()
     {

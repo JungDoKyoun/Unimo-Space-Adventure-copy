@@ -1,5 +1,8 @@
+using Photon.Pun;
+
 public interface ISpellType
 {
+    [PunRPC]
     public void UseSpell();
 
     public void InitSpell();

@@ -6,13 +6,15 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Firebase.Database;
 using Firebase.Extensions;
+using System.Threading.Tasks;
 
 public class ConstructManager : MonoBehaviour
 {
     //[SerializeField] List<Transform> spawnPoints= new List<Transform>();
-    [SerializeField] List<ConstructBase> constructList = new List<ConstructBase>();
+    [SerializeField] List<TechBuildBase> techConstructList = new List<TechBuildBase>();
     [SerializeField] List<UtilityBuildBase> utilityConstructList = new List<UtilityBuildBase>();
-
+    [SerializeField] List<CombatBuildBase> combatConstructList = new List<CombatBuildBase>();
+    private Dictionary<string,ConstructBase> allBuildingDic = new Dictionary<string,ConstructBase>();
     [Header("UI")]
     [SerializeField] GameObject buildingInfoPanel;
     [SerializeField] Image buildingImage;
@@ -22,6 +24,7 @@ public class ConstructManager : MonoBehaviour
     [SerializeField] TMP_Text buildingCostText;
     [SerializeField] TMP_Text constructCostText;
     [SerializeField] Button buildInfoBuildButton;
+    [SerializeField] GameObject basePanel;
 
     [Header("건설완료 화면 관련")]
     [SerializeField] Image buildStateImage;
@@ -35,57 +38,71 @@ public class ConstructManager : MonoBehaviour
     public PlayerStatus playerStatus = new PlayerStatus();
 
 
-    public List<ConstructBase> ConstructList { get { return constructList;  } private set { constructList = value; } }
+    //public List<ConstructBase> ConstructList { get { return constructList;  } private set { constructList = value; } }
     public static List<string> buildedList= new List<string>();    
     public static ConstructManager Instance { get; private set; }
 
     public delegate void onConstructCostChange();
     public event onConstructCostChange OnConstructCostChange;
 
-
-    private Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
+    private static bool isBuildEffectAplly=false;
+    public Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
     //private PlayerManager playerManager;
     
     
     public PlayerStatus OriginPlayerStatus { get { return originPlayerStatus; } }
     public Dictionary<string, int> OwnBuildCostDic { get { return  ownBuildCostDic; } }
-
+    private ISpellType[] playerSpells = { new Dash() };
+    [SerializeField] GameObject[] attackPrefabs;
     private void Awake()
     {
-        //if(Instance == null)
-        //{
-        //    Instance = this;
-        //}
-        //else
-        //{
-        //    Destroy(gameObject);
-        //}
-        //DontDestroyOnLoad(gameObject);
-        //SceneManager.sceneLoaded += OnSceneChanged;
+        
         Instance = this;
         OnConstructCostChange += SetConstructCostText;
         SetOwnCost();
         DecideProgress();
         ToDictionary();
+        SetAllDic();
+        //PlayerManager.OnPlayerDead += YJH.MethodCollection.DelinkHealPlayer;
     }
-    
+    private void OnDestroy()
+    {
+        OnConstructCostChange -= SetConstructCostText;
+    }
     public void ToDictionary()
     {
-        foreach(var temp in constructList)
+        foreach(var temp in techConstructList)
+        {
+            temp.ToDictionary();
+        }
+        foreach (var temp in utilityConstructList)
+        {
+            temp.ToDictionary();
+        }
+        foreach (var temp in combatConstructList)
         {
             temp.ToDictionary();
         }
     }
-    public void Init()//현재는 안씀?
+    private void SetAllDic()
     {
-        foreach (var temp in constructList)
+        foreach (var temp in techConstructList)
         {
-            temp.Init();
+            allBuildingDic.Add(temp.buildID, temp);
+        }
+        foreach (var temp in utilityConstructList)
+        {
+            allBuildingDic.Add(temp.buildID, temp);
+        }
+        foreach (var temp in combatConstructList)
+        {
+            allBuildingDic.Add(temp.buildID, temp);
         }
     }
+    
     public void SetConstructCostText()
     {
-        Debug.Log("costupdate");
+        //Debug.Log("costupdate");
         string tempText = "";
         foreach (var buildCost in ownBuildCostDic)
         {
@@ -102,19 +119,44 @@ public class ConstructManager : MonoBehaviour
         {
             return;
         }
-        else if(building.TryConstruct(constructList)==false)
+        else  
         {
-            return;
+            switch (building)
+            {
+                case TechBuildBase:
+                    if (building.TryConstruct(techConstructList)==false)
+                    {
+                        return;
+                    }
+
+                    break;
+                case UtilityBuildBase:
+                    if(building.TryConstruct(utilityConstructList)==false)
+                    {
+                        return;
+                    }
+                    break;
+                case CombatBuildBase:
+                    if(building.TryConstruct(combatConstructList) == false)
+                    {
+                        return;
+                    }
+                    break;
+                default:
+                    Debug.Log("non build type");
+                    return;
+                    
+            }
+            
         }
-        else
-        {
+        
             //Debug.Log("buildcom");
             building.ConstructEnd();
             //spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
             buildInfoBuildButton.interactable = false;
             int costNum;
-            FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency",out costNum) ? -costNum : 0 );
-            SetPlayer();
+        StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
+            //SetPlayer();
             DecideProgress();
             
             //블루 프린트 함수 추가하기
@@ -124,73 +166,104 @@ public class ConstructManager : MonoBehaviour
             //어떻게 해야 할까?
             //건설 베이스에 스폰 인덱스가 있으니까 이 스폰 인덱스를 이용해서 스폰리스트에 접근해서 스폰 리스트 쪽에 반영
             //반영 하는건 뒤 패널을 편집하는 방식으로 이미지를 이용해서 덮어 씌우기? 동일한 이미지를 여러개 다른 버전으로 만들면 될 거 같다
-        }
+        
     }
     public void DecideProgress()
     {
-        Debug.Log("changeimage");
+        //Debug.Log("changeimage");
         int buildingNum = 0;
         int buildedBuildingNum = 0;
-        foreach (var building in constructList)
+        foreach (var building in techConstructList)
         {
             buildingNum++;
             if (building.isBuildConstructed == true)
             {
                 buildedBuildingNum++;
-                buildedList.Add(building.buildID);
+                if (buildedList.Contains(building.buildID)==false)
+                {
+                    buildedList.Add(building.buildID);
+                }
+                
             }
             
             
         }
+        foreach (var building in utilityConstructList)
+        {
+            buildingNum++;
+            if (building.isBuildConstructed == true)
+            {
+                buildedBuildingNum++;
+                if (buildedList.Contains(building.buildID) == false)
+                {
+                    buildedList.Add(building.buildID);
+                }
 
-        buildStateProgress=(float)buildedBuildingNum/buildingNum;
-        Debug.Log(buildStateProgress);
-        DebugBuildedList();
+            }
+        }
+        foreach (var building in combatConstructList)
+        {
+            buildingNum++;
+            if (building.isBuildConstructed == true)
+            {
+                buildedBuildingNum++;
+                if (buildedList.Contains(building.buildID) == false)
+                {
+                    buildedList.Add(building.buildID);
+                }
+
+            }
+        }
+
+        buildStateProgress =(float)buildedBuildingNum/buildingNum;
+       // Debug.Log(buildStateProgress);
+        //DebugBuildedList();
         ChangeBuildStateImage();
     }
     public void DebugBuildedList()
     {
         foreach (var building in buildedList)
         {
-            Debug.Log(building);
+            //Debug.Log(building);
         }
     }
     public void ChangeBuildStateImage()
     {
-        Debug.Log(buildStateImageList.Count);
+        //Debug.Log(buildStateImageList.Count);
         for(int i=0;i<buildStateImageList.Count;i++)
         {
             if((1.0f/buildStateImageList.Count)*i<=buildStateProgress && buildStateProgress < (1.0f / buildStateImageList.Count)*(i+1))
             {
                 buildStateImage.sprite = buildStateImageList[i];
-                Debug.Log("changeto");
+                //Debug.Log("changeto");
             }
         }
     }
-    public List<IStatModifier> ReturnStatEffectList()//게임매니저에서 호출 받아서 자기가 적용시킬 스테이터스에 사용하기, 현재는 사용 X
-    {
-        List<IStatModifier> tempList= new List<IStatModifier>();
-        foreach(var building in constructList)
-        {
-            foreach(var effect in building.buildEffects)
-            {
-                if (building.isBuildConstructed == true)
-                {
-                    tempList.Add(effect);
-                }
-                
-            }
-        }
-        return tempList;
-    }
+   
     public void BuildButtonPressed(string buildID)
     {
-        foreach (var temp in constructList)
+        foreach (var temp in techConstructList)
         {
             if (temp.buildID == buildID)
             {
                 ShowBuildInfoPanel(temp);
-                
+                return;
+            }
+        }
+        foreach (var temp in utilityConstructList)
+        {
+            if(temp.buildID == buildID)
+            {
+                ShowBuildInfoPanel(temp);
+                return;
+            }
+        }
+        foreach (var temp in combatConstructList)
+        {
+            if (temp.buildID == buildID)
+            {
+                ShowBuildInfoPanel(temp);
+                return;
             }
         }
     }
@@ -203,11 +276,26 @@ public class ConstructManager : MonoBehaviour
     {
         panel.SetActive(false);
     }
-    public void TempGameStart()
+    //public void TempGameStart()
+    //{
+    //    SetPlayer();
+    //    PlayerManager.SetSpellType(new Dash());
+    //    SceneManager.LoadScene("TestScene");
+    //    
+    //}
+    public void GameStartButtonPressed()
     {
         SetPlayer();
-        SceneManager.LoadScene("TestScene");
-        
+        PlayerManager.SetSpellType(new Dash());
+        DeactiveBasePanel();
+    }
+    public void DeactiveBasePanel()
+    {
+        basePanel.SetActive(false);
+    }
+    public void ActiveBasePanel()
+    {
+        basePanel.SetActive(true);
     }
 
     //public void ShowBuildPanel()
@@ -251,14 +339,40 @@ public class ConstructManager : MonoBehaviour
     }
     public void DecideCanBuild(ConstructBase buildingInfo)
     {
-        if (buildingInfo.TryConstruct(constructList) == false)
+        switch (buildingInfo)
         {
-            buildInfoBuildButton.interactable = false;
+            case TechBuildBase:
+                if (buildingInfo.TryConstruct(techConstructList) == false)
+                {
+                    buildInfoBuildButton.interactable = false;
+                }
+                else
+                {
+                    buildInfoBuildButton.interactable = true;
+                }
+                break;
+            case UtilityBuildBase:
+                if (buildingInfo.TryConstruct(utilityConstructList) == false)
+                {
+                    buildInfoBuildButton.interactable = false;
+                }
+                else
+                {
+                    buildInfoBuildButton.interactable = true;
+                }
+                break;
+            case CombatBuildBase:
+                if (buildingInfo.TryConstruct(combatConstructList) == false)
+                {
+                    buildInfoBuildButton.interactable = false;
+                }
+                else
+                {
+                    buildInfoBuildButton.interactable = true;
+                }
+                break;
         }
-        else
-        {
-            buildInfoBuildButton.interactable = true;
-        }
+        
     }
 
     //public bool TryGetPlayer()// 이제 안쓸듯
@@ -276,8 +390,12 @@ public class ConstructManager : MonoBehaviour
     //}
     public void SetPlayer()
     {
-        //Debug.Log("player!");
-        ActiveBuildEffect();
+        if (isBuildEffectAplly == false)
+        {
+            //Debug.Log("player!");
+            ActiveBuildEffect();
+            isBuildEffectAplly = true;
+        }
         //SetFinalStatusToPlayer();
     }
 
@@ -326,7 +444,7 @@ public class ConstructManager : MonoBehaviour
                     }
           
 
-        playerStatus = originPlayerStatus.Clone();// 이거 그냥 더할 양만큼 준비하는게 나을지도? 갈아끼는 식 말고
+        playerStatus = new PlayerStatus();// 이거 그냥 더할 양만큼 준비하는게 나을지도? 갈아끼는 식 말고
         playerStatus.moveSpeed += speedSum;
         playerStatus.maxHP += maxHPSum;
         playerStatus.gatheringSpeed += gatherSpeedSum;
@@ -341,7 +459,7 @@ public class ConstructManager : MonoBehaviour
     }
     public void ModifieUtillity(IUtilityBuildEffect buildEffect)
     {
-        buildEffect.IUtilityBuildEffect();
+        
     }
     public void ModifieSkill()//별도 인터페이스?
     {
@@ -350,17 +468,25 @@ public class ConstructManager : MonoBehaviour
 
     public void ActiveBuildEffect()
     {
-        foreach (var building in constructList)
+        foreach (var building in techConstructList)
         {
             if (building.isBuildConstructed == true)
             {
-                foreach (var buildeffect in building.buildEffects)
-                {
-                    ModifieStat(buildeffect);
-
-
-
-                }
+                ModifieStat(building.buildEffect);
+            }
+        }
+        foreach (var building in utilityConstructList)
+        {
+            if (building.isBuildConstructed == true)
+            {
+                building.UtilityBuildEffect.Excute();
+            }
+        }
+        foreach (var building in combatConstructList)
+        {
+            if (building.isBuildConstructed == true)
+            {
+                building.SetPlayerPower();
             }
         }
 
@@ -375,11 +501,13 @@ public class ConstructManager : MonoBehaviour
         if (FirebaseDataBaseMgr.Instance == null)
         {
             //Debug.Log("firenull!");
-
+            return;
         }
         else
         {
+            
             FirebaseDataBaseMgr.Instance.StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(0));
+
             ownBuildCostDic.Add("Blueprint", FirebaseDataBaseMgr.Blueprint);
             ownBuildCostDic.Add("MetaCurrency", FirebaseDataBaseMgr.MetaCurrency);
             OnConstructCostChange.Invoke();
@@ -392,25 +520,11 @@ public class ConstructManager : MonoBehaviour
     }
     public void SetFinalStatusToPlayer()
     {
-        PlayerManager.PlayerStatus=playerStatus;//유물 생각하면 나중에 더하는게 맞을지도? 연산자 오버로딩도 되있겠다.
+        PlayerManager.PlayerStatus+=playerStatus;//유물 생각하면 나중에 더하는게 맞을지도? 연산자 오버로딩도 되있겠다.
 
 
     }
     
-    private void OnSceneChanged(Scene scene, LoadSceneMode mode)
-    {
-        //if (scene.name == "TestScene")//씬이름으로 변경
-        //{
-        //    if (TryGetPlayer()==true)//플레이어가 있으면
-        //    {
-        //        //Debug.Log("scenecallback");
-        //        //SetPlayer();
-        //    }
-        //    else
-        //    {
-        //        return;
-        //    }
-        //}
-    }
+    
 
 }

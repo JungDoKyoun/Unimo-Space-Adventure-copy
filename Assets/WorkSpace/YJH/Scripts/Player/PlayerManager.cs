@@ -1,16 +1,40 @@
+using Photon.Pun;
 using UnityEngine;
 using ZL.Unity.Unimo;
 
 public partial class PlayerManager 
 {
     [SerializeField]
+    private static PlayerStatus originStatus = new PlayerStatus(10, 10, 5, 5, 4, 0.5f, 4);
+    private static PlayerStatus playerStatus = originStatus.Clone();
     
-    private static PlayerStatus playerStatus = new PlayerStatus();
-    private static PlayerStatus originStatus = new PlayerStatus();
     public static PlayerStatus PlayerStatus {  get { return playerStatus; } set { playerStatus = value; } }
     public static PlayerStatus OriginStatus { get { return originStatus; } }
-    
-    
+
+    private void OnDestroy()
+    {
+        if (selfManager == this)
+        {
+            selfManager = null;
+        }
+    }
+    private void Awake()
+    {
+        if (selfManager != null)
+        {
+            return;
+        }
+        else
+        {
+            selfManager = this;
+            //Debug.Log(playerSpellType);
+            if (playerSpellType != null)
+            {
+                playerSpellType.SetPlayer(selfManager);//?
+            }
+        }
+        //selfManager = this;
+    }
     private void Start()
     {
         ActionStart();
@@ -52,7 +76,7 @@ public partial class PlayerManager
         playerStatus = status;
         SetPlayerStatus();
     }
-    public void ActiveRelic(string type,float value)//string? enum? 
+    public void ActiveRelic(string type,float value)//
     {
 
     }
@@ -81,13 +105,34 @@ public partial class PlayerManager
     }
     private void OnTriggerStay(Collider other)
     {
-        if(other.gameObject.layer == LayerMask.NameToLayer("Gathering"))
-        {
-            isItemNear = true;
+        if (PhotonNetwork.IsConnected == false) {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Gathering"))
+            {
+                isItemNear = true;
+            }
+            else
+            {
+                isItemNear = false;
+            }
         }
         else
         {
-            isItemNear = false;
+            if (photonView.IsMine == true)
+            {
+                if (other.gameObject.layer == LayerMask.NameToLayer("Gathering"))
+                {
+                    isItemNear = true;
+                }
+                else
+                {
+                    isItemNear = false;
+                }
+
+            }
+            else
+            {
+                return;
+            }
         }
     }
 
