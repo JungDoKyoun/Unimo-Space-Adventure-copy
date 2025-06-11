@@ -96,7 +96,7 @@ namespace ZL.Unity.Unimo
         {
             base.Awake();
 
-            PlayerManager.OnPlayerDead += StageFail;
+            player.OnPlayerDead += StageFail;
         }
 
         protected override IEnumerator Start()

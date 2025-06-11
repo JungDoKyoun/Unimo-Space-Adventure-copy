@@ -75,7 +75,7 @@ public partial class PlayerManager : IDamageable
 
     public delegate void onPlayerDead();
 
-    public static event onPlayerDead OnPlayerDead;
+    public event onPlayerDead OnPlayerDead;
 
     private void OnCollisionStay(Collision collision)
     {
