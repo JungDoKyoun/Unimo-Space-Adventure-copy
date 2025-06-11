@@ -46,13 +46,16 @@ public class ConstructManager : MonoBehaviour
     public event onConstructCostChange OnConstructCostChange;
 
     private static bool isBuildEffectAplly=false;
-    public Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
+    private static bool isDelinkON = false;
+    private Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
+    public Dictionary<string, int> OwnBuildCostDic { get { return ownBuildCostDic; } }
     //private PlayerManager playerManager;
-    
-    
+
+
     public PlayerStatus OriginPlayerStatus { get { return originPlayerStatus; } }
-    public Dictionary<string, int> OwnBuildCostDic { get { return  ownBuildCostDic; } }
+    
     private ISpellType[] playerSpells = { new Dash() };
+    
     [SerializeField] GameObject[] attackPrefabs;
     private void Awake()
     {
@@ -63,7 +66,12 @@ public class ConstructManager : MonoBehaviour
         DecideProgress();
         ToDictionary();
         SetAllDic();
-        //PlayerManager.OnPlayerDead += YJH.MethodCollection.DelinkHealPlayer;
+        if (isDelinkON == false)
+        {
+            PlayerManager.OnStageFail += YJH.MethodCollection.DelinkHealPlayer;
+            isDelinkON=true;
+        }
+       
     }
     private void OnDestroy()
     {

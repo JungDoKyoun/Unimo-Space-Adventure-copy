@@ -77,6 +77,11 @@ public partial class PlayerManager : IDamageable
 
     public event onPlayerDead OnPlayerDead;
 
+    public delegate void onStageClear();
+    public static event onStageClear OnStageClear;
+    public static event onStageClear OnStageFail;
+
+
     private void OnCollisionStay(Collision collision)
     {
         if (isOnHit == true)
@@ -117,6 +122,8 @@ public partial class PlayerManager : IDamageable
             canMove = false;
 
             OnPlayerDead?.Invoke();
+            OnStageFail?.Invoke();  
+            
         }
 
         else
