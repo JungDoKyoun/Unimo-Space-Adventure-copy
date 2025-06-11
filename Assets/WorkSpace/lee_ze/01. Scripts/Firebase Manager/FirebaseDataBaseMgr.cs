@@ -161,6 +161,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             StartCoroutine(ShowUserMetaCurrency());
 
             StartCoroutine(ShowUserBluePrint());
+
+            StartCoroutine(UpdateRankingList());
         }
     }
 
@@ -442,7 +444,12 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #region Score management
 
-    public IEnumerator UpdateMyScore(float currentScore)
+    /// <summary>
+    /// 점수 업데이트 할 때 사용.
+    /// </summary>
+    /// <param name="currentScore"></param>
+    /// <returns></returns>
+    public IEnumerator UpdateScore(float currentScore)
     {
         Score = currentScore;
 
@@ -472,9 +479,57 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         }
     }
 
-    private IEnumerator UpdateRankingList() // station 씬 진입 시 호출 될 함수
+    private IEnumerator UpdateRankingList()
     {
+        var getTask = dbRef.Child("users").OrderByChild("score").LimitToLast(10).GetValueAsync();
 
+        yield return new WaitUntil(() => getTask.IsCompleted);
+
+        if (getTask.Exception != null)
+        {
+            Debug.LogError($"[Ranking Error] {getTask.Exception}");
+
+            yield break;
+        }
+
+        DataSnapshot snapshot = getTask.Result;
+
+        List<(string nickname, float score)> topRankers = new List<(string, float)>();
+
+        foreach (var userSnapshot in snapshot.Children)
+        {
+            string nickname = "";
+
+            float score = 0f;
+
+            // Score 가져오기
+            if (userSnapshot.HasChild("score") && float.TryParse(userSnapshot.Child("score").Value.ToString(), out float parsedScore))
+            {
+                score = parsedScore;
+            }
+
+            // DisplayName (nickname) 찾기
+            foreach (var child in userSnapshot.Children)
+            {
+                if (child.HasChild("rewardIngameCurrency"))
+                {
+                    nickname = child.Key; // 이게 user.DisplayName
+
+                    break;
+                }
+            }
+
+            // 리스트 추가
+            topRankers.Add((nickname, score));
+        }
+
+        // 내림차순 정렬
+        topRankers.Sort((a, b) => b.score.CompareTo(a.score));
+
+        foreach (var (nickname, score) in topRankers)
+        {
+            Debug.Log($"Nickname: {nickname}, Score: {score}");
+        }
     }
 
     #endregion
