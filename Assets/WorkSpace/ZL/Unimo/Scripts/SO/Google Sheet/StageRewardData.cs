@@ -65,6 +65,11 @@ namespace ZL.Unity.Unimo
 
         private int bluePrintCount = 0;
 
+        public int BluePrintCount
+        {
+            get => bluePrintCount;
+        }
+
         [Space]
 
         [SerializeField]

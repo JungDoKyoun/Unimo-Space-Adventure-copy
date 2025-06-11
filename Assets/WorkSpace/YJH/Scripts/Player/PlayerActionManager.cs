@@ -1,8 +1,9 @@
 using Photon.Pun;
+
 using System.Collections;
 
 using TMPro;
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 using ZL.Unity.Unimo;
@@ -82,11 +83,14 @@ public partial class PlayerManager
     public event OnTargetSet OnTargetObjectSet;
 
     private Vector3 firePos;
+
     private static PlayerManager selfManager;
+
     public static PlayerManager SelfManager
     {
-        get { return selfManager; }
+        get => selfManager;
     }
+
     [SerializeField]
 
     private float fireRate = 0.3f;
@@ -142,11 +146,10 @@ public partial class PlayerManager
                 playerSpellType.InitSpell();
             }
         }
+
         else if (photonView.IsMine == true)
         {
             gatheringAudioSource.clip = gatheringAudioClip;
-            
-            
 
             OnTargetObjectSet += GatheringItem;
 
@@ -187,14 +190,18 @@ public partial class PlayerManager
                 playerSpellType.UpdateTime();
             }
         }
+
         if (isItemNear == true)
         {
             if (PhotonNetwork.IsConnected == false)
             {
                 FindItemUpdate();
-            }else if (photonView.IsMine == true)
+            }
+
+            else if (photonView.IsMine == true)
             {
                 FindItemUpdate();
+
                 //photonView.RPC("FindItemUpdate", RpcTarget.All);
             }
         }

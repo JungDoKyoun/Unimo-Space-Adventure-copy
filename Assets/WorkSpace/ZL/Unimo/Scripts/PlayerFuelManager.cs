@@ -16,11 +16,7 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        [UsingCustomProperty]
-
-        [Essential]
-
-        private SliderValueDisplayer PlayerFuelBar = null;
+        private SliderValueDisplayer playerFuelBar = null;
 
         private static float fuelMax = 0f;
 
@@ -32,7 +28,10 @@ namespace ZL.Unity.Unimo
             {
                 fuelMax = value;
 
-                Instance.PlayerFuelBar.Slider.maxValue = fuelMax;
+                if (Instance.playerFuelBar != null)
+                {
+                    Instance.playerFuelBar.Slider.maxValue = fuelMax;
+                }
 
                 Fuel = fuel;
             }
@@ -48,7 +47,10 @@ namespace ZL.Unity.Unimo
             {
                 fuel = Mathf.Clamp(value, 0f, fuelMax);
 
-                Instance.PlayerFuelBar.Slider.value = fuel;
+                if (Instance.playerFuelBar != null)
+                {
+                    Instance.playerFuelBar.Slider.value = fuel;
+                }
 
                 if (fuel == 0f)
                 {

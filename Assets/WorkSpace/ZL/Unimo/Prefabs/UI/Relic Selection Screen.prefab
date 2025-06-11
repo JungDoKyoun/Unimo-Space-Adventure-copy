@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 271192286954280124}
   - component: {fileID: 4353948309417366932}
   m_Layer: 5
-  m_Name: Layout
+  m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,7 +152,6 @@ GameObject:
   - component: {fileID: 1418654591251354998}
   - component: {fileID: 7221925551608148326}
   - component: {fileID: 783131778476941884}
-  - component: {fileID: 2530528124043188335}
   - component: {fileID: 2084732535413327185}
   - component: {fileID: 4837239833521394260}
   m_Layer: 5
@@ -249,33 +248,6 @@ MonoBehaviour:
   onFadedOutEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2530528124043188335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3043210622499127162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e0d534a45c04ba47bb42b52a2528b08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onAwakeEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7221925551608148326}
-        m_TargetAssemblyTypeName: ZL.Unity.Tweening.CanvasGroupAlphaTweener, Assembly-CSharp
-        m_MethodName: set_Value
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &2084732535413327185
 MonoBehaviour:
   m_ObjectHideFlags: 0
