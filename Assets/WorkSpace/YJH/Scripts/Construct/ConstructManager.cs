@@ -69,10 +69,12 @@ public class ConstructManager : MonoBehaviour
         DecideProgress();
         ToDictionary();
         SetAllDic();
+        
         if (isDelinkON == false)
         {
             PlayerManager.OnStageFail += YJH.MethodCollection.DelinkHealPlayer;
-            isDelinkON=true;
+            PlayerManager.OnStageFail += ResetApplyBuildEffect;
+            isDelinkON =true;
         }
        
     }
@@ -166,7 +168,7 @@ public class ConstructManager : MonoBehaviour
             //spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
             buildInfoBuildButton.interactable = false;
             int costNum;
-        StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
+            StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
             //SetPlayer();
             DecideProgress();
             
@@ -250,7 +252,10 @@ public class ConstructManager : MonoBehaviour
             }
         }
     }
-   
+   public void ResetApplyBuildEffect()
+    {
+        isBuildEffectAplly = false;
+    }
     public void BuildButtonPressed(string buildID)
     {
         foreach (var temp in techConstructList)
@@ -297,7 +302,7 @@ public class ConstructManager : MonoBehaviour
     public void GameStartButtonPressed()
     {
         SetPlayer();
-        PlayerManager.SetSpellType(new Dash());
+        PlayerManager.SetSpellType(new Dash());//나중에 combat계열 제작시 변경 필요
         DeactiveBasePanel();
     }
     public void DeactiveBasePanel()
@@ -399,7 +404,7 @@ public class ConstructManager : MonoBehaviour
     //        return true;
     //    }
     //}
-    public void SetPlayer()
+    public void SetPlayer()// 게임 종료시 스테이터스 초기화 필요
     {
         if (isBuildEffectAplly == false)
         {
