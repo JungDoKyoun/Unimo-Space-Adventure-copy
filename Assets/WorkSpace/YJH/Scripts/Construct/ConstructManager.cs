@@ -57,7 +57,7 @@ public class ConstructManager : MonoBehaviour
     }
     public PlayerStatus OriginPlayerStatus { get { return originPlayerStatus; } }
     
-    public static ISpellType[] playerSpells = { new Dash() };
+    public static ISpellType[] playerSpells = { null,new Dash() };
     
     [SerializeField] GameObject[] attackPrefabs;
     private void Awake()

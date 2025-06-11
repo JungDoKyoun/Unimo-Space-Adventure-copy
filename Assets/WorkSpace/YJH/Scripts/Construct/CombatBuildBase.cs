@@ -18,10 +18,10 @@ public class CombatBuildBase : ConstructBase
 
     public void SetPlayerPower()
     {
-        if(attackPrefab == null&& spellTypeIndex != null)
+        if(attackPrefab == null&& spellTypeIndex != 0)
         {
             SetPlayerSkill(ConstructManager.playerSpells[spellTypeIndex]);
-        }else if (spellTypeIndex == null && attackPrefab != null)
+        }else if (spellTypeIndex == 0 && attackPrefab != null)
         {
             SetPlayerAttack(attackPrefab);
         }

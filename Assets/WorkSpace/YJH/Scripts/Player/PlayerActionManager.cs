@@ -88,11 +88,11 @@ public partial class PlayerManager
     {
         get { return selfManager; }
     }
-    [SerializeField]
+    //[SerializeField]
 
-    private float fireRate = 0.3f;
-
-    private float fireTimer = 0f;
+    //private float fireRate = 0.3f;
+    //
+    //private float fireTimer = 0f;
 
     [SerializeField]
 
