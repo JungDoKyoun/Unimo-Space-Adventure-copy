@@ -24,6 +24,7 @@ public class ConstructManager : MonoBehaviour
     [SerializeField] TMP_Text buildingCostText;
     [SerializeField] TMP_Text constructCostText;
     [SerializeField] Button buildInfoBuildButton;
+    [SerializeField] GameObject basePanel;
 
     [Header("건설완료 화면 관련")]
     [SerializeField] Image buildStateImage;
@@ -275,17 +276,26 @@ public class ConstructManager : MonoBehaviour
     {
         panel.SetActive(false);
     }
-    public void TempGameStart()
-    {
-        SetPlayer();
-        PlayerManager.SetSpellType(new Dash());
-        SceneManager.LoadScene("TestScene");
-        
-    }
+    //public void TempGameStart()
+    //{
+    //    SetPlayer();
+    //    PlayerManager.SetSpellType(new Dash());
+    //    SceneManager.LoadScene("TestScene");
+    //    
+    //}
     public void GameStartButtonPressed()
     {
         SetPlayer();
-
+        PlayerManager.SetSpellType(new Dash());
+        DeactiveBasePanel();
+    }
+    public void DeactiveBasePanel()
+    {
+        basePanel.SetActive(false);
+    }
+    public void ActiveBasePanel()
+    {
+        basePanel.SetActive(true);
     }
 
     //public void ShowBuildPanel()
