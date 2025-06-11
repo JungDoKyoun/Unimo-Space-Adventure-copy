@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 
 using UnityEngine;
@@ -41,7 +42,7 @@ public partial class PlayerManager : IDamageable
 
     [SerializeField]
     
-    private float playerDamage = 5f;
+    private static float playerDamage = 5f;
 
     [SerializeField]
     
@@ -74,7 +75,7 @@ public partial class PlayerManager : IDamageable
 
     public delegate void onPlayerDead();
 
-    public event onPlayerDead OnPlayerDead;
+    public static event onPlayerDead OnPlayerDead;
 
     private void OnCollisionStay(Collision collision)
     {
@@ -98,7 +99,14 @@ public partial class PlayerManager : IDamageable
     {
         isOnHit = true;
 
-        PlayHitEffect(contact);
+        if (PhotonNetwork.IsConnected == true)
+        {
+            photonView.RPC("PlayHitEffect", RpcTarget.All, contact);
+        }
+        else
+        {
+            PlayHitEffect(contact);
+        }
 
         currentHealth -= damage;//데미지 입음
 
@@ -132,7 +140,14 @@ public partial class PlayerManager : IDamageable
         
         for (int i = 0; i < blinkCount; i++)
         {
-            BlinkRenderer();
+            if (PhotonNetwork.IsConnected)
+            {
+                photonView.RPC("BlinkRenderer", RpcTarget.All);
+            }
+            else
+            {
+                BlinkRenderer();
+            }
 
             yield return new WaitForSeconds(onHitBlinkTime);
         }
@@ -144,6 +159,7 @@ public partial class PlayerManager : IDamageable
         yield break;
     }
 
+    [PunRPC]
     public void BlinkRenderer()
     {
         if (bodyRenderer.enabled == false)
