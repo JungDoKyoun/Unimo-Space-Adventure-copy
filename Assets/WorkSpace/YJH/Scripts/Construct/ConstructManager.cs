@@ -51,7 +51,10 @@ public class ConstructManager : MonoBehaviour
     public Dictionary<string, int> OwnBuildCostDic { get { return ownBuildCostDic; } }
     //private PlayerManager playerManager;
 
-
+    public Dictionary<string, ConstructBase> AllBuildingDic
+    {
+        get { return allBuildingDic; }
+    }
     public PlayerStatus OriginPlayerStatus { get { return originPlayerStatus; } }
     
     private ISpellType[] playerSpells = { new Dash() };

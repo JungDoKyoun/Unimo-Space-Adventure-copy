@@ -175,6 +175,10 @@ public class ConstructBase :ScriptableObject//,IConstruct
                         return false;
                     }
                 }
+                else if(b.Trim()=="")
+                {
+                    continue;
+                }
             }
         }
 
