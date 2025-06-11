@@ -414,6 +414,11 @@ public class FirebaseAuthMgr : MonoBehaviour
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
+        // °³ÀÎ ÃÖ°í Á¡¼ö
+        DBTask = dbRef.Child("users").Child(User.UserId).Child("score").SetValueAsync(0);
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
         // ½Â·ü
         DBTask = dbRef.Child("users").Child(User.UserId).Child("rate").Child("winningRate").SetValueAsync(0);
 

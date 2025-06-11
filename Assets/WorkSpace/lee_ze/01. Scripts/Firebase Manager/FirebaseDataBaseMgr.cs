@@ -37,37 +37,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private static float winCount;
 
+    private static float score;
+
     #region properties
-
-    public static float WinningRate
-    {
-        get => winningRate;
-
-        private set
-        {
-            winningRate = value;
-        }
-    }
-
-    public static float PlayCount
-    {
-        get => playCount;
-
-        private set
-        {
-            playCount = value;
-        }
-    }
-
-    public static float WinCount
-    {
-        get => winCount;
-
-        private set
-        {
-            winCount = value;
-        }
-    }
 
     public static int IngameCurrency
     {
@@ -99,6 +71,46 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         }
     }
 
+    public static float WinningRate
+    {
+        get => winningRate;
+
+        private set
+        {
+            winningRate = value;
+        }
+    }
+
+    public static float PlayCount
+    {
+        get => playCount;
+
+        private set
+        {
+            playCount = value;
+        }
+    }
+
+    public static float WinCount
+    {
+        get => winCount;
+
+        private set
+        {
+            winCount = value;
+        }
+    }
+
+    public static float Score
+    {
+        get => score;
+
+        set
+        {
+            score = value;
+        }
+    }
+
     #endregion
 
     private void Awake()
@@ -116,6 +128,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
+
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -424,6 +437,12 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
     }
+
+    #endregion
+
+    #region Score management
+
+
 
     #endregion
 
