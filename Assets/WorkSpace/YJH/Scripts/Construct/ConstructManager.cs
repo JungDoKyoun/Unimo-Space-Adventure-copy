@@ -63,7 +63,7 @@ public class ConstructManager : MonoBehaviour
         DecideProgress();
         ToDictionary();
         SetAllDic();
-        PlayerManager.OnPlayerDead += YJH.MethodCollection.DelinkHealPlayer;
+        //PlayerManager.OnPlayerDead += YJH.MethodCollection.DelinkHealPlayer;
     }
     private void OnDestroy()
     {
