@@ -399,17 +399,20 @@ public class FirebaseAuthMgr : MonoBehaviour
     private IEnumerator InitPlayerCurrency() // 회원가입 시 초기값 설정
     {
         // 초기 인게임 재화 생성(크레딧)
-        var DBTask = dbRef.Child("users").Child(User.UserId).Child(User.DisplayName).Child("rewardIngameCurrency").SetValueAsync(0);
+        var DBTask = dbRef.Child("users").Child(User.UserId).Child("nickname").SetValueAsync(User.DisplayName);
+
+        // 초기 인게임 재화 생성(크레딧)
+        DBTask = dbRef.Child("users").Child(User.UserId).Child("rewardIngameCurrency").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
         // 초기 메타 재화 생성(프리팹)
-        DBTask = dbRef.Child("users").Child(User.UserId).Child(User.DisplayName).Child("rewardMetaCurrency").SetValueAsync(0);
+        DBTask = dbRef.Child("users").Child(User.UserId).Child("rewardMetaCurrency").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
         // 초기 메타 재화 생성(설계도)
-        DBTask = dbRef.Child("users").Child(User.UserId).Child(User.DisplayName).Child("rewardBluePrint").SetValueAsync(0);
+        DBTask = dbRef.Child("users").Child(User.UserId).Child("rewardBluePrint").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
