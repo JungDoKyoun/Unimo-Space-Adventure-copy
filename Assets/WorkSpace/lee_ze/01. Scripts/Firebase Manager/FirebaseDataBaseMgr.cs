@@ -147,7 +147,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
             StartCoroutine(ShowUserMetaCurrency());
 
-            //TODO: blueprint 추가 예정
+            StartCoroutine(ShowUserBluePrint());
         }
     }
 
@@ -171,9 +171,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
         {
             // 여기에 디스플레이
-            rewardIngameCurrencyText = GameObject.Find("Reward Ingame Currency")?.GetComponent<TextMeshProUGUI>();
+            rewardIngameCurrencyText = GameObject.Find("Database Get Canvas")?.transform.Find("Reward Ingame Currency").GetComponent<TextMeshProUGUI>();
 
-            if(rewardIngameCurrencyText != null) rewardIngameCurrencyText.text = savedValue.ToString();
+            if (rewardIngameCurrencyText != null) rewardIngameCurrencyText.text = savedValue.ToString();
 
             IngameCurrency = savedValue;
         }
@@ -236,7 +236,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
         {
             // 여기에 디스플레이
-            rewardMetaCurrencyText = GameObject.Find("Reward Meta Currency")?.GetComponent<TextMeshProUGUI>();
+            rewardMetaCurrencyText = GameObject.Find("Database Get Canvas")?.transform.Find("Reward Meta Currency").GetComponent<TextMeshProUGUI>();
 
             if (rewardMetaCurrencyText != null) rewardMetaCurrencyText.text = savedValue.ToString();
 
@@ -300,7 +300,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedValue))
         {
             // 여기에 디스플레이
-            rewardBluePrintText = GameObject.Find("Reward Blueprint")?.GetComponent<TextMeshProUGUI>();
+            rewardBluePrintText = GameObject.Find("Database Get Canvas")?.transform.Find("Reward Blue Print").GetComponent<TextMeshProUGUI>();
 
             if (rewardBluePrintText != null) rewardBluePrintText.text = savedValue.ToString();
 
