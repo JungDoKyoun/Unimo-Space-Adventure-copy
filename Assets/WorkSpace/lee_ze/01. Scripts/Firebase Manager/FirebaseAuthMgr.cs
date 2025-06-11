@@ -163,8 +163,6 @@ public class FirebaseAuthMgr : MonoBehaviour
         if (nicknameField == null) nicknameField = GameObject.Find("Account Canvas").transform.Find("Account/Account Input Fields/Nickname").GetComponent<TMP_InputField>();
 
         if (nicknameField == null) nicknameField = GameObject.Find("Account Canvas").transform.Find("Account/Account Input Fields/Nickname").GetComponent<TMP_InputField>();
-
-        Debug.Log("Get");
     }
 
     private void RegisterUIEvents()
