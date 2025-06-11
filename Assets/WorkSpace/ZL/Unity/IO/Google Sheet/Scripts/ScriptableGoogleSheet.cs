@@ -2,8 +2,6 @@ using GoogleSheetsToUnity;
 
 using System;
 
-using System.Collections.Generic;
-
 using System.IO;
 
 #if UNITY_EDITOR
@@ -14,24 +12,31 @@ using UnityEditor;
 
 using UnityEngine;
 
-using ZL.CS.Singleton;
+using ZL.Unity.Collections;
 
 namespace ZL.Unity.IO.GoogleSheet
 {
-    public abstract class ScriptableGoogleSheet<TScriptableGoogleSheet, TGoogleSheetData> : ScriptableObject, ISingleton<TScriptableGoogleSheet>
-
-        where TScriptableGoogleSheet : ScriptableGoogleSheet<TScriptableGoogleSheet, TGoogleSheetData>
+    public abstract class ScriptableGoogleSheet<TGoogleSheetData> : ScriptableGoogleSheet<string, TGoogleSheetData>
 
         where TGoogleSheetData : ScriptableObject, IGoogleSheetData
     {
-        public static TScriptableGoogleSheet Instance
+        protected override string GeyDataKey(TGoogleSheetData data)
         {
-            get => ISingleton<TScriptableGoogleSheet>.Instance;
+            return data.name;
         }
+    }
 
+    public abstract class ScriptableGoogleSheet<TKey, TGoogleSheetData> : ScriptableObject
+
+        where TGoogleSheetData : ScriptableObject, IGoogleSheetData
+    {
         [Space]
 
         [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Button("CreateNewConfig")]
 
         private ScriptableGoogleSheetConfig sheetConfig = null;
 
@@ -51,46 +56,91 @@ namespace ZL.Unity.IO.GoogleSheet
 
         [Margin]
 
-        #if UNITY_EDITOR
+        [Button("AddNewData")]
 
-        [Button(nameof(Create))]
+        [Button("ClearDatas")]
 
-        #endif
+        [Button("LoadAllDatasAtPath")]
 
         private bool containsMergedCells = false;
 
-        [Space]
-
         [SerializeField]
 
-        private TGoogleSheetData[] datas = null;
+        protected TGoogleSheetData[] datas = null;
 
         public TGoogleSheetData[] Datas
         {
             get => datas;
         }
 
-        private Dictionary<string, TGoogleSheetData> dataDictionary = null;
+        [Space]
 
-        public Dictionary<string, TGoogleSheetData> DataDictionary
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Button(nameof(SerializeDatas))]
+
+        protected SerializableDictionary<TKey, TGoogleSheetData> dataDictionary = null;
+
+        public TGoogleSheetData this[TKey key]
+        {
+            get => dataDictionary[key];
+        }
+
+        #if UNITY_EDITOR
+
+        private string DirectoryPath
         {
             get
             {
-                if (dataDictionary == null)
-                {
-                    dataDictionary = new Dictionary<string, TGoogleSheetData>(datas.Length);
+                var assetPath = AssetDatabase.GetAssetPath(this);
 
-                    foreach (var data in datas)
-                    {
-                        dataDictionary.Add(data.name, data);
-                    }
-                }
-
-                return dataDictionary;
+                return Path.GetDirectoryName(assetPath);
             }
         }
 
-        private int requestCount = 0;
+        public void CreateNewConfig()
+        {
+            sheetConfig = CreateInstance<ScriptableGoogleSheetConfig>();
+
+            AssetDatabaseEx.CreateAsset(sheetConfig, DirectoryPath, name + " Config");
+
+            AssetDatabase.SaveAssets();
+
+            EditorUtility.SetDirty(this);
+        }
+
+        public void AddNewData()
+        {
+            var data = CreateInstance<TGoogleSheetData>();
+
+            Array.Resize(ref datas, datas.Length + 1);
+
+            datas[^1] = data;
+
+            AssetDatabaseEx.CreateAsset(data, DirectoryPath, 1);
+
+            AssetDatabase.SaveAssets();
+
+            EditorUtility.SetDirty(this);
+        }
+
+        public void ClearDatas()
+        {
+            datas = new TGoogleSheetData[0];
+
+            EditorUtility.SetDirty(this);
+        }
+
+        public void LoadAllDatasAtPath()
+        {
+            datas = AssetDatabaseEx.LoadAllAssetsAtPath<TGoogleSheetData>(DirectoryPath);
+
+            EditorUtility.SetDirty(this);
+        }
+
+        #endif
 
         public void Read()
         {
@@ -101,55 +151,51 @@ namespace ZL.Unity.IO.GoogleSheet
         {
             for (int i = 0; i < datas.Length; ++i)
             {
-                datas[i].Import(sheet);
+                var data = datas[i];
+
+                data.Import(sheet);
+
+                FixedEditorUtility.SetDirty(data);
             }
 
-            dataDictionary = null;
+            SerializeDatas();
 
             FixedDebug.Log($"Successfully read '{name}' from Google sheet.");
         }
 
-        public void Write()
+        public virtual void SerializeDatas()
         {
-            string column = sheetConfig.TitleColumn;
-
-            int row = sheetConfig.TitleRow;
-
-            requestCount = datas.Length + 1;
-
-            SpreadsheetManager.Write(sheetConfig.GetSearch($"{column}{row++}"), new ValueRange(datas[0].GetHeader()), OnWriteSuccessful);
+            dataDictionary.Clear();
 
             for (int i = 0; i < datas.Length; ++i)
             {
                 var data = datas[i];
 
-                SpreadsheetManager.Write(sheetConfig.GetSearch($"{column}{row++}"), new ValueRange(data.Export()), OnWriteSuccessful);
+                dataDictionary.Add(GeyDataKey(data), data);
             }
+
+            FixedEditorUtility.SetDirty(this);
+        }
+
+        protected abstract TKey GeyDataKey(TGoogleSheetData data);
+
+        public void Write()
+        {
+            var inputData = new ValueRange(datas[0].GetHeaders());
+
+            for (int i = 0; i < datas.Length; ++i)
+            {
+                inputData.Add(datas[i].Export());
+            }
+            
+            SpreadsheetManager.Write(sheetConfig.GetSearch(), inputData, OnWriteSuccessful);
         }
 
         private void OnWriteSuccessful()
         {
-            if (--requestCount == 0)
-            {
-                FixedDebug.Log($"Successfully written '{name}' to Google sheet.");
-            }
+            FixedEditorUtility.SetDirty(this);
+
+            FixedDebug.Log($"Successfully written '{name}' to Google sheet.");
         }
-
-        #if UNITY_EDITOR
-
-        public void Create()
-        {
-            var assetPath = AssetDatabase.GetAssetPath(this);
-
-            var folderPath = Path.GetDirectoryName(assetPath);
-
-            var data = ScriptableObjectEx.CreateAndSaveAsset<TGoogleSheetData>(folderPath);
-
-            Array.Resize(ref datas, datas.Length + 1);
-
-            datas[^1] = data;
-        }
-
-        #endif
     }
 }

@@ -58,8 +58,6 @@ namespace ZL.Unity.Unimo
 
         [Essential]
 
-        [ReadOnlyWhenPlayMode]
-
         protected EnemyData enemyData = null;
 
         [SerializeField]

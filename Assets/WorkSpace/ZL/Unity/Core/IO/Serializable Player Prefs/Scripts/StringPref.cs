@@ -6,6 +6,11 @@ namespace ZL.Unity.IO
 
     public sealed class StringPref : SerializablePlayerPref<string>
     {
+        public StringPref()
+        {
+
+        }
+
         public StringPref(string key, string value) : base(key, value)
         {
 

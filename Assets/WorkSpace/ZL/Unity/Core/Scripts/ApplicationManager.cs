@@ -57,14 +57,14 @@ namespace ZL.Unity
         {
             base.Awake();
 
-            runInBackgroundPref.OnValueChangedAction += (value) =>
+            runInBackgroundPref.OnValueChanged += (value) =>
             {
                 Application.runInBackground = value;
             };
 
             runInBackgroundPref.TryLoadValue();
 
-            targetFrameRatePref.OnValueChangedAction += (value) =>
+            targetFrameRatePref.OnValueChanged += (value) =>
             {
                 Application.targetFrameRate = value;
             };

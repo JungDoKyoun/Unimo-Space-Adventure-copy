@@ -8,7 +8,7 @@ namespace ZL.CS.Pooling
 
         where TClone : class
     {
-        protected readonly LinkedList<TClone> collection = new LinkedList<TClone>();
+        protected readonly LinkedList<TClone> collection = new();
 
         public virtual TClone Cloning()
         {
