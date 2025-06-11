@@ -4239,13 +4239,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 505704327}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7182647, y: -0.0029426345, z: 0.002989098, w: 0.6957574}
-  m_LocalPosition: {x: 0, y: -25, z: 20}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -33, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &511546081
 GameObject:
   m_ObjectHideFlags: 0
@@ -11401,7 +11401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gridSize: {x: 20, y: 20}
-  _mapOrigin: {x: 0, y: 60, z: -15}
+  _mapOrigin: {x: 0, y: 60, z: -19}
   _spawnCount: 400
   _outerSize: 1
   _innerSize: 0
@@ -11421,7 +11421,7 @@ MonoBehaviour:
     _distance: 0
   _minEnvironmentTileCount: 2
   _maxEnvironmentTileCount: 4
-  _offset: {x: -0.45, y: 1.3, z: 0}
+  _offset: {x: 0, y: 0.3, z: 0}
 --- !u!4 &1677392730
 Transform:
   m_ObjectHideFlags: 0
