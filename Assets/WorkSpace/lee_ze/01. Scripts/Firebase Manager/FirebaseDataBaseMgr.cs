@@ -442,7 +442,32 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #region Score management
 
+    public IEnumerator UpdateMyScore(float currentScore)
+    {
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("score").GetValueAsync();
 
+        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
+
+        if (getTask.Exception != null) // 불러오기 실패 시 나가기
+        {
+            Debug.LogWarning($"[Get] reason : {getTask.Exception}");
+
+            yield break;
+        }
+
+        if (getTask.Result.Exists == true && float.TryParse(getTask.Result.Value.ToString(), out float savedScore)) // string으로 불러온 ingame currency를 tryparse로 savedValue에 저장
+        {
+            if (currentScore > savedScore) // 기존 기록보다 tempScore(방금 세운 기록)이 크면
+            {
+                var DBTask = dbRef.Child("user").Child(user.UserId).Child("score").SetValueAsync(currentScore);
+            }
+        }
+    }
+
+    private void UpdateRankingList() // station 씬 진입 시 호출 될 함수
+    {
+
+    }
 
     #endregion
 

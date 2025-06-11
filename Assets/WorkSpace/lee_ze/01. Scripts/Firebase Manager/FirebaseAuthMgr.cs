@@ -309,7 +309,7 @@ public class FirebaseAuthMgr : MonoBehaviour
 
             yield return new WaitUntil(predicate: () => RegisterTask.IsCompleted);
 
-            // 회원가입 문제가 있다면
+            // 회원가입 조건에 문제가 있다면
             if (RegisterTask.Exception != null)
             {
                 Debug.LogWarning(message: "실패 사유" + RegisterTask.Exception);
@@ -356,7 +356,7 @@ public class FirebaseAuthMgr : MonoBehaviour
                 warningText.text = message;
             }
 
-            // 회원가입 문제가 없다면
+            // 회원가입 조건에 문제가 없다면
             else
             {
                 // 바로 로그인
@@ -372,6 +372,7 @@ public class FirebaseAuthMgr : MonoBehaviour
 
                     yield return new WaitUntil(predicate: () => ProfileTask.IsCompleted);
 
+                    // 초기 값 세팅
                     yield return StartCoroutine(InitPlayerCurrency());
 
                     if (ProfileTask.Exception != null)
