@@ -46,14 +46,14 @@ namespace JDG
         [Header("환경 타일 관련")]
         [SerializeField] private int _minEnvironmentTileCount;
         [SerializeField] private int _maxEnvironmentTileCount;
+        [SerializeField] private Vector3 _offset;
+        private Dictionary<string, GameObject> _environmentPrefabs = new Dictionary<string, GameObject>();
 
         private List<Vector2Int> _tileCoords = new List<Vector2Int>(); //타일 좌표 리스트
         private Vector2Int _baseCoord;
         private Vector2Int _playerCoord;
         private Dictionary<Vector2Int, HexRenderer> _hexMap = new Dictionary<Vector2Int, HexRenderer>(); //타일 오브젝트 정보
         private List<Vector2Int> _bossNearShopCount = new List<Vector2Int>();
-
-        public GameObject a;
 
         private void Start()
         {
@@ -159,12 +159,7 @@ namespace JDG
                 MeshCollider collider = tile.AddComponent<MeshCollider>();
                 collider.sharedMesh = tile.GetComponent<MeshFilter>().mesh;
                 _hexMap.Add(coord, hexRenderer);
-
                 tile.transform.SetParent(transform, true);
-                Vector3 tilePos = tile.transform.position;
-                tilePos.y += 1.35f;
-                GameObject instance = Instantiate(a, tilePos, Quaternion.identity);
-                instance.transform.SetParent(tile.transform);
             }
 
             Vector3 spawnPos = GetPositionForHexFromCoordinate(_playerCoord) + Vector3.up * 1f;
@@ -189,6 +184,7 @@ namespace JDG
 
             AssignTileRoles();
             AssignEnvironment();
+            SetEnvironmentPrefab();
             player.UpdateFog();
         }
 
@@ -634,44 +630,44 @@ namespace JDG
             {
                 TileType tileType = _hexMap[coord].TileData.TileType;
 
-                if (tileType != TileType.Event || tileType != TileType.Boss)
+                if (tileType != TileType.Event && tileType != TileType.Boss)
                 {
                     availableCoords.Add(coord);
                 }
                 else
                 {
-                    _hexMap[coord].TileData.TileType = TileType.None;
+                    _hexMap[coord].TileData.EnvironmentType = EnvironmentType.None;
                 }
             }
 
             availableCoords.Sort((a, b) => a.y != b.y ? a.y.CompareTo(b.y) : a.x.CompareTo(b.x));
 
-            List<EnvironmentType> allEvent = TileEnvironmentManager.Instance.GetAllEnvironmentTypes().FindAll(type => type != EnvironmentType.None);
+            List<EnvironmentType> allEvn = TileEnvironmentManager.Instance.GetAllEnvironmentTypes().FindAll(type => type != EnvironmentType.None);
             Dictionary<EnvironmentType, int> envTypeCount = new Dictionary<EnvironmentType, int>();
 
-            foreach (var type in allEvent)
+            foreach (var type in allEvn)
             {
                 envTypeCount[type] = 0;
             }
 
             int total = availableCoords.Count;
-            int maxEnvCount = Mathf.CeilToInt(total / allEvent.Count);
+            int maxEnvCount = Mathf.CeilToInt(total / allEvn.Count);
             HashSet<Vector2Int> used = new HashSet<Vector2Int>();
 
-            foreach(var start in availableCoords)
+            foreach (var start in availableCoords)
             {
-                EnvironmentType chosenEnv = GetBalancedEnviromentType(allEvent, envTypeCount, maxEnvCount);
+                EnvironmentType chosenEnv = GetBalancedEnviromentType(allEvn, envTypeCount, maxEnvCount);
                 int size = Random.Range(_minEnvironmentTileCount, _maxEnvironmentTileCount + 1);
                 List<Vector2Int> choseCoord = GetEnvironmentCluster(start, availableCoords, used, size);
 
-                foreach(var coord in choseCoord)
+                foreach (var coord in choseCoord)
                 {
                     _hexMap[coord].TileData.EnvironmentType = chosenEnv;
                     used.Add(coord);
                 }
 
-                if(used.Count >= total)
-                break;
+                if (used.Count >= total)
+                    break;
             }
         }
 
@@ -679,7 +675,7 @@ namespace JDG
         {
             List<EnvironmentType> candidate = new List<EnvironmentType>();
 
-            foreach(var type in environmentTypes)
+            foreach (var type in environmentTypes)
             {
                 if (envTypeCount[type] < maxEnvCount)
                 {
@@ -696,7 +692,7 @@ namespace JDG
             envTypeCount[chose]++;
             return chose;
         }
-        
+
         private List<Vector2Int> GetEnvironmentCluster(Vector2Int start, List<Vector2Int> availableCoords, HashSet<Vector2Int> used, int size)
         {
             List<Vector2Int> result = new List<Vector2Int>();
@@ -706,7 +702,7 @@ namespace JDG
             queue.Enqueue((start, 0));
             visited.Add(start);
 
-            while(queue.Count > 0 && result.Count < size)
+            while (queue.Count > 0 && result.Count < size)
             {
                 var (coord, dist) = queue.Dequeue();
 
@@ -715,9 +711,9 @@ namespace JDG
 
                 result.Add(coord);
 
-                foreach(var neighbor in GetNeighbors(coord))
+                foreach (var neighbor in GetNeighbors(coord))
                 {
-                    if(availableCoords.Contains(neighbor) && !used.Contains(neighbor) && !visited.Contains(neighbor))
+                    if (availableCoords.Contains(neighbor) && !used.Contains(neighbor) && !visited.Contains(neighbor))
                     {
                         queue.Enqueue((neighbor, dist + 1));
                         visited.Add(neighbor);
@@ -726,6 +722,65 @@ namespace JDG
             }
 
             return result;
+        }
+
+        private void SetEnvironmentPrefab()
+        {
+            foreach (var coord in _tileCoords)
+            {
+                TileData data = _hexMap[coord].TileData;
+                GameObject environmentPrefab = null;
+
+                switch (data.EnvironmentType)
+                {
+                    case (EnvironmentType.None):
+                        {
+                            if (data.TileType == TileType.Boss)
+                            {
+                                environmentPrefab = GetEnvironmentPrefab("WorldMap/Environment/Boss");
+                            }
+                            else if (data.TileType == TileType.Event)
+                            {
+                                environmentPrefab = GetEnvironmentPrefab("WorldMap/Environment/Event");
+                            }
+                            break;
+                        }
+
+                    case (EnvironmentType.Dark):
+                        environmentPrefab = GetEnvironmentPrefab("WorldMap/Environment/Dark");
+                        break;
+
+                    case (EnvironmentType.Volcano):
+                        environmentPrefab = GetEnvironmentPrefab("WorldMap/Environment/Volcano");
+                        break;
+
+                    case (EnvironmentType.Ice):
+                        environmentPrefab = GetEnvironmentPrefab("WorldMap/Environment/Ice");
+                        break;
+                }
+
+                if (environmentPrefab == null)
+                    continue;
+
+                Vector3 tilePos = GetPositionForHexFromCoordinate(data.Coord);
+                tilePos += _offset;
+                Quaternion rotation = Quaternion.Euler(0, 90, 0);
+                GameObject instance = Instantiate(environmentPrefab, tilePos, rotation);
+                instance.transform.SetParent(_hexMap[coord].transform);
+            }
+        }
+
+        private GameObject GetEnvironmentPrefab(string path)
+        {
+            if (_environmentPrefabs.TryGetValue(path, out var prefab))
+                return prefab;
+
+            prefab = Resources.Load<GameObject>(path);
+
+            if (prefab != null)
+                _environmentPrefabs[path] = prefab;
+
+            return prefab;
         }
     }
 }
