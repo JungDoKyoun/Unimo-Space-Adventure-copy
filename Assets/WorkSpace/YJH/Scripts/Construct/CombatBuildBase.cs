@@ -14,14 +14,14 @@ public enum PowerType
 public class CombatBuildBase : ConstructBase
 {
     public GameObject attackPrefab;
-    public ISpellType spellType;
+    public int spellTypeIndex;
 
     public void SetPlayerPower()
     {
-        if(attackPrefab == null&&spellType!=null)
+        if(attackPrefab == null&& spellTypeIndex != null)
         {
-            SetPlayerSkill(spellType);
-        }else if (spellType == null && attackPrefab != null)
+            SetPlayerSkill(ConstructManager.playerSpells[spellTypeIndex]);
+        }else if (spellTypeIndex == null && attackPrefab != null)
         {
             SetPlayerAttack(attackPrefab);
         }

@@ -58,6 +58,7 @@ public partial class PlayerManager
     [SerializeField]
     
     private static GameObject attackPrefab;
+    public GameObject tempAttackPrefab;
 
     private static IAttackType playerAttackType;
 
@@ -118,20 +119,26 @@ public partial class PlayerManager
             OnTargetObjectSet += GatheringItem;
 
             detectCollider.radius = itemDetectionRange;
-
-            SetAttackType(attackPrefab);
+            if (attackPrefab == null)
+            {
+                SetAttackType(tempAttackPrefab);
+            }
+            else
+            {
+                SetAttackType(attackPrefab);
+            }
            
 
             if (playerSpellType != null)
             {
-                //Debug.Log("notnullspell");
+                Debug.Log("notnullspell");
 
                 playerSpellType.InitSpell();
             }
 
             else
             {
-                //Debug.Log("nullspell");
+                Debug.Log("nullspell");
 
                 ISpellType temp = new Dash();
 
