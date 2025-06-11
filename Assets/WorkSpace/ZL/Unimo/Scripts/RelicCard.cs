@@ -22,8 +22,6 @@ namespace ZL.Unity.Unimo
 
         [GetComponent]
 
-        [Essential]
-
         private Toggle toggle = null;
 
         public Toggle Toggle
@@ -101,9 +99,19 @@ namespace ZL.Unity.Unimo
 
         private RelicData relicData = null;
 
-        public event Action<RelicCard> OnSelectedAction = null;
+        public RelicData RelicData
+        {
+            get => relicData;
+        }
 
-        public event Action<RelicCard> OnDeselectedAction = null;
+        public event Action<RelicCard> OnSelectAction = null;
+
+        public event Action<RelicCard> OnDeselectAction = null;
+
+        public void Initialize(RelicData relicData)
+        {
+            this.relicData = relicData;
+        }
 
         private void OnEnable()
         {
@@ -115,7 +123,7 @@ namespace ZL.Unity.Unimo
 
             relicDescriptionStringTable = relicStringTableSheet[relicData.name + " Description"];
 
-            Refresh(StringTable.Language);
+            Refresh();
 
             StringTable.OnLanguageChanged += Refresh;
         }
@@ -124,37 +132,32 @@ namespace ZL.Unity.Unimo
         {
             base.OnDisable();
 
-            OnSelectedAction = null;
-            
-            OnDeselectedAction = null;
-
             toggle.isOn = false;
+
+            OnSelectAction = null;
+            
+            OnDeselectAction = null;
 
             StringTable.OnLanguageChanged -= Refresh;
         }
 
-        public void Initialize(RelicData relicData)
+        private void Refresh()
         {
-            this.relicData = relicData;
+            relicNameTextUI.text = relicNameStringTable.Value;
+
+            relicDescriptionTextUI.text = string.Format(relicDescriptionStringTable.Value, relicData.EffectsArgs);
         }
 
-        private void Refresh(StringTableLanguage language)
+        public void SetSelect(bool value)
         {
-            relicNameTextUI.text = relicNameStringTable[language];
-
-            relicDescriptionTextUI.text = string.Format(relicDescriptionStringTable[language], relicData.EffectValues);
-        }
-
-        public void OnSelect(bool isOn)
-        {
-            if (isOn == true)
+            if (value == true)
             {
-                OnSelectedAction?.Invoke(this);
+                OnSelectAction?.Invoke(this);
             }
 
             else
             {
-                OnDeselectedAction?.Invoke(this);
+                OnDeselectAction?.Invoke(this);
             }
         }
     }

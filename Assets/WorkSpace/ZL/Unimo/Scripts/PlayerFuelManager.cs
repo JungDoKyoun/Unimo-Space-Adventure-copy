@@ -1,4 +1,5 @@
 using JDG;
+
 using UnityEngine;
 
 using ZL.Unity.Singleton;
@@ -58,12 +59,14 @@ namespace ZL.Unity.Unimo
 
         private void Start()
         {
-            if (GameStateManager.IsClear == false)
+            if (GameStateManager.IsClear == true)
             {
-                fuel = 100f;
-
-                FuelMax = 100f;
+                return;
             }
+
+            fuel = 100f;
+
+            FuelMax = 100f;
         }
     }
 }

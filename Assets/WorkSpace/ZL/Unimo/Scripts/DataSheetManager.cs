@@ -50,7 +50,7 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private StringTableSheet stringTableSheet = null;
+        private RelicEffectStringTableSheet relicEffectStringTableSheet = null;
 
         [Space]
 
@@ -80,7 +80,7 @@ namespace ZL.Unity.Unimo
 
             ISingleton<StageRewardDataSheet>.TrySetInstance(stageRewardDataSheet);
 
-            ISingleton<StringTableSheet>.TrySetInstance(stringTableSheet);
+            ISingleton<RelicEffectStringTableSheet>.TrySetInstance(relicEffectStringTableSheet);
 
             if (updateAllSheetsOnAwake == true)
             {
@@ -106,7 +106,7 @@ namespace ZL.Unity.Unimo
 
             ISingleton<StageRewardDataSheet>.Release(stageRewardDataSheet);
 
-            ISingleton<StringTableSheet>.Release(stringTableSheet);
+            ISingleton<RelicEffectStringTableSheet>.Release(relicEffectStringTableSheet);
         }
 
         public void UpdateAllSheets()
@@ -127,7 +127,7 @@ namespace ZL.Unity.Unimo
 
             stageRewardDataSheet?.Read();
 
-            stringTableSheet?.Read();
+            relicEffectStringTableSheet?.Read();
         }
     }
 }

@@ -1,3 +1,5 @@
+using TMPro;
+
 using UnityEngine;
 
 using UnityEngine.UI;
@@ -28,6 +30,16 @@ namespace ZL.Unity.Unimo
 
         private Button rerollRelicsButton = null;
 
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [Alias("Reroll Relics Button Text (UI)")]
+
+        private TextMeshProUGUI rerollRelicsButtonTextUI = null;
+
         [Space]
 
         [SerializeField]
@@ -38,10 +50,7 @@ namespace ZL.Unity.Unimo
 
         private void OnEnable()
         {
-            if (StageRewardData.Instance.DropedRelicDatas == null)
-            {
-                return;
-            }
+            rerollRelicsButtonTextUI.text = PlayerInventoryManager.RelicRerollableCountText;
 
             DrawRelicCards();
         }
@@ -53,11 +62,27 @@ namespace ZL.Unity.Unimo
 
         public void ConfirmSelection()
         {
+            if (selectedRelicCard == null)
+            {
+                return;
+            }
 
+            PlayerInventoryManager.AddRelic(selectedRelicCard.RelicData);
         }
 
         public void RerollRelics()
         {
+            if (PlayerInventoryManager.RelicRerollableCount == 0)
+            {
+                return;
+            }
+
+            --PlayerInventoryManager.RelicRerollableCount;
+
+            rerollRelicsButtonTextUI.text = PlayerInventoryManager.RelicRerollableCountText;
+
+            relicCardPool.CollectAll();
+
             StageRewardData.Instance.DropRelics();
 
             DrawRelicCards();
@@ -65,9 +90,14 @@ namespace ZL.Unity.Unimo
 
         private void DrawRelicCards()
         {
-            relicCardPool.CollectAll();
+            if (StageRewardData.Instance.DropedRelicDatas == null)
+            {
+                rerollRelicsButton.interactable = false;
 
-            selectedRelicCard = null;
+                return;
+            }
+
+            rerollRelicsButton.interactable = PlayerInventoryManager.RelicRerollableCount > 0;
 
             foreach (var relicData in StageRewardData.Instance.DropedRelicDatas)
             {
@@ -75,9 +105,9 @@ namespace ZL.Unity.Unimo
 
                 relicCard.Initialize(relicData);
 
-                relicCard.OnSelectedAction += SelectRelicCard;
+                relicCard.OnSelectAction += SelectRelicCard;
 
-                relicCard.OnDeselectedAction += DeselectRelicCard;
+                relicCard.OnDeselectAction += DeselectRelicCard;
 
                 relicCard.gameObject.SetActive(true);
             }

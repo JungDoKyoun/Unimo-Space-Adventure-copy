@@ -242,7 +242,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 387439308401205736}
         m_TargetAssemblyTypeName: ZL.Unity.Unimo.RelicCard, Assembly-CSharp
-        m_MethodName: OnSelect
+        m_MethodName: SetSelect
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -516,6 +516,10 @@ PrefabInstance:
       value: '{Relic Name}'
       objectReference: {fileID: 0}
     - target: {fileID: 6716335369305163009, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
+      propertyPath: m_Maskable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6716335369305163009, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
       propertyPath: m_fontSize
       value: 50
       objectReference: {fileID: 0}
@@ -643,6 +647,10 @@ PrefabInstance:
     - target: {fileID: 6716335369305163009, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
       propertyPath: m_text
       value: '{Relic Description}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6716335369305163009, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
+      propertyPath: m_Maskable
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6716335369305163009, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
       propertyPath: m_fontSize

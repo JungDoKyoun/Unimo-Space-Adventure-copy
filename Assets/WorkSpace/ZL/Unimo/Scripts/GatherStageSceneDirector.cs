@@ -20,7 +20,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private GameObject stageClearPopupScreen = null;
+        private GameObject relicSelectionScreen = null;
 
         [SerializeField]
 
@@ -30,9 +30,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private GameObject relicSelectionScreen = null;
-
-        [Space]
+        private GameObject stageClearPopupScreen = null;
 
         [SerializeField]
 

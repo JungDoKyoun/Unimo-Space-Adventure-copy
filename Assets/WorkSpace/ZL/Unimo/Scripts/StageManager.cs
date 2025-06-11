@@ -54,7 +54,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private GameObject spawners = null;
+        private GameObject playerUIScreen = null;
 
         [SerializeField]
 
@@ -64,7 +64,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private GameObject stageUIScreen = null;
+        private GameObject spawners = null;
 
         [Space]
 
@@ -100,9 +100,9 @@ namespace ZL.Unity.Unimo
         {
             player.OnPlayerDead += StageFail;
 
-            spawners.SetActive(true);
+            playerUIScreen.SetActive(true);
 
-            stageUIScreen.SetActive(true);
+            spawners.SetActive(true);
 
             StartCoroutine(ConsumFuelRoutine());
         }

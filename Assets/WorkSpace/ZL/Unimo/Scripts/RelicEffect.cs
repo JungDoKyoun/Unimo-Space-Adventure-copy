@@ -1,12 +1,14 @@
 using System;
 
+using System.Collections.Generic;
+
 using UnityEngine;
 
 namespace ZL.Unity.Unimo
 {
     [Serializable]
 
-    public struct RelicEffect
+    public sealed class RelicEffect
     {
         [Space]
 
@@ -28,11 +30,34 @@ namespace ZL.Unity.Unimo
             get => value;
         }
 
+        private List<object> args = null;
+
+        public List<object> Args
+        {
+            get
+            {
+                if (args == null)
+                {
+                    args = new()
+                    {
+                        RelicEffectStringTableSheet.Instance[type].Value
+                    };
+
+                    if (value != 0f)
+                    {
+                        args.Add(value);
+                    }
+                }
+
+                return args;
+            }
+        }
+
         public static RelicEffect Parse(string s)
         {
             var strings = s.Split(',');
 
-            return new RelicEffect()
+            return new()
             {
                 type = (RelicEffectType)int.Parse(strings[0]),
 
@@ -40,7 +65,7 @@ namespace ZL.Unity.Unimo
             };
         }
 
-        public override readonly string ToString()
+        public override string ToString()
         {
             return $"{(int)type}, {value}";
         }

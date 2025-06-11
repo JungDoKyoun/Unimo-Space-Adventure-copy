@@ -1,9 +1,6 @@
-using Google.GData.Extensions;
 using GoogleSheetsToUnity;
 
 using System;
-
-using System.Collections.Generic;
 
 using System.IO;
 
@@ -19,7 +16,17 @@ using ZL.Unity.Collections;
 
 namespace ZL.Unity.IO.GoogleSheet
 {
-    public abstract class ScriptableGoogleSheet<TGoogleSheetData> : ScriptableObject
+    public abstract class ScriptableGoogleSheet<TGoogleSheetData> : ScriptableGoogleSheet<string, TGoogleSheetData>
+
+        where TGoogleSheetData : ScriptableObject, IGoogleSheetData
+    {
+        protected override string GeyDataKey(TGoogleSheetData data)
+        {
+            return data.name;
+        }
+    }
+
+    public abstract class ScriptableGoogleSheet<TKey, TGoogleSheetData> : ScriptableObject
 
         where TGoogleSheetData : ScriptableObject, IGoogleSheetData
     {
@@ -74,14 +81,14 @@ namespace ZL.Unity.IO.GoogleSheet
 
         [Button(nameof(SerializeDatas))]
 
-        protected SerializableDictionary<string, TGoogleSheetData> dataDictionary = null;
+        protected SerializableDictionary<TKey, TGoogleSheetData> dataDictionary = null;
 
-        public TGoogleSheetData this[string key]
+        public TGoogleSheetData this[TKey key]
         {
             get => dataDictionary[key];
         }
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
 
         private string DirectoryPath
         {
@@ -164,11 +171,13 @@ namespace ZL.Unity.IO.GoogleSheet
             {
                 var data = datas[i];
 
-                dataDictionary.Add(data.name, data);
+                dataDictionary.Add(GeyDataKey(data), data);
             }
 
             FixedEditorUtility.SetDirty(this);
         }
+
+        protected abstract TKey GeyDataKey(TGoogleSheetData data);
 
         public void Write()
         {
