@@ -14,7 +14,7 @@ public class ConstructManager : MonoBehaviour
     [SerializeField] List<TechBuildBase> techConstructList = new List<TechBuildBase>();
     [SerializeField] List<UtilityBuildBase> utilityConstructList = new List<UtilityBuildBase>();
     [SerializeField] List<CombatBuildBase> combatConstructList = new List<CombatBuildBase>();
-
+    private Dictionary<string,ConstructBase> allBuildingDic = new Dictionary<string,ConstructBase>();
     [Header("UI")]
     [SerializeField] GameObject buildingInfoPanel;
     [SerializeField] Image buildingImage;
@@ -61,6 +61,7 @@ public class ConstructManager : MonoBehaviour
         SetOwnCost();
         DecideProgress();
         ToDictionary();
+        SetAllDic();
         PlayerManager.OnPlayerDead += YJH.MethodCollection.DelinkHealPlayer;
     }
     private void OnDestroy()
@@ -80,6 +81,21 @@ public class ConstructManager : MonoBehaviour
         foreach (var temp in combatConstructList)
         {
             temp.ToDictionary();
+        }
+    }
+    private void SetAllDic()
+    {
+        foreach (var temp in techConstructList)
+        {
+            allBuildingDic.Add(temp.buildID, temp);
+        }
+        foreach (var temp in utilityConstructList)
+        {
+            allBuildingDic.Add(temp.buildID, temp);
+        }
+        foreach (var temp in combatConstructList)
+        {
+            allBuildingDic.Add(temp.buildID, temp);
         }
     }
     
@@ -222,22 +238,7 @@ public class ConstructManager : MonoBehaviour
             }
         }
     }
-    //public List<IStatModifier> ReturnStatEffectList()//게임매니저에서 호출 받아서 자기가 적용시킬 스테이터스에 사용하기, 현재는 사용 X
-    //{
-    //    List<IStatModifier> tempList= new List<IStatModifier>();
-    //    foreach(var building in constructList)
-    //    {
-    //        foreach(var effect in building.buildEffects)
-    //        {
-    //            if (building.isBuildConstructed == true)
-    //            {
-    //                tempList.Add(effect);
-    //            }
-    //            
-    //        }
-    //    }
-    //    return tempList;
-    //}
+   
     public void BuildButtonPressed(string buildID)
     {
         foreach (var temp in techConstructList)

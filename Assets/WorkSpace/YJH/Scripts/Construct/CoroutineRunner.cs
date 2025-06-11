@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class CoroutineRunner : MonoBehaviour
@@ -18,7 +19,7 @@ public class CoroutineRunner : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
+       // DontDestroyOnLoad(gameObject);
     }
 
 
@@ -26,5 +27,15 @@ public class CoroutineRunner : MonoBehaviour
     {
         return StartCoroutine(coroutine);
     }
-
+    public Task RunCoroutine(IEnumerator coroutine,MonoBehaviour targetScript)
+    {
+        var coroTask=new TaskCompletionSource<bool>();
+        targetScript.StartCoroutine(Wrap(coroutine,coroTask));
+        return coroTask.Task;
+    }
+    public IEnumerator Wrap(IEnumerator coroutine, TaskCompletionSource<bool> tcs)
+    {
+        yield return coroutine;
+        tcs.SetResult(true);
+    }
 }

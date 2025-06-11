@@ -16,9 +16,12 @@ MonoBehaviour:
   buildID: Damage4
   buildName: 
   buildingDescription: 
-  buildRequires: []
+  buildRequires:
+  - Damage3
   buildUnlocks: []
-  buildCosts: []
+  buildCosts:
+  - key: MetaCurrency
+    value: 400
   buildPosition: {x: 0, y: 0, z: 0}
   buildIcon: {fileID: 0}
   buildingImage: {fileID: 0}

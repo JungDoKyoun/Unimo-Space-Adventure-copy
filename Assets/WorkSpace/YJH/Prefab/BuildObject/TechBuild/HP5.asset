@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: HP5
   m_EditorClassIdentifier: 
   isBuildConstructed: 0
-  buildID: HP1
+  buildID: HP5
   buildName: hp1
   buildingDescription: sadfasd
-  buildRequires: []
+  buildRequires:
+  - HP4
   buildUnlocks: []
-  buildCosts: []
+  buildCosts:
+  - key: MetaCurrency
+    value: 400
   buildPosition: {x: 0, y: 0, z: 0}
   buildIcon: {fileID: 0}
   buildingImage: {fileID: 0}
