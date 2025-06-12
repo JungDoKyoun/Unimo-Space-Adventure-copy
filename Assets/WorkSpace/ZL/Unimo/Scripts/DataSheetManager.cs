@@ -6,7 +6,7 @@ namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Data Sheet Manager")]
 
-    [DefaultExecutionOrder((int)ScriptExecutionOrder.FastAwake)]
+    [DefaultExecutionOrder((int)ScriptExecutionOrder.Singleton)]
 
     public sealed class DataSheetManager : MonoBehaviour
     {
@@ -14,11 +14,19 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private EnemyDataSheet enemyDataSheet = null;
+        [UsingCustomProperty]
+
+        [Button(nameof(UpdateAllSheets))]
+
+        [Margin]
+
+        private bool updateAllSheetsOnAwake = false;
+
+        [Space]
 
         [SerializeField]
 
-        private GatheringDataSheet gatheringDataSheet = null;
+        private EnemyDataSheet enemyDataSheet = null;
 
         [SerializeField]
 
@@ -42,45 +50,27 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private StageDataSheet stageDataSheet = null;
+        private StageDataSheet[] stageDataSheets = null;
 
         [SerializeField]
 
-        private StageRewardDataSheet stageRewardDataSheet = null;
+        private StageRewardDataSheet[] stageRewardDataSheets = null;
 
         [SerializeField]
 
         private RelicEffectStringTableSheet relicEffectStringTableSheet = null;
 
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Button(nameof(UpdateAllSheets))]
-
-        private bool updateAllSheetsOnAwake = false;
-
         private void Awake()
         {
-            ISingleton<EnemyDataSheet>.TrySetInstance(enemyDataSheet);
-
-            ISingleton<GatheringDataSheet>.TrySetInstance(gatheringDataSheet);
-
             ISingleton<RelicDataSheet>.TrySetInstance(relicDataSheet);
 
             ISingleton<RelicDropTableSheet>.TrySetInstance(relicDropTableSheet);
 
+            ISingleton<RelicEffectStringTableSheet>.TrySetInstance(relicEffectStringTableSheet);
+
             ISingleton<SpawnPatternDataSheet>.TrySetInstance(spawnPatternDataSheet);
 
             ISingleton<SpawnerDataSheet>.TrySetInstance(spawnerDataSheet);
-
-            ISingleton<StageDataSheet>.TrySetInstance(stageDataSheet);
-
-            ISingleton<StageRewardDataSheet>.TrySetInstance(stageRewardDataSheet);
-
-            ISingleton<RelicEffectStringTableSheet>.TrySetInstance(relicEffectStringTableSheet);
 
             if (updateAllSheetsOnAwake == true)
             {
@@ -90,44 +80,58 @@ namespace ZL.Unity.Unimo
 
         private void OnDestroy()
         {
-            ISingleton<EnemyDataSheet>.Release(enemyDataSheet);
-
-            ISingleton<GatheringDataSheet>.Release(gatheringDataSheet);
-
             ISingleton<RelicDataSheet>.Release(relicDataSheet);
 
             ISingleton<RelicDropTableSheet>.Release(relicDropTableSheet);
 
+            ISingleton<RelicEffectStringTableSheet>.Release(relicEffectStringTableSheet);
+
             ISingleton<SpawnPatternDataSheet>.Release(spawnPatternDataSheet);
 
             ISingleton<SpawnerDataSheet>.Release(spawnerDataSheet);
-
-            ISingleton<StageDataSheet>.Release(stageDataSheet);
-
-            ISingleton<StageRewardDataSheet>.Release(stageRewardDataSheet);
-
-            ISingleton<RelicEffectStringTableSheet>.Release(relicEffectStringTableSheet);
         }
 
         public void UpdateAllSheets()
         {
-            enemyDataSheet?.Read();
+            if (enemyDataSheet != null)
+            {
+                enemyDataSheet.Read();
+            }
 
-            gatheringDataSheet?.Read();
+            if (relicDataSheet != null)
+            {
+                relicDataSheet.Read();
+            }
 
-            relicDataSheet?.Read();
+            if (relicDropTableSheet != null)
+            {
+                relicDropTableSheet.Read();
+            }
 
-            relicDropTableSheet?.Read();
+            if (relicEffectStringTableSheet != null)
+            {
+                relicEffectStringTableSheet.Read();
+            }
 
-            spawnPatternDataSheet?.Read();
+            if (spawnPatternDataSheet != null)
+            {
+                spawnPatternDataSheet.Read();
+            }
 
-            spawnerDataSheet?.Read();
+            if (spawnerDataSheet != null)
+            {
+                spawnerDataSheet.Read();
+            }
 
-            stageDataSheet?.Read();
+            for (int i = 0; i < stageDataSheets.Length; ++i)
+            {
+                stageDataSheets[i].Read();
+            }
 
-            stageRewardDataSheet?.Read();
-
-            relicEffectStringTableSheet?.Read();
+            for (int i = 0; i < stageRewardDataSheets.Length; ++i)
+            {
+                stageRewardDataSheets[i].Read();
+            }
         }
     }
 }

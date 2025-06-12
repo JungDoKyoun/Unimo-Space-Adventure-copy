@@ -8,7 +8,7 @@ namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Stage Clear Popup Screen")]
 
-    public sealed class StageClearPopupScreen : MonoBehaviour
+    public sealed class StageClearPopupScreen : ScreenUI
     {
         [Space]
 
@@ -18,19 +18,7 @@ namespace ZL.Unity.Unimo
 
         [Essential]
 
-        private Clock stagePlayTimeClock = null;
-
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        private ForceLayoutRebuilder content = null;
-
-        [Space]
+        private ForceLayoutRebuilder popupContent = null;
 
         [SerializeField]
 
@@ -72,9 +60,9 @@ namespace ZL.Unity.Unimo
 
         private TextMeshProUGUI bluePrintCountTextUI = null;
 
-        private void OnEnable()
+        public override void Appear()
         {
-            stagePlayTimeTextUI.text = $"플레이 시간: {stagePlayTimeClock.GetTimeStamp()}";
+            stagePlayTimeTextUI.text = $"플레이 시간: {SceneClock.Instance.GetTimeStamp()}";
 
             inGameMoneyAmountTextUI.gameObject.SetActive(false);
 
@@ -105,7 +93,9 @@ namespace ZL.Unity.Unimo
                 bluePrintCountTextUI.gameObject.SetActive(true);
             }
 
-            content.ForceRebuildLayout();
+            popupContent.ForceRebuildLayout();
+
+            base.Appear();
         }
     }
 }

@@ -105,7 +105,7 @@ namespace ZL.Unity.Tweening
 
         [SerializeField]
 
-        private UnityEvent onStartEvent = new UnityEvent();
+        private UnityEvent onStartEvent = new();
 
         public UnityEvent OnStartEvent
         {
@@ -116,7 +116,7 @@ namespace ZL.Unity.Tweening
 
         [SerializeField]
 
-        private UnityEvent onCompleteEvent = new UnityEvent();
+        private UnityEvent onCompleteEvent = new();
 
         public UnityEvent OnCompleteEvent
         {

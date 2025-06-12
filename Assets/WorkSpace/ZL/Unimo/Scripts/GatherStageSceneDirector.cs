@@ -20,7 +20,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private GameObject relicSelectionScreen = null;
+        private RelicSelectionScreen relicSelectionScreen = null;
 
         [SerializeField]
 
@@ -30,7 +30,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private GameObject stageClearPopupScreen = null;
+        private StageClearPopupScreen stageClearPopupScreen = null;
 
         [SerializeField]
 
@@ -40,7 +40,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private GameObject stageFailPopupScreen = null;
+        private StageFailPopupScreen stageFailPopupScreen = null;
 
         protected override IEnumerator Start()
         {
@@ -67,18 +67,18 @@ namespace ZL.Unity.Unimo
         {
             TimeEx.Pause();
 
-            stageClearPopupScreen.SetActive(true);
+            stageClearPopupScreen.Appear();
 
-            while (stageClearPopupScreen.activeSelf == true)
+            while (stageClearPopupScreen.gameObject.activeSelf == true)
             {
                 yield return null;
             }
 
             if (StageRewardData.Instance.DropedRelicDatas != null)
             {
-                relicSelectionScreen.SetActive(true);
+                relicSelectionScreen.Appear();
 
-                while (relicSelectionScreen.activeSelf == true)
+                while (relicSelectionScreen.gameObject.activeSelf == true)
                 {
                     yield return null;
                 }
@@ -105,9 +105,9 @@ namespace ZL.Unity.Unimo
         {
             TimeEx.Pause();
 
-            stageFailPopupScreen.SetActive(true);
+            stageFailPopupScreen.Appear();
 
-            while (stageFailPopupScreen.activeSelf == true)
+            while (stageFailPopupScreen.gameObject.activeSelf == true)
             {
                 yield return null;
             }

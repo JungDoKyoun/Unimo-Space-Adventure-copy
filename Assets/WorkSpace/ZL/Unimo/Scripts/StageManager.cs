@@ -24,7 +24,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private StageData stageData = null;
+        private StageDataSheet stageDataSheet = null;
 
         [SerializeField]
 
@@ -32,7 +32,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private StageRewardData stageRewardData = null;
+        private StageRewardDataSheet stageRewardDataSheet = null;
 
         [Space]
 
@@ -78,9 +78,23 @@ namespace ZL.Unity.Unimo
 
         private UnityEvent onStageFailEvent = null;
 
+        private StageData stageData = null;
+
+        private StageRewardData stageRewardData = null;
+
+        public static int Level { get; set; } = 1;
+
         protected override void Awake()
         {
             base.Awake();
+
+            stageData = stageDataSheet[Level];
+
+            stageRewardData = stageRewardDataSheet[Level];
+
+            stageDataSheet = null;
+
+            stageRewardDataSheet = null;
 
             ISingleton<StageData>.TrySetInstance(stageData);
 
@@ -121,18 +135,15 @@ namespace ZL.Unity.Unimo
         {
             GameStateManager.IsClear = true;
 
-            if (stageRewardData != null)
+            stageRewardData.DropRewards();
+
+            if (FirebaseDataBaseMgr.Instance != null)
             {
-                stageRewardData.DropRewards();
+                Debug.Log("(테스트) 스테이지 보상 지급 코루틴 실행");
 
-                if (FirebaseDataBaseMgr.Instance != null)
-                {
-                    FixedDebug.Log("스테이지 보상 지급 코루틴 실행 (문제 생길 가능성 있음)");
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(stageRewardData.DropedInGameMoneyAmount));
 
-                    StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(stageRewardData.DropedInGameMoneyAmount));
-
-                    StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(stageRewardData.DropedOutGameMoneyAmount));
-                }
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(stageRewardData.DropedOutGameMoneyAmount));
             }
 
             onStageClearEvent.Invoke();
@@ -146,7 +157,7 @@ namespace ZL.Unity.Unimo
 
             if (FirebaseDataBaseMgr.Instance != null)
             {
-                FixedDebug.Log("인 게임 재화 초기화 코루틴 실행 (문제 생길 가능성 있음)");
+                FixedDebug.Log("(테스트) 인 게임 재화 초기화 코루틴 실행");
 
                 StartCoroutine(FirebaseDataBaseMgr.Instance.InitIngameCurrency());
             }

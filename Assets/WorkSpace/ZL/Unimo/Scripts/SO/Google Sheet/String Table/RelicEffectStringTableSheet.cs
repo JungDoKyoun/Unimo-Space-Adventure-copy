@@ -8,7 +8,7 @@ using ZL.Unity.IO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {
-    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Relic String Table Sheet", fileName = "Relic String Table Sheet")]
+    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Relic String Table Sheet (Singleton)", fileName = "Relic String Table Sheet")]
 
     public sealed class RelicEffectStringTableSheet : ScriptableGoogleSheet<RelicEffectType, StringTable>, ISingleton<RelicEffectStringTableSheet>
     {

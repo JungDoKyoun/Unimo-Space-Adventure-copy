@@ -12,7 +12,7 @@ namespace ZL.Unity
 {
     [AddComponentMenu("ZL/Clock")]
 
-    public sealed class Clock : MonoBehaviour
+    public class Clock : MonoBehaviour
     {
         [Space]
 

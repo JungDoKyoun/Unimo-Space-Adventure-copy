@@ -6,7 +6,7 @@ namespace ZL.Unity
 {
     [AddComponentMenu("ZL/On Awake Event Trigger")]
 
-    [DefaultExecutionOrder((int)ScriptExecutionOrder.FastAwake)]
+    [DefaultExecutionOrder((int)ScriptExecutionOrder.Lazy)]
 
     public sealed class OnAwakeEventTrigger : MonoBehaviour
     {
@@ -15,11 +15,6 @@ namespace ZL.Unity
         [SerializeField]
 
         private UnityEvent onAwakeEvent = null;
-
-        public UnityEvent OnAwakeEvent
-        {
-            get => onAwakeEvent;
-        }
 
         private void Awake()
         {

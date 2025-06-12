@@ -6,11 +6,13 @@ using UnityEngine.UI;
 
 using ZL.Unity.Pooling;
 
+using ZL.Unity.UI;
+
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Relic Selection Screen")]
+    [AddComponentMenu("ZL/Unimo/Relic Selection Screen (Singleton)")]
 
-    public sealed class RelicSelectionScreen : MonoBehaviour
+    public sealed class RelicSelectionScreen : ScreenUI<RelicSelectionScreen>
     {
         [Space]
 
@@ -48,11 +50,13 @@ namespace ZL.Unity.Unimo
 
         private RelicCard selectedRelicCard = null;
 
-        private void OnEnable()
+        public override void Appear()
         {
             rerollRelicsButtonTextUI.text = PlayerInventoryManager.RelicRerollableCountText;
 
             DrawRelicCards();
+
+            base.Appear();
         }
 
         private void OnDisable()

@@ -12,7 +12,7 @@ using ZL.Unity.IO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {
-    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Relic Data Sheet", fileName = "Relic Data Sheet")]
+    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Relic Data Sheet (Singleton)", fileName = "Relic Data Sheet")]
 
     public sealed class RelicDataSheet : ScriptableGoogleSheet<RelicData>, ISingleton<RelicDataSheet>
     {
