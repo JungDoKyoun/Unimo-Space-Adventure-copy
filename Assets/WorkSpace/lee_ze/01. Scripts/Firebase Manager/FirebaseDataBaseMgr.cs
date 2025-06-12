@@ -37,7 +37,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private static float winCount;
 
-    private static float score;
+    private static float currentScore;
 
     #region properties
 
@@ -101,13 +101,13 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         }
     }
 
-    public static float Score
+    public static float CurrentScore
     {
-        get => score;
+        get => currentScore;
 
         set
         {
-            score = value;
+            currentScore = value;
         }
     }
 
@@ -371,7 +371,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #endregion
 
-    #region Winning Rate
+    #region Winning Rate (미사용)
 
     public IEnumerator SetCurrentWinningRate() // 전적 업데이트 함수.
     {
@@ -445,13 +445,13 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     #region Score management
 
     /// <summary>
-    /// 점수 업데이트 할 때 사용.
+    /// 각 스테이지 끝난 후 점수 업데이트 할 때 사용.
     /// </summary>
     /// <param name="currentScore"></param>
     /// <returns></returns>
     public IEnumerator UpdateScore(float currentScore)
     {
-        Score = currentScore;
+        CurrentScore = currentScore;
 
         var getTask = dbRef.Child("users").Child(user.UserId).Child("score").GetValueAsync();
 
@@ -459,17 +459,17 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         if (getTask.Exception != null) // 불러오기 실패 시 나가기
         {
-            Debug.LogWarning($"[Get] reason : {getTask.Exception}");
+            Debug.LogWarning($"Get error reason : {getTask.Exception}");
 
             yield break;
         }
 
         if (getTask.Result.Exists == true && float.TryParse(getTask.Result.Value.ToString(), out float savedScore)) // string으로 불러온 ingame currency를 tryparse로 savedValue에 저장
         {
-            if (Score > savedScore) // 기존 기록보다 currentScore(방금 세운 기록)이 크면
+            if (CurrentScore > savedScore) // 기존 기록보다 currentScore(방금 세운 기록)이 크면
             {
                 // score 최신화
-                var DBTask = dbRef.Child("user").Child(user.UserId).Child("score").SetValueAsync(Score);
+                var DBTask = dbRef.Child("user").Child(user.UserId).Child("score").SetValueAsync(CurrentScore);
 
                 yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
@@ -487,14 +487,12 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         if (getTask.Exception != null)
         {
-            Debug.LogError($"[Ranking Error] {getTask.Exception}");
+            Debug.LogError($"Ranking Error: {getTask.Exception}");
 
             yield break;
         }
 
         DataSnapshot snapshot = getTask.Result;
-
-        Debug.Log(snapshot.ChildrenCount);
 
         List<(string nickname, float score)> topRankers = new List<(string, float)>();
 
