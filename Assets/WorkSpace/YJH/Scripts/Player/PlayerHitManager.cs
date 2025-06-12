@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 
 using UnityEngine;
@@ -80,7 +81,7 @@ public partial class PlayerManager : IDamageable
     public delegate void onStageClear();
     public static event onStageClear OnStageClear;
     public static event onStageClear OnStageFail;
-
+    public event Action<float> OnPlayerHit;
 
     private void OnCollisionStay(Collision collision)
     {
@@ -114,6 +115,7 @@ public partial class PlayerManager : IDamageable
         }
 
         currentHealth -= damage;//데미지 입음
+        OnPlayerHit?.Invoke(currentHealth);
 
         if (currentHealth <= 0f)
         {
