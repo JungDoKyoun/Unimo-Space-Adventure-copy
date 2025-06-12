@@ -86,7 +86,7 @@ public partial class PlayerManager
     private static PlayerManager selfManager;
     public static PlayerManager SelfManager
     {
-        get { return selfManager; }
+        get => selfManager;
     }
     //[SerializeField]
 
