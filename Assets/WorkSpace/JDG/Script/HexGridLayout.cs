@@ -25,6 +25,10 @@ namespace JDG
         [SerializeField] private float _height = 1f;
         [SerializeField] private Material _material;
 
+        [Header("육각타일의 테두리 관련")]
+        [SerializeField] private Material _outlineMaterial;
+        [SerializeField] private float _outlineExpand;
+
         [Header("타일 역할 배치 변수")]
         [SerializeField] private List<ModeRatioEntry> _modeRatio = new List<ModeRatioEntry>();
         [SerializeField] private int[] _bossDistance;
@@ -160,6 +164,9 @@ namespace JDG
                 collider.sharedMesh = tile.GetComponent<MeshFilter>().mesh;
                 _hexMap.Add(coord, hexRenderer);
                 tile.transform.SetParent(transform, true);
+
+                //타일 구분선
+                hexRenderer.CreateOutlineMesh(_outlineMaterial, _outlineExpand);
             }
 
             Vector3 spawnPos = GetPositionForHexFromCoordinate(_playerCoord) + Vector3.up * 1f;
@@ -518,6 +525,7 @@ namespace JDG
             Vector2Int centerCoord = new Vector2Int(_gridSize.x / 2, _gridSize.y / 2);
             Vector3 centerPos = GetPositionForHexFromCoordinate(centerCoord);
             _mapOrigin = -centerPos;
+            transform.position = _mapOrigin;
         }
 
         private DifficultyType GetDifficultyTypeByDistance(int distance)

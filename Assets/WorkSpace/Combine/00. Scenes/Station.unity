@@ -2584,7 +2584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8383,6 +8383,9 @@ MonoBehaviour:
   _slotParent: {fileID: 449344502}
   _resourceText1: {fileID: 2016997393}
   _resourceText2: {fileID: 112328873}
+  _resourceSpite: {fileID: 21300000, guid: 7db3ffeb92b5cbf4a8061190bae7468a, type: 3}
+  _resourceIcon1: {fileID: 593253075}
+  _resourceIcon2: {fileID: 1691776518}
   _offset: {x: 0, y: 0, z: -0.2}
   _itemCount: 3
   _repair1Price: 0
@@ -11705,6 +11708,8 @@ MonoBehaviour:
   _innerSize: 0
   _height: 0.5
   _material: {fileID: 2100000, guid: 0998fb421169edd44a89873c6205968e, type: 2}
+  _outlineMaterial: {fileID: 2100000, guid: 95f455c8231041b44a7aa5166e420403, type: 2}
+  _outlineExpand: 0.5
   _modeRatio:
   - _modeType: 1
     _modeRatio: 0.5
@@ -11717,6 +11722,10 @@ MonoBehaviour:
   _difficultyEntries:
   - _difficultyType: 0
     _distance: 0
+  - _difficultyType: 1
+    _distance: 10
+  - _difficultyType: 2
+    _distance: 20
   _minEnvironmentTileCount: 2
   _maxEnvironmentTileCount: 4
   _offset: {x: 0, y: 0.3, z: 0}

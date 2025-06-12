@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using ZL.Unity.Unimo;
 
 namespace JDG
 {
@@ -13,12 +14,13 @@ namespace JDG
         [SerializeField] private Transform _slotParent;
         [SerializeField] private TextMeshProUGUI _resourceText1;
         [SerializeField] private TextMeshProUGUI _resourceText2;
+        [SerializeField] private Sprite _resourceSpite;
+        [SerializeField] private Image _resourceIcon1;
+        [SerializeField] private Image _resourceIcon2;
         //혹시 필요할까봐 만들어둠 필요없으면 지울것
         //[SerializeField] private Image _repairIcon;
         //[SerializeField] private TextMeshProUGUI _repairButtonText1;
         //[SerializeField] private TextMeshProUGUI _repairButtonText2;
-        //[SerializeField] private Image _resourceIcon1;
-        //[SerializeField] private Image _resourceIcon2;
         private GameObject _slotPrefab;
 
         [Header("UI창 위치 조정")]
@@ -38,13 +40,15 @@ namespace JDG
 
         public int ItemCount => _itemCount;
 
-        public void OpenShopUI(List<RelicDataSO> relics, Vector3 worldPos)
+        public void OpenShopUI(List<RelicData> relics, Vector3 worldPos)
         {
             _root.SetActive(true);
             transform.position = worldPos + _offset;
             _slotPrefab = Resources.Load<GameObject>("WorldMap/RelicSlot");
             _resourceText1.text = _repair1Price.ToString();
+            _resourceIcon1.sprite = _resourceSpite;
             _resourceText2.text = _repair2Price.ToString();
+            _resourceIcon2.sprite = _resourceSpite;
             foreach (Transform child in _slotParent)
             {
                 Destroy(child.gameObject);

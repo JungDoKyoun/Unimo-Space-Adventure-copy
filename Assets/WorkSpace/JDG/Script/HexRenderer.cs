@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using JDG;
+using ZL.Unity.Tweening;
 
 namespace JDG
 {
@@ -76,6 +77,14 @@ namespace JDG
         {
             DrawFaces();
             CombineFaces();
+
+            Vector3 avg = Vector3.zero;
+            foreach (var v in _mesh.vertices)
+                avg += v;
+
+            avg /= _mesh.vertexCount;
+
+            Debug.Log($"[DEBUG] 타일: {name}, 위치: {transform.position}, Mesh 중심: {avg}");
         }
 
         private void DrawFaces()
@@ -239,6 +248,39 @@ namespace JDG
         {
             _tileData = data;
             SetDebugColorByType();
+        }
+
+        public void CreateOutlineMesh(Material outlineMat, float outlineExpand)
+        {
+            GameObject outlineObj = new GameObject("Outline");
+            outlineObj.transform.SetParent(this.transform, false);
+            outlineObj.transform.localPosition = Vector3.zero;
+            outlineObj.transform.localRotation = Quaternion.identity;
+            outlineObj.transform.localScale = Vector3.one;
+
+            MeshFilter filter = outlineObj.AddComponent<MeshFilter>();
+            MeshRenderer meshRenderer = outlineObj.AddComponent<MeshRenderer>();
+
+            Mesh outlineMesh = Instantiate(_mesh);
+
+            Vector3[] vertices = outlineMesh.vertices;
+            Vector3[] normals = outlineMesh.normals;
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                vertices[i] += new Vector3(vertices[i].x, 0, vertices[i].z).normalized * outlineExpand;
+            }
+
+            outlineMesh.vertices = vertices;
+            outlineMesh.normals = normals;
+            outlineMesh.RecalculateBounds();
+
+            filter.mesh = outlineMesh;
+            meshRenderer.material = outlineMat;
+
+            meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            meshRenderer.receiveShadows = false;
+            meshRenderer.material.renderQueue = 2999;
         }
     }
 }
