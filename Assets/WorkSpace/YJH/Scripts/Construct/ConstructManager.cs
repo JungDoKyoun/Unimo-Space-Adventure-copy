@@ -302,7 +302,7 @@ public class ConstructManager : MonoBehaviour
     public void GameStartButtonPressed()
     {
         SetPlayer();
-        PlayerManager.SetSpellType(new Dash());//나중에 combat계열 제작시 변경 필요
+        //PlayerManager.SetSpellType(new Dash());//나중에 combat계열 제작시 변경 필요
         DeactiveBasePanel();
         //SceneManager.LoadScene("TestScene");
     }
