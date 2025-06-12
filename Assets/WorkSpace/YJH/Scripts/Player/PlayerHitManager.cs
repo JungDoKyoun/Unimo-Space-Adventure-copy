@@ -114,12 +114,12 @@ public partial class PlayerManager : IDamageable
             PlayHitEffect(contact);
         }
 
-        currentHealth -= damage;//데미지 입음
-        OnPlayerHit?.Invoke(currentHealth);
+        playerStatus.currentHealth -= damage;//데미지 입음
+        OnPlayerHit?.Invoke(playerStatus.currentHealth);
 
-        if (currentHealth <= 0f)
+        if (playerStatus.currentHealth <= 0f)
         {
-            currentHealth = 0f;
+            playerStatus.currentHealth = 0f;
 
             canMove = false;
 
