@@ -100,7 +100,6 @@ namespace JDG
                 _faces.Add(CreateFace(_outerSize, _outerSize, _height / 2f, -_height / 2f, point, true));
             }
 
-
             //옆면의 안쪽부분
             for (int point = 0; point < 6; point++)
             {
