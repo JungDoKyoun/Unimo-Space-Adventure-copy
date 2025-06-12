@@ -24,8 +24,6 @@ namespace ZL.Unity
 
         [Essential]
 
-        [ReadOnlyWhenPlayMode]
-
         private TextController timeStampText = null;
 
         [Space]

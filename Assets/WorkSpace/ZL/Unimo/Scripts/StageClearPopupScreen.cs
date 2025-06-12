@@ -14,63 +14,95 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
+        [UsingCustomProperty]
+
+        [Essential]
+
+        private Clock stagePlayTimeClock = null;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
         private ForceLayoutRebuilder content = null;
 
         [Space]
 
         [SerializeField]
 
-        private TextMeshProUGUI stagePlayTimeText = null;
+        [Essential]
+
+        [UsingCustomProperty]
+
+        [Alias("Stage Play Time Text (UI)")]
+
+        private TextMeshProUGUI stagePlayTimeTextUI = null;
 
         [SerializeField]
 
-        private TextMeshProUGUI inGameCurrencyAmountText = null;
+        [Essential]
+
+        [UsingCustomProperty]
+
+        [Alias("In-Game Money Amount Text (UI)")]
+
+        private TextMeshProUGUI inGameMoneyAmountTextUI = null;
 
         [SerializeField]
 
-        private TextMeshProUGUI outGameCurrencyAmountText = null;
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [Alias("Out-Game Money Amount Text (UI)")]
+
+        private TextMeshProUGUI outGameMoneyAmountTextUI = null;
 
         [SerializeField]
 
-        private TextMeshProUGUI bluePrintCountText = null;
+        [UsingCustomProperty]
 
-        [Space]
+        [Essential]
 
-        [SerializeField]
+        [Alias("Blue Print Count Text (UI)")]
 
-        private Clock stagePlayTimeClock = null;
+        private TextMeshProUGUI bluePrintCountTextUI = null;
 
         private void OnEnable()
         {
-            stagePlayTimeText.text = $"«√∑π¿Ã Ω√∞£: {stagePlayTimeClock.GetTimeStamp()}";
+            stagePlayTimeTextUI.text = $"«√∑π¿Ã Ω√∞£: {stagePlayTimeClock.GetTimeStamp()}";
 
-            inGameCurrencyAmountText.gameObject.SetActive(false);
+            inGameMoneyAmountTextUI.gameObject.SetActive(false);
 
-            var rewardData = RewardData.Instance;
+            var rewardData = StageRewardData.Instance;
 
-            if (rewardData.InGameCurrencyAmount != 0)
+            if (rewardData.DropedInGameMoneyAmount != 0)
             {
-                inGameCurrencyAmountText.text = $"»πµÊ ¿Œ ∞‘¿” ¿Á»≠: {rewardData.InGameCurrencyAmount}";
+                inGameMoneyAmountTextUI.text = $"»πµÊ ¿Œ ∞‘¿” ¿Á»≠: {rewardData.DropedInGameMoneyAmount}";
 
-                inGameCurrencyAmountText.gameObject.SetActive(true);
+                inGameMoneyAmountTextUI.gameObject.SetActive(true);
             }
 
-            outGameCurrencyAmountText.gameObject.SetActive(false);
+            outGameMoneyAmountTextUI.gameObject.SetActive(false);
 
-            if (rewardData.OutGameCurrencyAmount != 0)
+            if (rewardData.DropedOutGameMoneyAmount != 0)
             {
-                outGameCurrencyAmountText.text = $"»πµÊ æ∆øÙ ∞‘¿” ¿Á»≠: {rewardData.OutGameCurrencyAmount}";
+                outGameMoneyAmountTextUI.text = $"»πµÊ æ∆øÙ ∞‘¿” ¿Á»≠: {rewardData.DropedOutGameMoneyAmount}";
 
-                outGameCurrencyAmountText.gameObject.SetActive(true);
+                outGameMoneyAmountTextUI.gameObject.SetActive(true);
             }
 
-            bluePrintCountText.gameObject.SetActive(false);
+            bluePrintCountTextUI.gameObject.SetActive(false);
 
-            if (rewardData.BluePrintCount != 0)
+            if (rewardData.DropedBluePrintCount != 0)
             {
-                bluePrintCountText.text = $"»πµÊ º≥∞Ëµµ: {rewardData.BluePrintCount}";
+                bluePrintCountTextUI.text = $"»πµÊ º≥∞Ëµµ: {rewardData.DropedBluePrintCount}";
 
-                bluePrintCountText.gameObject.SetActive(true);
+                bluePrintCountTextUI.gameObject.SetActive(true);
             }
 
             content.ForceRebuildLayout();

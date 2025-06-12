@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ZL.Unity.GFX
 {
-    [DefaultExecutionOrder((int)ScriptExecutionOrder.Awake)]
+    [DefaultExecutionOrder((int)ScriptExecutionOrder.FastAwake)]
 
     public abstract class MaterialController : MonoBehaviour
     {

@@ -2,14 +2,20 @@ namespace ZL.Unity.Unimo
 {
     public enum RelicRarity
     {
+        [EnumColor("#FFFFFF")]
+
         Normal,
+
+        [EnumColor("#4A86E8")]
 
         Rare,
 
+        [EnumColor("#9900FF")]
+
         Unique,
 
-        Epic,
+        [EnumColor("#FF9900")]
 
-        Count,
+        Epic,
     }
 }

@@ -23,15 +23,15 @@ namespace ZL.CS.Collections
             }
         }
 
-        public static T[] Parse<T>(this string instance, Func<string, T> parseFunc)
+        public static T[] Parse<T>(string s, char separator, Func<string, T> Parse)
         {
-            var split = instance.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            var strings = s.Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
-            var result = new T[split.Length];
+            var result = new T[strings.Length];
 
-            for (int i = 0; i < split.Length; ++i)
+            for (int i = 0; i < strings.Length; ++i)
             {
-                result[i] = parseFunc(split[i]);
+                result[i] = Parse(strings[i]);
             }
 
             return result;

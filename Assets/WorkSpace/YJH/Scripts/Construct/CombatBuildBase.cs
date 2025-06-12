@@ -44,7 +44,7 @@ public class CombatBuildBase : ConstructBase
         {
             return;
         }
+
         PlayerManager.SetAttackType(attackPrefab);
     }
-
 }

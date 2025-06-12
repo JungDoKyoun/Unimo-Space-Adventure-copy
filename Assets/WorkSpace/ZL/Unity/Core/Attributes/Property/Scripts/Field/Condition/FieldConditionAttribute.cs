@@ -52,7 +52,7 @@ namespace ZL.Unity
         {
             if (property == null)
             {
-                drawer.DrawErrorBox($"{NameTag} No property found matching \"{fieldName}\".");
+                drawer.DrawErrorBox($"{AttributeNameTag} No property found matching \"{fieldName}\".");
 
                 return;
             }

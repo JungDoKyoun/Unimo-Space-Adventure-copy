@@ -2,41 +2,21 @@ using UnityEngine;
 
 using ZL.CS.Singleton;
 
-using ZL.Unity.Singleton;
-
 namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Data Sheet Manager")]
 
-    public sealed class DataSheetManager : MonoSingleton<DataSheetManager>
+    [DefaultExecutionOrder((int)ScriptExecutionOrder.FastAwake)]
+
+    public sealed class DataSheetManager : MonoBehaviour
     {
         [Space]
 
         [SerializeField]
 
-        private bool updateDataOnAwake = false;
-
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Button(nameof(UpdateData))]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
         private EnemyDataSheet enemyDataSheet = null;
 
         [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
 
         private GatheringDataSheet gatheringDataSheet = null;
 
@@ -44,63 +24,53 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
-        private RelicDropDataSheet relicDropTableSheet = null;
+        private RelicDataSheet relicDataSheet = null;
 
         [SerializeField]
 
         [UsingCustomProperty]
 
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
-        private RewardDataSheet rewardDataSheet = null;
+        private RelicDropTableSheet relicDropTableSheet = null;
 
         [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
 
         private SpawnPatternDataSheet spawnPatternDataSheet = null;
 
         [SerializeField]
 
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
         private SpawnerDataSheet spawnerDataSheet = null;
+
+        [SerializeField]
+
+        private StageDataSheet stageDataSheet = null;
+
+        [SerializeField]
+
+        private StageRewardDataSheet stageRewardDataSheet = null;
+
+        [SerializeField]
+
+        private RelicEffectStringTableSheet relicEffectStringTableSheet = null;
+
+        [Space]
 
         [SerializeField]
 
         [UsingCustomProperty]
 
-        [Essential]
+        [Button(nameof(UpdateAllSheets))]
 
-        [ReadOnlyWhenPlayMode]
+        private bool updateAllSheetsOnAwake = false;
 
-        private StageDataSheet stageDataSheet = null;
-
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
-
             ISingleton<EnemyDataSheet>.TrySetInstance(enemyDataSheet);
 
             ISingleton<GatheringDataSheet>.TrySetInstance(gatheringDataSheet);
 
-            ISingleton<RelicDropDataSheet>.TrySetInstance(relicDropTableSheet);
+            ISingleton<RelicDataSheet>.TrySetInstance(relicDataSheet);
 
-            ISingleton<RewardDataSheet>.TrySetInstance(rewardDataSheet);
+            ISingleton<RelicDropTableSheet>.TrySetInstance(relicDropTableSheet);
 
             ISingleton<SpawnPatternDataSheet>.TrySetInstance(spawnPatternDataSheet);
 
@@ -108,19 +78,56 @@ namespace ZL.Unity.Unimo
 
             ISingleton<StageDataSheet>.TrySetInstance(stageDataSheet);
 
-            if (updateDataOnAwake == true)
+            ISingleton<StageRewardDataSheet>.TrySetInstance(stageRewardDataSheet);
+
+            ISingleton<RelicEffectStringTableSheet>.TrySetInstance(relicEffectStringTableSheet);
+
+            if (updateAllSheetsOnAwake == true)
             {
-                UpdateData();
+                UpdateAllSheets();
             }
         }
 
-        public void UpdateData()
+        private void OnDestroy()
         {
-            enemyDataSheet.Read();
+            ISingleton<EnemyDataSheet>.Release(enemyDataSheet);
 
-            spawnerDataSheet.Read();
+            ISingleton<GatheringDataSheet>.Release(gatheringDataSheet);
 
-            spawnPatternDataSheet.Read();
+            ISingleton<RelicDataSheet>.Release(relicDataSheet);
+
+            ISingleton<RelicDropTableSheet>.Release(relicDropTableSheet);
+
+            ISingleton<SpawnPatternDataSheet>.Release(spawnPatternDataSheet);
+
+            ISingleton<SpawnerDataSheet>.Release(spawnerDataSheet);
+
+            ISingleton<StageDataSheet>.Release(stageDataSheet);
+
+            ISingleton<StageRewardDataSheet>.Release(stageRewardDataSheet);
+
+            ISingleton<RelicEffectStringTableSheet>.Release(relicEffectStringTableSheet);
+        }
+
+        public void UpdateAllSheets()
+        {
+            enemyDataSheet?.Read();
+
+            gatheringDataSheet?.Read();
+
+            relicDataSheet?.Read();
+
+            relicDropTableSheet?.Read();
+
+            spawnPatternDataSheet?.Read();
+
+            spawnerDataSheet?.Read();
+
+            stageDataSheet?.Read();
+
+            stageRewardDataSheet?.Read();
+
+            relicEffectStringTableSheet?.Read();
         }
     }
 }

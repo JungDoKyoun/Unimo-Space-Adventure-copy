@@ -43,10 +43,5 @@ namespace ZL.Unity.Pooling
 
             OnCollectedAction?.Invoke();
         }
-
-        public virtual void Initialize(ScriptableObject data)
-        {
-
-        }
     }
 }

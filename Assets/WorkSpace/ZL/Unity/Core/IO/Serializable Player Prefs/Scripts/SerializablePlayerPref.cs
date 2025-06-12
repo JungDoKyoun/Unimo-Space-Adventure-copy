@@ -35,11 +35,16 @@ namespace ZL.Unity.IO
             {
                 this.value = value;
 
-                OnValueChangedAction?.Invoke(value);
+                OnValueChanged?.Invoke(value);
             }
         }
 
-        public event Action<TValue> OnValueChangedAction;
+        public event Action<TValue> OnValueChanged = null;
+
+        public SerializablePlayerPref()
+        {
+
+        }
 
         public SerializablePlayerPref(string key, TValue value)
         {

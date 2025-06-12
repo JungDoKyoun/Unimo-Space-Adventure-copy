@@ -14,37 +14,59 @@ namespace ZL.Unity.Collections
     {
         [SerializeField]
 
-        private List<SerializableKeyValuePair<TKey, TValue>> items = new List<SerializableKeyValuePair<TKey, TValue>>();
-
-        public void OnBeforeSerialize()
-        {
-            #if !UNITY_EDITOR
-
-            items.Clear();
-
-            foreach (var item in this)
-            {
-                items.Add(new SerializableKeyValuePair<TKey, TValue>(item));
-            }
-
-            #endif
-        }
-
-        public void OnAfterDeserialize()
-        {
-            Clear();
-
-            foreach (var item in items)
-            {
-                TryAdd(item.Key, item.Value);
-            }
-        }
+        private List<SerializableKeyValuePair<TKey, TValue>> items = new();
 
         public new void Add(TKey key, TValue value)
         {
             base.Add(key, value);
 
-            items.Add(new SerializableKeyValuePair<TKey, TValue>(key, value));
+            items.Add(new(key, value));
+        }
+
+        public new void Clear()
+        {
+            base.Clear();
+
+            items.Clear();
+        }
+
+        public void OnBeforeSerialize()
+        {
+            #if !UNITY_EDITOR
+
+            Serialize();
+
+            #endif
+        }
+
+        public void Serialize()
+        {
+            items.Clear();
+
+            foreach (var item in this)
+            {
+                items.Add(new(item));
+            }
+        }
+
+        public void OnAfterDeserialize()
+        {
+            Deserialize();
+        }
+
+        public void Deserialize()
+        {
+            base.Clear();
+
+            foreach (var item in items)
+            {
+                if (item == null)
+                {
+                    continue;
+                }
+
+                TryAdd(item.Key, item.Value);
+            }
         }
     }
 
@@ -52,13 +74,13 @@ namespace ZL.Unity.Collections
 
     public sealed class SerializableDictionary<TKey, TValue, TKeyValuePair> : IEnumerable<TKeyValuePair>, ISerializationCallbackReceiver
 
-        where TKeyValuePair : IKeyValuePair<TKey, TValue>
+        where TKeyValuePair : IKeyValuePair<TKey, TValue>, new()
     {
-        private readonly Dictionary<TKey, TKeyValuePair> @base = new Dictionary<TKey, TKeyValuePair>();
+        private readonly Dictionary<TKey, TKeyValuePair> @base = new();
 
         [SerializeField]
 
-        private List<TKeyValuePair> items = new List<TKeyValuePair>();
+        private List<TKeyValuePair> items = new();
 
         public TValue this[TKey key]
         {
@@ -67,36 +89,9 @@ namespace ZL.Unity.Collections
             set => @base[key].Value = value;
         }
 
-        public void OnBeforeSerialize()
+        public void Add(TKey key, TValue value)
         {
-            #if !UNITY_EDITOR
-
-            items.Clear();
-
-            foreach (var item in this)
-            {
-                items.Add(item);
-            }
-
-            #endif
-        }
-
-        public void OnAfterDeserialize()
-        {
-            @base.Clear();
-
-            foreach (var item in items)
-            {
-                if (item != null)
-                {
-                    @base.TryAdd(item.Key, item);
-                }
-            }
-        }
-
-        public TKeyValuePair GetItem(TKey key)
-        {
-            return @base[key];
+            Add(new() { Key = key, Value = value });
         }
 
         public void Add(TKeyValuePair item)
@@ -109,6 +104,13 @@ namespace ZL.Unity.Collections
         public void Clear()
         {
             @base.Clear();
+
+            items.Clear();
+        }
+
+        public TKeyValuePair GetItem(TKey key)
+        {
+            return @base[key];
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -119,6 +121,45 @@ namespace ZL.Unity.Collections
         public IEnumerator<TKeyValuePair> GetEnumerator()
         {
             return @base.Values.GetEnumerator();
+        }
+
+        public void OnBeforeSerialize()
+        {
+            #if !UNITY_EDITOR
+
+            Serialize();
+
+            #endif
+        }
+
+        public void Serialize()
+        {
+            items.Clear();
+
+            foreach (var item in this)
+            {
+                items.Add(item);
+            }
+        }
+
+        public void OnAfterDeserialize()
+        {
+            Deserialize();
+        }
+
+        public void Deserialize()
+        {
+            @base.Clear();
+
+            foreach (var item in items)
+            {
+                if (item == null)
+                {
+                    continue;
+                }
+
+                @base.TryAdd(item.Key, item);
+            }
         }
     }
 }

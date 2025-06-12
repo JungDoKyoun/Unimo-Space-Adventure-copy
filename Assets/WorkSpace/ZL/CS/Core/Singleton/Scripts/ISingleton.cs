@@ -6,8 +6,13 @@ namespace ZL.CS.Singleton
     {
         static TClass Instance { get; protected set; } = null;
 
-        protected static bool TrySetInstance(TClass instance)
+        public static bool TrySetInstance(TClass instance)
         {
+            if (instance == null)
+            {
+                return false;
+            }
+
             return instance.TrySetInstance();
         }
 
@@ -33,9 +38,19 @@ namespace ZL.CS.Singleton
             return true;
         }
 
-        protected static void Release(TClass instance)
+        public static void Release(TClass instance)
         {
-            if (Instance == instance)
+            if (instance == null)
+            {
+                return;
+            }
+
+            instance.Release();
+        }
+
+        void Release()
+        {
+            if (Instance == this)
             {
                 Instance = null;
             }
