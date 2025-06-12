@@ -131,14 +131,14 @@ public partial class PlayerManager
 
             if (playerSpellType != null)
             {
-                Debug.Log("notnullspell");
+                //Debug.Log("notnullspell");
 
                 playerSpellType.InitSpell();
             }
 
             else
             {
-                Debug.Log("nullspell");
+                //Debug.Log("nullspell");
 
                 ISpellType temp = new Dash();
 
