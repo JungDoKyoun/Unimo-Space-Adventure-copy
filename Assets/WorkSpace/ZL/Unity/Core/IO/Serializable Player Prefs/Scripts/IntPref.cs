@@ -6,6 +6,11 @@ namespace ZL.Unity.IO
 
     public sealed class IntPref : SerializablePlayerPref<int>
     {
+        public IntPref()
+        {
+
+        }
+
         public IntPref(string key, int value) : base(key, value)
         {
 

@@ -10,6 +10,11 @@ namespace ZL.Unity.IO
 
         where TEnum : Enum
     {
+        public EnumPref()
+        {
+
+        }
+
         public EnumPref(string key, TEnum value) : base(key, value)
         {
 

@@ -18,8 +18,6 @@ namespace ZL.Unity.Unimo
 
         [Essential]
 
-        [ReadOnlyWhenPlayMode]
-
         protected SpawnerData spawnerData = null;
 
         [SerializeField]

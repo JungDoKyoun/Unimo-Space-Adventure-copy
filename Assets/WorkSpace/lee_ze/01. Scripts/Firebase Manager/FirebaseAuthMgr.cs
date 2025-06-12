@@ -163,8 +163,6 @@ public class FirebaseAuthMgr : MonoBehaviour
         if (nicknameField == null) nicknameField = GameObject.Find("Account Canvas").transform.Find("Account/Account Input Fields/Nickname").GetComponent<TMP_InputField>();
 
         if (nicknameField == null) nicknameField = GameObject.Find("Account Canvas").transform.Find("Account/Account Input Fields/Nickname").GetComponent<TMP_InputField>();
-
-        Debug.Log("Get");
     }
 
     private void RegisterUIEvents()
@@ -309,7 +307,7 @@ public class FirebaseAuthMgr : MonoBehaviour
 
             yield return new WaitUntil(predicate: () => RegisterTask.IsCompleted);
 
-            // 회원가입 문제가 있다면
+            // 회원가입 조건에 문제가 있다면
             if (RegisterTask.Exception != null)
             {
                 Debug.LogWarning(message: "실패 사유" + RegisterTask.Exception);
@@ -356,7 +354,7 @@ public class FirebaseAuthMgr : MonoBehaviour
                 warningText.text = message;
             }
 
-            // 회원가입 문제가 없다면
+            // 회원가입 조건에 문제가 없다면
             else
             {
                 // 바로 로그인
@@ -372,6 +370,7 @@ public class FirebaseAuthMgr : MonoBehaviour
 
                     yield return new WaitUntil(predicate: () => ProfileTask.IsCompleted);
 
+                    // 초기 값 세팅
                     yield return StartCoroutine(InitPlayerCurrency());
 
                     if (ProfileTask.Exception != null)
@@ -411,6 +410,11 @@ public class FirebaseAuthMgr : MonoBehaviour
 
         // 초기 메타 재화 생성(설계도)
         DBTask = dbRef.Child("users").Child(User.UserId).Child(User.DisplayName).Child("rewardBluePrint").SetValueAsync(0);
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+        // 개인 최고 점수
+        DBTask = dbRef.Child("users").Child(User.UserId).Child("score").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 

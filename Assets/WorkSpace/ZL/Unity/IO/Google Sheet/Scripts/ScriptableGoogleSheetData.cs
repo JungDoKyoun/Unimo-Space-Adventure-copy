@@ -8,7 +8,7 @@ namespace ZL.Unity.IO.GoogleSheet
 {
     public abstract class ScriptableGoogleSheetData : ScriptableObject, IGoogleSheetData
     {
-        public abstract List<string> GetHeader();
+        public abstract List<string> GetHeaders();
 
         public abstract void Import(GstuSpreadSheet sheet);
 

@@ -59,7 +59,10 @@ namespace YJH
         }
         private static void HealAfterStageEndAA(Scene scene, LoadSceneMode mode)
         {
-            HealPlayer(1);
+            if (scene.name == "Station")
+            {
+                HealPlayer(1);
+            }
         }
 
         public static void HealAfterStageEndB()
@@ -68,7 +71,10 @@ namespace YJH
         }
         private static void HealAfterStageEndBB(Scene scene, LoadSceneMode mode)
         {
-            HealPlayer(2);
+            if (scene.name == "Station")
+            {
+                HealPlayer(2);
+            }
         }
         public static void HealAfterStageEndC()
         {
@@ -76,10 +82,13 @@ namespace YJH
         }
         private static void HealAfterStageEndCC(Scene scene, LoadSceneMode mode)
         {
-            HealPlayer(3);
+            if (scene.name == "Station")
+            {
+                HealPlayer(3);
+            }
         }
         #endregion
-        public static void IncreaseRelicChanceA()
+        public static void IncreaseRelicChanceA()//관련 함수 만들어지면 사용 
         {
 
         }

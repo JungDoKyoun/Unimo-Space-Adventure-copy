@@ -37,37 +37,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private static float winCount;
 
+    private static float score;
+
     #region properties
-
-    public static float WinningRate
-    {
-        get => winningRate;
-
-        private set
-        {
-            winningRate = value;
-        }
-    }
-
-    public static float PlayCount
-    {
-        get => playCount;
-
-        private set
-        {
-            playCount = value;
-        }
-    }
-
-    public static float WinCount
-    {
-        get => winCount;
-
-        private set
-        {
-            winCount = value;
-        }
-    }
 
     public static int IngameCurrency
     {
@@ -99,6 +71,46 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         }
     }
 
+    public static float WinningRate
+    {
+        get => winningRate;
+
+        private set
+        {
+            winningRate = value;
+        }
+    }
+
+    public static float PlayCount
+    {
+        get => playCount;
+
+        private set
+        {
+            playCount = value;
+        }
+    }
+
+    public static float WinCount
+    {
+        get => winCount;
+
+        private set
+        {
+            winCount = value;
+        }
+    }
+
+    public static float Score
+    {
+        get => score;
+
+        set
+        {
+            score = value;
+        }
+    }
+
     #endregion
 
     private void Awake()
@@ -116,6 +128,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
+
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -148,6 +161,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             StartCoroutine(ShowUserMetaCurrency());
 
             StartCoroutine(ShowUserBluePrint());
+
+            StartCoroutine(UpdateRankingList());
         }
     }
 
@@ -423,6 +438,98 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         }
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+    }
+
+    #endregion
+
+    #region Score management
+
+    /// <summary>
+    /// 점수 업데이트 할 때 사용.
+    /// </summary>
+    /// <param name="currentScore"></param>
+    /// <returns></returns>
+    public IEnumerator UpdateScore(float currentScore)
+    {
+        Score = currentScore;
+
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("score").GetValueAsync();
+
+        yield return new WaitUntil(predicate: () => getTask.IsCompleted);
+
+        if (getTask.Exception != null) // 불러오기 실패 시 나가기
+        {
+            Debug.LogWarning($"[Get] reason : {getTask.Exception}");
+
+            yield break;
+        }
+
+        if (getTask.Result.Exists == true && float.TryParse(getTask.Result.Value.ToString(), out float savedScore)) // string으로 불러온 ingame currency를 tryparse로 savedValue에 저장
+        {
+            if (Score > savedScore) // 기존 기록보다 currentScore(방금 세운 기록)이 크면
+            {
+                // score 최신화
+                var DBTask = dbRef.Child("user").Child(user.UserId).Child("score").SetValueAsync(Score);
+
+                yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+                // 전체 랭킹 업데이트
+                StartCoroutine(UpdateRankingList());
+            }
+        }
+    }
+
+    private IEnumerator UpdateRankingList()
+    {
+        var getTask = dbRef.Child("users").OrderByChild("score").LimitToLast(10).GetValueAsync();
+
+        yield return new WaitUntil(() => getTask.IsCompleted);
+
+        if (getTask.Exception != null)
+        {
+            Debug.LogError($"[Ranking Error] {getTask.Exception}");
+
+            yield break;
+        }
+
+        DataSnapshot snapshot = getTask.Result;
+
+        List<(string nickname, float score)> topRankers = new List<(string, float)>();
+
+        foreach (var userSnapshot in snapshot.Children)
+        {
+            string nickname = "";
+
+            float score = 0f;
+
+            // Score 가져오기
+            if (userSnapshot.HasChild("score") && float.TryParse(userSnapshot.Child("score").Value.ToString(), out float parsedScore))
+            {
+                score = parsedScore;
+            }
+
+            // DisplayName (nickname) 찾기
+            foreach (var child in userSnapshot.Children)
+            {
+                if (child.HasChild("rewardIngameCurrency"))
+                {
+                    nickname = child.Key; // 이게 user.DisplayName
+
+                    break;
+                }
+            }
+
+            // 리스트 추가
+            topRankers.Add((nickname, score));
+        }
+
+        // 내림차순 정렬
+        topRankers.Sort((a, b) => b.score.CompareTo(a.score));
+
+        foreach (var (nickname, score) in topRankers)
+        {
+            Debug.Log($"Nickname: {nickname}, Score: {score}");
+        }
     }
 
     #endregion

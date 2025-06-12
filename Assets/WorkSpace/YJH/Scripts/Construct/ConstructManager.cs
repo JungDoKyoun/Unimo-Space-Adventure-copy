@@ -46,13 +46,19 @@ public class ConstructManager : MonoBehaviour
     public event onConstructCostChange OnConstructCostChange;
 
     private static bool isBuildEffectAplly=false;
-    public Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
+    private static bool isDelinkON = false;
+    private Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
+    public Dictionary<string, int> OwnBuildCostDic { get { return ownBuildCostDic; } }
     //private PlayerManager playerManager;
-    
-    
+
+    public Dictionary<string, ConstructBase> AllBuildingDic
+    {
+        get { return allBuildingDic; }
+    }
     public PlayerStatus OriginPlayerStatus { get { return originPlayerStatus; } }
-    public Dictionary<string, int> OwnBuildCostDic { get { return  ownBuildCostDic; } }
-    private ISpellType[] playerSpells = { new Dash() };
+    
+    public static ISpellType[] playerSpells = { null,new Dash() };
+    
     [SerializeField] GameObject[] attackPrefabs;
     private void Awake()
     {
@@ -63,7 +69,14 @@ public class ConstructManager : MonoBehaviour
         DecideProgress();
         ToDictionary();
         SetAllDic();
-        //PlayerManager.OnPlayerDead += YJH.MethodCollection.DelinkHealPlayer;
+        
+        if (isDelinkON == false)
+        {
+            PlayerManager.OnStageFail += YJH.MethodCollection.DelinkHealPlayer;
+            PlayerManager.OnStageFail += ResetApplyBuildEffect;
+            isDelinkON =true;
+        }
+       
     }
     private void OnDestroy()
     {
@@ -155,7 +168,7 @@ public class ConstructManager : MonoBehaviour
             //spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
             buildInfoBuildButton.interactable = false;
             int costNum;
-        StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
+            StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
             //SetPlayer();
             DecideProgress();
             
@@ -168,7 +181,7 @@ public class ConstructManager : MonoBehaviour
             //반영 하는건 뒤 패널을 편집하는 방식으로 이미지를 이용해서 덮어 씌우기? 동일한 이미지를 여러개 다른 버전으로 만들면 될 거 같다
         
     }
-    public void DecideProgress()
+    public void DecideProgress()//나중에 에셋 오면 변경 필요 -> 별도의 스크립트와 씬에서 캡쳐를 통해서 변화 반영하는 식으로 
     {
         //Debug.Log("changeimage");
         int buildingNum = 0;
@@ -239,7 +252,10 @@ public class ConstructManager : MonoBehaviour
             }
         }
     }
-   
+   public void ResetApplyBuildEffect()
+    {
+        isBuildEffectAplly = false;
+    }
     public void BuildButtonPressed(string buildID)
     {
         foreach (var temp in techConstructList)
@@ -286,7 +302,7 @@ public class ConstructManager : MonoBehaviour
     public void GameStartButtonPressed()
     {
         SetPlayer();
-        PlayerManager.SetSpellType(new Dash());
+        PlayerManager.SetSpellType(new Dash());//나중에 combat계열 제작시 변경 필요
         DeactiveBasePanel();
     }
     public void DeactiveBasePanel()
@@ -388,9 +404,9 @@ public class ConstructManager : MonoBehaviour
     //        return true;
     //    }
     //}
-    public void SetPlayer()
+    public void SetPlayer()// 게임 종료시 스테이터스 초기화 필요
     {
-        if (isBuildEffectAplly == false)
+        if (isBuildEffectAplly == false)//static 변수를 통해서 초기화 조절
         {
             //Debug.Log("player!");
             ActiveBuildEffect();
@@ -444,7 +460,7 @@ public class ConstructManager : MonoBehaviour
                     }
           
 
-        playerStatus = new PlayerStatus();// 이거 그냥 더할 양만큼 준비하는게 나을지도? 갈아끼는 식 말고
+        playerStatus = PlayerManager.OriginStatus.Clone();// 이거 그냥 더할 양만큼 준비하는게 나을지도? 갈아끼는 식 말고-> 클리어 실패시 초기화 필요하니 오리진에서 더하는 방식으로 하자
         playerStatus.moveSpeed += speedSum;
         playerStatus.maxHP += maxHPSum;
         playerStatus.gatheringSpeed += gatherSpeedSum;

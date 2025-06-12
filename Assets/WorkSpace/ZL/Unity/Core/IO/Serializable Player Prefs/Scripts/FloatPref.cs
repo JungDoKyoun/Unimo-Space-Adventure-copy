@@ -6,6 +6,11 @@ namespace ZL.Unity.IO
 
     public sealed class FloatPref : SerializablePlayerPref<float>
     {
+        public FloatPref()
+        {
+
+        }
+
         public FloatPref(string key, float value) : base(key, value)
         {
 

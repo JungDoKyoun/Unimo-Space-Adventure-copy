@@ -167,7 +167,7 @@ namespace GoogleSheetsToUnity
         /// <param name="data"></param>
         public ValueRange(List<string> data)
         {
-            values.Add (data);
+            values.Add(data);
         }
 
         public ValueRange(string data)

@@ -41,10 +41,10 @@ public partial class PlayerManager : MonoBehaviourPun
     // 최종속도
     private float moveSpeed = 4f;
 
-    [SerializeField]
+    //[SerializeField]
 
     // 기본 속도
-    private float baseSpeed = 4f;
+    //private float baseSpeed = 4f;
 
     //[SerializeField]
     //

@@ -34,9 +34,9 @@ public class Dash : ISpellType,IStackSpell
 
     private bool isDash = false;
 
-    public delegate void onSkillUseDenied();
-
-    public event onSkillUseDenied OnSkillUseDenied;
+    //public delegate void onSkillUseDenied();
+    //
+    //public event onSkillUseDenied OnSkillUseDenied;
 
     public PlayerManager PlayerManager { get { return playerManager; } set {playerManager=value ; } }
 

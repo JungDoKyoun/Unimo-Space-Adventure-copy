@@ -104,11 +104,11 @@ namespace JDG
         {
             float maxFule = 100f; 
 
-            float currentFuel = PlayerFuelManager.Instance.Fuel;
+            float currentFuel = PlayerFuelManager.Fuel;
 
             currentFuel += eventEffect._value;
 
-            float tmep = currentFuel;
+            float temp = currentFuel;
 
             if(currentFuel >= maxFule)
             {
