@@ -537,7 +537,7 @@ public class ConstructManager : MonoBehaviour
     }
     public void SetFinalStatusToPlayer()
     {
-        PlayerManager.PlayerStatus+=playerStatus;//유물 생각하면 나중에 더하는게 맞을지도? 연산자 오버로딩도 되있겠다.
+        PlayerManager.PlayerStatus=playerStatus;//후일 초기화 생각하면 대입이 맞을듯
 
 
     }
