@@ -106,7 +106,7 @@ public partial class PlayerManager
 
     private SphereCollider detectCollider;
 
-    public void ActionStart()// 멀티용으로 리펙토링한거 다 해체하기
+    public void ActionStart()// 멀티용으로 리펙토링한거 나중에 다 해체하기
     {
         if (PhotonNetwork.IsConnected == false)
         {
