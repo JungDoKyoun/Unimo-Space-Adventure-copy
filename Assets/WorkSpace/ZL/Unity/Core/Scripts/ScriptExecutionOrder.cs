@@ -8,7 +8,7 @@ namespace ZL.Unity
 
         Tweener,
 
-        Awake,
+        FastAwake,
 
         Default = 0,
 

@@ -58,6 +58,7 @@ public partial class PlayerManager
     [SerializeField]
     
     private static GameObject attackPrefab;
+    public GameObject tempAttackPrefab;
 
     private static IAttackType playerAttackType;
 
@@ -85,13 +86,13 @@ public partial class PlayerManager
     private static PlayerManager selfManager;
     public static PlayerManager SelfManager
     {
-        get { return selfManager; }
+        get => selfManager;
     }
-    [SerializeField]
+    //[SerializeField]
 
-    private float fireRate = 0.3f;
-
-    private float fireTimer = 0f;
+    //private float fireRate = 0.3f;
+    //
+    //private float fireTimer = 0f;
 
     [SerializeField]
 
@@ -118,8 +119,14 @@ public partial class PlayerManager
             OnTargetObjectSet += GatheringItem;
 
             detectCollider.radius = itemDetectionRange;
-
-            SetAttackType(attackPrefab);
+            if (attackPrefab == null)
+            {
+                SetAttackType(tempAttackPrefab);
+            }
+            else
+            {
+                SetAttackType(attackPrefab);
+            }
            
 
             if (playerSpellType != null)

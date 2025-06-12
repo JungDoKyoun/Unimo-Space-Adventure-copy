@@ -88,7 +88,7 @@ namespace YJH
             }
         }
         #endregion
-        public static void IncreaseRelicChanceA()
+        public static void IncreaseRelicChanceA()//관련 함수 만들어지면 사용 
         {
 
         }

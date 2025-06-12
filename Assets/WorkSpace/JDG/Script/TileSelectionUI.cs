@@ -28,7 +28,7 @@ namespace JDG
         private EventTileConfig _eventTileConfig;
         private ShopUI _shopUI;
         private ScriptEventUI _scriptEventUI;
-        [SerializeField] private RewardDataSheet _rewardDataSheet;
+        [SerializeField] private StageRewardDataSheet _rewardDataSheet;
 
         private Vector3 _uiPos;
         private HexRenderer _currentTile;
@@ -82,31 +82,30 @@ namespace JDG
 
             string key = tile.TileData.SceneName;
 
-            if(_rewardDataSheet.DataDictionary.TryGetValue(key, out var rewardData))
+            var rewardData = _rewardDataSheet[key];
+
+            if (rewardData.InGameMoneyAmountMin > 0)
             {
-                if (rewardData.InGameCurrencyAmountMin > 0)
-                {
-                    CreateRewardSlot("InGameCurrency", rewardData.InGameCurrencyAmountMin, rewardData.InGameCurrencyAmountMax, "InGameCurrencyIcon");
-                }
+                CreateRewardSlot("InGameCurrency", rewardData.InGameMoneyAmountMin, rewardData.InGameMoneyAmountMax, "InGameCurrencyIcon");
+            }
 
-                // 아웃게임 재화
-                if (rewardData.OutGameCurrencyAmountMin > 0)
-                {
-                    CreateRewardSlot("OutGameCurrency", rewardData.OutGameCurrencyAmountMin, rewardData.OutGameCurrencyAmountMax, "OutGameCurrencyIcon");
-                }
+            // 아웃게임 재화
+            if (rewardData.OutGameMoneyAmountMin > 0)
+            {
+                CreateRewardSlot("OutGameCurrency", rewardData.OutGameMoneyAmountMin, rewardData.OutGameMoneyAmountMax, "OutGameCurrencyIcon");
+            }
 
-                // 설계도
-                if (rewardData.BluePrintCount > 0)
-                {
-                    Debug.Log(rewardData.BluePrintCount);
-                    CreateRewardSlot("BluePrint", rewardData.BluePrintCount, rewardData.BluePrintCount, "BluePrintIcon");
-                }
+            // 설계도
+            if (rewardData.BluePrintCount > 0)
+            {
+                Debug.Log(rewardData.BluePrintCount);
+                CreateRewardSlot("BluePrint", rewardData.BluePrintCount, rewardData.BluePrintCount, "BluePrintIcon");
+            }
 
-                // 유물
-                if (rewardData.RelicDropCount > 0)
-                {
-                    CreateRewardSlot("랜덤유물", 0, rewardData.RelicDropCount, "RandomRelicIcon");
-                }
+            // 유물
+            if (rewardData.RelicCount > 0)
+            {
+                CreateRewardSlot("랜덤유물", 0, rewardData.RelicCount, "RandomRelicIcon");
             }
 
             if (tile.TileData.IsCleared || tile.TileData.TileType == TileType.Event || tile.TileData.TileType == TileType.Base)

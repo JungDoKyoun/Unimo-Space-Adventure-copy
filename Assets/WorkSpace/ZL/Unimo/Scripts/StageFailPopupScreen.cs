@@ -12,17 +12,27 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private TextMeshProUGUI stagePlayTimeText = null;
+        [UsingCustomProperty]
+
+        [Essential]
+
+        private Clock stagePlayTimeClock = null;
 
         [Space]
 
         [SerializeField]
 
-        private Clock stagePlayTimeClock = null;
+        [UsingCustomProperty]
+
+        [Essential]
+
+        [Alias("Stage Play Time Text (UI)")]
+
+        private TextMeshProUGUI stagePlayTimeTextUI = null;
 
         private void OnEnable()
         {
-            stagePlayTimeText.text = $"플레이 시간: {stagePlayTimeClock.GetTimeStamp()}";
+            stagePlayTimeTextUI.text = $"플레이 시간: {stagePlayTimeClock.GetTimeStamp()}";
         }
     }
 }

@@ -16,10 +16,6 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        [UsingCustomProperty]
-
-        [ReadOnlyWhenPlayMode]
-
         protected ManagedObjectPool<int> playerListItemPool = null;
 
         public void Refresh()

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -7,7 +8,7 @@ public class ConstructDataLoader : MonoBehaviour
 {
     string downURL = "https://docs.google.com/spreadsheets/d/1ctv3DJMHsrkCvNSFnsjkPqgpFRI48CQ7zBgtVpbyv4Q/export?format=csv&gid=0\r\n";
     public List<ConstructBase> buildings = new List<ConstructBase>();
-
+    [SerializeField] ConstructManager constructManager;
 
     // Start is called before the first frame update
     void Start()
@@ -26,84 +27,78 @@ public class ConstructDataLoader : MonoBehaviour
             yield break;
         }
 
-        ParseCSV(www.downloadHandler.text);
+        ApplyCSVToConstructBases(www.downloadHandler.text);
     }
-    void ParseCSV(string csvText)
+    void ApplyCSVToConstructBases(string csvText)
     {
-        buildings.Clear();
         string[] lines = csvText.Split('\n');
+        if (lines.Length < 2) return;
 
-        if (lines.Length < 2)
-        {
-            Debug.LogWarning("CSV 데이터 없음");
-            return;
-        }
-
-        for (int i = 1; i < lines.Length; i++) // Skip header
+        for (int i = 1; i < lines.Length; i++)
         {
             string line = lines[i].Trim();
-            if (string.IsNullOrWhiteSpace(line)) continue;
+            if (string.IsNullOrEmpty(line)) continue;
 
             string[] tokens = SplitCSVLine(line);
             if (tokens.Length < 5) continue;
 
-            ConstructBase entry = new ConstructBase
+            string buildID = tokens[0];
+            string buildName = tokens[1];
+            string buildingDescription = tokens[2];
+            List<string> buildRequires = tokens[3].Split(',').Select(s => s.Trim()).ToList();
+            List<BuildCost> buildCosts = ParseBuildCosts(tokens[4]);
+
+            if (constructManager.AllBuildingDic.TryGetValue(buildID, out var target))
             {
-                buildID = tokens[0],
-                buildName = tokens[1],
-                buildingDescription = tokens[2],
-                buildRequires = new List<string>(tokens[3].Split(',')),
-                buildCosts = ParseBuildCosts(tokens[4])
-            };
+                target.buildName = buildName;
+                target.buildingDescription = buildingDescription;
+                target.buildRequires = buildRequires;
+                target.buildCosts = buildCosts;
 
-            buildings.Add(entry);
-        }
-
-        Debug.Log($"총 {buildings.Count}개 빌딩 로드됨");
-    }
-
-    List<BuildCost> ParseBuildCosts(string costStr)
-    {
-        List<BuildCost> costs = new List<BuildCost>();
-        string[] pairs = costStr.Split(',');
-
-        foreach (string pair in pairs)
-        {
-            string[] parts = pair.Split(':');
-            if (parts.Length == 2 && int.TryParse(parts[1], out int val))
-            {
-                costs.Add(new BuildCost { key = parts[0], value = val });
-            }
-        }
-
-        return costs;
-    }
-
-    /// CSV 한 줄 파싱 함수 (쉼표/따옴표 처리 포함)
-    string[] SplitCSVLine(string line)
-    {
-        var result = new List<string>();
-        bool inQuotes = false;
-        string value = "";
-
-        foreach (char c in line)
-        {
-            if (c == '"')
-            {
-                inQuotes = !inQuotes;
-            }
-            else if (c == ',' && !inQuotes)
-            {
-                result.Add(value);
-                value = "";
+                Debug.Log($"[업데이트 완료] {buildID}");
             }
             else
             {
-                value += c;
+                Debug.LogWarning($"[경고] buildID '{buildID}'를 가진 건물 없음");
+            }
+        }
+    }
+
+    List<BuildCost> ParseBuildCosts(string input)
+    {
+        var result = new List<BuildCost>();
+        var entries = input.Split(',');
+
+        foreach (var entry in entries)
+        {
+            var kv = entry.Split(':');
+            if (kv.Length == 2 && int.TryParse(kv[1], out int val))
+            {
+                result.Add(new BuildCost { key = kv[0].Trim(), value = val });
             }
         }
 
-        result.Add(value);
+        return result;
+    }
+
+    string[] SplitCSVLine(string line)
+    {
+        List<string> result = new List<string>();
+        bool inQuotes = false;
+        string current = "";
+
+        foreach (char c in line)
+        {
+            if (c == '"') inQuotes = !inQuotes;
+            else if (c == ',' && !inQuotes)
+            {
+                result.Add(current);
+                current = "";
+            }
+            else current += c;
+        }
+
+        result.Add(current);
         return result.ToArray();
     }
 }

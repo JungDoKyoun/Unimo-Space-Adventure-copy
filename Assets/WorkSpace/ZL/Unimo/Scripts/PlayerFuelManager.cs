@@ -1,8 +1,6 @@
-using System.Collections;
+using JDG;
 
 using UnityEngine;
-
-using UnityEngine.Events;
 
 using ZL.Unity.Singleton;
 
@@ -18,37 +16,30 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        [UsingCustomProperty]
+        private SliderValueDisplayer playerFuelBar = null;
 
-        [Essential]
+        private static float fuelMax = 0f;
 
-        private SliderValueDisplayer fuelBar = null;
+        public static float FuelMax
+        {
+            get => fuelMax;
 
-        [Space]
+            set
+            {
+                fuelMax = value;
 
-        [SerializeField]
+                if (Instance.playerFuelBar != null)
+                {
+                    Instance.playerFuelBar.Slider.maxValue = fuelMax;
+                }
 
-        private UnityEvent onFuelEmptyEvent = null;
+                Fuel = fuel;
+            }
+        }
 
-        [Space]
+        private static float fuel = 0f;
 
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Alias("Fuel Max (Temp)")]
-
-        private float fuelMax = 0f;
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Alias("Fuel (Debugging)")]
-
-        private float fuel = 0f;
-
-        public float Fuel
+        public static float Fuel
         {
             get => fuel;
 
@@ -56,60 +47,28 @@ namespace ZL.Unity.Unimo
             {
                 fuel = Mathf.Clamp(value, 0f, fuelMax);
 
-                fuelBar.Slider.value = fuel;
+                if (Instance.playerFuelBar != null)
+                {
+                    Instance.playerFuelBar.Slider.value = fuel;
+                }
 
                 if (fuel == 0f)
                 {
-                    onFuelEmptyEvent.Invoke();
+                    StageManager.Instance.StageFail();
                 }
             }
         }
 
-        private float fuelConsumptionAmount = 0f;
-
         private void Start()
         {
-            fuelBar.Slider.maxValue = fuelMax;
-
-            Fuel = fuelMax;
-
-            fuelConsumptionAmount = StageData.Instance.FuelConsumptionAmount;
-        }
-
-        public void StartConsumption()
-        {
-            if (consumptionRoutine != null)
+            if (GameStateManager.IsClear == true)
             {
                 return;
             }
 
-            consumptionRoutine = ConsumptionRoutine();
+            fuel = 100f;
 
-            StartCoroutine(consumptionRoutine);
-        }
-
-        public void StopConsumption()
-        {
-            if (consumptionRoutine == null)
-            {
-                return;
-            }
-
-            StopCoroutine(consumptionRoutine);
-
-            consumptionRoutine = null;
-        }
-
-        private IEnumerator consumptionRoutine = null;
-
-        private IEnumerator ConsumptionRoutine()
-        {
-            while (true)
-            {
-                yield return null;
-
-                Fuel -= fuelConsumptionAmount * Time.deltaTime;
-            }
+            FuelMax = 100f;
         }
     }
 }

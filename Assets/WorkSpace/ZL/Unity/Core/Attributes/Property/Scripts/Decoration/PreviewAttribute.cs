@@ -10,7 +10,7 @@ namespace ZL.Unity
         {
             if (drawer.fieldInfo.FieldType.IsSubclassOf(typeof(Object)) == false)
             {
-                drawer.DrawErrorBox($"{NameTag} Field type is invalid.");
+                drawer.DrawErrorBox($"{AttributeNameTag} Field type is invalid.");
 
                 return;
             }

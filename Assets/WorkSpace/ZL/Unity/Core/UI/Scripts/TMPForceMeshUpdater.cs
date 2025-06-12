@@ -41,7 +41,7 @@ namespace ZL.Unity.UI
 
             ForceMeshUpdate();
 
-            enabled = false;
+            //enabled = false;
         }
 
         public void ForceMeshUpdate()
