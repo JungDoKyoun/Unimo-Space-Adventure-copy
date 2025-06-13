@@ -70,7 +70,7 @@ public class ConstructManager : MonoBehaviour
         Instance = this;
         OnConstructCostChange += SetConstructCostText;
         SetOwnCost();
-        DecideProgress();
+        DecideProgress();//나중에 이미지 변경 시스템 완벽하게 바꾸면 변경하기
         ToDictionary();
         SetAllDic();
         SetImagePriorityDicNum();
@@ -183,7 +183,7 @@ public class ConstructManager : MonoBehaviour
             int costNum;
             StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
             //SetPlayer();
-            DecideProgress();
+            DecideProgress();//나중에 이미지 메커니즘 완벽하게 변경하면 바꾸기
             
             //블루 프린트 함수 추가하기
 
