@@ -16,19 +16,26 @@ public class CombatBuildBase : ConstructBase
     public GameObject attackPrefab;
     public int spellTypeIndex;
 
-    public void SetPlayerPower()
+    public void SetPlayerPower()// 구조를 좀 더 쉽게? , 인터페이스로 나눌까?, 문제 스킬은 오직 스크립트 뿐이다 그러
     {
-        if(attackPrefab == null&& spellTypeIndex != 0)
+        if(attackPrefab == null)
         {
-            SetPlayerSkill(ConstructManager.playerSpells[spellTypeIndex]);
-        }else if (spellTypeIndex == 0 && attackPrefab != null)
-        {
-            SetPlayerAttack(attackPrefab);
+            Debug.Log("noattackprefab");
         }
         else
         {
-            return;
+            SetPlayerAttack(attackPrefab);
         }
+        if (spellTypeIndex == 0||spellTypeIndex>=ConstructManager.playerSpells.Length) 
+        {
+            Debug.Log("can'tsetspell");
+        }
+        else
+        {
+            SetPlayerSkill(ConstructManager.playerSpells[spellTypeIndex]);
+        }
+
+
     }
     private void SetPlayerSkill(ISpellType spell)
     {
