@@ -136,11 +136,13 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private IEnumerator Start()
     {
+        // Firebase 연결 대기
         yield return new WaitUntil(() => FirebaseAuthMgr.IsFirebaseReady == true);
 
+        // 로그인 대기
         yield return new WaitUntil(() => FirebaseAuthMgr.User != null);
 
-        this.dbRef = FirebaseAuthMgr.dbRef;
+        this.dbRef = FirebaseAuthMgr.DBRef;
 
         this.user = FirebaseAuthMgr.User;
 
@@ -445,7 +447,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     #region Score management
 
     /// <summary>
-    /// 각 스테이지 끝난 후 점수 업데이트 할 때 사용.
+    /// 점수 업데이트 할 때 사용.
     /// </summary>
     /// <param name="currentScore"></param>
     /// <returns></returns>
@@ -466,9 +468,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         if (getTask.Result.Exists == true && float.TryParse(getTask.Result.Value.ToString(), out float savedScore)) // string으로 불러온 ingame currency를 tryparse로 savedValue에 저장
         {
-            if (CurrentScore > savedScore) // 기존 기록보다 currentScore(방금 세운 기록)이 크면
+            if (CurrentScore > savedScore) // 기존 최고 기록(savedScore)보다 방금 세운 기록(currentScore)이 크면
             {
-                // score 최신화
+                // 최고기록 갱신
                 var DBTask = dbRef.Child("user").Child(user.UserId).Child("score").SetValueAsync(CurrentScore);
 
                 yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
