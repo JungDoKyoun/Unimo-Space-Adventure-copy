@@ -243,9 +243,9 @@ namespace JDG
                         return $"연료가 {eventEffect._value}만큼 감소합니다";
                 case EffectType.ChangeRelic:
                     if (eventEffect._value >= 0)
-                        return $"{eventEffect._relicData._relicName} 유물을 획득하였습니다";
+                        return $"{eventEffect._relicData.name} 유물을 획득하였습니다";
                     else
-                        return $"{eventEffect._relicData._relicName} 유물을 파괴되었습니다";
+                        return $"{eventEffect._relicData.name} 유물을 파괴되었습니다";
                     break;
                 case EffectType.None:
                     return "아무 변화가 없습니다";

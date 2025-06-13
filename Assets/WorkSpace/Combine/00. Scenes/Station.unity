@@ -2584,7 +2584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4301,13 +4301,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 505704327}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7182647, y: -0.0029426345, z: 0.002989098, w: 0.6957574}
-  m_LocalPosition: {x: 0, y: -25, z: 20}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -33, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &511546081
 GameObject:
   m_ObjectHideFlags: 0
@@ -8383,6 +8383,9 @@ MonoBehaviour:
   _slotParent: {fileID: 449344502}
   _resourceText1: {fileID: 2016997393}
   _resourceText2: {fileID: 112328873}
+  _resourceSpite: {fileID: 21300000, guid: 7db3ffeb92b5cbf4a8061190bae7468a, type: 3}
+  _resourceIcon1: {fileID: 593253075}
+  _resourceIcon2: {fileID: 1691776518}
   _offset: {x: 0, y: 0, z: -0.2}
   _itemCount: 3
   _repair1Price: 0
@@ -11699,12 +11702,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gridSize: {x: 20, y: 20}
-  _mapOrigin: {x: 0, y: 60, z: -15}
+  _mapOrigin: {x: 0, y: 60, z: -19}
   _spawnCount: 400
   _outerSize: 1
   _innerSize: 0
   _height: 0.5
   _material: {fileID: 2100000, guid: 0998fb421169edd44a89873c6205968e, type: 2}
+  _outlineMaterial: {fileID: 2100000, guid: 95f455c8231041b44a7aa5166e420403, type: 2}
+  _outlineExpand: 0.01
+  _yOffset: 0
   _modeRatio:
   - _modeType: 1
     _modeRatio: 0.5
@@ -11717,9 +11723,13 @@ MonoBehaviour:
   _difficultyEntries:
   - _difficultyType: 0
     _distance: 0
+  - _difficultyType: 1
+    _distance: 10
+  - _difficultyType: 2
+    _distance: 20
   _minEnvironmentTileCount: 2
   _maxEnvironmentTileCount: 4
-  _offset: {x: -0.45, y: 1.3, z: 0}
+  _offset: {x: 0, y: 0.3, z: 0}
 --- !u!4 &1677392730
 Transform:
   m_ObjectHideFlags: 0

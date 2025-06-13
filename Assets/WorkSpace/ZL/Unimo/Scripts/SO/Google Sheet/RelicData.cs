@@ -33,6 +33,11 @@ namespace ZL.Unity.Unimo
 
         private int price = 0;
 
+        public int Price
+        {
+            get => price;
+        }
+
         [SerializeField]
 
         private RelicEffect[] effects = null;

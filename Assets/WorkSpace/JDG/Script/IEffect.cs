@@ -39,7 +39,15 @@ namespace JDG
             if (eventEffect._relicData == null)
                 return;
 
-            //유물 추가하는 함수 나오면 추가
+            if(eventEffect._choiceEffectType == ChoiceEffectType.Useful)
+            {
+                PlayerInventoryManager.AddRelic(eventEffect._relicData);
+            }
+            else if(eventEffect._choiceEffectType == ChoiceEffectType.Harmful)
+            {
+                PlayerInventoryManager.RemoveRelic(eventEffect._relicData);
+            }
+            
             Debug.Log("유물 추가");
         }
     }
@@ -55,7 +63,6 @@ namespace JDG
 
             maxHp += eventEffect._value;
 
-            Debug.Log($"{PlayerManager.PlayerStatus.maxHP}인 플레이어 맥스 HP가 {maxHp}만큼 변화");
             PlayerManager.PlayerStatus.maxHP = maxHp;
             Debug.Log(PlayerManager.PlayerStatus.maxHP);
         }
@@ -89,12 +96,11 @@ namespace JDG
     {
         public void Execute(EventEffect eventEffect)
         {
-            int maxFule = 100; //100자리에 맥스연료 받아올수 있으면 넣으면됨
+            float maxFule = PlayerFuelManager.FuelMax;
 
             maxFule += eventEffect._value;
 
-            int tmep = maxFule; //temp 자리에 맥스연료 받아올수 있으면 넣으면됨
-            Debug.Log("맥스 연료 변화");
+            PlayerFuelManager.FuelMax = maxFule;
         }
     }
 
@@ -102,18 +108,18 @@ namespace JDG
     {
         public void Execute(EventEffect eventEffect)
         {
-            float maxFule = 100f; 
+            float maxFule = PlayerFuelManager.FuelMax; 
 
             float currentFuel = PlayerFuelManager.Fuel;
 
             currentFuel += eventEffect._value;
 
-            float temp = currentFuel;
-
             if(currentFuel >= maxFule)
             {
                 currentFuel = maxFule;
             }
+
+            PlayerFuelManager.Fuel = currentFuel;
         }
     }
 }

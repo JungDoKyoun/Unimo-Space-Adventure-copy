@@ -5,6 +5,8 @@ using JDG;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using ZL.Unity.Unimo;
+using ZL.Unity;
 
 namespace JDG
 {
@@ -16,16 +18,23 @@ namespace JDG
         [SerializeField] private TextMeshProUGUI _relicPrice;
         [SerializeField] private Button _buyButton;
         [SerializeField] private GameObject _disabledOverlay;
-        private RelicDataSO _relicData;
+        [SerializeField] private ImageTable _imageTable;
+        [SerializeField] private Sprite _resourceSpite;
+        private RelicData _relicData;
         private bool _isBuy;
 
-        public void SetShopItemSlot(RelicDataSO data)
+        public void SetShopItemSlot(RelicData data)
         {
             _relicData = data;
-            _relicName.text = data._relicName;
-            _relicIcon.sprite = data._relicImage;
-            _resourceIcon.sprite = data._relicPrice._resourceData._resourcesIcon;
-            _relicPrice.text = data._relicPrice._value.ToString();
+            _relicName.text = data.name;
+
+            if (_imageTable != null && _imageTable[data.name] != null)
+                _relicIcon.sprite = _imageTable[data.name];
+
+            if(_resourceSpite != null)
+                _resourceIcon.sprite = _resourceSpite;
+
+            _relicPrice.text = data.Price.ToString();
 
             _isBuy = false;
             _disabledOverlay.SetActive(false);
@@ -34,15 +43,14 @@ namespace JDG
 
         public void OnBuyButtonClicked()
         {
-            ResourcesType resourcesType = _relicData._relicPrice._resourceData._resourcesType; //아이템 자원 타입
-            int relicPrice = _relicData._relicPrice._value; //아이템 가격
+            int relicPrice = _relicData.Price; //아이템 가격
 
             //플레이어 소지금 감소
-            if(ConditionChecker.IsEnoughPlayerResource(relicPrice, resourcesType))
+            if(ConditionChecker.IsEnoughPlayerResource(relicPrice, ResourcesType.IngameCurrency))
             {
                 FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(-relicPrice);
 
-                //유물 작성되면 해당 유물 효과로 능력치 상승
+                PlayerInventoryManager.AddRelic(_relicData);
 
                 _disabledOverlay.SetActive(true);
                 _buyButton.interactable = false;
