@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using Firebase.Database;
 using Firebase.Extensions;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 
 public class ConstructManager : MonoBehaviour
 {
@@ -27,8 +28,10 @@ public class ConstructManager : MonoBehaviour
     [SerializeField] GameObject basePanel;
 
     [Header("건설완료 화면 관련")]
-    [SerializeField] Image buildStateImage;
-    [SerializeField] List<Sprite> buildStateImageList= new List<Sprite>();
+    [SerializeField] Image buildStateImage;//건물 건설 현황을 나타낼 배경 이미지
+    [SerializeField] List<Image> buildingImages=new List<Image>();// 건물을 지을 때마다 갱신할 이미지들 모음집
+    [SerializeField] List<Sprite> buildStateImageList= new List<Sprite>();//나중에 건설 이미지 방식 바뀌면 삭제할 것 
+    private Dictionary<int, int> imagePriority=new Dictionary<int, int>();
     private float buildStateProgress = 0;
     //[SerializeField] List<Button> buildButtons = new List<Button>();
     //[SerializeField] GameObject BuildPanel;
@@ -47,6 +50,7 @@ public class ConstructManager : MonoBehaviour
 
     private static bool isBuildEffectAplly=false;
     private static bool isDelinkON = false;
+    
     private Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
     public Dictionary<string, int> OwnBuildCostDic { get { return ownBuildCostDic; } }
     //private PlayerManager playerManager;
@@ -69,7 +73,8 @@ public class ConstructManager : MonoBehaviour
         DecideProgress();
         ToDictionary();
         SetAllDic();
-        
+        SetImagePriorityDicNum();
+        SetAllConstructImages();
         if (isDelinkON == false)
         {
             PlayerManager.OnStageFail += YJH.MethodCollection.DelinkHealPlayer;
@@ -95,6 +100,13 @@ public class ConstructManager : MonoBehaviour
         foreach (var temp in combatConstructList)
         {
             temp.ToDictionary();
+        }
+    }
+    public void SetImagePriorityDicNum()
+    {
+        for(int i=0;i<buildingImages.Count;i++)
+        {
+            imagePriority.Add(i, 0);
         }
     }
     private void SetAllDic()
@@ -165,6 +177,7 @@ public class ConstructManager : MonoBehaviour
         
             //Debug.Log("buildcom");
             building.ConstructEnd();
+            TrySetConstructImage(building);
             //spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
             buildInfoBuildButton.interactable = false;
             int costNum;
@@ -181,6 +194,51 @@ public class ConstructManager : MonoBehaviour
             //반영 하는건 뒤 패널을 편집하는 방식으로 이미지를 이용해서 덮어 씌우기? 동일한 이미지를 여러개 다른 버전으로 만들면 될 거 같다
         
     }
+    public void TrySetConstructImage(ConstructBase building)
+    {
+        if (imagePriority[building.imageIndex] < building.imagePriority)
+        {
+            buildingImages[building.imageIndex].sprite = building.buildingImage;
+        }
+    }
+
+    public void SetAllConstructImages()
+    {
+        foreach(var temp in techConstructList)
+        {
+            if (temp.isBuildConstructed == true)
+            {
+                if (imagePriority[temp.imageIndex] < temp.imagePriority)
+                {
+                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                }
+            }
+        }
+        foreach (var temp in utilityConstructList)
+        {
+            if (temp.isBuildConstructed == true)
+            {
+                if (imagePriority[temp.imageIndex] < temp.imagePriority)
+                {
+                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                }
+            }
+        }
+        foreach (var temp in combatConstructList)
+        {
+            if (temp.isBuildConstructed == true)
+            {
+                if (imagePriority[temp.imageIndex] < temp.imagePriority)
+                {
+                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                }
+            }
+        }
+    }
+
+
+
+
     public void DecideProgress()//나중에 에셋 오면 변경 필요 -> 별도의 스크립트와 씬에서 캡쳐를 통해서 변화 반영하는 식으로 
     {
         //Debug.Log("changeimage");
