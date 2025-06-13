@@ -60,11 +60,12 @@ namespace JDG
                 return;
 
             float maxHp = PlayerManager.PlayerStatus.maxHP;
+            float currentHP = PlayerManager.PlayerStatus.currentHealth;
 
             maxHp += eventEffect._value;
 
             PlayerManager.PlayerStatus.maxHP = maxHp;
-            Debug.Log(PlayerManager.PlayerStatus.maxHP);
+            PlayerEvents.ChangeHP(maxHp, currentHP);
         }
     }
 
@@ -86,9 +87,8 @@ namespace JDG
                 currentHP = maxHp;
             }
 
-            Debug.Log($"{PlayerManager.PlayerStatus.currentHealth}인 플레이어 현재 HP가 {currentHP}만큼 변화");
             PlayerManager.PlayerStatus.currentHealth = currentHP;
-            Debug.Log(PlayerManager.PlayerStatus.currentHealth);
+            PlayerEvents.ChangeHP(maxHp, currentHP);
         }
     }
 
@@ -97,10 +97,12 @@ namespace JDG
         public void Execute(EventEffect eventEffect)
         {
             float maxFule = PlayerFuelManager.FuelMax;
+            float currentFuel = PlayerFuelManager.Fuel;
 
             maxFule += eventEffect._value;
 
             PlayerFuelManager.FuelMax = maxFule;
+            PlayerEvents.ChangeFuel(maxFule, currentFuel);
         }
     }
 
@@ -109,7 +111,6 @@ namespace JDG
         public void Execute(EventEffect eventEffect)
         {
             float maxFule = PlayerFuelManager.FuelMax; 
-
             float currentFuel = PlayerFuelManager.Fuel;
 
             currentFuel += eventEffect._value;
@@ -120,6 +121,7 @@ namespace JDG
             }
 
             PlayerFuelManager.Fuel = currentFuel;
+            PlayerEvents.ChangeFuel(maxFule, currentFuel);
         }
     }
 }
