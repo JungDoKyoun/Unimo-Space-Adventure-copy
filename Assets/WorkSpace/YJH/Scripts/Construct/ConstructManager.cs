@@ -402,6 +402,7 @@ public class ConstructManager : MonoBehaviour
         buildingInfoText.text=buildingInfo.buildingDescription;
         buildingImage.sprite=buildingInfo.buildIcon;
         DecideCanBuild( buildingInfo);
+        buildInfoBuildButton.onClick.RemoveAllListeners();
         buildInfoBuildButton.onClick.AddListener(() => TryConstruct(buildingInfo));
 
 
