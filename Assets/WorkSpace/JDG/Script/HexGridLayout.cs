@@ -25,6 +25,11 @@ namespace JDG
         [SerializeField] private float _height = 1f;
         [SerializeField] private Material _material;
 
+        [Header("육각타일의 테두리 관련")]
+        [SerializeField] private Material _outlineMaterial;
+        [SerializeField] private float _outlineExpand;
+        [SerializeField] private float _yOffset;
+
         [Header("타일 역할 배치 변수")]
         [SerializeField] private List<ModeRatioEntry> _modeRatio = new List<ModeRatioEntry>();
         [SerializeField] private int[] _bossDistance;
@@ -160,6 +165,9 @@ namespace JDG
                 collider.sharedMesh = tile.GetComponent<MeshFilter>().mesh;
                 _hexMap.Add(coord, hexRenderer);
                 tile.transform.SetParent(transform, true);
+
+                //타일 구분선
+                hexRenderer.CreateOutlineMesh(_outlineMaterial, _outlineExpand, _yOffset);
             }
 
             Vector3 spawnPos = GetPositionForHexFromCoordinate(_playerCoord) + Vector3.up * 1f;
@@ -467,32 +475,32 @@ namespace JDG
         {
             _hexMap.Clear();
 
-            foreach (var pair in mapData)
+            foreach (var coord in _tileCoords)
             {
-                Vector2Int coord = pair.Key;
-                TileData data = pair.Value;
-
                 GameObject tile = new GameObject($"Hex {coord.x},{coord.y}", typeof(HexRenderer));
                 tile.transform.position = GetPositionForHexFromCoordinate(coord);
 
-                HexRenderer hex = tile.GetComponent<HexRenderer>();
-                hex.OuterSize = _outerSize;
-                hex.InnerSize = _innerSize;
-                hex.Height = _height;
-                hex.SetMaterial(_material);
-                hex.SetTileData(data);
-                hex.DrawMesh();
+                HexRenderer hexRenderer = tile.GetComponent<HexRenderer>();
+                hexRenderer.OuterSize = _outerSize;
+                hexRenderer.InnerSize = _innerSize;
+                hexRenderer.Height = _height;
+                hexRenderer.SetMaterial(_material);
 
+                var data = new TileData(coord, TileType.None, TileVisibility.Hidden, TileEnvironmentManager.Instance.GetRandomEnvironment(), false, DifficultyType.Easy);
+                hexRenderer.SetTileData(data);
+
+                hexRenderer.DrawMesh();
                 MeshCollider collider = tile.AddComponent<MeshCollider>();
                 collider.sharedMesh = tile.GetComponent<MeshFilter>().mesh;
-
+                _hexMap.Add(coord, hexRenderer);
                 tile.transform.SetParent(transform, true);
-                _hexMap[coord] = hex;
+
+                //타일 구분선
+                hexRenderer.CreateOutlineMesh(_outlineMaterial, _outlineExpand, _yOffset);
             }
 
-            _playerCoord = playerCoord;
+            Vector3 spawnPos = GetPositionForHexFromCoordinate(_playerCoord) + Vector3.up * 1f;
             _playerPrefab = Resources.Load<GameObject>("WorldMap/Player");
-            Vector3 spawnPos = GetPositionForHexFromCoordinate(playerCoord) + Vector3.up * 1f;
             _playerInstance = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
 
             var player = _playerInstance.GetComponent<PlayerController>();
@@ -508,6 +516,7 @@ namespace JDG
             {
                 _tileSelectionUI.Init(player, this, _eventTileConfig);
             }
+
             SceneLoader.Instance.Init(this, player);
 
             player.UpdateFog();
@@ -518,6 +527,7 @@ namespace JDG
             Vector2Int centerCoord = new Vector2Int(_gridSize.x / 2, _gridSize.y / 2);
             Vector3 centerPos = GetPositionForHexFromCoordinate(centerCoord);
             _mapOrigin = -centerPos;
+            transform.position = _mapOrigin;
         }
 
         private DifficultyType GetDifficultyTypeByDistance(int distance)

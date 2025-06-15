@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using JDG;
+using ZL.Unity.Tweening;
+using Unity.Mathematics;
 
 namespace JDG
 {
@@ -76,6 +78,14 @@ namespace JDG
         {
             DrawFaces();
             CombineFaces();
+
+            Vector3 avg = Vector3.zero;
+            foreach (var v in _mesh.vertices)
+                avg += v;
+
+            avg /= _mesh.vertexCount;
+
+            Debug.Log($"[DEBUG] 타일: {name}, 위치: {transform.position}, Mesh 중심: {avg}");
         }
 
         private void DrawFaces()
@@ -99,7 +109,6 @@ namespace JDG
             {
                 _faces.Add(CreateFace(_outerSize, _outerSize, _height / 2f, -_height / 2f, point, true));
             }
-
 
             //옆면의 안쪽부분
             for (int point = 0; point < 6; point++)
@@ -158,8 +167,8 @@ namespace JDG
 
         private Vector3 GetPoint(float size, float height, int index)
         {
-            float angle_deg = 60 * index - 30;
-            float angle_rad = Mathf.PI / 180f * angle_deg;
+            float angle_deg = 60 * index + 30;
+            float angle_rad = Mathf.Deg2Rad * angle_deg;
             return new Vector3((size * Mathf.Cos(angle_rad)), height, size * Mathf.Sin(angle_rad));
         }
 
@@ -240,6 +249,96 @@ namespace JDG
         {
             _tileData = data;
             SetDebugColorByType();
+        }
+
+        //public void CreateOutlineMesh(Material edgeMat, float width = 0.05f, float yOffset = 0.01f)
+        //{
+        //    // 1. 육각형 윗면 꼭짓점 6개 (오브젝트 로컬 좌표계)
+        //    Vector3[] top = new Vector3[6];
+        //    float angle0 = 30f;                  // 12시 기준 30° 회전된 정석 육각
+        //    float r = _outerSize;                // 바깥 반지름
+        //    float y = _height * 0.5f + yOffset; // 윗면 + 약간 띄우기
+
+        //    for (int i = 0; i < 6; ++i)
+        //    {
+        //        float rad = Mathf.Deg2Rad * (angle0 + i * 60f);
+        //        top[i] = new Vector3(Mathf.Cos(rad) * r, y, Mathf.Sin(rad) * r);
+        //    }
+
+        //    // 2. 6개 Edge Quad 생성
+        //    for (int i = 0; i < 6; ++i)
+        //    {
+        //        int j = (i + 1) % 6;
+        //        Vector3 p0 = top[i];
+        //        Vector3 p1 = top[j];
+
+        //        // --- 바깥쪽 방향 벡터 계산 ---
+        //        Vector3 edgeDir = (p1 - p0).normalized;
+        //        Vector3 outward2D = Vector3.Cross(Vector3.up, edgeDir); // ← 이 순서가 바깥 방향
+
+        //        // 두께만큼 바깥으로 이동
+        //        Vector3 q0 = p0 + outward2D * width;
+        //        Vector3 q1 = p1 + outward2D * width;
+
+        //        // --- Quad 메쉬 생성 ---
+        //        Mesh quad = new Mesh
+        //        {
+        //            vertices = new[] { p0, p1, q1, q0 },
+        //            triangles = new[] { 0, 1, 2, 2, 3, 0 }
+        //        };
+        //        quad.RecalculateNormals();
+
+        //        var go = new GameObject($"Edge_{i}");
+        //        go.transform.SetParent(transform, false);   // 타일 로컬 좌표
+        //        go.AddComponent<MeshFilter>().sharedMesh = quad;
+
+        //        var mr = go.AddComponent<MeshRenderer>();
+        //        mr.material = edgeMat;
+        //        mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        //        mr.receiveShadows = false;
+        //        mr.material.renderQueue = 3100;             // 본타일보다 뒤
+        //    }
+        //}
+
+        public void CreateOutlineMesh(Material outlineMat, float width, float yOffset)
+        {
+            Vector3[] top = new Vector3[6];
+            float outSize = _outerSize;
+            float offset = _height * 0.5f + yOffset;
+
+            for(int i = 0; i < 6; i++)
+            {
+                float rad = Mathf.Deg2Rad * (i * 60 + 30);
+                top[i] = new Vector3(outSize * Mathf.Cos(rad), offset, outSize * Mathf.Sin(rad));
+            }
+
+            for(int i = 0; i < 6; i++)
+            {
+                int j = (i + 1) % 6;
+                Vector3 p0 = top[i];
+                Vector3 p1 = top[j];
+
+                Vector3 dir = (p1 - p0).normalized;
+                Vector3 outBound = Vector3.Cross(Vector3.up, dir);
+
+                Vector3 q0 = p0 + outBound * width;
+                Vector3 q1 = p1 + outBound * width;
+
+                Mesh quad = new Mesh();
+                quad.vertices = new[] { p0, p1, q1, q0 };
+                quad.triangles = new[] { 0, 1, 2, 2, 3, 0 };
+                quad.RecalculateNormals();
+
+                var obj = new GameObject($"outline_{i}");
+                obj.transform.SetParent(transform, false);
+                obj.AddComponent<MeshFilter>().sharedMesh = quad;
+
+                var render = obj.AddComponent<MeshRenderer>();
+                render.material = outlineMat;
+                render.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                render.receiveShadows = false;
+                render.material.renderQueue = 3100;
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
 using System.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 public class FirebaseAuthMgr : MonoBehaviour
 {
@@ -115,6 +116,8 @@ public class FirebaseAuthMgr : MonoBehaviour
 
     private void OnEnable()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         GetUIs();
 
         RegisterUIEvents();
@@ -129,6 +132,17 @@ public class FirebaseAuthMgr : MonoBehaviour
         if (confirmText != null) confirmText.text = "";
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Account") // A 씬으로 돌아왔을 때만
+        {
+            //StartCoroutine(WaitAndInitUI());
+            GetUIs();
+
+            RegisterUIEvents();
+        }
+    }
+
     private void OnDisable()
     {
         loginButton.onClick.RemoveListener(Login);
@@ -136,6 +150,8 @@ public class FirebaseAuthMgr : MonoBehaviour
         signUpButton.onClick.RemoveListener(Register);
 
         logoutButton.onClick.RemoveListener(Logout);
+
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     public void Login()
@@ -148,21 +164,36 @@ public class FirebaseAuthMgr : MonoBehaviour
         StartCoroutine(RegisterCor(emailField.text + "@unimo.com", passwordField.text, nicknameField.text));
     }
 
+    private IEnumerator WaitAndInitUI()
+    {
+        yield return null; // 한 프레임 기다림
+
+        GetUIs();
+
+        RegisterUIEvents();
+    }
+
     private void GetUIs()
     {
+        // 버튼
         if (startButton == null) startButton = GameObject.Find("Account Canvas").transform.Find("Account/Start Button").GetComponent<Button>();
 
         if (loginButton == null) loginButton = GameObject.Find("Account Canvas").transform.Find("Account/Login Button").GetComponent<Button>();
 
         if (signUpButton == null) signUpButton = GameObject.Find("Account Canvas").transform.Find("Account/Sign Up Button").GetComponent<Button>();
 
+        if (logoutButton == null) logoutButton = GameObject.Find("Mode Selection Canvas").transform.Find("Logout Button").GetComponent<Button>();
+
+        // 인풋필드
         if (emailField == null) emailField = GameObject.Find("Account Canvas").transform.Find("Account/Account Input Fields/ID").GetComponent<TMP_InputField>();
 
         if (passwordField == null) passwordField = GameObject.Find("Account Canvas").transform.Find("Account/Account Input Fields/Password").GetComponent<TMP_InputField>();
 
         if (nicknameField == null) nicknameField = GameObject.Find("Account Canvas").transform.Find("Account/Account Input Fields/Nickname").GetComponent<TMP_InputField>();
 
-        if (nicknameField == null) nicknameField = GameObject.Find("Account Canvas").transform.Find("Account/Account Input Fields/Nickname").GetComponent<TMP_InputField>();
+        if (warningText == null) warningText = GameObject.Find("Account Canvas").transform.Find("Account/Account Input Fields/Nickname Text").GetComponent<TextMeshProUGUI>();
+
+        if (confirmText == null) confirmText = GameObject.Find("Account Canvas").transform.Find("Account/Account Input Fields/Nickname Text").GetComponent<TextMeshProUGUI>();
     }
 
     private void RegisterUIEvents()
@@ -184,24 +215,9 @@ public class FirebaseAuthMgr : MonoBehaviour
     public void SetButtonInteractable(bool value) // 회원가입 or 로그인 시 << 이 버튼 비활성화 및 start 버튼 활성화
     {
         if (startButton == null || loginButton == null || signUpButton == null)
+        {
             GetUIs();
-       
-        //if (hasUser == true)
-        //{
-        //    startButton.interactable = true;
-
-        //    loginButton.interactable = false;
-
-        //    signUpButton.interactable = false;
-        //}
-        //else
-        //{
-        //    startButton.interactable = false;
-
-        //    loginButton.interactable = true;
-
-        //    signUpButton.interactable = true;
-        //}
+        }
 
         startButton.interactable = value;
 
@@ -210,7 +226,7 @@ public class FirebaseAuthMgr : MonoBehaviour
         signUpButton.interactable = !value;
     }
 
-    #region 로그인 코루틴
+    #region 로그인 (코루틴)
 
     private IEnumerator LoginCor(string email, string password)
     {
@@ -293,7 +309,7 @@ public class FirebaseAuthMgr : MonoBehaviour
 
     #endregion
 
-    #region 회원가입 코루틴
+    #region 회원가입 (코루틴)
 
     private IEnumerator RegisterCor(string email, string password, string username)
     {
@@ -399,17 +415,20 @@ public class FirebaseAuthMgr : MonoBehaviour
     private IEnumerator InitPlayerCurrency() // 회원가입 시 초기값 설정
     {
         // 초기 인게임 재화 생성(크레딧)
-        var DBTask = dbRef.Child("users").Child(User.UserId).Child(User.DisplayName).Child("rewardIngameCurrency").SetValueAsync(0);
+        var DBTask = dbRef.Child("users").Child(User.UserId).Child("nickname").SetValueAsync(User.DisplayName);
+
+        // 초기 인게임 재화 생성(크레딧)
+        DBTask = dbRef.Child("users").Child(User.UserId).Child("rewardIngameCurrency").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
         // 초기 메타 재화 생성(프리팹)
-        DBTask = dbRef.Child("users").Child(User.UserId).Child(User.DisplayName).Child("rewardMetaCurrency").SetValueAsync(0);
+        DBTask = dbRef.Child("users").Child(User.UserId).Child("rewardMetaCurrency").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
         // 초기 메타 재화 생성(설계도)
-        DBTask = dbRef.Child("users").Child(User.UserId).Child(User.DisplayName).Child("rewardBluePrint").SetValueAsync(0);
+        DBTask = dbRef.Child("users").Child(User.UserId).Child("rewardBluePrint").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
@@ -439,7 +458,7 @@ public class FirebaseAuthMgr : MonoBehaviour
 
     public void Logout()
     {
-        GetUIs();
+        //GetUIs();
 
         if (auth != null)
         {
@@ -467,7 +486,7 @@ public class FirebaseAuthMgr : MonoBehaviour
 
             //if (signUpButton != null) signUpButton.interactable = true;
 
-            Debug.Log(auth);
+            Debug.Log(auth.CurrentUser);
 
             Debug.Log("로그아웃 완료");
         }

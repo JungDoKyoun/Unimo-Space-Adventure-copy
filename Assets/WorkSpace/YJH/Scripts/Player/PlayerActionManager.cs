@@ -106,7 +106,7 @@ public partial class PlayerManager
 
     private SphereCollider detectCollider;
 
-    public void ActionStart()
+    public void ActionStart()// 멀티용으로 리펙토링한거 나중에 다 해체하기
     {
         if (PhotonNetwork.IsConnected == false)
         {
@@ -121,10 +121,12 @@ public partial class PlayerManager
             detectCollider.radius = itemDetectionRange;
             if (attackPrefab == null)
             {
+                //Debug.Log("nullattack");
                 SetAttackType(tempAttackPrefab);
             }
             else
             {
+                //Debug.Log("attackexist");
                 SetAttackType(attackPrefab);
             }
            
@@ -222,13 +224,14 @@ public partial class PlayerManager
         attackPrefab = attackType;
 
         playerAttackType = attackPrefab.GetComponent<IAttackType>();
+        Debug.Log("setAttack");
 
-        playerAttackType.Damage = playerDamage;
+        playerAttackType.Damage = playerStatus.playerDamage;// playerDamage;
     }
 
     public static void SetSpellType(ISpellType spellType)
     {
-        //Debug.Log("set spell");
+        Debug.Log("set spell");
 
         playerSpellType = spellType;
 
@@ -447,7 +450,7 @@ public partial class PlayerManager
             {
                 //Debug.Log(Vector3.Distance(transform.position, targetObject.transform.position));
 
-                if (Vector3.Distance(transform.position, targetObject.transform.position) > itemDetectionRange + float.Epsilon)
+                if (Vector3.Distance(transform.position, targetObject.transform.position) > playerStatus.itemDetectionRange + float.Epsilon)
                 {
                     isGathering = false;
 
@@ -461,7 +464,7 @@ public partial class PlayerManager
             {
                 
 
-                Collider[] detectedColliders = Physics.OverlapSphere(transform.position, itemDetectionRange, itemLayerMask);
+                Collider[] detectedColliders = Physics.OverlapSphere(transform.position, playerStatus.itemDetectionRange, itemLayerMask);
 
                 if (detectedColliders.Length > 0)
                 {

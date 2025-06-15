@@ -37,7 +37,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private static float winCount;
 
-    private static float score;
+    private static float currentScore;
 
     #region properties
 
@@ -101,13 +101,13 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         }
     }
 
-    public static float Score
+    public static float CurrentScore
     {
-        get => score;
+        get => currentScore;
 
         set
         {
-            score = value;
+            currentScore = value;
         }
     }
 
@@ -172,14 +172,14 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     public IEnumerator InitIngameCurrency() // 게임 클리어 실패 시 인게임 재화 초기화
     {
-        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardIngameCurrency").SetValueAsync(0);
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => getTask.IsCompleted);
     }
 
     private IEnumerator ShowUserIngameCurrency()
     {
-        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardIngameCurrency").GetValueAsync();
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").GetValueAsync();
 
         yield return new WaitUntil(predicate: () => getTask.IsCompleted);
 
@@ -203,7 +203,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     {
         int tempIngameCurrency = 0;
 
-        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardIngameCurrency").GetValueAsync(); // 현재 인게임 재화 불러오기
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").GetValueAsync(); // 현재 인게임 재화 불러오기
 
         yield return new WaitUntil(predicate: () => getTask.IsCompleted);
 
@@ -221,7 +221,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         int newIngameCurrency = tempIngameCurrency + ingameCurrencyToAdd; // 재화 최신화
 
-        var DBTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardIngameCurrency").SetValueAsync(newIngameCurrency); // 최신화 된 재화 DB 저장
+        var DBTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").SetValueAsync(newIngameCurrency); // 최신화 된 재화 DB 저장
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
@@ -244,7 +244,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private IEnumerator ShowUserMetaCurrency()
     {
-        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardMetaCurrency").GetValueAsync();
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardMetaCurrency").GetValueAsync();
 
         yield return new WaitUntil(predicate: () => getTask.IsCompleted);
 
@@ -268,7 +268,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     {
         int tempMetaCurrency = 0;
 
-        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardMetaCurrency").GetValueAsync(); // 현재 메타 재화 불러오기
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardMetaCurrency").GetValueAsync(); // 현재 메타 재화 불러오기
 
         yield return new WaitUntil(predicate: () => getTask.IsCompleted);
 
@@ -286,7 +286,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         int newMetaCurrency = tempMetaCurrency + metaCurrencyToAdd; // 재화 최신화
 
-        var DBTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardMetaCurrency").SetValueAsync(newMetaCurrency);
+        var DBTask = dbRef.Child("users").Child(user.UserId).Child("rewardMetaCurrency").SetValueAsync(newMetaCurrency);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
@@ -308,7 +308,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private IEnumerator ShowUserBluePrint()
     {
-        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardBluePrint").GetValueAsync();
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardBluePrint").GetValueAsync();
 
         yield return new WaitUntil(predicate: () => getTask.IsCompleted);
 
@@ -332,7 +332,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     {
         int tempBluePrint = 0;
 
-        var getTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardBluePrint").GetValueAsync(); // 현재 설계도 불러오기
+        var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardBluePrint").GetValueAsync(); // 현재 설계도 불러오기
 
         yield return new WaitUntil(predicate: () => getTask.IsCompleted);
 
@@ -350,7 +350,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         int newBluePrint = tempBluePrint + bluePrintToAdd; // 재화 최신화
 
-        var DBTask = dbRef.Child("users").Child(user.UserId).Child(user.DisplayName).Child("rewardBluePrint").SetValueAsync(newBluePrint); // 최신화 된 재화 DB 저장
+        var DBTask = dbRef.Child("users").Child(user.UserId).Child("rewardBluePrint").SetValueAsync(newBluePrint); // 최신화 된 재화 DB 저장
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
@@ -371,7 +371,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #endregion
 
-    #region Winning Rate
+    #region Winning Rate (미사용)
 
     public IEnumerator SetCurrentWinningRate() // 전적 업데이트 함수.
     {
@@ -445,13 +445,13 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     #region Score management
 
     /// <summary>
-    /// 점수 업데이트 할 때 사용.
+    /// 각 스테이지 끝난 후 점수 업데이트 할 때 사용.
     /// </summary>
     /// <param name="currentScore"></param>
     /// <returns></returns>
     public IEnumerator UpdateScore(float currentScore)
     {
-        Score = currentScore;
+        CurrentScore = currentScore;
 
         var getTask = dbRef.Child("users").Child(user.UserId).Child("score").GetValueAsync();
 
@@ -459,17 +459,17 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         if (getTask.Exception != null) // 불러오기 실패 시 나가기
         {
-            Debug.LogWarning($"[Get] reason : {getTask.Exception}");
+            Debug.LogWarning($"Get error reason : {getTask.Exception}");
 
             yield break;
         }
 
         if (getTask.Result.Exists == true && float.TryParse(getTask.Result.Value.ToString(), out float savedScore)) // string으로 불러온 ingame currency를 tryparse로 savedValue에 저장
         {
-            if (Score > savedScore) // 기존 기록보다 currentScore(방금 세운 기록)이 크면
+            if (CurrentScore > savedScore) // 기존 기록보다 currentScore(방금 세운 기록)이 크면
             {
                 // score 최신화
-                var DBTask = dbRef.Child("user").Child(user.UserId).Child("score").SetValueAsync(Score);
+                var DBTask = dbRef.Child("user").Child(user.UserId).Child("score").SetValueAsync(CurrentScore);
 
                 yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
@@ -487,7 +487,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         if (getTask.Exception != null)
         {
-            Debug.LogError($"[Ranking Error] {getTask.Exception}");
+            Debug.LogError($"Ranking Error: {getTask.Exception}");
 
             yield break;
         }
@@ -508,15 +508,10 @@ public class FirebaseDataBaseMgr : MonoBehaviour
                 score = parsedScore;
             }
 
-            // DisplayName (nickname) 찾기
-            foreach (var child in userSnapshot.Children)
+            // Nickname 가져오기
+            if (userSnapshot.HasChild("nickname") == true)
             {
-                if (child.HasChild("rewardIngameCurrency"))
-                {
-                    nickname = child.Key; // 이게 user.DisplayName
-
-                    break;
-                }
+                nickname = userSnapshot.Child("nickname").Value.ToString();
             }
 
             // 리스트 추가

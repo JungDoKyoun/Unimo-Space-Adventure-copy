@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using JDG;
+using ZL.Unity.Unimo;
 
 namespace JDG
 {
@@ -24,6 +25,6 @@ namespace JDG
         public int _value;
 
         [Header("이벤트로 유물을 먹을때")]
-        public RelicDataSO _relicData;
+        public RelicData _relicData;
     }
 }
