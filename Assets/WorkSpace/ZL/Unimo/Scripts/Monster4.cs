@@ -46,11 +46,6 @@ namespace ZL.Unity.Unimo
             }
         }
 
-        public void Dash()
-        {
-            isDashing = true;
-        }
-
         public void GiveDamage(IDamageable damageable, Vector3 contact)
         {
             damageable.TakeDamage(enemyData.AttackPower, contact);
@@ -61,6 +56,11 @@ namespace ZL.Unity.Unimo
             base.OnDisappear();
 
             OnDisappeared();
+        }
+
+        public void Dash()
+        {
+            isDashing = true;
         }
     }
 }

@@ -1,5 +1,7 @@
 using JDG;
 
+using System.Collections;
+
 using UnityEngine;
 
 using ZL.Unity.Singleton;
@@ -54,10 +56,12 @@ namespace ZL.Unity.Unimo
 
                 if (fuel == 0f)
                 {
-                    StageManager.Instance.StageFail();
+                    StageSceneDirector.Instance.StageFail();
                 }
             }
         }
+
+        private float fuelConsumption = 0f;
 
         private void Start()
         {
@@ -69,6 +73,44 @@ namespace ZL.Unity.Unimo
             fuel = 100f;
 
             FuelMax = 100f;
+
+            fuelConsumption = StageData.Instance.FuelConsumptionAmount;
+        }
+
+        public void StartConsumFuel()
+        {
+            if (consumFuelRoutine != null)
+            {
+                return;
+            }
+
+            consumFuelRoutine = ConsumFuelRoutine();
+
+            StartCoroutine(consumFuelRoutine);
+        }
+
+        public void StopConsumFuel()
+        {
+            if (consumFuelRoutine == null)
+            {
+                return;
+            }
+
+            StopCoroutine(consumFuelRoutine);
+
+            consumFuelRoutine = null;
+        }
+
+        private IEnumerator consumFuelRoutine = null;
+
+        private IEnumerator ConsumFuelRoutine()
+        {
+            while (true)
+            {
+                yield return null;
+
+                Fuel -= fuelConsumption * Time.deltaTime;
+            }
         }
     }
 }

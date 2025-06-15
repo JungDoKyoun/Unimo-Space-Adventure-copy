@@ -29,8 +29,6 @@ namespace ZL.Unity.Unimo
 
             if (enemyData.MoveSpeed != 0f)
             {
-                //rigidbody.MoveTowards(MonsterManager.Instance.Target, monsterData.MoveSpeed);
-
                 var forwardMove = rigidbody.rotation * Vector3.forward * enemyData.MoveSpeed * Time.fixedDeltaTime;
 
                 rigidbody.MovePosition(rigidbody.position + forwardMove);

@@ -23,25 +23,28 @@ namespace ZL.Unity.Pooling
             return clone;
         }
 
-        #if UNITY_EDITOR
-
-        protected virtual void Start()
+        protected virtual void OnDisable()
         {
-            if (OnCollectedAction == null)
+            if (OnDisableAction != null)
+            {
+                OnDisableAction.Invoke();
+
+                OnDisableAction = null;
+            }
+
+            if (OnCollectedAction != null)
+            {
+                OnCollectedAction.Invoke();
+            }
+
+            #if UNITY_EDITOR
+
+            else
             {
                 FixedDebug.LogWarning($"Game Object '{gameObject.name}' is a 'Pooled Object' but was not created from an 'Object Pool'.");
             }
-        }
 
-        #endif
-
-        protected virtual void OnDisable()
-        {
-            OnDisableAction?.Invoke();
-
-            OnDisableAction = null;
-
-            OnCollectedAction?.Invoke();
+            #endif
         }
     }
 }

@@ -1,8 +1,12 @@
 using Photon.Pun;
+
 using System;
+
 using System.Collections;
 
 using UnityEngine;
+
+using UnityEngine.Events;
 
 using ZL.Unity;
 
@@ -74,14 +78,33 @@ public partial class PlayerManager : IDamageable
     //맞았는지?
     private bool isOnHit = false;
 
-    public delegate void onPlayerDead();
+    [Space]
 
-    public event onPlayerDead OnPlayerDead;
+    [SerializeField]
+
+    private UnityEvent<float> onHealthChanged;
+
+    public UnityEvent<float> OnHealthChanged
+    {
+        get => onHealthChanged;
+    }
+
+    [Space]
+
+    [SerializeField]
+
+    private UnityEvent onPlayerDead;
+
+    public UnityEvent OnPlayerDead
+    {
+        get => onPlayerDead;
+    }
 
     public delegate void onStageClear();
+
     public static event onStageClear OnStageClear;
+
     public static event onStageClear OnStageFail;
-    public event Action<float> OnPlayerHit;
 
     private void OnCollisionStay(Collision collision)
     {
@@ -109,13 +132,15 @@ public partial class PlayerManager : IDamageable
         {
             photonView.RPC("PlayHitEffect", RpcTarget.All, contact);
         }
+
         else
         {
             PlayHitEffect(contact);
         }
 
         playerStatus.currentHealth -= damage;//데미지 입음
-        OnPlayerHit?.Invoke(playerStatus.currentHealth);
+        
+        OnHealthChanged.Invoke(playerStatus.currentHealth);
 
         if (playerStatus.currentHealth <= 0f)
         {
@@ -124,8 +149,8 @@ public partial class PlayerManager : IDamageable
             canMove = false;
 
             OnPlayerDead?.Invoke();
+
             OnStageFail?.Invoke();  
-            
         }
 
         else
@@ -153,6 +178,7 @@ public partial class PlayerManager : IDamageable
             {
                 photonView.RPC("BlinkRenderer", RpcTarget.All);
             }
+
             else
             {
                 BlinkRenderer();
@@ -169,6 +195,7 @@ public partial class PlayerManager : IDamageable
     }
 
     [PunRPC]
+
     public void BlinkRenderer()
     {
         if (bodyRenderer.enabled == false)

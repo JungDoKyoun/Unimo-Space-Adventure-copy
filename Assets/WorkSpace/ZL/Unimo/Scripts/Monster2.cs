@@ -116,6 +116,11 @@ namespace ZL.Unity.Unimo
             animator.SetTrigger("Attack");
         }
 
+        public void GiveDamage(IDamageable damageable, Vector3 contact)
+        {
+            damageable.TakeDamage(enemyData.AttackPower, contact);
+        }
+
         public void Shoot()
         {
             var projectile = ObjectPoolManager.Instance.Cloning(projectileName);
@@ -123,11 +128,6 @@ namespace ZL.Unity.Unimo
             projectile.transform.SetPositionAndRotation(muzzle);
 
             projectile.gameObject.SetActive(true);
-        }
-
-        public void GiveDamage(IDamageable damageable, Vector3 contact)
-        {
-            damageable.TakeDamage(enemyData.AttackPower, contact);
         }
     }
 }
