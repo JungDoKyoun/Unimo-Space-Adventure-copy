@@ -72,6 +72,8 @@ namespace ZL.Unity.Unimo
             }
 
             PlayerInventoryManager.AddRelic(selectedRelicCard.RelicData);
+
+            selectedRelicCard.Toggle.isOn = false;
         }
 
         public void RerollRelics()
@@ -85,8 +87,6 @@ namespace ZL.Unity.Unimo
 
             rerollRelicsButtonTextUI.text = PlayerInventoryManager.RelicRerollableCountText;
 
-            relicCardPool.CollectAll();
-
             StageData.Instance.DropRelics();
 
             DrawRelicCards();
@@ -94,6 +94,8 @@ namespace ZL.Unity.Unimo
 
         private void DrawRelicCards()
         {
+            relicCardPool.CollectAll();
+
             if (StageData.DropedRelicDatas == null)
             {
                 rerollRelicsButton.interactable = false;

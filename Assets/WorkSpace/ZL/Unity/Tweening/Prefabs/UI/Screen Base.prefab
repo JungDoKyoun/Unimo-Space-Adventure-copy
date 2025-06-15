@@ -160,7 +160,7 @@ CanvasGroup:
   m_GameObject: {fileID: 9002830873827201806}
   m_Enabled: 1
   m_Alpha: 0
-  m_Interactable: 0
+  m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!114 &1395299594985518582
@@ -185,34 +185,10 @@ MonoBehaviour:
     loopType: 0
     onStartEvent:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 219598557867828085}
-          m_TargetAssemblyTypeName: UnityEngine.CanvasGroup, UnityEngine
-          m_MethodName: set_interactable
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
     onCompleteEvent:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 219598557867828085}
-          m_TargetAssemblyTypeName: UnityEngine.CanvasGroup, UnityEngine
-          m_MethodName: set_interactable
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
+        m_Calls: []
   canvasGroup: {fileID: 219598557867828085}
 --- !u!114 &2947639935910554948
 MonoBehaviour:

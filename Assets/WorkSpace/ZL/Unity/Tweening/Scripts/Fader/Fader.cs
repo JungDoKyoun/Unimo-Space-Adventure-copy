@@ -98,7 +98,7 @@ namespace ZL.Unity.Tweening
 
             tweener.Play();
 
-            tweener.Current.OnComplete(OnFadedIn);
+            tweener.Current.onComplete += OnFadedIn;
         }
 
         private void OnFadedIn()
@@ -124,7 +124,7 @@ namespace ZL.Unity.Tweening
 
             tweener.Play();
 
-            tweener.Current.OnComplete(OnFadedOut);
+            tweener.Current.onComplete += OnFadedOut;
         }
 
         private void OnFadedOut()
