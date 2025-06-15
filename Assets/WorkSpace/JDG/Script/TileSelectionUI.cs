@@ -28,7 +28,7 @@ namespace JDG
         private EventTileConfig _eventTileConfig;
         private ShopUI _shopUI;
         private ScriptEventUI _scriptEventUI;
-        [SerializeField] private StageRewardDataSheet _rewardDataSheet;
+        [SerializeField] private StageDataSheet _stageDataSheet;
 
         private Vector3 _uiPos;
         private HexRenderer _currentTile;
@@ -82,30 +82,30 @@ namespace JDG
 
             string key = tile.TileData.SceneName;
 
-            var rewardData = _rewardDataSheet[key];
+            var stageData = _stageDataSheet[key];
 
-            if (rewardData.InGameMoneyAmountMin > 0)
+            if (stageData.InGameMoneyAmountMin > 0)
             {
-                CreateRewardSlot("InGameCurrency", rewardData.InGameMoneyAmountMin, rewardData.InGameMoneyAmountMax, "InGameCurrencyIcon");
+                CreateRewardSlot("InGameCurrency", stageData.InGameMoneyAmountMin, stageData.InGameMoneyAmountMax, "InGameCurrencyIcon");
             }
 
             // 아웃게임 재화
-            if (rewardData.OutGameMoneyAmountMin > 0)
+            if (stageData.OutGameMoneyAmountMin > 0)
             {
-                CreateRewardSlot("OutGameCurrency", rewardData.OutGameMoneyAmountMin, rewardData.OutGameMoneyAmountMax, "OutGameCurrencyIcon");
+                CreateRewardSlot("OutGameCurrency", stageData.OutGameMoneyAmountMin, stageData.OutGameMoneyAmountMax, "OutGameCurrencyIcon");
             }
 
             // 설계도
-            if (rewardData.BluePrintCount > 0)
+            if (stageData.BluePrintCount > 0)
             {
-                Debug.Log(rewardData.BluePrintCount);
-                CreateRewardSlot("BluePrint", rewardData.BluePrintCount, rewardData.BluePrintCount, "BluePrintIcon");
+                Debug.Log(stageData.BluePrintCount);
+                CreateRewardSlot("BluePrint", stageData.BluePrintCount, stageData.BluePrintCount, "BluePrintIcon");
             }
 
             // 유물
-            if (rewardData.RelicCount > 0)
+            if (stageData.RelicCount > 0)
             {
-                CreateRewardSlot("랜덤유물", 0, rewardData.RelicCount, "RandomRelicIcon");
+                CreateRewardSlot("랜덤유물", 0, stageData.RelicCount, "RandomRelicIcon");
             }
 
             if (tile.TileData.IsCleared || tile.TileData.TileType == TileType.Event || tile.TileData.TileType == TileType.Base)

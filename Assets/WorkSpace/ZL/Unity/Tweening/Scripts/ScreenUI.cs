@@ -6,6 +6,8 @@ using ZL.Unity.Tweening;
 
 namespace ZL.Unity.UI
 {
+    [DefaultExecutionOrder((int)ScriptExecutionOrder.Singleton)]
+
     public abstract class ScreenUI<TScreenUI> : ScreenUI, ISingleton<TScreenUI>
 
         where TScreenUI : ScreenUI<TScreenUI>
@@ -36,19 +38,11 @@ namespace ZL.Unity.UI
 
         [UsingCustomProperty]
 
-        [GetComponentInParentOnly]
-
-        private ScreenUIGroup screenGroup = null;
-
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
         [GetComponent]
 
         [Essential]
+
+        [ReadOnly(true)]
 
         [PropertyField]
 
@@ -66,6 +60,16 @@ namespace ZL.Unity.UI
         {
             get => fader;
         }
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [GetComponentInParentOnly]
+
+        private ScreenUIGroup screenGroup = null;
 
         public virtual void Appear()
         {

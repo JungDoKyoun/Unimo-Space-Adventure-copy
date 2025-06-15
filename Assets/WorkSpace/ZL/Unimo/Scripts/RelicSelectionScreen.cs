@@ -87,14 +87,14 @@ namespace ZL.Unity.Unimo
 
             relicCardPool.CollectAll();
 
-            StageRewardData.Instance.DropRelics();
+            StageData.Instance.DropRelics();
 
             DrawRelicCards();
         }
 
         private void DrawRelicCards()
         {
-            if (StageRewardData.Instance.DropedRelicDatas == null)
+            if (StageData.DropedRelicDatas == null)
             {
                 rerollRelicsButton.interactable = false;
 
@@ -103,7 +103,7 @@ namespace ZL.Unity.Unimo
 
             rerollRelicsButton.interactable = PlayerInventoryManager.RelicRerollableCount > 0;
 
-            foreach (var relicData in StageRewardData.Instance.DropedRelicDatas)
+            foreach (var relicData in StageData.DropedRelicDatas)
             {
                 var relicCard = (RelicCard)relicCardPool.Cloning();
 

@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using ZL.CS.Singleton;
 
 using ZL.Unity.Singleton;
+using ZL.Unity.UI;
 
 namespace ZL.Unity.Unimo
 {
@@ -24,7 +25,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private StageDataSheet stageDataSheet = null;
+        private StageData stageData = null;
 
         [SerializeField]
 
@@ -32,7 +33,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private StageRewardDataSheet stageRewardDataSheet = null;
+        private RelicDropTable relicDropTable = null;
 
         [Space]
 
@@ -54,7 +55,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnlyWhenPlayMode]
 
-        private GameObject playerUIScreen = null;
+        private ScreenUI playerUIScreen = null;
 
         [SerializeField]
 
@@ -78,27 +79,13 @@ namespace ZL.Unity.Unimo
 
         private UnityEvent onStageFailEvent = null;
 
-        private StageData stageData = null;
-
-        private StageRewardData stageRewardData = null;
-
-        public static int Level { get; set; } = 1;
-
         protected override void Awake()
         {
             base.Awake();
 
-            stageData = stageDataSheet[Level];
-
-            stageRewardData = stageRewardDataSheet[Level];
-
-            stageDataSheet = null;
-
-            stageRewardDataSheet = null;
-
             ISingleton<StageData>.TrySetInstance(stageData);
 
-            ISingleton<StageRewardData>.TrySetInstance(stageRewardData);
+            ISingleton<RelicDropTable>.TrySetInstance(relicDropTable);
         }
 
         protected override void OnDestroy()
@@ -107,14 +94,14 @@ namespace ZL.Unity.Unimo
 
             ISingleton<StageData>.Release(stageData);
 
-            ISingleton<StageRewardData>.Release(stageRewardData);
+            ISingleton<RelicDropTable>.Release(relicDropTable);
         }
 
         public void StartStage()
         {
             player.OnPlayerDead += StageFail;
 
-            playerUIScreen.SetActive(true);
+            playerUIScreen.Appear();
 
             spawners.SetActive(true);
 
@@ -135,15 +122,15 @@ namespace ZL.Unity.Unimo
         {
             GameStateManager.IsClear = true;
 
-            stageRewardData.DropRewards();
+            stageData.DropRewards();
 
             if (FirebaseDataBaseMgr.Instance != null)
             {
                 Debug.Log("(테스트) 스테이지 보상 지급 코루틴 실행");
 
-                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(stageRewardData.DropedInGameMoneyAmount));
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(StageData.DropedInGameMoneyAmount));
 
-                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(stageRewardData.DropedOutGameMoneyAmount));
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(StageData.DropedOutGameMoneyAmount));
             }
 
             onStageClearEvent.Invoke();

@@ -48,8 +48,6 @@ namespace ZL.Unity.Tweening
 
         protected virtual void Awake()
         {
-            FixedDebug.Log($"(Tweening) {name} Awaken");
-
             ValueTweener.Getter = () => Value;
 
             ValueTweener.Setter = (value) => Value = value;

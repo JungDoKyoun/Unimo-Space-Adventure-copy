@@ -24,8 +24,6 @@ namespace ZL.Unity.Unimo
 
         private SpawnerData spawnerData = null;
 
-        [Space]
-
         [SerializeField]
 
         private SpawnPatternData spawnPatternData = null;

@@ -23,17 +23,6 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private int level = 1;
-
-        public int Level
-        {
-            get => level;
-        }
-
-        [Space]
-
-        [SerializeField]
-
         private float fuelConsumptionAmount = 0f;
 
         public float FuelConsumptionAmount
@@ -125,49 +114,20 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private float relicDropNormal = 0f;
+        private int score = 0;
 
-        public float RelicDropNormal
+        public int Score
         {
-            get => relicDropNormal;
+            get => score;
         }
 
-        [SerializeField]
+        public static int DropedInGameMoneyAmount { get; private set; } = 0;
 
-        private float relicDropRare = 0f;
+        public static int DropedOutGameMoneyAmount { get; private set; } = 0;
 
-        public float RelicDropRare
-        {
-            get => relicDropRare;
-        }
+        public static int DropedBluePrintCount { get; private set; } = 0;
 
-        [SerializeField]
-
-        private float relicDropUnique = 0f;
-
-        public float RelicDropUnique
-        {
-            get => relicDropUnique;
-        }
-
-        [SerializeField]
-
-        private float relicDropEpic = 0f;
-
-        public float RelicDropEpic
-        {
-            get => relicDropEpic;
-        }
-
-        public int DropedInGameMoneyAmount { get; private set; } = 0;
-
-        public int DropedOutGameMoneyAmount { get; private set; } = 0;
-
-        public int DropedBluePrintCount { get; private set; } = 0;
-
-        public RelicData[] DropedRelicDatas { get; private set; } = null;
-
-        private KeyValuePair<RelicRarity, float>[] relicDropTable = null;
+        public static RelicData[] DropedRelicDatas { get; private set; } = null;
 
         public override List<string> GetHeaders()
         {
@@ -192,14 +152,6 @@ namespace ZL.Unity.Unimo
                 nameof(relicChance),
 
                 nameof(relicCount),
-
-                nameof(relicDropNormal),
-
-                nameof(relicDropRare),
-
-                nameof(relicDropUnique),
-
-                nameof(relicDropEpic),
             };
         }
 
@@ -222,14 +174,6 @@ namespace ZL.Unity.Unimo
             relicChance = float.Parse(sheet[name, nameof(relicChance)].value);
 
             relicCount = int.Parse(sheet[name, nameof(relicCount)].value);
-
-            relicDropNormal = float.Parse(sheet[name, nameof(relicDropNormal)].value);
-
-            relicDropRare = float.Parse(sheet[name, nameof(relicDropRare)].value);
-
-            relicDropUnique = float.Parse(sheet[name, nameof(relicDropUnique)].value);
-
-            relicDropEpic = float.Parse(sheet[name, nameof(relicDropEpic)].value);
         }
 
         public override List<string> Export()
@@ -255,14 +199,6 @@ namespace ZL.Unity.Unimo
                 relicChance.ToString(),
 
                 relicCount.ToString(),
-
-                relicDropNormal.ToString(),
-
-                relicDropRare.ToString(),
-
-                relicDropUnique.ToString(),
-
-                relicDropEpic.ToString(),
             };
         }
 
@@ -288,51 +224,7 @@ namespace ZL.Unity.Unimo
 
         public void DropRelics()
         {
-            DropedRelicDatas = GetRandomRelics(relicCount);
-        }
-
-        public RelicData[] GetRandomRelics(int count)
-        {
-            if (count == 0)
-            {
-                return null;
-            }
-
-            relicDropTable ??= new KeyValuePair<RelicRarity, float>[]
-            {
-                new(RelicRarity.Normal, relicDropNormal),
-
-                new(RelicRarity.Rare, relicDropRare),
-
-                new(RelicRarity.Unique, relicDropUnique),
-
-                new(RelicRarity.Epic, relicDropEpic),
-            };
-
-            var relics = new RelicData[count];
-
-            for (int i = 0; i < count; ++i)
-            {
-                float cumulative = 0f;
-
-                for (int j = 0; j < relicDropTable.Length; ++j)
-                {
-                    cumulative += relicDropTable[j].Value;
-
-                    if (cumulative <= Random.value)
-                    {
-                        continue;
-                    }
-
-                    var relicDatas = RelicDataSheet.Instance.RelicDictionary[relicDropTable[j].Key];
-
-                    relics[i] = RandomEx.Range(relicDatas);
-
-                    break;
-                }
-            }
-
-            return relics;
+            DropedRelicDatas = RelicDropTable.Instance.GetRandomRelics(relicCount);
         }
 
         void ISingleton<StageData>.Release()

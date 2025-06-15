@@ -50,11 +50,7 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private StageDataSheet[] stageDataSheets = null;
-
-        [SerializeField]
-
-        private StageRewardDataSheet[] stageRewardDataSheets = null;
+        private StageDataSheet stageDataSheet = null;
 
         [SerializeField]
 
@@ -123,14 +119,9 @@ namespace ZL.Unity.Unimo
                 spawnerDataSheet.Read();
             }
 
-            for (int i = 0; i < stageDataSheets.Length; ++i)
+            if (stageDataSheet != null)
             {
-                stageDataSheets[i].Read();
-            }
-
-            for (int i = 0; i < stageRewardDataSheets.Length; ++i)
-            {
-                stageRewardDataSheets[i].Read();
+                stageDataSheet.Read();
             }
         }
     }

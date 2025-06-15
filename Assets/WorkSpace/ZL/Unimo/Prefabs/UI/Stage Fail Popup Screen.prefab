@@ -32,10 +32,10 @@ RectTransform:
   - {fileID: 1101894693518022526}
   m_Father: {fileID: 6439300697841677084}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 450, y: -285}
-  m_SizeDelta: {x: 900, y: 130}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7355433329663059964
 MonoBehaviour:
@@ -85,7 +85,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 483736776594626883, guid: 359e058e03a595e41991b54d5de3c35a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 483736776594626883, guid: 359e058e03a595e41991b54d5de3c35a, type: 3}
       propertyPath: m_AnchorMin.x
@@ -93,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 483736776594626883, guid: 359e058e03a595e41991b54d5de3c35a, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 483736776594626883, guid: 359e058e03a595e41991b54d5de3c35a, type: 3}
       propertyPath: m_SizeDelta.x
@@ -101,7 +101,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 483736776594626883, guid: 359e058e03a595e41991b54d5de3c35a, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 130
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 483736776594626883, guid: 359e058e03a595e41991b54d5de3c35a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -133,11 +133,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 483736776594626883, guid: 359e058e03a595e41991b54d5de3c35a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 450
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 483736776594626883, guid: 359e058e03a595e41991b54d5de3c35a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -65
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 483736776594626883, guid: 359e058e03a595e41991b54d5de3c35a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -248,7 +248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 989094065091301861, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 989094065091301861, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
       propertyPath: m_AnchorMin.x
@@ -256,11 +256,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 989094065091301861, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 989094065091301861, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 900
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 989094065091301861, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
       propertyPath: m_SizeDelta.y
@@ -296,11 +296,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 989094065091301861, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 450
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 989094065091301861, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -120
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 989094065091301861, guid: 5575df95f10f6ed499e061de7c8397ca, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -355,10 +355,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1365781609494445522, guid: 47942893567dcd340891798a2eca1b9c, type: 3}
-      propertyPath: objectVaueTweener
-      value: 
-      objectReference: {fileID: 4793205907321084787}
     - target: {fileID: 2931919599134053290, guid: 47942893567dcd340891798a2eca1b9c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -443,22 +439,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stage Fail Popup Screen
       objectReference: {fileID: 0}
-    - target: {fileID: 8496382529015777821, guid: 47942893567dcd340891798a2eca1b9c, type: 3}
-      propertyPath: valueTweener.onStartEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8496382529015777821, guid: 47942893567dcd340891798a2eca1b9c, type: 3}
-      propertyPath: valueTweener.onCompleteEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8621492510198996590, guid: 47942893567dcd340891798a2eca1b9c, type: 3}
-      propertyPath: onAwakeEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8621492510198996590, guid: 47942893567dcd340891798a2eca1b9c, type: 3}
-      propertyPath: onAwakeEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2970607825987263713, guid: 47942893567dcd340891798a2eca1b9c, type: 3}
@@ -494,19 +474,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fader: {fileID: 6906468876867587834}
-  stagePlayTimeClock: {fileID: 0}
+  screenGroup: {fileID: 0}
   stagePlayTimeTextUI: {fileID: 8442207192245619789}
---- !u!114 &4793205907321084787 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8496382529015777821, guid: 47942893567dcd340891798a2eca1b9c, type: 3}
-  m_PrefabInstance: {fileID: 3994083209154351470}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d6247e40f742f241b9ac8c8aaaa848a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6906468876867587834 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7545043805423312788, guid: 47942893567dcd340891798a2eca1b9c, type: 3}

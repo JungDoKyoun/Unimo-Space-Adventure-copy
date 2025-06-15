@@ -74,7 +74,7 @@ namespace ZL.Unity.Unimo
                 yield return null;
             }
 
-            if (StageRewardData.Instance.DropedRelicDatas != null)
+            if (StageData.DropedRelicDatas != null)
             {
                 relicSelectionScreen.Appear();
 
