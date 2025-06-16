@@ -46,6 +46,13 @@ namespace ZL.Unity.Unimo
             currentHealth = gatheringData.MaxHealth;
         }
 
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            OnDisappear();
+        }
+
         public void TakeDamage(float damage, Vector3 contact = default)
         {
             currentHealth -= damage;
@@ -54,22 +61,24 @@ namespace ZL.Unity.Unimo
             {
                 currentHealth = 0f;
 
-                Killed();
+                ++GatheringManager.Instance.GatheringCount;
+
+                Disappear();
             }
-        }
-
-        private void Killed()
-        {
-            CancelInvoke();
-
-            ++GatheringManager.Instance.GatheringCount;
-
-            Disappear();
         }
 
         private void Disappear()
         {
+            CancelInvoke(nameof(Disappear));
+
+            OnDisappear();
+
             OnDisappeared();
+        }
+
+        private void OnDisappear()
+        {
+
         }
 
         public void OnDisappeared()

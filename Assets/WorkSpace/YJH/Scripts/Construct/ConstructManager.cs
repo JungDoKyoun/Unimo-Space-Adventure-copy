@@ -85,9 +85,15 @@ public class ConstructManager : MonoBehaviour
             PlayerManager.OnStageFail += ResetApplyBuildEffect;
             isDelinkON =true;
         }
-        PlayerInventoryManager.AddRelic(tempRelic);
-        Debug.Log(tempRelic.Effects[0].Value);
-        Debug.Log(PlayerInventoryManager.RelicDatas.Count);
+    }
+    private void Start()
+    {
+        if (tempRelic != null)
+        {
+            PlayerInventoryManager.AddRelic(tempRelic);
+            //Debug.Log(tempRelic.Effects[0].Value);
+            //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
+        }
     }
     private void OnDestroy()
     {
@@ -504,7 +510,7 @@ public class ConstructManager : MonoBehaviour
 
                             break;
                         case MaxHp maxHP:
-                            maxHPSum += buildeffect.ReturnFinalStat(originPlayerStatus.maxHP);
+                            maxHPSum += buildeffect.ReturnFinalStat(originPlayerStatus.maxHealth);
 
                             break;
                         case GatheringSpeed gatheringSpeed:
@@ -529,7 +535,7 @@ public class ConstructManager : MonoBehaviour
 
         //playerStatus = PlayerManager.OriginStatus.Clone();// 이거 그냥 더할 양만큼 준비하는게 나을지도? 갈아끼는 식 말고-> 클리어 실패시 초기화 필요하니 오리진에서 더하는 방식으로 하자
         playerStatus.moveSpeed += speedSum;
-        playerStatus.maxHP += maxHPSum;
+        playerStatus.maxHealth += maxHPSum;
         playerStatus.gatheringSpeed += gatherSpeedSum;
         playerStatus.gatheringDelay += gatherDelaySum;
         playerStatus.playerDamage += damageSum;
@@ -537,7 +543,7 @@ public class ConstructManager : MonoBehaviour
 
 
 
-        Debug.Log(playerStatus.playerDamage);
+        //Debug.Log(playerStatus.playerDamage);
 
     }
     
@@ -590,8 +596,8 @@ public class ConstructManager : MonoBehaviour
             OnConstructCostChange.Invoke();
 
         }
-        Debug.Log(FirebaseDataBaseMgr.Blueprint);
-        Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
+        //Debug.Log(FirebaseDataBaseMgr.Blueprint);
+        //Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
         
         
     }

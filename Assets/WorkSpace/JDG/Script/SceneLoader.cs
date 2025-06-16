@@ -44,6 +44,8 @@ namespace JDG
 
         public void EnterTileScene(HexRenderer tile)
         {
+            GameStateManager.IsClear = true;
+
             _choseTileData = tile.TileData;
             GameStateManager.Instance.SaveTileStates(_hexGridLayout.HexMap, _hexGridLayout.PlayerCoord);
 

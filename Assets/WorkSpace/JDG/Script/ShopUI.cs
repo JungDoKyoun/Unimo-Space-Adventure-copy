@@ -75,7 +75,7 @@ namespace JDG
             {
                 FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(-_repair1Price);
 
-                float maxHP = PlayerManager.PlayerStatus.maxHP;
+                float maxHP = PlayerManager.PlayerStatus.maxHealth;
 
                 float tenPer = maxHP / 10;
 
@@ -94,7 +94,7 @@ namespace JDG
             {
                 FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(-_repair2Price);
 
-                float maxHP = PlayerManager.PlayerStatus.maxHP ;
+                float maxHP = PlayerManager.PlayerStatus.maxHealth ;
 
                 float currentHP = PlayerManager.PlayerStatus.currentHealth;
                 currentHP += maxHP;

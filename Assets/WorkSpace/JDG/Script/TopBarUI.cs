@@ -23,8 +23,8 @@ namespace JDG
 
         private void Start()
         {
-            _maxHP = PlayerManager.PlayerStatus.maxHP;
-            _timeLimitMax = PlayerFuelManager.FuelMax;
+            _maxHP = PlayerManager.PlayerStatus.maxHealth;
+            _timeLimitMax = PlayerFuelManager.MaxFuel;
 
             if (_playerImage != null)
                 _playerImageUI.sprite = _playerImage;

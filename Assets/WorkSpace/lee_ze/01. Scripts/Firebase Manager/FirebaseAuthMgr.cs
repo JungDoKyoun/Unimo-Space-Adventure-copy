@@ -151,11 +151,11 @@ public class FirebaseAuthMgr : MonoBehaviour
 
     private void OnDisable()
     {
-        loginButton.onClick.RemoveListener(Login);
+        loginButton?.onClick.RemoveListener(Login);
 
-        signUpButton.onClick.RemoveListener(Register);
+        signUpButton?.onClick.RemoveListener(Register);
 
-        logoutButton.onClick.RemoveListener(Logout);
+        logoutButton?.onClick.RemoveListener(Logout);
 
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }

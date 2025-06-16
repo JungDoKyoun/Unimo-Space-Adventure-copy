@@ -1,5 +1,5 @@
 using Photon.Pun;
-
+using System;
 using System.Collections;
 
 using TMPro;
@@ -110,6 +110,8 @@ public partial class PlayerManager
     [SerializeField]
 
     private SphereCollider detectCollider;
+
+    public static event Action<float> OnEnergyChanged = null;
 
     public void ActionStart()// 멀티용으로 리펙토링한거 나중에 다 해체하기
     {
@@ -334,6 +336,8 @@ public partial class PlayerManager
 
             playerOwnEnergy %= playerAttackType.EnergyCost;
         }
+
+        OnEnergyChanged?.Invoke(playerOwnEnergy);
     }
 
     // 한번에 2개 이상 먹을 시 가로로 늘려서 발사하는 것으로

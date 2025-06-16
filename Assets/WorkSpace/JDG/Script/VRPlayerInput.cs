@@ -82,6 +82,7 @@ namespace JDG
             {
                 TryRayInteract(_rightRayInteractor);
             }
+
             else if (IsTriggerPressed(_leftInputController))
             {
                 TryRayInteract(_leftRayInteractor);

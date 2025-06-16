@@ -14,8 +14,6 @@ namespace ZL.Unity.Unimo
         {
             player.GetEnergy(energy);
 
-            CancelInvoke(nameof(Disappear));
-
             Disappear();
         }
     }

@@ -41,7 +41,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private static float winCount;
 
-    private static float currentScore;
+    private static float currentScore = 0;
 
     private static bool isRankUpdated = false;
 

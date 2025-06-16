@@ -6,7 +6,7 @@ public class PlayerStatus
 {
     public float currentHealth;
 
-    public float maxHP;
+    public float maxHealth;
 
     public float playerDamage;
 
@@ -23,7 +23,7 @@ public class PlayerStatus
     public PlayerStatus()
     {
         currentHealth = 0;
-        maxHP = 0;
+        maxHealth = 0;
         playerDamage = 0;
         itemDetectionRange = 0;
         gatheringSpeed = 0;
@@ -33,7 +33,7 @@ public class PlayerStatus
     public PlayerStatus(float nowHP,float maxHp,float playerDamage,float detectionRange, float gatherSpeed,float gatherDelay,float moveSpeed)
     {
         currentHealth=nowHP;
-        maxHP=maxHp;
+        maxHealth=maxHp;
         this.playerDamage = playerDamage;
         itemDetectionRange=detectionRange;
         gatheringSpeed = gatherSpeed;
@@ -47,7 +47,7 @@ public class PlayerStatus
 
         clone.currentHealth = currentHealth;
 
-        clone.maxHP = maxHP;
+        clone.maxHealth = maxHealth;
 
         clone.playerDamage = playerDamage;
 
@@ -72,7 +72,7 @@ public class PlayerStatus
         return new PlayerStatus
         {
             currentHealth = a.currentHealth + b.currentHealth,
-            maxHP = a.maxHP + b.maxHP,
+            maxHealth = a.maxHealth + b.maxHealth,
             playerDamage = a.playerDamage + b.playerDamage,
             itemDetectionRange = a.itemDetectionRange + b.itemDetectionRange,
             gatheringSpeed = a.gatheringSpeed + b.gatheringSpeed,
@@ -90,7 +90,7 @@ public class PlayerStatus
         return new PlayerStatus
         {
             currentHealth = a.currentHealth - b.currentHealth,
-            maxHP = a.maxHP - b.maxHP,
+            maxHealth = a.maxHealth - b.maxHealth,
             playerDamage = a.playerDamage - b.playerDamage,
             itemDetectionRange = a.itemDetectionRange - b.itemDetectionRange,
             gatheringSpeed = a.gatheringSpeed - b.gatheringSpeed,

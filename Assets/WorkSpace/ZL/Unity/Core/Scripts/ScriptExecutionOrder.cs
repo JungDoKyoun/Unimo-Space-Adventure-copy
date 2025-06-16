@@ -4,6 +4,8 @@ namespace ZL.Unity
     {
         Min = -100,
 
+        Loader,
+
         Singleton,
 
         Tweener,
@@ -11,7 +13,5 @@ namespace ZL.Unity
         Default = 0,
 
         Lazy,
-
-        SceneDirector,
     }
 }

@@ -136,8 +136,6 @@ namespace ZL.Unity.Unimo
             {
                 currentHealth = 0f;
 
-                CancelInvoke(nameof(Disappear));
-
                 Disappear();
             }
         }
@@ -151,6 +149,8 @@ namespace ZL.Unity.Unimo
 
         private void Disappear()
         {
+            CancelInvoke(nameof(Disappear));
+
             OnDisappear();
 
             animator.SetTrigger("Disappear");

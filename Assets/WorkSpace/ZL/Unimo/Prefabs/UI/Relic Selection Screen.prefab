@@ -512,7 +512,7 @@ MonoBehaviour:
   rerollRelicsButton: {fileID: 2100656927622501140}
   rerollRelicsButtonTextUI: {fileID: 3315676947153544229}
   relicCardPool:
-    prefab: {fileID: 387439308401205736, guid: 0c732e57711ad4c4db21755eda0c3452, type: 3}
+    prefab: {fileID: 9094202213200652601}
     parent: {fileID: 8062192157767254922}
 --- !u!224 &8967331689460034776 stripped
 RectTransform:
@@ -1270,10 +1270,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Relic Card
       objectReference: {fileID: 0}
-    - target: {fileID: 4048298774653746078, guid: 0c732e57711ad4c4db21755eda0c3452, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1284,3 +1280,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2659425622123229825, guid: 0c732e57711ad4c4db21755eda0c3452, type: 3}
   m_PrefabInstance: {fileID: 8887129584351545553}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9094202213200652601 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 387439308401205736, guid: 0c732e57711ad4c4db21755eda0c3452, type: 3}
+  m_PrefabInstance: {fileID: 8887129584351545553}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d481bbe185dd38149a76f2f060b622fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

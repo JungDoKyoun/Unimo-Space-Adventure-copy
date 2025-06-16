@@ -71,33 +71,13 @@ public partial class PlayerManager : IDamageable
     //맞았는지?
     private bool isOnHit = false;
 
-    [Space]
+    public static event Action<float> OnHealthChanged = null;
 
-    [SerializeField]
+    public static event Action OnPlayerDead = null;
 
-    private UnityEvent<float> onHealthChanged;
+    public static event Action OnStageClear = null;
 
-    public UnityEvent<float> OnHealthChanged
-    {
-        get => onHealthChanged;
-    }
-
-    [Space]
-
-    [SerializeField]
-
-    private UnityEvent onPlayerDead;
-
-    public UnityEvent OnPlayerDead
-    {
-        get => onPlayerDead;
-    }
-
-    public delegate void onStageClear();
-
-    public static event onStageClear OnStageClear;
-
-    public static event onStageClear OnStageFail;
+    public static event Action OnStageFail = null;
 
     private void OnCollisionStay(Collision collision)
     {
@@ -133,7 +113,7 @@ public partial class PlayerManager : IDamageable
 
         playerStatus.currentHealth -= damage;//데미지 입음
         
-        OnHealthChanged.Invoke(playerStatus.currentHealth);
+        OnHealthChanged?.Invoke(playerStatus.currentHealth);
 
         if (playerStatus.currentHealth <= 0f)
         {
