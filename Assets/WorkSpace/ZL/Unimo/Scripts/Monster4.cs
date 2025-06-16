@@ -2,8 +2,6 @@ using UnityEngine;
 
 using UnityEngine.Animations;
 
-using ZL.Unity.Phys;
-
 namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Monster 4 (Pooled)")]
@@ -28,7 +26,7 @@ namespace ZL.Unity.Unimo
 
             if (rotationSpeed != 0f)
             {
-                rigidbody.LookTowards(Destination, Axis.Y, rotationSpeed);
+                rigidbody.LookTowards(Destination.position, Axis.Y, rotationSpeed);
             }
 
             if (isDashing == false)

@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.Animations;
 
 namespace ZL.Unity
 {
-    public static partial class TransformExtensions
+    public static partial class TransformEx
     {
         #region Get Component In Children
 
@@ -301,6 +302,20 @@ namespace ZL.Unity
         public static Transform GetLastChild(this Transform instance)
         {
             return instance.GetChild(instance.childCount - 1);
+        }
+
+        public static void LookAt(this Transform instance, Vector3 worldPosition, Axis freezeRotation)
+        {
+            LookAt(instance, worldPosition, Vector3.up, freezeRotation);
+        }
+
+        public static void LookAt(this Transform instance, Vector3 worldPosition, Vector3 worldUp, Axis freezeRotation)
+        {
+            var forward = (worldPosition - instance.position).normalized;
+
+            var rotation = QuaternionEx.LookRotation(forward, worldUp, freezeRotation);
+
+            instance.rotation = rotation;
         }
     }
 }

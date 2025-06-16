@@ -4,11 +4,9 @@ using UnityEngine;
 
 using ZL.Unity.Coroutines;
 
-using ZL.Unity.Pooling;
-
 namespace ZL.Unity.Unimo
 {
-    public abstract class RandomSpawner : MonoBehaviour
+    public abstract class RandomSpawner : Spawner
     {
         [Space]
 
@@ -16,108 +14,65 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [Essential]
+        [Text("<b>웨이브에 소환할 최소 오브젝트 수</b>")]
 
-        protected SpawnerData spawnerData = null;
-
-        [SerializeField]
-
-        private float initialSpawnInterval = 0f;
+        protected int minSpawnCount = 0;
 
         [Space]
 
         [SerializeField]
 
-        private bool startSpawningOnEnable = true;
+        [UsingCustomProperty]
 
-        private float spawnInterval = 0f;
+        [Text("<b>웨이브에 소환할 최대 오브젝트 수</b>")]
 
-        private int spawnedCount = 0;
+        protected int maxSpawnCount = 0;
 
-        private void OnEnable()
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Text("<b>소환 가능한 오브젝트 수 (-1: 무제한)</b>")]
+
+        protected int maxObjectCount = -1;
+
+        protected override IEnumerator SpawnRoutine()
         {
-            if (startSpawningOnEnable == false)
+            if (objectCount >= maxObjectCount)
             {
-                return;
+                yield break;
             }
 
-            StartSpawning();
-        }
+            int spawnCount = Random.Range(minSpawnCount, maxSpawnCount);
 
-        public void StartSpawning()
-        {
-            if (spawningRoutine != null)
+            if (spawnCount == 0)
             {
-                return;
-            }
-
-            spawningRoutine = SpawningRoutine();
-
-            StartCoroutine(spawningRoutine);
-        }
-
-        public void StopSpawning()
-        {
-            if (spawningRoutine == null)
-            {
-                return;
-            }
-
-            StopCoroutine(spawningRoutine);
-
-            spawningRoutine = null;
-        }
-
-        private IEnumerator spawningRoutine = null;
-
-        private IEnumerator SpawningRoutine()
-        {
-            spawnInterval = initialSpawnInterval;
-
-            if (spawnInterval == -1f)
-            {
-                spawnInterval = Random.Range(spawnerData.ObjectSpawnMinCount, spawnerData.ObjectSpawnMaxCount);
+                yield break;
             }
 
             while (true)
             {
-                if (spawnInterval != 0f)
+                Spawn();
+
+                if (objectCount >= maxObjectCount)
                 {
-                    yield return WaitForSecondsCache.Get(spawnInterval);
+                    break;
                 }
 
-                int spawnCount = Random.Range(spawnerData.ObjectSpawnMinCount, spawnerData.ObjectSpawnMaxCount);
-
-                while (spawnCount-- > 0)
+                if (--spawnCount == 0)
                 {
-                    if (spawnedCount >= spawnerData.ObjectCountLimits)
-                    {
-                        break;
-                    }
-
-                    Spawn();
+                    break;
                 }
 
-                spawnInterval = Random.Range(spawnerData.ObjectSpawnMinTime, spawnerData.ObjectSpawnMaxTime);
+                if (spawnDelay != 0f)
+                {
+                    yield return WaitForSecondsCache.Get(spawnDelay);
+                }
             }
         }
 
         protected abstract void Spawn();
-
-        protected PooledObject Cloning()
-        {
-            ++spawnedCount;
-
-            var pooledObject = ObjectPoolManager.Instance.Cloning(spawnerData.SpawnObject);
-
-            pooledObject.OnDisableAction += OnDespawn;
-
-            return pooledObject;
-        }
-
-        private void OnDespawn()
-        {
-            --spawnedCount;
-        }
     }
 }

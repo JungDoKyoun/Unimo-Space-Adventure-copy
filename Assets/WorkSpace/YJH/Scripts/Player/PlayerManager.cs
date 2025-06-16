@@ -89,24 +89,38 @@ public partial class PlayerManager
     public void ShowStatusDebug()
     {
         //Debug.Log(playerStatus.currentHealth);
+
         //Debug.Log(playerStatus.maxHealth);
+
         //Debug.Log(playerStatus.gatheringDelay);
-        //Debug.Log(playerStatus.gatheringSpeed );
+
+        //Debug.Log(playerStatus.gatheringSpeed);
+
         //Debug.Log(playerStatus.playerDamage);
     }
+
     private void ResetPlayer()
     {
         playerOwnEnergy = 0;
+
         isGatheringCoroutineWork = false;
+
         isSkillRejectActive = false;
+
         isItemNear = false;
+
         isGathering = false;
-        playerSpellType.SetState(false);
+
+        //playerSpellType.SetState(false);
+
+        playerSpellType = null;
     }
     public static void ActiveRelic()
     {
         Debug.Log("try use relic");
+
         //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
+
         foreach (var relic in PlayerInventoryManager.RelicDatas)
         {
             Debug.Log("relic data exist");

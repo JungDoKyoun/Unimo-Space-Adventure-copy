@@ -46,7 +46,7 @@ namespace ZL.Unity.Unimo
 
             if (rotationSpeed != 0f)
             {
-                rigidbody.LookTowards(Destination, Axis.Y, rotationSpeed);
+                rigidbody.LookTowards(Destination.position, Axis.Y, rotationSpeed);
             }
 
             if (enemyData.MoveSpeed != 0f)

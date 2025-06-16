@@ -1,9 +1,5 @@
 using UnityEngine;
 
-using UnityEngine.Animations;
-
-using ZL.Unity.Phys;
-
 using ZL.Unity.Pooling;
 
 namespace ZL.Unity.Unimo
@@ -97,11 +93,6 @@ namespace ZL.Unity.Unimo
 
         protected virtual void OnEnable()
         {
-            if (Destination != null)
-            {
-                rigidbody.rotation = rigidbody.LookRotation(Destination, Axis.Y);
-            }
-
             currentHealth = enemyData.MaxHealth;
 
             if (lifeTime > 0f)

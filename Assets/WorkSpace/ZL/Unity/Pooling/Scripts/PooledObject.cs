@@ -12,9 +12,9 @@ namespace ZL.Unity.Pooling
 
         private event Action OnCollectedAction = null;
 
-        public static TPooledObject Instantiate<TPooledObject>(ObjectPool<TPooledObject> objectPool)
+        public static TClone Instantiate<TClone>(ObjectPool<TClone> objectPool)
 
-            where TPooledObject : PooledObject
+            where TClone : PooledObject
         {
             var clone = Instantiate(objectPool.Prefab, objectPool.Parent);
 

@@ -1,12 +1,8 @@
-using System;
-
 using UnityEngine;
 
 using UnityEngine.Animations;
 
-using ZL.CS;
-
-namespace ZL.Unity.Phys
+namespace ZL.Unity
 {
     public static partial class RigidbodyEx
     {
@@ -35,60 +31,27 @@ namespace ZL.Unity.Phys
             instance.constraints = constraints;
         }
 
-        public static void LookTowards(this Rigidbody instance, Transform target, Axis freezeRotation, float maxDegreesDelta)
+        public static void LookTowards(this Rigidbody instance, Vector3 worldPosition, Axis freezeRotation, float maxDegreesDelta)
         {
-            LookTowards(instance, target.position, freezeRotation, maxDegreesDelta);
-        }
-
-        public static void LookTowards(this Rigidbody instance, Vector3 targetPosition, Axis freezeRotation, float maxDegreesDelta)
-        {
-            var lookRotation = instance.LookRotation(targetPosition, freezeRotation);
+            var to = instance.LookRotation(worldPosition, freezeRotation);
 
             maxDegreesDelta *= Time.fixedDeltaTime;
 
-            var nextRotation = Quaternion.RotateTowards(instance.rotation, lookRotation, maxDegreesDelta);
+            var nextRotation = Quaternion.RotateTowards(instance.rotation, to, maxDegreesDelta);
 
             instance.MoveRotation(nextRotation);
         }
 
-        public static Quaternion LookRotation(this Rigidbody instance, Transform target, Axis freezeRotation)
+        public static Quaternion LookRotation(this Rigidbody instance, Vector3 worldPosition, Axis freezeRotation)
         {
-            return LookRotation(instance, target.position, freezeRotation);
+            return LookRotation(instance, worldPosition, Vector3.up, freezeRotation);
         }
 
-        public static Quaternion LookRotation(this Rigidbody instance, Vector3 targetPosition, Axis freezeRotation)
+        public static Quaternion LookRotation(this Rigidbody instance, Vector3 worldPosition, Vector3 upwards, Axis freezeRotation)
         {
-            var forward = (targetPosition - instance.position).normalized;
+            var forward = (worldPosition - instance.position).normalized;
 
-            return QuaternionEx.LookRotation(forward, freezeRotation);
-        }
-    }
-
-    public static partial class QuaternionEx
-    {
-        public static Quaternion LookRotation(Vector3 forward, Axis freezeRotation)
-        {
-            if (freezeRotation.Contains(Axis.X) == true)
-            {
-                forward.y = 0f;
-            }
-
-            if (freezeRotation.Contains(Axis.Y) == true)
-            {
-                forward.x = 0f;
-            }
-
-            if (freezeRotation.Contains(Axis.Z) == true)
-            {
-                forward.z = 0f;
-            }
-
-            if (forward.sqrMagnitude == 0f)
-            {
-                return Quaternion.identity;
-            }
-
-            return Quaternion.LookRotation(forward);
+            return QuaternionEx.LookRotation(forward, upwards, freezeRotation);
         }
     }
 }

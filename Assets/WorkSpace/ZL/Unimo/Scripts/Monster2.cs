@@ -2,8 +2,6 @@ using UnityEngine;
 
 using UnityEngine.Animations;
 
-using ZL.Unity.Phys;
-
 using ZL.Unity.Pooling;
 
 namespace ZL.Unity.Unimo
@@ -67,7 +65,7 @@ namespace ZL.Unity.Unimo
 
             if (rotationSpeed != 0f)
             {
-                rigidbody.LookTowards(Destination, Axis.Y, rotationSpeed);
+                rigidbody.LookTowards(Destination.position, Axis.Y, rotationSpeed);
             }
 
             if (Vector3.Distance(transform.position, Destination.position) <= stopDistance)
@@ -123,7 +121,7 @@ namespace ZL.Unity.Unimo
 
         public void Shoot()
         {
-            var projectile = ObjectPoolManager.Instance.Cloning(projectileName);
+            var projectile = ObjectPoolManager.Instance.Clone(projectileName);
 
             projectile.transform.SetPositionAndRotation(muzzle);
 

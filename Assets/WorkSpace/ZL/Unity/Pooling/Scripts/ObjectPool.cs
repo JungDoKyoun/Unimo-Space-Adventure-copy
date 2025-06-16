@@ -13,9 +13,9 @@ namespace ZL.Unity.Pooling
 
     }
 
-    public abstract class ObjectPool<TPooledObject> : Pool<TPooledObject>
+    public abstract class ObjectPool<TClone> : Pool<TClone>
 
-        where TPooledObject : PooledObject
+        where TClone : PooledObject
     {
         [SerializeField]
 
@@ -23,9 +23,9 @@ namespace ZL.Unity.Pooling
 
         [Essential]
 
-        protected TPooledObject prefab = null;
+        protected TClone prefab = null;
 
-        public TPooledObject Prefab
+        public TClone Prefab
         {
             get => prefab;
         }
@@ -39,7 +39,7 @@ namespace ZL.Unity.Pooling
             get => parent;
         }
 
-        public override TPooledObject Instantiate()
+        public override TClone Instantiate()
         {
             return PooledObject.Instantiate(this);
         }

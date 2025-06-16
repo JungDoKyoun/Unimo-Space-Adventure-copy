@@ -1,8 +1,13 @@
 using System.Collections;
+
 using System.Collections.Generic;
+
 using TMPro;
+
 using UnityEngine;
+
 using UnityEngine.EventSystems;
+
 using UnityEngine.UI;
 
 namespace JDG
@@ -10,38 +15,85 @@ namespace JDG
     public class ScriptEventChoiceShlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [Header("슬롯 생성시 필요한 것들")]
-        [SerializeField] private RectTransform _nameTextTransform;
-        [SerializeField] private RectTransform _descTextTransform;
-        [SerializeField] private RectTransform _maskAreaTransform;
-        [SerializeField] private Button _button;
-        [SerializeField] private TextMeshProUGUI _choiceName;
-        [SerializeField] private TextMeshProUGUI _choiceDesc;
-        [SerializeField] private Sprite _buttonUsefulImage;
-        [SerializeField] private Sprite _buttonHarmfulImage;
-        [SerializeField] private Sprite _buttonUseAndHarmfulImage;
+
+        [SerializeField]
+        
+        private RectTransform _nameTextTransform;
+
+        [SerializeField]
+        
+        private RectTransform _descTextTransform;
+
+        [SerializeField]
+        
+        private RectTransform _maskAreaTransform;
+
+        [SerializeField]
+        
+        private Button _button;
+
+        [SerializeField]
+        
+        private TextMeshProUGUI _choiceName;
+
+        [SerializeField]
+        
+        private TextMeshProUGUI _choiceDesc;
+
+        [SerializeField]
+        
+        private Sprite _buttonUsefulImage;
+
+        [SerializeField]
+        
+        private Sprite _buttonHarmfulImage;
+
+        [SerializeField]
+        
+        private Sprite _buttonUseAndHarmfulImage;
 
         [Header("글자 속도 조정")]
-        [SerializeField] private float _scrollSpeed;
-        [SerializeField] private float _pauseTime;
+
+        [SerializeField]
+        
+        private float _scrollSpeed;
+
+        [SerializeField]
+        
+        private float _pauseTime;
 
         private ChoiceDataSO _choiceData;
+
         private Coroutine _nameScrollCo;
+
         private Coroutine _descScrollCo;
+
         private float _nameDefaultX;
+
         private float _descDefaultX;
+
         private float _nameScrollLength;
+
         private float _descScrollLength;
 
         private void Start()
         {
             _nameDefaultX = _nameTextTransform.anchoredPosition.x;
+
             var nameTmp = _nameTextTransform.GetComponent<TextMeshProUGUI>();
+
             float nameTextLength = nameTmp.preferredWidth;
+
             float maskAreaLength = _maskAreaTransform.rect.width;
+
             _nameScrollLength = Mathf.Max(0, nameTextLength - maskAreaLength);
+
             _descDefaultX = _descTextTransform.anchoredPosition.x;
+
             var descTmp = _descTextTransform.GetComponent<TextMeshProUGUI>();
+
             float descTextLength = descTmp.preferredWidth;
+
             _descScrollLength = Mathf.Max(0, descTextLength - maskAreaLength);
         }
 
@@ -105,33 +157,43 @@ namespace JDG
                     switch (effeect._choiceEffectType)
                     {
                         case ChoiceEffectType.Useful:
+
                             midleDes.Add($"<color=#22CD1C>{des}</color>");
+
                             break;
+
                         case ChoiceEffectType.Harmful:
+
                             midleDes.Add($"<color=red>{des}</color>");
+
                             break;
+
                         case ChoiceEffectType.None:
+
                             midleDes.Add(des);
+
                             break;
                     }
                 }
 
                 string temp = string.Join(",", midleDes);
+
                 int percent = Mathf.RoundToInt(prob._probability * 100);
 
                 if (prob._probability < 1)
                 {
                     allDes.Add($"({percent}%) {temp}");
                 }
+
                 else
                 {
                     allDes.Add(temp);
                 }
-
             }
             string temp2 = string.Join(",", allDes);
 
             _choiceName.text = choiceData._choiceName;
+
             _choiceDesc.text = temp2;
 
             if (!ConditionChecker.IsChoiceAvailable(choiceData))
@@ -158,26 +220,33 @@ namespace JDG
             if (_nameScrollCo != null)
             {
                 StopCoroutine(_nameScrollCo);
+
                 _nameScrollCo = null;
             }
 
             if (_descScrollCo != null)
             {
                 StopCoroutine(_descScrollCo);
+
                 _descScrollCo = null;
             }
 
             _nameTextTransform.anchoredPosition = new Vector2(_nameDefaultX, _nameTextTransform.anchoredPosition.y);
+
             _descTextTransform.anchoredPosition = new Vector2(_descDefaultX, _descTextTransform.anchoredPosition.y);
         }
 
         public void OnClickChoice()
         {
             if (_choiceData == null)
+            {
                 return;
+            }
 
             ChoiceDataSO data = _choiceData;
+
             float random = Random.value;
+
             float temp = 0f;
 
             if (data._probabilisticEffect == null || data._probabilisticEffect.Count == 0)
@@ -209,48 +278,91 @@ namespace JDG
             switch (eventEffect._effectType)
             {
                 case EffectType.ChangeResource:
+
                     if (eventEffect._value >= 0)
+                    {
                         return $"{eventEffect._value}만큼 {eventEffect._target}가 증가합니다";
+                    }
+
                     else
+                    {
                         return $"{eventEffect._value}만큼 {eventEffect._target}가 감소합니다";
-                    break;
+                    }
 
                 case EffectType.ChangeMaxHP:
+
                     if (eventEffect._value >= 0)
+                    {
                         return $"최대 체력이 {eventEffect._value}만큼 증가합니다";
+                    }
+
                     else
+                    {
                         return $"최대 체력이 {eventEffect._value}만큼 감소합니다";
-                    break;
+                    }
+
                 case EffectType.ChangeCurrentHP:
+
                     if (eventEffect._value >= 0)
+                    {
                         if (eventEffect._value > PlayerManager.PlayerStatus.maxHealth)
+                        {
                             return $"체력이 최대 체력만큼 증가합니다";
+                        }
+
                         else
+                        {
                             return $"체력이 {eventEffect._value}만큼 증가합니다";
+                        }
+                    }
+
                     else
+                    {
                         return $"체력이 {eventEffect._value}만큼 감소합니다";
-                    break;
+                    }
+                    
                 case EffectType.ChangeMaxFuel:
+
                     if (eventEffect._value >= 0)
+                    {
                         return $"최대 연료가 {eventEffect._value}만큼 증가합니다";
+                    }
+
                     else
+                    {
                         return $"최대 연료가 {eventEffect._value}만큼 감소합니다";
-                    break;
+                    }
+
                 case EffectType.ChangeCurrentFuel:
+
                     if (eventEffect._value >= 0)
+                    {
                         return $"연료가 {eventEffect._value}만큼 증가합니다";
+                    }
+
                     else
+                    {
                         return $"연료가 {eventEffect._value}만큼 감소합니다";
+                    }
+
                 case EffectType.ChangeRelic:
+
                     if (eventEffect._value >= 0)
+                    {
                         return $"{eventEffect._relicData.name} 유물을 획득하였습니다";
+                    }
+
                     else
+                    {
                         return $"{eventEffect._relicData.name} 유물을 파괴되었습니다";
-                    break;
+                    }
+
                 case EffectType.None:
+
                     return "아무 변화가 없습니다";
-                    break;
+
                 default:
+
                     return "아무 변화가 없습니다";
             }
         }
@@ -264,6 +376,7 @@ namespace JDG
                 while (textTransform.anchoredPosition.x > defaultX - scrollLength)
                 {
                     textTransform.anchoredPosition -= new Vector2(_scrollSpeed * Time.deltaTime, 0);
+
                     yield return null;
                 }
 
