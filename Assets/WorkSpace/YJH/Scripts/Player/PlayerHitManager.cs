@@ -14,14 +14,7 @@ using ZL.Unity.Unimo;
 
 public partial class PlayerManager : IDamageable
 {
-    //[SerializeField]
-
-    //체력 필요 없나?
-    //private float currentHealth = 300f;
-
-    //[SerializeField]
     
-    //private float maxHP = 300f;
 
     [SerializeField]
 
@@ -45,9 +38,9 @@ public partial class PlayerManager : IDamageable
     
     private SkinnedMeshRenderer faceRenderer;
 
-    [SerializeField]
-    
-    private static float playerDamage = 5f;
+    //[SerializeField]
+    //
+    //private static float playerDamage = 5f;
 
     [SerializeField]
     
@@ -59,18 +52,20 @@ public partial class PlayerManager : IDamageable
     //public RelicData tempRelic;
     public float CurrentHealth
     {
-        get => playerStatus.currentHealth;
+        get => PlayerStatus.currentHealth;
 
         set
         {
             if (value < 0f)
             {
-                playerStatus.currentHealth = 0f;
+                PlayerStatus.currentHealth = 0f;
             }
 
             else
             {
-                playerStatus.currentHealth = value;
+                PlayerStatus.currentHealth = value;
+                //OnHealthChanged?.Invoke(value);
+                
             }
         }
     }
@@ -82,9 +77,9 @@ public partial class PlayerManager : IDamageable
 
     public static event Action OnPlayerDead = null;
 
-    public static event Action OnStageClear = null;
+    public static event Action OnStageClear = null; // 삭제 예정 , 스테이지 매니저에서 관리 예정
 
-    public static event Action OnStageFail = null;
+    public static event Action OnStageFail = null;// 삭제 예정 , 스테이지 매니저에서 관리 예정
 
     private void OnCollisionStay(Collision collision)
     {
@@ -118,9 +113,9 @@ public partial class PlayerManager : IDamageable
             PlayHitEffect(contact);
         }
 
-        playerStatus.currentHealth -= damage;//데미지 입음
-        
-        OnHealthChanged?.Invoke(playerStatus.currentHealth);
+        CurrentHealth -= damage;//데미지 입음
+
+        //OnHealthChanged?.Invoke(playerStatus.currentHealth);
 
         if (playerStatus.currentHealth <= 0f)
         {
@@ -130,9 +125,8 @@ public partial class PlayerManager : IDamageable
 
             OnPlayerDead?.Invoke();
 
-            OnStageFail?.Invoke();  
+            OnStageFail?.Invoke();
         }
-
         else
         {
             StartCoroutine(PlayerBlink());

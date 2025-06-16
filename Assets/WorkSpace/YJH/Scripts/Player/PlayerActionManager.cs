@@ -10,21 +10,21 @@ using ZL.Unity.Unimo;
 
 public partial class PlayerManager 
 {
-    [Header("채집")]
+    //[Header("채집")]
 
-    [SerializeField]
+    //[SerializeField]
+    //
+    //private float itemDetectionRange = 5f;
 
-    private float itemDetectionRange = 5f;
+    public float ItemDetectionRange => playerStatus.itemDetectionRange;
 
-    public float ItemDetectionRange => itemDetectionRange;
-
-    [SerializeField]
-
-    private float gatheringSpeed = 4f;
-    
-    [SerializeField]
-
-    private float gatheringDelay = 0.5f;
+    //[SerializeField]
+    //
+    //private float gatheringSpeed = 4f;
+    //
+    //[SerializeField]
+    //
+    //private float gatheringDelay = 0.5f;
     
     [SerializeField]
 
@@ -125,7 +125,7 @@ public partial class PlayerManager
 
             OnTargetObjectSet += GatheringItem;
 
-            detectCollider.radius = itemDetectionRange;
+            detectCollider.radius = playerStatus.itemDetectionRange;
 
             if (attackPrefab == null)
             {
@@ -169,7 +169,7 @@ public partial class PlayerManager
 
             OnTargetObjectSet += GatheringItem;
 
-            detectCollider.radius = itemDetectionRange;
+            detectCollider.radius = playerStatus.itemDetectionRange;
 
             SetAttackType(attackPrefab);
 
@@ -709,11 +709,11 @@ public partial class PlayerManager
 
             //Debug.Log("gathering");
 
-            yield return new WaitForSeconds(gatheringDelay);
+            yield return new WaitForSeconds(playerStatus.gatheringDelay);
 
             //targetScript.CurrentHealth -= gatheringSpeed;
 
-            targetScript?.TakeDamage(gatheringSpeed);
+            targetScript?.TakeDamage(playerStatus.gatheringSpeed);
 
             if(targetScript?.CurrentHealth <= 0f)
             {
@@ -782,7 +782,7 @@ public partial class PlayerManager
     {
         Gizmos.color = Color.red;
 
-        Gizmos.DrawWireSphere(transform.position,itemDetectionRange);
+        Gizmos.DrawWireSphere(transform.position,playerStatus.itemDetectionRange);
     }
 
     public void OnUseSpell()

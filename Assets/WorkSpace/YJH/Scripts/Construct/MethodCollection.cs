@@ -5,10 +5,13 @@ using UnityEngine;
 using ZL.Unity.Unimo;
 using UnityEngine.SceneManagement;
 using JDG;
+using GoogleSheetsToUnity;
 namespace YJH
 {
     public static class MethodCollection
     {
+        public static string sheetName;
+
         #region 시작시 인게임 재화 추가 함수
         public static void IncreaseIngameCurrencyA()
         {
@@ -100,6 +103,23 @@ namespace YJH
         {
 
         }
+
+
+        public static void IncreaseRerollChanceA()
+        {
+            //RelicDropTable.Instance.Import()
+        }
+        public static void IncreaseRerollChanceB()
+        {
+
+        }
+        public static void IncreaseRerollChanceC()
+        {
+
+        }
+
+
+
         public static void ResurrectA()//이건 어케 하지?
         {
 
@@ -113,5 +133,8 @@ namespace YJH
         {
 
         }
+
+
+        
     }
 }
