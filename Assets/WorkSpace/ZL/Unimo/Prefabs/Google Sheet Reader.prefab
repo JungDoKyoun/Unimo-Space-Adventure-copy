@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8180078684513476500
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8874393172852992930}
+  - component: {fileID: 2522862450694024899}
+  m_Layer: 0
+  m_Name: Google Sheet Reader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8874393172852992930
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8180078684513476500}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2522862450694024899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8180078684513476500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21af4fe9b698ec245ad1463336fa20d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  readAllSheetsOnAwake: 1
+  sheets:
+  - {fileID: 11400000, guid: 8d7343fd00a032341b8a0c345bf7d4ac, type: 2}
+  - {fileID: 11400000, guid: 42cf08b2a2fba6e44abc031e38696b34, type: 2}
+  - {fileID: 11400000, guid: d142871ab51cf0e44900eda7f2e0470f, type: 2}
+  - {fileID: 11400000, guid: 872b623a1f64efa4094ffa07b34d28b1, type: 2}
+  - {fileID: 11400000, guid: 3578da5807bfb6c448f3f0ac986d118b, type: 2}
+  - {fileID: 11400000, guid: 2a25ec0fc7dc160428ef7f5bf357c401, type: 2}
+  - {fileID: 11400000, guid: 062271a1db928d149a00abd538eb16cc, type: 2}
+  - {fileID: 11400000, guid: 91f53a1b0cf51f0478045a66fc02b356, type: 2}
+  - {fileID: 11400000, guid: ba807da462ff77b4b8b70aa9f7219fd5, type: 2}

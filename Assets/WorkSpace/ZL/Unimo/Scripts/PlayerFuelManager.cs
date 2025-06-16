@@ -61,8 +61,6 @@ namespace ZL.Unity.Unimo
             }
         }
 
-        private float fuelConsumption = 0f;
-
         private void Start()
         {
             if (GameStateManager.IsClear == true)
@@ -73,8 +71,6 @@ namespace ZL.Unity.Unimo
             fuel = 100f;
 
             FuelMax = 100f;
-
-            fuelConsumption = StageData.Instance.FuelConsumptionAmount;
         }
 
         public void StartConsumFuel()
@@ -105,6 +101,8 @@ namespace ZL.Unity.Unimo
 
         private IEnumerator ConsumFuelRoutine()
         {
+            var fuelConsumption = StageData.Instance.FuelConsumptionAmount;
+
             while (true)
             {
                 yield return null;

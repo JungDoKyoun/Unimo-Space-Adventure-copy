@@ -26,7 +26,7 @@ namespace ZL.Unity.IO.GoogleSheet
         }
     }
 
-    public abstract class ScriptableGoogleSheet<TKey, TGoogleSheetData> : ScriptableObject
+    public abstract class ScriptableGoogleSheet<TKey, TGoogleSheetData> : ScriptableGoogleSheet
 
         where TGoogleSheetData : ScriptableObject, IGoogleSheetData
     {
@@ -142,7 +142,7 @@ namespace ZL.Unity.IO.GoogleSheet
 
         #endif
 
-        public void Read()
+        public override void Read()
         {
             SpreadsheetManager.Read(sheetConfig.GetSearch(), OnReadSuccessful, containsMergedCells);
         }
@@ -197,5 +197,10 @@ namespace ZL.Unity.IO.GoogleSheet
 
             FixedDebug.Log($"Successfully written '{name}' to Google sheet.");
         }
+    }
+
+    public abstract class ScriptableGoogleSheet : ScriptableObject
+    {
+        public abstract void Read();
     }
 }
