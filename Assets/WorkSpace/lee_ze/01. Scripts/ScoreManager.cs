@@ -1,72 +1,21 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
 
-    private static int bossKill;
+    private int bossKill;
 
-    private static int hardStageClear;
+    private int stageScore;
 
-    private static int getItem;
+    private int itemScore;
 
-    private static float leftTime;
+    private int fuelScore;
 
-    private static float leftHP;
+    private int healthScore;
 
-    #region 프로퍼티
-
-    public static int BossKill
-    {
-        get => bossKill;
-
-        private set
-        {
-            bossKill = value;
-        }
-    }
-
-    public static int HardStageClear
-    {
-        get => hardStageClear;
-
-        private set
-        {
-            hardStageClear = value;
-        }
-    }
-
-    public static int GetItem
-    {
-        get => getItem;
-
-        private set
-        {
-            getItem = value;
-        }
-    }
-
-    public static float LeftTime
-    {
-        get => leftTime;
-
-        private set
-        {
-            leftTime = value;
-        }
-    }
-
-    public static float LeftHP
-    {
-        get => leftHP;
-
-        private set
-        {
-            leftHP = value;
-        }
-    }
-
-    #endregion
+    private int totalScore;
 
     private void Awake()
     {
@@ -84,41 +33,69 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    public void CountReset()
+    private void Start()
     {
-        BossKill = 0;
+        InitScore();
+    }
 
-        HardStageClear = 0;
+    private void InitScore()
+    {
+        bossKill = 0;
 
-        GetItem = 0;
+        stageScore = 0;
 
-        LeftTime = 0;
+        itemScore = 0;
 
-        LeftHP = 0;
+        fuelScore = 0;
+
+        healthScore = 0;
+
+        totalScore = 0;
+    }
+
+    private void CalculateScore()
+    {
+        totalScore = bossKill * 500 + stageScore + itemScore + fuelScore + healthScore;
+
+        StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateScore(totalScore));
     }
 
     public void CountBossKill()
     {
-        // 보스 킬 횟수
+        bossKill++;
     }
 
-    public void CountHardStageClear()
+    public void CountStageClear(int stageScore)
     {
-        // 어려운 스테이지 클리어 횟수
+        this.stageScore += stageScore;
     }
 
-    public void CountGetItem()
+    public void CountGetItem(int itemScore)
     {
-        // 유물 획득 개수
+        this.itemScore += itemScore;
     }
 
-    public void CountLeftTime()
+    public void CountLeftFuel(int leftFuel)
     {
-        // 남은 시간
+        if (leftFuel <= 0)
+        {
+            fuelScore = 0;
+
+            return;
+        }
+
+        fuelScore = leftFuel;
     }
 
-    public void CountLeftHP()
+    public void CountLeftHP(float currentPlayerHP, float maxPlayerHP)
     {
-        // 남은 HP 비율
+        if (maxPlayerHP <= 0)
+        {
+            healthScore = 0;
+
+            return;
+        }
+
+        healthScore = (int)((currentPlayerHP / maxPlayerHP) * 100);
     }
 }
