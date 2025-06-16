@@ -56,7 +56,7 @@ public partial class PlayerManager : IDamageable
     [SerializeField]
 
     private Collider mainCollider;
-
+    //public RelicData tempRelic;
     public float CurrentHealth
     {
         get => playerStatus.currentHealth;
