@@ -54,6 +54,7 @@ public partial class PlayerManager
 
         MoveStart();
         ConstructManager.SetFinalStatusToPlayer();
+        
         ActiveRelic();
         ShowStatusDebug();
         //currentHealth = maxHP;//기획 의도를 보니 이 코드는 조정이 필요함 한 스테이지에서 까인 체력은 안돌아오는듯?
@@ -79,20 +80,27 @@ public partial class PlayerManager
 
     public static void ActiveRelic()
     {
+        Debug.Log("try use relic");
+        Debug.Log(PlayerInventoryManager.RelicDatas.Count);
         foreach (var relic in PlayerInventoryManager.RelicDatas)
         {
+            Debug.Log("relic data exist");
             foreach (var relicEffect in relic.Effects)
             {
+                Debug.Log("relic effect exist");
                 switch (relicEffect.Type)
                 {
                     case RelicEffectType.AttackPower:
                         playerStatus.playerDamage += relicEffect.Value;
+                        Debug.Log(playerStatus.playerDamage);
                         break;
                     case RelicEffectType.MaxHealth:
                         playerStatus.maxHP += relicEffect.Value;
+                        Debug.Log(playerStatus.maxHP);
                         break;
                     case RelicEffectType.MovementSpeed:
                         playerStatus.moveSpeed += relicEffect.Value;
+                        Debug.Log(playerStatus.moveSpeed);
                         break;
                     default:
                         Debug.Log("no exist relic type");

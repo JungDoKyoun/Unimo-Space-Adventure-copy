@@ -8,6 +8,7 @@ using Firebase.Database;
 using Firebase.Extensions;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
+using ZL.Unity.Unimo;
 
 public class ConstructManager : MonoBehaviour
 {
@@ -64,6 +65,9 @@ public class ConstructManager : MonoBehaviour
     public static ISpellType[] playerSpells = { null,new Dash() };
     
     [SerializeField] GameObject[] attackPrefabs;
+
+    public RelicData tempRelic;
+
     private void Awake()
     {
         
@@ -81,7 +85,9 @@ public class ConstructManager : MonoBehaviour
             PlayerManager.OnStageFail += ResetApplyBuildEffect;
             isDelinkON =true;
         }
-       
+        PlayerInventoryManager.AddRelic(tempRelic);
+        Debug.Log(tempRelic.Effects[0].Value);
+        Debug.Log(PlayerInventoryManager.RelicDatas.Count);
     }
     private void OnDestroy()
     {
