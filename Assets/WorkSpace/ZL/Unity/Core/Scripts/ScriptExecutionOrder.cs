@@ -8,9 +8,9 @@ namespace ZL.Unity
 
         Tweener,
 
-        FastAwake,
-
         Default = 0,
+
+        Lazy,
 
         SceneDirector,
     }

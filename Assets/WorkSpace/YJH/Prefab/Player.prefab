@@ -260,15 +260,14 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  attackPrefab: {fileID: 7503936081269918129, guid: 07c22d31208dbd6418c693b8554433d7, type: 3}
-  fireRate: 0.3
+  tempAttackPrefab: {fileID: 0}
   skillRejectText: {fileID: 0}
+  detectCollider: {fileID: 0}
   playerCharacterBody: {fileID: 7265882205627089676}
   moveSoundSource: {fileID: 1784417401385593923}
   moveSoundClip: {fileID: 8300000, guid: c4ef33583abe07741ab9b30329cfd6b5, type: 3}
   isMoveSoundPlay: 0
   moveSpeed: 4
-  baseSpeed: 4
   rotateSpeed: 10
   isGathering: 0
   isStunning: 0
@@ -280,17 +279,14 @@ MonoBehaviour:
   cartRenderer: {fileID: 6459899133926012848}
   bodyRenderer: {fileID: 4998327257316745850}
   faceRenderer: {fileID: 7958886399952576924}
-  playerDamage: 5
   hitEffect: {fileID: 3765730885004938929}
   mainCollider: {fileID: 3124590143941777458}
-  playerStatus:
-    currentHealth: 0
-    maxHP: 0
-    playerDamage: 0
-    itemDetectionRange: 0
-    gatheringSpeed: 0
-    gatheringDelay: 0
-    moveSpeed: 0
+  onHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlayerDead:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &1784417401385593923
 AudioSource:
   m_ObjectHideFlags: 0

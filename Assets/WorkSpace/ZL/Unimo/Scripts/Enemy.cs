@@ -18,6 +18,8 @@ namespace ZL.Unity.Unimo
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
         #pragma warning disable CS0108
@@ -32,6 +34,8 @@ namespace ZL.Unity.Unimo
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnly(true)]
 
         #pragma warning disable CS0108
@@ -39,6 +43,8 @@ namespace ZL.Unity.Unimo
         protected Rigidbody rigidbody = null;
 
         #pragma warning restore CS0108
+
+        [Space]
 
         [SerializeField]
 
@@ -75,52 +81,51 @@ namespace ZL.Unity.Unimo
             get => currentHealth;
         }
 
+        private EnemyManager enemyManager = null;
+
         protected Transform Destination
         {
-            get => EnemyManager.Instance.Destination;
+            get => enemyManager.Destination;
         }
 
         protected bool isStoped = true;
+
+        private void Awake()
+        {
+            enemyManager = EnemyManager.Instance;
+        }
 
         protected virtual void OnEnable()
         {
             if (Destination != null)
             {
-                var forward = Destination.position - transform.position;
-
-                rigidbody.rotation = rigidbody.LookRotation(forward, Axis.Y);
+                rigidbody.rotation = rigidbody.LookRotation(Destination, Axis.Y);
             }
 
-            if (rigidbody != null)
-            {
-                rigidbody.velocity = Vector3.zero;
-            }
-
-            if (animator != null)
-            {
-                animator.Rebind();
-            }
+            currentHealth = enemyData.MaxHealth;
 
             if (lifeTime > 0f)
             {
                 Invoke(nameof(Disappear), lifeTime);
             }
-
-            currentHealth = enemyData.MaxHealth;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
 
+            rigidbody.velocity = Vector3.zero;
+
+            if (animator != null)
+            {
+                animator.Rebind();
+            }
+
+            #if UNITY_EDITOR
+
             OnDisappear();
-        }
 
-        public virtual void OnAppeared()
-        {
-            collider.enabled = true;
-
-            isStoped = false;
+            #endif
         }
 
         public virtual void TakeDamage(float damage, Vector3 contact)
@@ -131,15 +136,17 @@ namespace ZL.Unity.Unimo
             {
                 currentHealth = 0f;
 
-                Killed();
+                CancelInvoke(nameof(Disappear));
+
+                Disappear();
             }
         }
 
-        private void Killed()
+        public virtual void OnAppeared()
         {
-            CancelInvoke();
+            collider.enabled = true;
 
-            Disappear();
+            isStoped = false;
         }
 
         private void Disappear()

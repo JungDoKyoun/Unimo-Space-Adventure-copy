@@ -2,11 +2,13 @@ using UnityEngine;
 
 using ZL.Unity.Pooling;
 
+using ZL.Unity.UI;
+
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Player Inventory Screen")]
+    [AddComponentMenu("ZL/Unimo/Player Inventory Screen (Singleton)")]
 
-    public sealed class PlayerInventoryScreen : MonoBehaviour
+    public sealed class PlayerInventoryScreen : ScreenUI<PlayerInventoryScreen>
     {
         [Space]
 
@@ -16,9 +18,11 @@ namespace ZL.Unity.Unimo
 
         private RelicCard selectedRelicCard = null;
 
-        private void OnEnable()
+        public override void Appear()
         {
             DrawRelicCards();
+
+            base.Appear();
         }
 
         private void DrawRelicCards()

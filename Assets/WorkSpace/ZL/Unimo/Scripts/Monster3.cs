@@ -78,6 +78,11 @@ namespace ZL.Unity.Unimo
             animator.SetTrigger("Encounter");
         }
 
+        public void GiveDamage(IDamageable damageable, Vector3 contact)
+        {
+            damageable.TakeDamage(enemyData.AttackPower, contact);
+        }
+
         public override void OnAppeared()
         {
             base.OnAppeared();
@@ -97,11 +102,6 @@ namespace ZL.Unity.Unimo
             isStoped = false;
 
             isDashing = true;
-        }
-
-        public void GiveDamage(IDamageable damageable, Vector3 contact)
-        {
-            damageable.TakeDamage(enemyData.AttackPower, contact);
         }
     }
 }

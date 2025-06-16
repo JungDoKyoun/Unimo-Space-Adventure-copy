@@ -1,14 +1,21 @@
 using Photon.Pun;
+
 using UnityEngine;
+
+using ZL.Unity;
+
+using ZL.Unity.Phys;
+
 using ZL.Unity.Unimo;
 
 public partial class PlayerManager 
 {
-    [SerializeField]
     private static PlayerStatus originStatus = new PlayerStatus(10, 10, 5, 5, 4, 0.5f, 4);
+
     private static PlayerStatus playerStatus = originStatus.Clone();
     
     public static PlayerStatus PlayerStatus {  get { return playerStatus; } set { playerStatus = value; } }
+
     public static PlayerStatus OriginStatus { get { return originStatus; } }
 
     private void OnDestroy()
@@ -18,23 +25,29 @@ public partial class PlayerManager
             selfManager = null;
         }
     }
+
     private void Awake()
     {
         if (selfManager != null)
         {
             return;
         }
+
         else
         {
             selfManager = this;
+
             //Debug.Log(playerSpellType);
+
             if (playerSpellType != null)
             {
-                playerSpellType.SetPlayer(selfManager);//?
+                playerSpellType.SetPlayer(selfManager);
             }
         }
+
         //selfManager = this;
     }
+
     private void Start()
     {
         ActionStart();
@@ -71,50 +84,44 @@ public partial class PlayerManager
 
         //baseSpeed = playerStatus.baseSpeed;
     }
+
     public void SetPlayerStatus(PlayerStatus status)
     {
         playerStatus = status;
+
         SetPlayerStatus();
     }
-    public void ActiveRelic(string type,float value)//
+
+    public void ActiveRelic(string type, float value)
     {
 
     }
+
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log(other.gameObject.layer);
-
-        //Debug.Log(LayerMask.NameToLayer("Energy"));
-
-        if (other.gameObject.layer == LayerMask.NameToLayer("Energy"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Item"))
         {
-            //Debug.Log("tri");
-            var temp = other.GetComponent<IEnergy>();
-            GetEnergy(temp.energy);
-            if(temp is IDamageable)
-            {
-                (temp as IDamageable).TakeDamage(0, Vector3.zero);
-            }
-            else
-            {
-                Debug.Log("bug");
-            }
-            
-            //Destroy(other.gameObject);
+            var item = other.GetComponent<Item>();
+
+            item.GetItem(this);
         }
     }
+
     private void OnTriggerStay(Collider other)
     {
-        if (PhotonNetwork.IsConnected == false) {
+        if (PhotonNetwork.IsConnected == false)
+        {
             if (other.gameObject.layer == LayerMask.NameToLayer("Gathering"))
             {
                 isItemNear = true;
             }
+
             else
             {
                 isItemNear = false;
             }
         }
+
         else
         {
             if (photonView.IsMine == true)
@@ -123,18 +130,34 @@ public partial class PlayerManager
                 {
                     isItemNear = true;
                 }
+
                 else
                 {
                     isItemNear = false;
                 }
-
             }
+
             else
             {
                 return;
             }
         }
+
+        if (isOnHit == true)
+        {
+            return;
+        }
+
+        if (enemyLayerMask.Contains(other.gameObject.layer) == false)
+        {
+            return;
+        }
+
+        if (other.gameObject.TryGetComponent<IDamager>(out var damager) == true)
+        {
+            var contact = mainCollider.ClosestPoint(other);
+
+            damager.GiveDamage(this, contact);
+        }
     }
-
-
 }
