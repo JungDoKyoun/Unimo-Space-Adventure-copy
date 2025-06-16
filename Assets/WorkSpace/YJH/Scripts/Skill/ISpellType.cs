@@ -12,4 +12,5 @@ public interface ISpellType
     public void SetPlayer(PlayerManager player);
 
     public bool ReturnState();
+    public void SetState(bool state);
 }

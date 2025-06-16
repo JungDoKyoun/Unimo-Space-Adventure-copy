@@ -30,6 +30,11 @@ public class tempskill2 : ISpellType, IStackSpell
         return;
     }
 
+    public void SetState(bool state)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void UpdateTime()
     {
         return;

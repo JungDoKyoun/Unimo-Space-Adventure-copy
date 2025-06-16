@@ -1,3 +1,4 @@
+using JDG;
 using Photon.Pun;
 
 using UnityEngine;
@@ -50,6 +51,10 @@ public partial class PlayerManager
 
     private void Start()
     {
+        if (GameStateManager.IsClear == false)
+        {
+            ResetPlayer();
+        }
         ActionStart();
 
         MoveStart();
@@ -76,7 +81,15 @@ public partial class PlayerManager
         //Debug.Log(playerStatus.gatheringSpeed );
         //Debug.Log(playerStatus.playerDamage);
     }
-
+    private void ResetPlayer()
+    {
+        playerOwnEnergy = 0;
+        isGatheringCoroutineWork = false;
+        isSkillRejectActive = false;
+        isItemNear = false;
+        isGathering = false;
+        playerSpellType.SetState(false);
+    }
     public static void ActiveRelic()
     {
         Debug.Log("try use relic");
@@ -89,15 +102,15 @@ public partial class PlayerManager
                 Debug.Log("relic effect exist");
                 switch (relicEffect.Type)
                 {
-                    case RelicEffectType.AttackPower:
+                    case ZL.Unity.Unimo.RelicEffectType.AttackPower:
                         playerStatus.playerDamage += relicEffect.Value;
                         Debug.Log(playerStatus.playerDamage);
                         break;
-                    case RelicEffectType.MaxHealth:
+                    case ZL.Unity.Unimo.RelicEffectType.MaxHealth:
                         playerStatus.maxHealth += relicEffect.Value;
                         Debug.Log(playerStatus.maxHealth);
                         break;
-                    case RelicEffectType.MovementSpeed:
+                    case ZL.Unity.Unimo.RelicEffectType.MovementSpeed:
                         playerStatus.moveSpeed += relicEffect.Value;
                         Debug.Log(playerStatus.moveSpeed);
                         break;

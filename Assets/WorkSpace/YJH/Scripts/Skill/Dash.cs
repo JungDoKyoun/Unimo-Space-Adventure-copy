@@ -128,4 +128,9 @@ public class Dash : ISpellType,IStackSpell
     {
         playerManager=player;
     }
+
+    public void SetState(bool state)
+    {
+        isDash = state;
+    }
 }
