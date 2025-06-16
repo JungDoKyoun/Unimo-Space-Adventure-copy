@@ -38,7 +38,7 @@ public class ConstructManager : MonoBehaviour
 
 
     [SerializeField] PlayerStatus originPlayerStatus = new PlayerStatus();
-    public PlayerStatus playerStatus = new PlayerStatus();
+    public static PlayerStatus playerStatus = new PlayerStatus();
 
 
     //public List<ConstructBase> ConstructList { get { return constructList;  } private set { constructList = value; } }
@@ -469,6 +469,7 @@ public class ConstructManager : MonoBehaviour
         if (isBuildEffectAplly == false)//static 변수를 통해서 초기화 조절
         {
             //Debug.Log("player!");
+            playerStatus = PlayerManager.OriginStatus.Clone();
             ActiveBuildEffect();
             isBuildEffectAplly = true;
         }
@@ -520,7 +521,7 @@ public class ConstructManager : MonoBehaviour
                     }
           
 
-        playerStatus = PlayerManager.OriginStatus.Clone();// 이거 그냥 더할 양만큼 준비하는게 나을지도? 갈아끼는 식 말고-> 클리어 실패시 초기화 필요하니 오리진에서 더하는 방식으로 하자
+        //playerStatus = PlayerManager.OriginStatus.Clone();// 이거 그냥 더할 양만큼 준비하는게 나을지도? 갈아끼는 식 말고-> 클리어 실패시 초기화 필요하니 오리진에서 더하는 방식으로 하자
         playerStatus.moveSpeed += speedSum;
         playerStatus.maxHP += maxHPSum;
         playerStatus.gatheringSpeed += gatherSpeedSum;
@@ -530,17 +531,10 @@ public class ConstructManager : MonoBehaviour
 
 
 
-
-
-    }
-    public void ModifieUtillity(IUtilityBuildEffect buildEffect)
-    {
-        
-    }
-    public void ModifieSkill()//별도 인터페이스?
-    {
+        Debug.Log(playerStatus.playerDamage);
 
     }
+    
 
     public void ActiveBuildEffect()
     {
@@ -548,6 +542,7 @@ public class ConstructManager : MonoBehaviour
         {
             if (building.isBuildConstructed == true)
             {
+                //Debug.Log(building.buildID);
                 ModifieStat(building.buildEffect);
             }
         }
@@ -594,7 +589,7 @@ public class ConstructManager : MonoBehaviour
         
         
     }
-    public void SetFinalStatusToPlayer()
+    public static void SetFinalStatusToPlayer()
     {
         PlayerManager.PlayerStatus=playerStatus;//후일 초기화 생각하면 대입이 맞을듯
 

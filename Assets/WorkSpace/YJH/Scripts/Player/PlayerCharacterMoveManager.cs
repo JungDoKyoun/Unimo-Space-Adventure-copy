@@ -97,7 +97,7 @@ public partial class PlayerManager : MonoBehaviourPun
             GetRotate(headDirection);
 
             transform.position += playerStatus.moveSpeed * Time.deltaTime * playerMoveDirection;// + pushSpeed * Time.deltaTime * playerPushDirection;
-
+            //Debug.Log(playerStatus.moveSpeed);
             if (isMoveSoundPlay)
             {
                 moveSoundSource?.Play();

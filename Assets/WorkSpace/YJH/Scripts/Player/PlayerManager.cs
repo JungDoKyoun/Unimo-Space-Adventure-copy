@@ -53,9 +53,11 @@ public partial class PlayerManager
         ActionStart();
 
         MoveStart();
-
+        ConstructManager.SetFinalStatusToPlayer();
+        ActiveRelic();
+        ShowStatusDebug();
         //currentHealth = maxHP;//기획 의도를 보니 이 코드는 조정이 필요함 한 스테이지에서 까인 체력은 안돌아오는듯?
-        SetPlayerStatus(playerStatus);
+        //SetPlayerStatus(playerStatus);
     }
 
     private void Update()
@@ -65,36 +67,42 @@ public partial class PlayerManager
         MoveUpdate();
     }
 
-    public void SetPlayerStatus()
+    public void ShowStatusDebug()
     {
-        currentHealth = playerStatus.currentHealth;
+        Debug.Log(playerStatus.currentHealth);
+        Debug.Log(playerStatus.maxHP);
+        Debug.Log(playerStatus.gatheringDelay);
+        Debug.Log(playerStatus.gatheringSpeed );
+        Debug.Log(playerStatus.playerDamage);
 
-        maxHP = playerStatus.maxHP;
-
-        playerDamage = playerStatus.playerDamage;
-
-        itemDetectionRange = playerStatus.itemDetectionRange;
-
-        gatheringSpeed = playerStatus.gatheringSpeed;
-
-        gatheringDelay = playerStatus.gatheringDelay;
-
-        //최종속도
-        moveSpeed = playerStatus.moveSpeed;
-
-        //baseSpeed = playerStatus.baseSpeed;
     }
 
-    public void SetPlayerStatus(PlayerStatus status)
+    public static void ActiveRelic()
     {
-        playerStatus = status;
+        foreach (var relic in PlayerInventoryManager.RelicDatas)
+        {
+            foreach (var relicEffect in relic.Effects)
+            {
+                switch (relicEffect.Type)
+                {
+                    case RelicEffectType.AttackPower:
+                        playerStatus.playerDamage += relicEffect.Value;
+                        break;
+                    case RelicEffectType.MaxHealth:
+                        playerStatus.maxHP += relicEffect.Value;
+                        break;
+                    case RelicEffectType.MovementSpeed:
+                        playerStatus.moveSpeed += relicEffect.Value;
+                        break;
+                    default:
+                        Debug.Log("no exist relic type");
+                        break;
+                }
 
-        SetPlayerStatus();
-    }
-
-    public void ActiveRelic(string type, float value)
-    {
-
+            }
+        }
+        
+        
     }
 
     private void OnTriggerEnter(Collider other)
