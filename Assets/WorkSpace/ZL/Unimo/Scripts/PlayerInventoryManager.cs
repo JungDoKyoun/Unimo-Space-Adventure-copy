@@ -10,7 +10,7 @@ using ZL.Unity.Singleton;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Player Inventory Manager")]
+    [AddComponentMenu("ZL/Unimo/Player Inventory Manager (Singleton)")]
 
     public sealed class PlayerInventoryManager : MonoSingleton<PlayerInventoryManager>
     {

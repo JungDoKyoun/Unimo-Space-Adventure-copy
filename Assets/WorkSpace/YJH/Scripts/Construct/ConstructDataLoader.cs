@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public class ConstructDataLoader : MonoBehaviour
 {
-    string downURL = "https://docs.google.com/spreadsheets/d/1ctv3DJMHsrkCvNSFnsjkPqgpFRI48CQ7zBgtVpbyv4Q/export?format=csv&gid=0\r\n";
+    string downURL = "https://docs.google.com/spreadsheets/d/1ZV8a2LAC0z-c2Opz6MzjKfL2UmjNFljsZlZXn5BdHsU/export?format=csv&gid=1944011655";
     public List<ConstructBase> buildings = new List<ConstructBase>();
     [SerializeField] ConstructManager constructManager;
 

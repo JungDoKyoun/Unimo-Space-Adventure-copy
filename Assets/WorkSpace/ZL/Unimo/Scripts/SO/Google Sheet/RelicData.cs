@@ -6,8 +6,6 @@ using System.Linq;
 
 using UnityEngine;
 
-using UnityEngine.Serialization;
-
 using ZL.CS.Collections;
 
 using ZL.Unity.IO.GoogleSheet;
@@ -32,6 +30,11 @@ namespace ZL.Unity.Unimo
         [SerializeField]
 
         private int price = 0;
+
+        public int Price
+        {
+            get => price;
+        }
 
         [SerializeField]
 

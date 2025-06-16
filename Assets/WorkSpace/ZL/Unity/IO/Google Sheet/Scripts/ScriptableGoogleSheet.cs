@@ -68,9 +68,9 @@ namespace ZL.Unity.IO.GoogleSheet
 
         protected TGoogleSheetData[] datas = null;
 
-        public TGoogleSheetData[] Datas
+        public TGoogleSheetData this[int index]
         {
-            get => datas;
+            get => datas[index];
         }
 
         [Space]

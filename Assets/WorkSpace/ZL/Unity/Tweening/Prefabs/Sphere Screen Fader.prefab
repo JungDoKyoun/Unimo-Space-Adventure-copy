@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2801203670978303102}
   - component: {fileID: 4025118530809431066}
   - component: {fileID: 3642788267879884235}
-  - component: {fileID: 4456700184494976832}
+  - component: {fileID: 1921852499002243675}
   m_Layer: 0
   m_Name: Sphere Screen Fader
   m_TagString: Untagged
@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetRenderer: {fileID: 271125717899168263}
+  index: 0
 --- !u!114 &4025118530809431066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,7 +142,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tweener: {fileID: 4025118530809431066}
-  faderGroup: {fileID: 0}
   onFadeInEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -154,7 +154,7 @@ MonoBehaviour:
   onFadedOutEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4456700184494976832
+--- !u!114 &1921852499002243675
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -163,10 +163,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4177013193622062567}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c41287b4a002104e98bccb7feb817e4, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e0d534a45c04ba47bb42b52a2528b08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onStartEvent:
+  onAwakeEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4025118530809431066}

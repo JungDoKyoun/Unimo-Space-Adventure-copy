@@ -27,7 +27,7 @@ public class ConstructBase :ScriptableObject//,IConstruct
 
     //public string buildEffectDirection;//이거 addressable아니면 resource.load인데 애드레서블은 사실상 사용을 못하고 resource는 많이 사용하면 메모리 먹음 그냥 직접 대입이 맞을듯
     public Vector3 buildPosition=new Vector3();//사용 x? 
-    public Sprite buildIcon;
+    public Sprite buildIcon;//여기 나온 이미지를 그대로 백그라운드에 적용시키는 방식으로 진행하자 같은 단계가 올라가면 건물이 지어지는 느낌으로 util의 경우에는 패스 할까? 
     public Sprite buildingImage;
     public string buildType;
     public bool isbuildRepeatable;

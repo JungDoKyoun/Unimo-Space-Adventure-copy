@@ -4,16 +4,21 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using ZL.Unity.IO.GoogleSheet;
+using ZL.CS.Singleton;
 
-using UnityRandom = UnityEngine.Random;
+using ZL.Unity.IO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {
-    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Relic Drop Table", fileName = "Relic Drop Table 1")]
+    [CreateAssetMenu(menuName = "ZL/Unimo/SO/Relic Drop Table", fileName = "Relic Drop Table")]
 
-    public sealed class RelicDropTable : ScriptableGoogleSheetData
+    public sealed class RelicDropTable : ScriptableGoogleSheetData, ISingleton<RelicDropTable>
     {
+        public static RelicDropTable Instance
+        {
+            get => ISingleton<RelicDropTable>.Instance;
+        }
+
         [Space]
 
         [SerializeField]
@@ -97,7 +102,7 @@ namespace ZL.Unity.Unimo
             };
         }
 
-        public RelicData[] DropRelics(int count)
+        public RelicData[] GetRandomRelics(int count)
         {
             if (count == 0)
             {
@@ -115,7 +120,7 @@ namespace ZL.Unity.Unimo
                 new(RelicRarity.Epic, relicDropEpic),
             };
 
-            var result = new RelicData[count];
+            var relics = new RelicData[count];
 
             for (int i = 0; i < count; ++i)
             {
@@ -125,20 +130,20 @@ namespace ZL.Unity.Unimo
                 {
                     cumulative += table[j].Value;
 
-                    if (cumulative <= UnityRandom.value)
+                    if (cumulative <= Random.value)
                     {
                         continue;
                     }
 
                     var relicDatas = RelicDataSheet.Instance.RelicDictionary[table[j].Key];
 
-                    result[i] = RandomEx.Range(relicDatas);
+                    relics[i] = RandomEx.Range(relicDatas);
 
                     break;
                 }
             }
 
-            return result;
+            return relics;
         }
     }
 }

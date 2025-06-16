@@ -8,7 +8,7 @@ namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Stage Clear Popup Screen")]
 
-    public sealed class StageClearPopupScreen : MonoBehaviour
+    public sealed class StageClearPopupScreen : ScreenUI
     {
         [Space]
 
@@ -18,19 +18,7 @@ namespace ZL.Unity.Unimo
 
         [Essential]
 
-        private Clock stagePlayTimeClock = null;
-
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        private ForceLayoutRebuilder content = null;
-
-        [Space]
+        private ForceLayoutRebuilder popupContent = null;
 
         [SerializeField]
 
@@ -72,40 +60,40 @@ namespace ZL.Unity.Unimo
 
         private TextMeshProUGUI bluePrintCountTextUI = null;
 
-        private void OnEnable()
+        public override void Appear()
         {
-            stagePlayTimeTextUI.text = $"«√∑π¿Ã Ω√∞£: {stagePlayTimeClock.GetTimeStamp()}";
+            stagePlayTimeTextUI.text = $"«√∑π¿Ã Ω√∞£: {SceneClock.Instance.GetTimeStamp()}";
 
             inGameMoneyAmountTextUI.gameObject.SetActive(false);
 
-            var rewardData = StageRewardData.Instance;
-
-            if (rewardData.DropedInGameMoneyAmount != 0)
+            if (StageData.DropedInGameMoneyAmount != 0)
             {
-                inGameMoneyAmountTextUI.text = $"»πµÊ ¿Œ ∞‘¿” ¿Á»≠: {rewardData.DropedInGameMoneyAmount}";
+                inGameMoneyAmountTextUI.text = $"»πµÊ ¿Œ ∞‘¿” ¿Á»≠: {StageData.DropedInGameMoneyAmount}";
 
                 inGameMoneyAmountTextUI.gameObject.SetActive(true);
             }
 
             outGameMoneyAmountTextUI.gameObject.SetActive(false);
 
-            if (rewardData.DropedOutGameMoneyAmount != 0)
+            if (StageData.DropedOutGameMoneyAmount != 0)
             {
-                outGameMoneyAmountTextUI.text = $"»πµÊ æ∆øÙ ∞‘¿” ¿Á»≠: {rewardData.DropedOutGameMoneyAmount}";
+                outGameMoneyAmountTextUI.text = $"»πµÊ æ∆øÙ ∞‘¿” ¿Á»≠: {StageData.DropedOutGameMoneyAmount}";
 
                 outGameMoneyAmountTextUI.gameObject.SetActive(true);
             }
 
             bluePrintCountTextUI.gameObject.SetActive(false);
 
-            if (rewardData.DropedBluePrintCount != 0)
+            if (StageData.DropedBluePrintCount != 0)
             {
-                bluePrintCountTextUI.text = $"»πµÊ º≥∞Ëµµ: {rewardData.DropedBluePrintCount}";
+                bluePrintCountTextUI.text = $"»πµÊ º≥∞Ëµµ: {StageData.DropedBluePrintCount}";
 
                 bluePrintCountTextUI.gameObject.SetActive(true);
             }
 
-            content.ForceRebuildLayout();
+            popupContent.ForceRebuildLayout();
+
+            base.Appear();
         }
     }
 }

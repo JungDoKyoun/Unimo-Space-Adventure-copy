@@ -34,16 +34,6 @@ namespace ZL.Unity.Tweening
 
         private ObjectValueTweener<FloatTweener, float, float, FloatOptions> tweener = null;
 
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [GetComponentInParentOnly]
-
-        [EmptyField]
-
-        private FaderGroup faderGroup = null;
-
         [Space]
 
         [SerializeField]
@@ -100,8 +90,6 @@ namespace ZL.Unity.Tweening
         /// </param>
         public void FadeIn()
         {
-            faderGroup?.SwapCurrent(this);
-
             gameObject.SetActive(true);
 
             onFadeInEvent.Invoke();
@@ -110,7 +98,7 @@ namespace ZL.Unity.Tweening
 
             tweener.Play();
 
-            tweener.Current.OnComplete(OnFadedIn);
+            tweener.Current.onComplete += OnFadedIn;
         }
 
         private void OnFadedIn()
@@ -136,7 +124,7 @@ namespace ZL.Unity.Tweening
 
             tweener.Play();
 
-            tweener.Current.OnComplete(OnFadedOut);
+            tweener.Current.onComplete += OnFadedOut;
         }
 
         private void OnFadedOut()

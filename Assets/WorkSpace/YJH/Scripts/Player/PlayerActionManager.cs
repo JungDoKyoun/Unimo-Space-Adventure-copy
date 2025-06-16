@@ -1,8 +1,9 @@
 using Photon.Pun;
+
 using System.Collections;
 
 using TMPro;
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 using ZL.Unity.Unimo;
@@ -58,6 +59,7 @@ public partial class PlayerManager
     [SerializeField]
     
     private static GameObject attackPrefab;
+
     public GameObject tempAttackPrefab;
 
     private static IAttackType playerAttackType;
@@ -83,15 +85,18 @@ public partial class PlayerManager
     public event OnTargetSet OnTargetObjectSet;
 
     private Vector3 firePos;
+
     private static PlayerManager selfManager;
+
     public static PlayerManager SelfManager
     {
         get => selfManager;
     }
+
     //[SerializeField]
 
     //private float fireRate = 0.3f;
-    //
+
     //private float fireTimer = 0f;
 
     [SerializeField]
@@ -106,7 +111,7 @@ public partial class PlayerManager
 
     private SphereCollider detectCollider;
 
-    public void ActionStart()
+    public void ActionStart()// 멀티용으로 리펙토링한거 나중에 다 해체하기
     {
         if (PhotonNetwork.IsConnected == false)
         {
@@ -119,12 +124,18 @@ public partial class PlayerManager
             OnTargetObjectSet += GatheringItem;
 
             detectCollider.radius = itemDetectionRange;
+
             if (attackPrefab == null)
             {
+                //Debug.Log("nullattack");
+
                 SetAttackType(tempAttackPrefab);
             }
+
             else
             {
+                //Debug.Log("attackexist");
+
                 SetAttackType(attackPrefab);
             }
            
@@ -149,11 +160,10 @@ public partial class PlayerManager
                 playerSpellType.InitSpell();
             }
         }
+
         else if (photonView.IsMine == true)
         {
             gatheringAudioSource.clip = gatheringAudioClip;
-            
-            
 
             OnTargetObjectSet += GatheringItem;
 
@@ -194,14 +204,18 @@ public partial class PlayerManager
                 playerSpellType.UpdateTime();
             }
         }
+
         if (isItemNear == true)
         {
             if (PhotonNetwork.IsConnected == false)
             {
                 FindItemUpdate();
-            }else if (photonView.IsMine == true)
+            }
+
+            else if (photonView.IsMine == true)
             {
                 FindItemUpdate();
+
                 //photonView.RPC("FindItemUpdate", RpcTarget.All);
             }
         }
@@ -223,12 +237,14 @@ public partial class PlayerManager
 
         playerAttackType = attackPrefab.GetComponent<IAttackType>();
 
-        playerAttackType.Damage = playerDamage;
+        Debug.Log("setAttack");
+
+        playerAttackType.Damage = playerStatus.playerDamage;// playerDamage;
     }
 
     public static void SetSpellType(ISpellType spellType)
     {
-        //Debug.Log("set spell");
+        Debug.Log("set spell");
 
         playerSpellType = spellType;
 
@@ -240,8 +256,8 @@ public partial class PlayerManager
         temp.UseItem();
     }
 
-    
-    public void GetEnergy(int energyNum)//멀티에서도 공격이 있나? -> 있음
+    //멀티에서도 공격이 있나? -> 있음
+    public void GetEnergy(int energyNum)
     {
         playerOwnEnergy += energyNum;
 
@@ -309,6 +325,7 @@ public partial class PlayerManager
                 {
                     photonView.RPC("PlayerAttack", RpcTarget.All, spawnPos);
                 }
+
                 else
                 {
                     PlayerAttack(spawnPos);
@@ -338,15 +355,20 @@ public partial class PlayerManager
             bullet.GetComponent<IAttackType>().Shoot(firePos - transform.position);
         }
     }
+
     [PunRPC]
+
     public void PlayerAttack(Vector3 firePosition)
     {
         playerOwnEnergy -= playerAttackType.EnergyCost;
+
         GameObject bullet;
+
         if (PhotonNetwork.IsConnected == false)
         {
             bullet = Instantiate(attackPrefab, firePosition, Quaternion.identity);
         }
+
         else
         {
             bullet = PhotonNetwork.Instantiate(attackPrefab.name, firePosition, Quaternion.identity);
@@ -414,11 +436,14 @@ public partial class PlayerManager
             targetEnemyObject = null;
         }
     }
+
     [PunRPC]
+
     public void ActiveGatheringBeam()
     {
         gatheringEffect.SetActive(true);
     }
+
     [PunRPC]
     public void DeactiveGatheringBeam()
     {
@@ -426,127 +451,127 @@ public partial class PlayerManager
     }
 
     //[PunRPC]
+
     private void FindItemUpdate()
     {
         if (PhotonNetwork.IsConnected == true && photonView.IsMine != true)
         {
             return;
         }
-        
 
-            if (targetObject == null)
+        if (targetObject == null)
+        {
+            //Debug.Log("null");
+
+            isGathering = false;
+
+            //gatheringEffect.SetActive(false);
+        }
+
+        else
+        {
+            //Debug.Log(Vector3.Distance(transform.position, targetObject.transform.position));
+
+            if (Vector3.Distance(transform.position, targetObject.transform.position) > playerStatus.itemDetectionRange + float.Epsilon)
             {
-                //Debug.Log("null");
-
                 isGathering = false;
+
+                targetObject = null;
 
                 //gatheringEffect.SetActive(false);
             }
+        }
 
-            else
+        if (isGathering == false && playerSpellType.ReturnState() == false)
+        {
+            Collider[] detectedColliders = Physics.OverlapSphere(transform.position, playerStatus.itemDetectionRange, itemLayerMask);
+
+            if (detectedColliders.Length > 0)
             {
-                //Debug.Log(Vector3.Distance(transform.position, targetObject.transform.position));
+                float distance = float.MaxValue;
 
-                if (Vector3.Distance(transform.position, targetObject.transform.position) > itemDetectionRange + float.Epsilon)
+                foreach (Collider collider in detectedColliders)
                 {
-                    isGathering = false;
+                    //감지된 콜라이더와의 거리
+                    float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);
 
-                    targetObject = null;
-
-                    //gatheringEffect.SetActive(false);
-                }
-            }
-
-            if (isGathering == false && playerSpellType.ReturnState() == false)
-            {
-                
-
-                Collider[] detectedColliders = Physics.OverlapSphere(transform.position, itemDetectionRange, itemLayerMask);
-
-                if (detectedColliders.Length > 0)
-                {
-                    float distance = float.MaxValue;
-
-                    foreach (Collider collider in detectedColliders)
+                    //1.거리 비교 조건
+                    if (distance > distanceBetween)
                     {
-                        //감지된 콜라이더와의 거리
-                        float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);
+                        distance = distanceBetween;
 
-                        //1.거리 비교 조건
-                        if (distance > distanceBetween)
+                        targetObject = collider.gameObject;
+                    }
+
+                    else if (distance == distanceBetween)
+                    {
+                        if (targetObject != null)
                         {
-                            distance = distanceBetween;
+                            //var targetScript = targetObject.GetComponent<IGatheringObject>();
 
-                            targetObject = collider.gameObject;
-                        }
+                            var targetScript = targetObject.GetComponent<Gathering>();
 
-                        else if (distance == distanceBetween)
-                        {
-                            if (targetObject != null)
+                            //var colliderScript = collider.GetComponent<IGatheringObject>();
+
+                            var colliderScript = collider.GetComponent<Gathering>();
+
+                            //2. 체력 비교 조건
+                            if (targetScript.CurrentHealth > colliderScript.CurrentHealth)
                             {
-                                //var targetScript = targetObject.GetComponent<IGatheringObject>();
+                                targetObject = collider.gameObject;
+                            }
 
-                                var targetScript = targetObject.GetComponent<Gathering>();
+                            //3. 등급 비교 조건
+                            else if (targetScript.CurrentHealth == colliderScript.CurrentHealth)
+                            {
+                                //if (targetScript.MaxHealth < colliderScript.MaxHealth)
 
-                                //var colliderScript = collider.GetComponent<IGatheringObject>();
-
-                                var colliderScript = collider.GetComponent<Gathering>();
-
-                                //2. 체력 비교 조건
-                                if (targetScript.CurrentHealth > colliderScript.CurrentHealth)
+                                if (targetScript.GatheringData.MaxHealth < colliderScript.GatheringData.MaxHealth)
                                 {
                                     targetObject = collider.gameObject;
-                                }
-
-                                //3. 등급 비교 조건
-                                else if (targetScript.CurrentHealth == colliderScript.CurrentHealth)
-                                {
-                                    //if (targetScript.MaxHealth < colliderScript.MaxHealth)
-
-                                    if (targetScript.GatheringData.MaxHealth < colliderScript.GatheringData.MaxHealth)
-                                    {
-                                        targetObject = collider.gameObject;
-                                    }
                                 }
                             }
                         }
                     }
+                }
 
-                    isGathering = true;
+                isGathering = true;
 
-                    if (targetObject != null)
-                    {
+                if (targetObject != null)
+                {
                     if (PhotonNetwork.IsConnected)
                     {
                         photonView.RPC("ActiveGatheringBeam", RpcTarget.All);
                     }
+
                     else
                     {
                         ActiveGatheringBeam();
                     }
-                    }
-
-                    OnTargetObjectSet?.Invoke();
                 }
 
-                else
-                {
-                    isGathering = false;
+                OnTargetObjectSet?.Invoke();
+            }
+
+            else
+            {
+                isGathering = false;
+
                 if (PhotonNetwork.IsConnected)
                 {
                     photonView.RPC("DeactiveGatheringBeam", RpcTarget.All);
                 }
+
                 else
                 {
-
                     DeactiveGatheringBeam();
                 }
 
-                    targetObject = null;
-                }
+                targetObject = null;
             }
-        
+        }
     }
+
     //private IEnumerator FindItem()
     //{
     //    while (true)

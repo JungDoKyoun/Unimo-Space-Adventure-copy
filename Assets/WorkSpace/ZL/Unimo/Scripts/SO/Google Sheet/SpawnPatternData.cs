@@ -25,6 +25,12 @@ namespace ZL.Unity.Unimo
             get => spawnPoints;
         }
 
+        [Space]
+
+        [SerializeField]
+
+        private float interval = 0f;
+
         public override List<string> GetHeaders()
         {
             return new List<string>()

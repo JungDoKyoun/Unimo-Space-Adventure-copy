@@ -19,6 +19,10 @@ namespace ZL.Unity.Pooling
     {
         [SerializeField]
 
+        [UsingCustomProperty]
+
+        [Essential]
+
         protected TPooledObject prefab = null;
 
         public TPooledObject Prefab
