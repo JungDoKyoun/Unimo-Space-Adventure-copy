@@ -16,7 +16,6 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     FirebaseUser user;
 
 
-
     [Header("Display")]
     [SerializeField]
     private TextMeshProUGUI rewardIngameCurrencyText;
@@ -26,7 +25,6 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI rewardBluePrintText;
-
 
 
     private static List<(string nickname, float score)> topRankers = new List<(string, float)>();
@@ -44,6 +42,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     private static float winCount;
 
     private static float currentScore;
+
+    private static bool isRankUpdated = false;
 
     #region properties
 
@@ -119,6 +119,16 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         }
     }
 
+    public static bool IsRankUpdated
+    {
+        get => isRankUpdated;
+
+        set
+        {
+            isRankUpdated = value;
+        }
+    }
+
     #endregion
 
     private void Awake()
@@ -167,7 +177,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             StartCoroutine(ShowUserBluePrint());
 
             // 랭크 업데이트
-            StartCoroutine(UpdateRankingList());
+            StartCoroutine(UpdateRank());
         }
     }
 
@@ -479,13 +489,15 @@ public class FirebaseDataBaseMgr : MonoBehaviour
                 yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
                 // 전체 랭킹 업데이트
-                StartCoroutine(UpdateRankingList());
+                StartCoroutine(UpdateRank());
             }
         }
     }
 
-    private IEnumerator UpdateRankingList()
+    public IEnumerator UpdateRank()
     {
+        IsRankUpdated = false;
+
         var getTask = dbRef.Child("users").OrderByChild("score").LimitToLast(10).GetValueAsync();
 
         yield return new WaitUntil(() => getTask.IsCompleted);
@@ -527,10 +539,12 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         topRankers.Sort((a, b) => b.score.CompareTo(a.score));
 
         // 순위 내림차순 표시 
-        foreach (var (nickname, score) in topRankers)
-        {
-            Debug.Log($"Nickname: {nickname}, Score: {score}");
-        }
+        //foreach (var (nickname, score) in topRankers)
+        //{
+        //    Debug.Log($"Nickname: {nickname}, Score: {score}");
+        //}
+
+        IsRankUpdated = true;
     }
 
     #endregion
