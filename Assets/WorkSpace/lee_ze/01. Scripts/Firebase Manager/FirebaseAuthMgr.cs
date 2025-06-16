@@ -1,12 +1,12 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
-using System.Threading.Tasks;
-using UnityEngine.SceneManagement;
 
 public class FirebaseAuthMgr : MonoBehaviour
 {
@@ -26,6 +26,12 @@ public class FirebaseAuthMgr : MonoBehaviour
 
     private static FirebaseUser user; // 인증된 유저 정보
 
+    private static DatabaseReference dbRef; // DB 추가
+
+    private static bool hasUser;
+
+    #region 프로퍼티
+
     public static FirebaseUser User
     {
         get
@@ -39,9 +45,15 @@ public class FirebaseAuthMgr : MonoBehaviour
         }
     }
 
-    public static DatabaseReference dbRef; // DB 추가
+    public static DatabaseReference DBRef
+    {
+        get => dbRef;
 
-    private static bool hasUser;
+        private set
+        {
+            dbRef = value;
+        }
+    }
 
     public static bool HasUser
     {
@@ -50,6 +62,8 @@ public class FirebaseAuthMgr : MonoBehaviour
             return hasUser;
         }
     }
+
+    #endregion
 
     public static bool IsFirebaseReady { get; private set; } = false;
 
@@ -93,7 +107,7 @@ public class FirebaseAuthMgr : MonoBehaviour
             {
                 auth = FirebaseAuth.DefaultInstance;
 
-                dbRef = FirebaseDatabase.DefaultInstance.RootReference;
+                DBRef = FirebaseDatabase.DefaultInstance.RootReference;
 
                 IsFirebaseReady = true;
             }
@@ -104,14 +118,7 @@ public class FirebaseAuthMgr : MonoBehaviour
             }
         });
 
-        if (User == null)
-        {
-            hasUser = false;
-        }
-        else
-        {
-            hasUser = true;
-        }
+        hasUser = (User == null) ? false : true;
     }
 
     private void OnEnable()
@@ -134,9 +141,8 @@ public class FirebaseAuthMgr : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Account") // A 씬으로 돌아왔을 때만
+        if (scene.name == "Account") // Account 씬으로 돌아왔을 때만
         {
-            //StartCoroutine(WaitAndInitUI());
             GetUIs();
 
             RegisterUIEvents();
@@ -164,15 +170,7 @@ public class FirebaseAuthMgr : MonoBehaviour
         StartCoroutine(RegisterCor(emailField.text + "@unimo.com", passwordField.text, nicknameField.text));
     }
 
-    private IEnumerator WaitAndInitUI()
-    {
-        yield return null; // 한 프레임 기다림
-
-        GetUIs();
-
-        RegisterUIEvents();
-    }
-
+    #region UI
     private void GetUIs()
     {
         // 버튼
@@ -225,6 +223,8 @@ public class FirebaseAuthMgr : MonoBehaviour
 
         signUpButton.interactable = !value;
     }
+
+    #endregion
 
     #region 로그인 (코루틴)
 
@@ -415,40 +415,40 @@ public class FirebaseAuthMgr : MonoBehaviour
     private IEnumerator InitPlayerCurrency() // 회원가입 시 초기값 설정
     {
         // 초기 인게임 재화 생성(크레딧)
-        var DBTask = dbRef.Child("users").Child(User.UserId).Child("nickname").SetValueAsync(User.DisplayName);
+        var DBTask = DBRef.Child("users").Child(User.UserId).Child("nickname").SetValueAsync(User.DisplayName);
 
         // 초기 인게임 재화 생성(크레딧)
-        DBTask = dbRef.Child("users").Child(User.UserId).Child("rewardIngameCurrency").SetValueAsync(0);
+        DBTask = DBRef.Child("users").Child(User.UserId).Child("rewardIngameCurrency").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
         // 초기 메타 재화 생성(프리팹)
-        DBTask = dbRef.Child("users").Child(User.UserId).Child("rewardMetaCurrency").SetValueAsync(0);
+        DBTask = DBRef.Child("users").Child(User.UserId).Child("rewardMetaCurrency").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
         // 초기 메타 재화 생성(설계도)
-        DBTask = dbRef.Child("users").Child(User.UserId).Child("rewardBluePrint").SetValueAsync(0);
+        DBTask = DBRef.Child("users").Child(User.UserId).Child("rewardBluePrint").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
         // 개인 최고 점수
-        DBTask = dbRef.Child("users").Child(User.UserId).Child("score").SetValueAsync(0);
+        DBTask = DBRef.Child("users").Child(User.UserId).Child("score").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
         // 승률
-        DBTask = dbRef.Child("users").Child(User.UserId).Child("rate").Child("winningRate").SetValueAsync(0);
+        DBTask = DBRef.Child("users").Child(User.UserId).Child("rate").Child("winningRate").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
         // 매치 진행 횟수
-        DBTask = dbRef.Child("users").Child(User.UserId).Child("rate").Child("playCount").SetValueAsync(0);
+        DBTask = DBRef.Child("users").Child(User.UserId).Child("rate").Child("playCount").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
         // 매치 승리 횟수
-        DBTask = dbRef.Child("users").Child(User.UserId).Child("rate").Child("winCount").SetValueAsync(0);
+        DBTask = DBRef.Child("users").Child(User.UserId).Child("rate").Child("winCount").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
     }

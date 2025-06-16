@@ -26,7 +26,7 @@ public class FirebaseGameStateManager : MonoBehaviour
 
         yield return new WaitUntil(() => FirebaseAuthMgr.User != null);
 
-        dbRef = FirebaseAuthMgr.dbRef;
+        dbRef = FirebaseAuthMgr.DBRef;
 
         user = FirebaseAuthMgr.User;
     }

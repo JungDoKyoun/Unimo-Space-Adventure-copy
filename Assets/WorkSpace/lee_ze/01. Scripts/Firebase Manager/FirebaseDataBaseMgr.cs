@@ -15,6 +15,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     FirebaseUser user;
 
+
+
     [Header("Display")]
     [SerializeField]
     private TextMeshProUGUI rewardIngameCurrencyText;
@@ -24,6 +26,10 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI rewardBluePrintText;
+
+
+
+    private static List<(string nickname, float score)> topRankers = new List<(string, float)>();
 
     private static int ingameCurrency;
 
@@ -40,6 +46,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     private static float currentScore;
 
     #region properties
+
+    public static IReadOnlyList<(string nickname, float score)> TopRankers => topRankers.AsReadOnly(); // 리스트 프로퍼티
 
     public static int IngameCurrency
     {
@@ -136,19 +144,15 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private IEnumerator Start()
     {
+        // Firebase 연결 대기
         yield return new WaitUntil(() => FirebaseAuthMgr.IsFirebaseReady == true);
 
+        // 로그인 대기
         yield return new WaitUntil(() => FirebaseAuthMgr.User != null);
 
-        this.dbRef = FirebaseAuthMgr.dbRef;
+        this.dbRef = FirebaseAuthMgr.DBRef;
 
         this.user = FirebaseAuthMgr.User;
-
-        StartCoroutine(ShowUserIngameCurrency());
-
-        StartCoroutine(ShowUserMetaCurrency());
-
-        StartCoroutine(SetCurrentWinningRate());
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) // 씬 바뀔 때 마다 수행되는 것
@@ -162,6 +166,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
             StartCoroutine(ShowUserBluePrint());
 
+            // 랭크 업데이트
             StartCoroutine(UpdateRankingList());
         }
     }
@@ -445,7 +450,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     #region Score management
 
     /// <summary>
-    /// 각 스테이지 끝난 후 점수 업데이트 할 때 사용.
+    /// 점수 업데이트 할 때 사용.
     /// </summary>
     /// <param name="currentScore"></param>
     /// <returns></returns>
@@ -466,9 +471,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
         if (getTask.Result.Exists == true && float.TryParse(getTask.Result.Value.ToString(), out float savedScore)) // string으로 불러온 ingame currency를 tryparse로 savedValue에 저장
         {
-            if (CurrentScore > savedScore) // 기존 기록보다 currentScore(방금 세운 기록)이 크면
+            if (CurrentScore > savedScore) // 기존 최고 기록(savedScore)보다 방금 세운 기록(currentScore)이 크면
             {
-                // score 최신화
+                // 최고기록 갱신
                 var DBTask = dbRef.Child("user").Child(user.UserId).Child("score").SetValueAsync(CurrentScore);
 
                 yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
@@ -492,9 +497,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             yield break;
         }
 
-        DataSnapshot snapshot = getTask.Result;
+        topRankers.Clear(); // 기존 랭킹 초기화
 
-        List<(string nickname, float score)> topRankers = new List<(string, float)>();
+        DataSnapshot snapshot = getTask.Result;
 
         foreach (var userSnapshot in snapshot.Children)
         {
@@ -521,6 +526,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         // 내림차순 정렬
         topRankers.Sort((a, b) => b.score.CompareTo(a.score));
 
+        // 순위 내림차순 표시 
         foreach (var (nickname, score) in topRankers)
         {
             Debug.Log($"Nickname: {nickname}, Score: {score}");

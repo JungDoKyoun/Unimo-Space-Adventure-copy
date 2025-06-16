@@ -55,7 +55,7 @@ public class ConstructDataLoader : MonoBehaviour
                 target.buildRequires = buildRequires;
                 target.buildCosts = buildCosts;
 
-                Debug.Log($"[업데이트 완료] {buildID}");
+                //Debug.Log($"[업데이트 완료] {buildID}");
             }
             else
             {
