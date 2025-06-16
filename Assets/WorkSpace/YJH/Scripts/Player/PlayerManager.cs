@@ -20,6 +20,10 @@ public partial class PlayerManager
         {
             if (playerStatus.currentHealth != value.currentHealth||playerStatus.maxHealth!=value.maxHealth)
             {
+                if (value.currentHealth < 0)
+                {
+                    value.currentHealth = 0;
+                }
                 playerStatus=value;
                 OnHealthChanged?.Invoke(playerStatus.currentHealth);
             }
