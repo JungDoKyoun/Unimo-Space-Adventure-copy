@@ -7,6 +7,8 @@ using UnityEngine.UI;
 using Firebase.Database;
 using Firebase.Extensions;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
+using ZL.Unity.Unimo;
 
 public class ConstructManager : MonoBehaviour
 {
@@ -27,15 +29,17 @@ public class ConstructManager : MonoBehaviour
     [SerializeField] GameObject basePanel;
 
     [Header("건설완료 화면 관련")]
-    [SerializeField] Image buildStateImage;
-    [SerializeField] List<Sprite> buildStateImageList= new List<Sprite>();
+    [SerializeField] Image buildStateImage;//건물 건설 현황을 나타낼 배경 이미지
+    [SerializeField] List<Image> buildingImages=new List<Image>();// 건물을 지을 때마다 갱신할 이미지들 모음집
+    [SerializeField] List<Sprite> buildStateImageList= new List<Sprite>();//나중에 건설 이미지 방식 바뀌면 삭제할 것 
+    private Dictionary<int, int> imagePriority=new Dictionary<int, int>();
     private float buildStateProgress = 0;
     //[SerializeField] List<Button> buildButtons = new List<Button>();
     //[SerializeField] GameObject BuildPanel;
 
 
     [SerializeField] PlayerStatus originPlayerStatus = new PlayerStatus();
-    public PlayerStatus playerStatus = new PlayerStatus();
+    public static PlayerStatus playerStatus = new PlayerStatus();
 
 
     //public List<ConstructBase> ConstructList { get { return constructList;  } private set { constructList = value; } }
@@ -47,6 +51,7 @@ public class ConstructManager : MonoBehaviour
 
     private static bool isBuildEffectAplly=false;
     private static bool isDelinkON = false;
+    
     private Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
     public Dictionary<string, int> OwnBuildCostDic { get { return ownBuildCostDic; } }
     //private PlayerManager playerManager;
@@ -60,23 +65,29 @@ public class ConstructManager : MonoBehaviour
     public static ISpellType[] playerSpells = { null,new Dash() };
     
     [SerializeField] GameObject[] attackPrefabs;
+
+    public RelicData tempRelic;
+
     private void Awake()
     {
         
         Instance = this;
         OnConstructCostChange += SetConstructCostText;
         SetOwnCost();
-        DecideProgress();
+        DecideProgress();//나중에 이미지 변경 시스템 완벽하게 바꾸면 변경하기
         ToDictionary();
         SetAllDic();
-        
+        SetImagePriorityDicNum();
+        SetAllConstructImages();
         if (isDelinkON == false)
         {
             PlayerManager.OnStageFail += YJH.MethodCollection.DelinkHealPlayer;
             PlayerManager.OnStageFail += ResetApplyBuildEffect;
             isDelinkON =true;
         }
-       
+        PlayerInventoryManager.AddRelic(tempRelic);
+        Debug.Log(tempRelic.Effects[0].Value);
+        Debug.Log(PlayerInventoryManager.RelicDatas.Count);
     }
     private void OnDestroy()
     {
@@ -95,6 +106,13 @@ public class ConstructManager : MonoBehaviour
         foreach (var temp in combatConstructList)
         {
             temp.ToDictionary();
+        }
+    }
+    public void SetImagePriorityDicNum()
+    {
+        for(int i=0;i<buildingImages.Count;i++)
+        {
+            imagePriority.Add(i, 0);
         }
     }
     private void SetAllDic()
@@ -165,12 +183,13 @@ public class ConstructManager : MonoBehaviour
         
             //Debug.Log("buildcom");
             building.ConstructEnd();
+            TrySetConstructImage(building);
             //spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
             buildInfoBuildButton.interactable = false;
             int costNum;
             StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
             //SetPlayer();
-            DecideProgress();
+            DecideProgress();//나중에 이미지 메커니즘 완벽하게 변경하면 바꾸기
             
             //블루 프린트 함수 추가하기
 
@@ -181,6 +200,51 @@ public class ConstructManager : MonoBehaviour
             //반영 하는건 뒤 패널을 편집하는 방식으로 이미지를 이용해서 덮어 씌우기? 동일한 이미지를 여러개 다른 버전으로 만들면 될 거 같다
         
     }
+    public void TrySetConstructImage(ConstructBase building)
+    {
+        if (imagePriority[building.imageIndex] < building.imagePriority)
+        {
+            buildingImages[building.imageIndex].sprite = building.buildingImage;
+        }
+    }
+
+    public void SetAllConstructImages()
+    {
+        foreach(var temp in techConstructList)
+        {
+            if (temp.isBuildConstructed == true)
+            {
+                if (imagePriority[temp.imageIndex] < temp.imagePriority)
+                {
+                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                }
+            }
+        }
+        foreach (var temp in utilityConstructList)
+        {
+            if (temp.isBuildConstructed == true)
+            {
+                if (imagePriority[temp.imageIndex] < temp.imagePriority)
+                {
+                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                }
+            }
+        }
+        foreach (var temp in combatConstructList)
+        {
+            if (temp.isBuildConstructed == true)
+            {
+                if (imagePriority[temp.imageIndex] < temp.imagePriority)
+                {
+                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                }
+            }
+        }
+    }
+
+
+
+
     public void DecideProgress()//나중에 에셋 오면 변경 필요 -> 별도의 스크립트와 씬에서 캡쳐를 통해서 변화 반영하는 식으로 
     {
         //Debug.Log("changeimage");
@@ -344,6 +408,7 @@ public class ConstructManager : MonoBehaviour
         buildingInfoText.text=buildingInfo.buildingDescription;
         buildingImage.sprite=buildingInfo.buildIcon;
         DecideCanBuild( buildingInfo);
+        buildInfoBuildButton.onClick.RemoveAllListeners();
         buildInfoBuildButton.onClick.AddListener(() => TryConstruct(buildingInfo));
 
 
@@ -410,6 +475,7 @@ public class ConstructManager : MonoBehaviour
         if (isBuildEffectAplly == false)//static 변수를 통해서 초기화 조절
         {
             //Debug.Log("player!");
+            playerStatus = PlayerManager.OriginStatus.Clone();
             ActiveBuildEffect();
             isBuildEffectAplly = true;
         }
@@ -461,7 +527,7 @@ public class ConstructManager : MonoBehaviour
                     }
           
 
-        playerStatus = PlayerManager.OriginStatus.Clone();// 이거 그냥 더할 양만큼 준비하는게 나을지도? 갈아끼는 식 말고-> 클리어 실패시 초기화 필요하니 오리진에서 더하는 방식으로 하자
+        //playerStatus = PlayerManager.OriginStatus.Clone();// 이거 그냥 더할 양만큼 준비하는게 나을지도? 갈아끼는 식 말고-> 클리어 실패시 초기화 필요하니 오리진에서 더하는 방식으로 하자
         playerStatus.moveSpeed += speedSum;
         playerStatus.maxHealth += maxHPSum;
         playerStatus.gatheringSpeed += gatherSpeedSum;
@@ -471,17 +537,10 @@ public class ConstructManager : MonoBehaviour
 
 
 
-
-
-    }
-    public void ModifieUtillity(IUtilityBuildEffect buildEffect)
-    {
-        
-    }
-    public void ModifieSkill()//별도 인터페이스?
-    {
+        Debug.Log(playerStatus.playerDamage);
 
     }
+    
 
     public void ActiveBuildEffect()
     {
@@ -489,6 +548,7 @@ public class ConstructManager : MonoBehaviour
         {
             if (building.isBuildConstructed == true)
             {
+                //Debug.Log(building.buildID);
                 ModifieStat(building.buildEffect);
             }
         }
@@ -535,7 +595,7 @@ public class ConstructManager : MonoBehaviour
         
         
     }
-    public void SetFinalStatusToPlayer()
+    public static void SetFinalStatusToPlayer()
     {
         PlayerManager.PlayerStatus=playerStatus;//후일 초기화 생각하면 대입이 맞을듯
 

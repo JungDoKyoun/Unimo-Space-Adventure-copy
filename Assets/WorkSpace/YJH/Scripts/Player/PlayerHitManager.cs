@@ -14,14 +14,14 @@ using ZL.Unity.Unimo;
 
 public partial class PlayerManager : IDamageable
 {
-    [SerializeField]
+    //[SerializeField]
 
     //체력 필요 없나?
-    private float currentHealth = 300f;
+    //private float currentHealth = 300f;
 
-    [SerializeField]
+    //[SerializeField]
     
-    private float maxHP = 300f;
+    //private float maxHP = 300f;
 
     [SerializeField]
 
@@ -56,21 +56,21 @@ public partial class PlayerManager : IDamageable
     [SerializeField]
 
     private Collider mainCollider;
-
+    //public RelicData tempRelic;
     public float CurrentHealth
     {
-        get => currentHealth;
+        get => playerStatus.currentHealth;
 
         set
         {
             if (value < 0f)
             {
-                currentHealth = 0f;
+                playerStatus.currentHealth = 0f;
             }
 
             else
             {
-                currentHealth = value;
+                playerStatus.currentHealth = value;
             }
         }
     }

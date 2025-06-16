@@ -53,9 +53,12 @@ public partial class PlayerManager
         ActionStart();
 
         MoveStart();
-
+        ConstructManager.SetFinalStatusToPlayer();
+        //PlayerInventoryManager.AddRelic(tempRelic);
+        ActiveRelic();
+        ShowStatusDebug();
         //currentHealth = maxHP;//기획 의도를 보니 이 코드는 조정이 필요함 한 스테이지에서 까인 체력은 안돌아오는듯?
-        SetPlayerStatus(playerStatus);
+        //SetPlayerStatus(playerStatus);
     }
 
     private void Update()
@@ -65,36 +68,49 @@ public partial class PlayerManager
         MoveUpdate();
     }
 
-    public void SetPlayerStatus()
+    public void ShowStatusDebug()
     {
-        currentHealth = playerStatus.currentHealth;
+        Debug.Log(playerStatus.currentHealth);
+        Debug.Log(playerStatus.maxHP);
+        Debug.Log(playerStatus.gatheringDelay);
+        Debug.Log(playerStatus.gatheringSpeed );
+        Debug.Log(playerStatus.playerDamage);
 
-        maxHP = playerStatus.maxHealth;
-
-        playerDamage = playerStatus.playerDamage;
-
-        itemDetectionRange = playerStatus.itemDetectionRange;
-
-        gatheringSpeed = playerStatus.gatheringSpeed;
-
-        gatheringDelay = playerStatus.gatheringDelay;
-
-        //최종속도
-        moveSpeed = playerStatus.moveSpeed;
-
-        //baseSpeed = playerStatus.baseSpeed;
     }
 
-    public void SetPlayerStatus(PlayerStatus status)
+    public static void ActiveRelic()
     {
-        playerStatus = status;
+        Debug.Log("try use relic");
+        Debug.Log(PlayerInventoryManager.RelicDatas.Count);
+        foreach (var relic in PlayerInventoryManager.RelicDatas)
+        {
+            Debug.Log("relic data exist");
+            foreach (var relicEffect in relic.Effects)
+            {
+                Debug.Log("relic effect exist");
+                switch (relicEffect.Type)
+                {
+                    case RelicEffectType.AttackPower:
+                        playerStatus.playerDamage += relicEffect.Value;
+                        Debug.Log(playerStatus.playerDamage);
+                        break;
+                    case RelicEffectType.MaxHealth:
+                        playerStatus.maxHP += relicEffect.Value;
+                        Debug.Log(playerStatus.maxHP);
+                        break;
+                    case RelicEffectType.MovementSpeed:
+                        playerStatus.moveSpeed += relicEffect.Value;
+                        Debug.Log(playerStatus.moveSpeed);
+                        break;
+                    default:
+                        Debug.Log("no exist relic type");
+                        break;
+                }
 
-        SetPlayerStatus();
-    }
-
-    public void ActiveRelic(string type, float value)
-    {
-
+            }
+        }
+        
+        
     }
 
     private void OnTriggerEnter(Collider other)
