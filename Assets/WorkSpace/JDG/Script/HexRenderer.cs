@@ -85,7 +85,7 @@ namespace JDG
 
             avg /= _mesh.vertexCount;
 
-            Debug.Log($"[DEBUG] 타일: {name}, 위치: {transform.position}, Mesh 중심: {avg}");
+            //Debug.Log($"[DEBUG] 타일: {name}, 위치: {transform.position}, Mesh 중심: {avg}");
         }
 
         private void DrawFaces()

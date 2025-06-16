@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RankList : MonoBehaviour
 {
@@ -11,14 +12,34 @@ public class RankList : MonoBehaviour
     [SerializeField]
     private Transform content;
 
-
-    private void Start()
+    private void OnEnable()
     {
-        
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void SetRankListPanel()
+    private IEnumerator Start()
     {
+        // Firebase 연결 대기
+        yield return new WaitUntil(() => FirebaseAuthMgr.IsFirebaseReady == true);
+
+        // 로그인 대기
+        yield return new WaitUntil(() => FirebaseAuthMgr.User != null);
+
+        UpdateRankListPanel();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        UpdateRankListPanel();
+    }
+
+    private void UpdateRankListPanel()
+    {
+        foreach (Transform child in content)
+        {
+            Destroy(child.gameObject);
+        }
+
         for (int i = 0; i < FirebaseDataBaseMgr.TopRankers.Count; i++)
         {
             GameObject newPartition = Instantiate(rankListPartition, content);

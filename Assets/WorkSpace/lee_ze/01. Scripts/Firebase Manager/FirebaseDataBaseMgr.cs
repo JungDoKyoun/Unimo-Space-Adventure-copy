@@ -497,6 +497,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             yield break;
         }
 
+        topRankers.Clear(); // 기존 랭킹 초기화
+
         DataSnapshot snapshot = getTask.Result;
 
         foreach (var userSnapshot in snapshot.Children)
@@ -524,6 +526,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         // 내림차순 정렬
         topRankers.Sort((a, b) => b.score.CompareTo(a.score));
 
+        // 순위 내림차순 표시 
         foreach (var (nickname, score) in topRankers)
         {
             Debug.Log($"Nickname: {nickname}, Score: {score}");
