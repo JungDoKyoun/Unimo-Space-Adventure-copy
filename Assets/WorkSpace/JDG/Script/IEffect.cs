@@ -59,12 +59,12 @@ namespace JDG
             if (PlayerManager.PlayerStatus == null)
                 return;
 
-            float maxHp = PlayerManager.PlayerStatus.maxHP;
+            float maxHp = PlayerManager.PlayerStatus.maxHealth;
             float currentHP = PlayerManager.PlayerStatus.currentHealth;
 
             maxHp += eventEffect._value;
 
-            PlayerManager.PlayerStatus.maxHP = maxHp;
+            PlayerManager.PlayerStatus.maxHealth = maxHp;
             PlayerEvents.ChangeHP(maxHp, currentHP);
         }
     }
@@ -76,7 +76,7 @@ namespace JDG
             if (PlayerManager.PlayerStatus == null)
                 return;
 
-            float maxHp = PlayerManager.PlayerStatus.maxHP;
+            float maxHp = PlayerManager.PlayerStatus.maxHealth;
 
             float currentHP = PlayerManager.PlayerStatus.currentHealth;
 
@@ -96,12 +96,12 @@ namespace JDG
     {
         public void Execute(EventEffect eventEffect)
         {
-            float maxFule = PlayerFuelManager.FuelMax;
+            float maxFule = PlayerFuelManager.MaxFuel;
             float currentFuel = PlayerFuelManager.Fuel;
 
             maxFule += eventEffect._value;
 
-            PlayerFuelManager.FuelMax = maxFule;
+            PlayerFuelManager.MaxFuel = maxFule;
             PlayerEvents.ChangeFuel(maxFule, currentFuel);
         }
     }
@@ -110,7 +110,7 @@ namespace JDG
     {
         public void Execute(EventEffect eventEffect)
         {
-            float maxFule = PlayerFuelManager.FuelMax; 
+            float maxFule = PlayerFuelManager.MaxFuel; 
             float currentFuel = PlayerFuelManager.Fuel;
 
             currentFuel += eventEffect._value;

@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAnimationManager : MonoBehaviour
@@ -9,23 +7,25 @@ public class PlayerAnimationManager : MonoBehaviour
     [SerializeField] Animator playerCartAnimator;
     [SerializeField] PlayerManager playerManager;
     [SerializeField] float delayTime;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
-        playerManager.OnPlayerDead.AddListener(PlayDeadAnimation);
+        PlayerManager.OnPlayerDead += PlayDeadAnimation;
     }
 
-     public void PlayDeadAnimation()
+    public void PlayDeadAnimation()
     {
         Debug.Log("deadanim");
         playerBodyAnimator.SetTrigger("blink");
         StartCoroutine(PlayDisappear());
     }
+
     private void OnDestroy()
     {
-        playerManager.OnPlayerDead.RemoveListener(PlayDeadAnimation);
+        PlayerManager.OnPlayerDead -= PlayDeadAnimation;
     }
-    IEnumerator PlayDisappear()
+
+    private IEnumerator PlayDisappear()
     {
         Debug.Log("gone");
         yield return new WaitForSeconds(delayTime);

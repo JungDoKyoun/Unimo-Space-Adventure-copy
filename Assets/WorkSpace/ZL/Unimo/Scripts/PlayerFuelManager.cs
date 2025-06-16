@@ -1,5 +1,5 @@
 using JDG;
-
+using System;
 using System.Collections;
 
 using UnityEngine;
@@ -14,30 +14,23 @@ namespace ZL.Unity.Unimo
 
     public sealed class PlayerFuelManager : MonoSingleton<PlayerFuelManager>
     {
-        [Space]
+        private static float maxFuel = 0f;
 
-        [SerializeField]
-
-        private SliderValueDisplayer playerFuelBar = null;
-
-        private static float fuelMax = 0f;
-
-        public static float FuelMax
+        public static float MaxFuel
         {
-            get => fuelMax;
+            get => maxFuel;
 
             set
             {
-                fuelMax = value;
+                maxFuel = value;
 
-                if (Instance.playerFuelBar != null)
-                {
-                    Instance.playerFuelBar.Slider.maxValue = fuelMax;
-                }
+                OnMaxFuelChanged?.Invoke(maxFuel);
 
                 Fuel = fuel;
             }
         }
+
+        public static event Action<float> OnMaxFuelChanged = null;
 
         private static float fuel = 0f;
 
@@ -47,12 +40,9 @@ namespace ZL.Unity.Unimo
 
             set
             {
-                fuel = Mathf.Clamp(value, 0f, fuelMax);
+                fuel = Mathf.Clamp(value, 0f, maxFuel);
 
-                if (Instance.playerFuelBar != null)
-                {
-                    Instance.playerFuelBar.Slider.value = fuel;
-                }
+                OnFuelChanged?.Invoke(fuel);
 
                 if (fuel == 0f)
                 {
@@ -61,8 +51,12 @@ namespace ZL.Unity.Unimo
             }
         }
 
-        private void Start()
+        public static event Action<float> OnFuelChanged = null;
+
+        protected override void Awake()
         {
+            base.Awake();
+
             if (GameStateManager.IsClear == true)
             {
                 return;
@@ -70,7 +64,7 @@ namespace ZL.Unity.Unimo
 
             fuel = 100f;
 
-            FuelMax = 100f;
+            MaxFuel = 100f;
         }
 
         public void StartConsumFuel()

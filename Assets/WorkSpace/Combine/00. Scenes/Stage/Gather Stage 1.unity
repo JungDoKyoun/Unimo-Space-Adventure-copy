@@ -1885,14 +1885,14 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1217387724}
-  - {fileID: 750348133305526352}
-  - {fileID: 1343971005}
   - {fileID: 1496842309}
   - {fileID: 773755635}
+  - {fileID: 1343971005}
   - {fileID: 253387550}
   - {fileID: 2074303881}
   - {fileID: 1321041464}
   - {fileID: 1848526200}
+  - {fileID: 750348133305526352}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1803909056 stripped
@@ -3256,7 +3256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2903841717181312051, guid: b9b43ae8f99a72b44afb0b085c703804, type: 3}
       propertyPath: m_Name
-      value: Data Sheet Manager
+      value: Google Sheet Manager
       objectReference: {fileID: 0}
     - target: {fileID: 5889327211557510762, guid: b9b43ae8f99a72b44afb0b085c703804, type: 3}
       propertyPath: stageDataSheets.Array.size
@@ -3770,6 +3770,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8123791000647940304, guid: f4aa7d1fdc2aa484db8a26d440853a12, type: 3}
+      propertyPath: m_Name
+      value: Player Health Bar
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397307844343202537, guid: f4aa7d1fdc2aa484db8a26d440853a12, type: 3}
+      propertyPath: m_Alpha
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3897,6 +3905,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 678407122}
     m_Modifications:
+    - target: {fileID: 92042706733210956, guid: ddcffb4bec4b5a74390c4411f97f69c4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 92042706733210956, guid: ddcffb4bec4b5a74390c4411f97f69c4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 92042706733210956, guid: ddcffb4bec4b5a74390c4411f97f69c4, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 92042706733210956, guid: ddcffb4bec4b5a74390c4411f97f69c4, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 92042706733210956, guid: ddcffb4bec4b5a74390c4411f97f69c4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 92042706733210956, guid: ddcffb4bec4b5a74390c4411f97f69c4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 605644227938504467, guid: ddcffb4bec4b5a74390c4411f97f69c4, type: 3}
       propertyPath: canvasGroup
       value: 

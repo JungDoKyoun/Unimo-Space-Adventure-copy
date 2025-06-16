@@ -223,7 +223,7 @@ namespace JDG
                     break;
                 case EffectType.ChangeCurrentHP:
                     if (eventEffect._value >= 0)
-                        if (eventEffect._value > PlayerManager.PlayerStatus.maxHP)
+                        if (eventEffect._value > PlayerManager.PlayerStatus.maxHealth)
                             return $"체력이 최대 체력만큼 증가합니다";
                         else
                             return $"체력이 {eventEffect._value}만큼 증가합니다";

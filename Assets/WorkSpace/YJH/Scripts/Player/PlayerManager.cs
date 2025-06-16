@@ -69,7 +69,7 @@ public partial class PlayerManager
     {
         currentHealth = playerStatus.currentHealth;
 
-        maxHP = playerStatus.maxHP;
+        maxHP = playerStatus.maxHealth;
 
         playerDamage = playerStatus.playerDamage;
 

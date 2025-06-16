@@ -103,6 +103,8 @@ namespace ZL.Unity.Unimo
         {
             yield return base.Start();
 
+            PlayerManager.OnPlayerDead += StageFail;
+
             spawners.SetActive(true);
 
             playerUIScreen.Appear();

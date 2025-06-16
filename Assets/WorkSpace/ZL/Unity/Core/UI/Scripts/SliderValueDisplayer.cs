@@ -45,11 +45,6 @@ namespace ZL.Unity.UI
 
         private string format = "{0:F0}/{1:F0}";
 
-        public float Value
-        {
-            set => slider.value = value;
-        }
-
         #if UNITY_EDITOR
 
         private float sliderMaxValue = 0f;
@@ -110,8 +105,18 @@ namespace ZL.Unity.UI
         {
             if (float.TryParse(valueText, out float value) == true)
             {
-                slider.value = value;
+                SetValue(value);
             }
+        }
+
+        public void SetMaxValue(float value)
+        {
+            slider.maxValue = value;
+        }
+
+        public void SetValue(float value)
+        {
+            slider.value = value;
         }
     }
 }
