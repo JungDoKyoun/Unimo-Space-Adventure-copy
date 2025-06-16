@@ -52,19 +52,19 @@ public partial class PlayerManager : IDamageable
     //public RelicData tempRelic;
     public float CurrentHealth
     {
-        get => playerStatus.currentHealth;
+        get => PlayerStatus.currentHealth;
 
         set
         {
             if (value < 0f)
             {
-                playerStatus.currentHealth = 0f;
+                PlayerStatus.currentHealth = 0f;
             }
 
             else
             {
-                playerStatus.currentHealth = value;
-                OnHealthChanged?.Invoke(value);
+                PlayerStatus.currentHealth = value;
+                //OnHealthChanged?.Invoke(value);
                 
             }
         }
