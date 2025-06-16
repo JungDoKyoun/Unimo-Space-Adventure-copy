@@ -14,14 +14,7 @@ using ZL.Unity.Unimo;
 
 public partial class PlayerManager : IDamageable
 {
-    //[SerializeField]
-
-    //체력 필요 없나?
-    //private float currentHealth = 300f;
-
-    //[SerializeField]
     
-    //private float maxHP = 300f;
 
     [SerializeField]
 
