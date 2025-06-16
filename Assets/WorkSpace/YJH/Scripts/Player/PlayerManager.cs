@@ -70,18 +70,17 @@ public partial class PlayerManager
 
     public void ShowStatusDebug()
     {
-        Debug.Log(playerStatus.currentHealth);
-        Debug.Log(playerStatus.maxHP);
-        Debug.Log(playerStatus.gatheringDelay);
-        Debug.Log(playerStatus.gatheringSpeed );
-        Debug.Log(playerStatus.playerDamage);
-
+        //Debug.Log(playerStatus.currentHealth);
+        //Debug.Log(playerStatus.maxHealth);
+        //Debug.Log(playerStatus.gatheringDelay);
+        //Debug.Log(playerStatus.gatheringSpeed );
+        //Debug.Log(playerStatus.playerDamage);
     }
 
     public static void ActiveRelic()
     {
         Debug.Log("try use relic");
-        Debug.Log(PlayerInventoryManager.RelicDatas.Count);
+        //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
         foreach (var relic in PlayerInventoryManager.RelicDatas)
         {
             Debug.Log("relic data exist");
@@ -95,8 +94,8 @@ public partial class PlayerManager
                         Debug.Log(playerStatus.playerDamage);
                         break;
                     case RelicEffectType.MaxHealth:
-                        playerStatus.maxHP += relicEffect.Value;
-                        Debug.Log(playerStatus.maxHP);
+                        playerStatus.maxHealth += relicEffect.Value;
+                        Debug.Log(playerStatus.maxHealth);
                         break;
                     case RelicEffectType.MovementSpeed:
                         playerStatus.moveSpeed += relicEffect.Value;

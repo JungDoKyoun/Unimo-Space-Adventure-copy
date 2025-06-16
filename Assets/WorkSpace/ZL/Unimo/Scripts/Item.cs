@@ -73,6 +73,8 @@ namespace ZL.Unity.Unimo
 
         protected void Disappear()
         {
+            CancelInvoke(nameof(Disappear));
+
             OnDisappear();
 
             animator.SetTrigger("Disappear");

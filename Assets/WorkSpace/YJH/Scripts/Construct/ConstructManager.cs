@@ -85,9 +85,15 @@ public class ConstructManager : MonoBehaviour
             PlayerManager.OnStageFail += ResetApplyBuildEffect;
             isDelinkON =true;
         }
-        PlayerInventoryManager.AddRelic(tempRelic);
-        Debug.Log(tempRelic.Effects[0].Value);
-        Debug.Log(PlayerInventoryManager.RelicDatas.Count);
+    }
+    private void Start()
+    {
+        if (tempRelic != null)
+        {
+            PlayerInventoryManager.AddRelic(tempRelic);
+            //Debug.Log(tempRelic.Effects[0].Value);
+            //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
+        }
     }
     private void OnDestroy()
     {
@@ -537,7 +543,7 @@ public class ConstructManager : MonoBehaviour
 
 
 
-        Debug.Log(playerStatus.playerDamage);
+        //Debug.Log(playerStatus.playerDamage);
 
     }
     
@@ -590,8 +596,8 @@ public class ConstructManager : MonoBehaviour
             OnConstructCostChange.Invoke();
 
         }
-        Debug.Log(FirebaseDataBaseMgr.Blueprint);
-        Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
+        //Debug.Log(FirebaseDataBaseMgr.Blueprint);
+        //Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
         
         
     }

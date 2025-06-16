@@ -238,7 +238,8 @@ namespace JDG
             {
                 foreach (RelicData relic in relDic.Value)
                 {
-                    if (!PlayerInventoryManager.RelicDatas.Contains(relic)) //가지고 있는 아이템 중복 방지
+                    //가지고 있는 아이템 중복 방지
+                    if (!PlayerInventoryManager.RelicDatas.Contains(relic))
                     {
                         allRelic.Add(relic);
                     }
