@@ -38,9 +38,9 @@ public partial class PlayerManager : IDamageable
     
     private SkinnedMeshRenderer faceRenderer;
 
-    [SerializeField]
-    
-    private static float playerDamage = 5f;
+    //[SerializeField]
+    //
+    //private static float playerDamage = 5f;
 
     [SerializeField]
     
@@ -64,6 +64,8 @@ public partial class PlayerManager : IDamageable
             else
             {
                 playerStatus.currentHealth = value;
+                OnHealthChanged?.Invoke(value);
+                
             }
         }
     }
@@ -75,9 +77,9 @@ public partial class PlayerManager : IDamageable
 
     public static event Action OnPlayerDead = null;
 
-    public static event Action OnStageClear = null;
+    public static event Action OnStageClear = null; // 삭제 예정 , 스테이지 매니저에서 관리 예정
 
-    public static event Action OnStageFail = null;
+    public static event Action OnStageFail = null;// 삭제 예정 , 스테이지 매니저에서 관리 예정
 
     private void OnCollisionStay(Collision collision)
     {
@@ -111,9 +113,9 @@ public partial class PlayerManager : IDamageable
             PlayHitEffect(contact);
         }
 
-        playerStatus.currentHealth -= damage;//데미지 입음
-        
-        OnHealthChanged?.Invoke(playerStatus.currentHealth);
+        CurrentHealth -= damage;//데미지 입음
+
+        //OnHealthChanged?.Invoke(playerStatus.currentHealth);
 
         if (playerStatus.currentHealth <= 0f)
         {
@@ -123,9 +125,8 @@ public partial class PlayerManager : IDamageable
 
             OnPlayerDead?.Invoke();
 
-            OnStageFail?.Invoke();  
+            OnStageFail?.Invoke();
         }
-
         else
         {
             StartCoroutine(PlayerBlink());
