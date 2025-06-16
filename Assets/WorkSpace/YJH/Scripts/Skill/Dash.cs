@@ -48,6 +48,8 @@ public class Dash : ISpellType,IStackSpell
 
     public int UseStack { get { return skillInfo.useStack; }set { skillInfo.useStack = value; } }
 
+    public float Timer { get { return dashTimer; }  }
+
     [PunRPC]
     public void UseSpell()
     {
