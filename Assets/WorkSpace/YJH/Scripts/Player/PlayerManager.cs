@@ -15,7 +15,20 @@ public partial class PlayerManager
 
     private static PlayerStatus playerStatus = originStatus.Clone();
     
-    public static PlayerStatus PlayerStatus {  get { return playerStatus; } set { playerStatus = value; } }
+    public static PlayerStatus PlayerStatus {  get { return playerStatus; } 
+        set
+        {
+            if (playerStatus.currentHealth != value.currentHealth||playerStatus.maxHealth!=value.maxHealth)
+            {
+                playerStatus=value;
+                OnHealthChanged?.Invoke(playerStatus.currentHealth);
+            }
+            else
+            {
+                playerStatus = value;
+            }
+        } 
+    }
 
     public static PlayerStatus OriginStatus { get { return originStatus; } }
 
