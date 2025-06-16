@@ -15,6 +15,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     FirebaseUser user;
 
+
+
     [Header("Display")]
     [SerializeField]
     private TextMeshProUGUI rewardIngameCurrencyText;
@@ -24,6 +26,10 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI rewardBluePrintText;
+
+
+
+    private static List<(string nickname, float score)> topRankers = new List<(string, float)>();
 
     private static int ingameCurrency;
 
@@ -40,6 +46,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     private static float currentScore;
 
     #region properties
+
+    public static IReadOnlyList<(string nickname, float score)> TopRankers => topRankers.AsReadOnly(); // 리스트 프로퍼티
 
     public static int IngameCurrency
     {
@@ -145,12 +153,6 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         this.dbRef = FirebaseAuthMgr.DBRef;
 
         this.user = FirebaseAuthMgr.User;
-
-        StartCoroutine(ShowUserIngameCurrency());
-
-        StartCoroutine(ShowUserMetaCurrency());
-
-        StartCoroutine(SetCurrentWinningRate());
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) // 씬 바뀔 때 마다 수행되는 것
@@ -164,6 +166,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
             StartCoroutine(ShowUserBluePrint());
 
+            // 랭크 업데이트
             StartCoroutine(UpdateRankingList());
         }
     }
@@ -495,8 +498,6 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         }
 
         DataSnapshot snapshot = getTask.Result;
-
-        List<(string nickname, float score)> topRankers = new List<(string, float)>();
 
         foreach (var userSnapshot in snapshot.Children)
         {
