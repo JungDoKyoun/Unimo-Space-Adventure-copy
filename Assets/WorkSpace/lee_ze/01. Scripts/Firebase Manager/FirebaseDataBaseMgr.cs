@@ -41,7 +41,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private static float winCount;
 
-    private static float currentScore;
+    private static float currentScore = 0;
 
     private static bool isRankUpdated = false;
 
@@ -113,7 +113,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     {
         get => currentScore;
 
-        set
+        private set
         {
             currentScore = value;
         }
@@ -459,6 +459,11 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #region Score management
 
+    public void InitScore()
+    {
+        CurrentScore = 0;
+    }
+
     /// <summary>
     /// 점수 업데이트 할 때 사용.
     /// </summary>
@@ -466,7 +471,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     /// <returns></returns>
     public IEnumerator UpdateScore(float currentScore)
     {
-        CurrentScore = currentScore;
+        CurrentScore += currentScore;
 
         var getTask = dbRef.Child("users").Child(user.UserId).Child("score").GetValueAsync();
 
@@ -483,8 +488,10 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         {
             if (CurrentScore > savedScore) // 기존 최고 기록(savedScore)보다 방금 세운 기록(currentScore)이 크면
             {
+                float bestScore = CurrentScore;
+
                 // 최고기록 갱신
-                var DBTask = dbRef.Child("user").Child(user.UserId).Child("score").SetValueAsync(CurrentScore);
+                var DBTask = dbRef.Child("user").Child(user.UserId).Child("score").SetValueAsync(bestScore);
 
                 yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
