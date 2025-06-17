@@ -55,7 +55,7 @@ public class ScoreManager : MonoBehaviour
     /// <summary>
     /// 주기 끝날 때 호출
     /// </summary>
-    public void CalculateScore()
+    public void CalculateTotalScore()
     {
         totalScore = bossKill * 500 + stageScore + itemScore + fuelScore + healthScore;
 
