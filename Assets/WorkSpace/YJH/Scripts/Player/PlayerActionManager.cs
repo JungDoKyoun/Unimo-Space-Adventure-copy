@@ -209,8 +209,14 @@ public partial class PlayerManager
                 {
                     case IStackSpell:
                         if (progressBarCircle != null && progressBarText != null)
-                        {
-                            progressBarCircle.fillAmount = (playerSpellType as IStackSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
+                        {if ((playerSpellType as IStackSpell).NowStack == (playerSpellType as IStackSpell).MaxStack)
+                            {
+                                progressBarCircle.fillAmount = 1;
+                            }
+                            else
+                            {
+                                progressBarCircle.fillAmount = (playerSpellType as IStackSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
+                            }
                             progressBarText.text = (playerSpellType as IStackSpell).NowStack.ToString();
                         }
                         break;
