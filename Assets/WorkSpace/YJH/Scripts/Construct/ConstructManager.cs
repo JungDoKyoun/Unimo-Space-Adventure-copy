@@ -67,7 +67,7 @@ public class ConstructManager : MonoBehaviour
     [SerializeField] GameObject[] attackPrefabs;
 
     public RelicData tempRelic;
-
+    public GameObject initRelicUI;
     private void Awake()
     {
         
@@ -577,7 +577,7 @@ public class ConstructManager : MonoBehaviour
 
         SetFinalStatusToPlayer();
     }
-
+    
     public void SetOwnCost()
     {
 
@@ -609,6 +609,9 @@ public class ConstructManager : MonoBehaviour
 
     }
     
-    
+    public void ActiveInitRelic()
+    {
+        initRelicUI.SetActive(true);
+    }
 
 }

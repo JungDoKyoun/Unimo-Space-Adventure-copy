@@ -14,6 +14,7 @@ namespace YJH
         public RelicCard relicCardScript1;
         public RelicCard relicCardScript2;
         public RelicCard relicCardScript3;
+        public RelicDropTable initRelicDropTable;
         private void Awake()
         {
             
@@ -28,10 +29,13 @@ namespace YJH
         }
         public void SetRelicData()
         {
-            RelicData[] relicDatas = RelicDropTable.Instance.GetRandomRelics(3);
+            
+            //RelicData[] relicDatas = new RelicData[3];
+            RelicData[] relicDatas = initRelicDropTable.GetRandomRelics(3);
             relicCardScript1.Initialize(relicDatas[0]);
             relicCardScript2.Initialize(relicDatas[1]);
             relicCardScript3.Initialize(relicDatas[2]);
+            //Debug.Log("SetRelic");
         }
         public void ActiveRelicCard()
         {
