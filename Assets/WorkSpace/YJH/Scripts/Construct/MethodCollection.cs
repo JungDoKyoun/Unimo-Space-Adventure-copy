@@ -93,15 +93,15 @@ namespace YJH
         #endregion
         public static void IncreaseRelicChanceA()//관련 함수 만들어지면 사용 
         {
-
+            PlayerInventoryManager.RelicRerollableCount += 1;
         }
         public static void IncreaseRelicChanceB()
         {
-
+            PlayerInventoryManager.RelicRerollableCount += 1;
         }
         public static void IncreaseRelicChanceC()
         {
-
+            PlayerInventoryManager.RelicRerollableCount += 1;
         }
 
 

@@ -86,15 +86,15 @@ public class ConstructManager : MonoBehaviour
             isDelinkON =true;
         }
     }
-    private void Start()
-    {
-        if (tempRelic != null)
-        {
-            PlayerInventoryManager.AddRelic(tempRelic);
-            //Debug.Log(tempRelic.Effects[0].Value);
-            //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
-        }
-    }
+    //private void Start()
+    //{
+    //    if (tempRelic != null)
+    //    {
+    //        //PlayerInventoryManager.AddRelic(tempRelic);
+    //        //Debug.Log(tempRelic.Effects[0].Value);
+    //        //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
+    //    }
+    //}
     private void OnDestroy()
     {
         OnConstructCostChange -= SetConstructCostText;
