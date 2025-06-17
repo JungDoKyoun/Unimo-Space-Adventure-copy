@@ -14,6 +14,7 @@ namespace YJH
         public RelicCard relicCardScript1;
         public RelicCard relicCardScript2;
         public RelicCard relicCardScript3;
+        public RelicCard selectedRelicCardScript;
         public RelicDropTable initRelicDropTable;
         private void Awake()
         {
@@ -26,7 +27,16 @@ namespace YJH
             {
                 return;
             }
+            relicCardScript1.OnSelectAction += SetRelicCard;
+            relicCardScript2.OnSelectAction += SetRelicCard;
+            relicCardScript3.OnSelectAction += SetRelicCard;
+            relicCardScript1.OnDeselectAction += DeSetRelicCard;
+            relicCardScript2.OnDeselectAction += DeSetRelicCard;
+            relicCardScript3.OnDeselectAction += DeSetRelicCard;
         }
+
+        
+
         public void SetRelicData()
         {
             
@@ -44,9 +54,25 @@ namespace YJH
             relicCardObject3.SetActive(true);
         }
 
-
-        
-
+        public void AddRelicByCard()
+        {
+            
+            
+        }
+        public void SetRelicCard(RelicCard card)
+        {
+            selectedRelicCardScript= card;
+        }
+        public void DeSetRelicCard(RelicCard card)
+        {
+            if(selectedRelicCardScript != null)
+            {
+                if (selectedRelicCardScript == card)
+                {
+                    selectedRelicCardScript = null;
+                }
+            }
+        }
 
     }
 }
