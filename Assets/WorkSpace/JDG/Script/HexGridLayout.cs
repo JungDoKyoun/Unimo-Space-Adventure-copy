@@ -473,10 +473,14 @@ namespace JDG
 
         public void RestoreMapState(Dictionary<Vector2Int, TileData> mapData, Vector2Int playerCoord)
         {
+            _tileCoords = new List<Vector2Int>(mapData.Keys);
             _hexMap.Clear();
 
-            foreach (var coord in _tileCoords)
+            foreach (var mapD in mapData)
             {
+                Vector2Int coord = mapD.Key;
+                TileData data = mapD.Value;
+
                 GameObject tile = new GameObject($"Hex {coord.x},{coord.y}", typeof(HexRenderer));
                 tile.transform.position = GetPositionForHexFromCoordinate(coord);
 
@@ -485,8 +489,6 @@ namespace JDG
                 hexRenderer.InnerSize = _innerSize;
                 hexRenderer.Height = _height;
                 hexRenderer.SetMaterial(_material);
-
-                var data = new TileData(coord, TileType.None, TileVisibility.Hidden, TileEnvironmentManager.Instance.GetRandomEnvironment(), false, DifficultyType.Easy);
                 hexRenderer.SetTileData(data);
 
                 hexRenderer.DrawMesh();
@@ -499,6 +501,7 @@ namespace JDG
                 hexRenderer.CreateOutlineMesh(_outlineMaterial, _outlineExpand, _yOffset);
             }
 
+            _playerCoord = playerCoord;
             Vector3 spawnPos = GetPositionForHexFromCoordinate(_playerCoord) + Vector3.up * 1f;
             _playerPrefab = Resources.Load<GameObject>("WorldMap/Player");
             _playerInstance = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
@@ -519,6 +522,7 @@ namespace JDG
 
             SceneLoader.Instance.Init(this, player);
 
+            SetEnvironmentPrefab();
             player.UpdateFog();
         }
 
