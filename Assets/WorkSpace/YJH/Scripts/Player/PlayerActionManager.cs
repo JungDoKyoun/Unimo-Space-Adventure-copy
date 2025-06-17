@@ -152,7 +152,7 @@ public partial class PlayerManager
 
             else
             {
-                //Debug.Log("nullspell");
+                Debug.Log("nullspell");
 
                 ISpellType temp = new Dash();
 

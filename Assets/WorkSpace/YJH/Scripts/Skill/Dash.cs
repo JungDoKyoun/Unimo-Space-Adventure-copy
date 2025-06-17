@@ -48,7 +48,7 @@ public class Dash : ISpellType,IStackSpell
 
     public int UseStack { get { return skillInfo.useStack; }set { skillInfo.useStack = value; } }
 
-    public float Timer { get { return dashTimer; }  }
+    public float Timer { get { return chargeTimer; }  }
 
     [PunRPC]
     public void UseSpell()
@@ -84,26 +84,38 @@ public class Dash : ISpellType,IStackSpell
 
     public void UpdateTime()
     {
-        chargeTimer += Time.deltaTime;
-
+        if (skillInfo.nowStack < skillInfo.maxStack)
+        {
+            chargeTimer += Time.deltaTime;
+        }
+        //else if(skillInfo.nowStack == skillInfo.maxStack)
+        //{
+        //    chargeTimer= skillInfo.chargeTime-float.Epsilon;
+        //}
+        //chargeTimer += Time.deltaTime;
         if (playerManager.canMove == false)
         {
             dashTimer += Time.deltaTime;
         }
 
-        if (chargeTimer >= skillInfo.chargeTime)
+        if (chargeTimer > skillInfo.chargeTime)
         {
             if (skillInfo.nowStack < skillInfo.maxStack)
             {
                 //Debug.Log("stack charged");
 
                 skillInfo.nowStack += skillInfo.chargeStack;
+                chargeTimer = 0;
+            }
+            else
+            {
+                chargeTimer = skillInfo.chargeTime;
             }
 
-            chargeTimer = 0;
             
-        }
 
+        }
+        
         if (dashTimer >= skillInfo.skillTime)
         {
             playerManager.canMove = true;

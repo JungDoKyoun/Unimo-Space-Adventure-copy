@@ -68,6 +68,12 @@ public partial class PlayerManager
 
     private void Start()
     {
+        if (playerSpellType == null)
+        {
+            SetSpellType(new Dash());
+
+            playerSpellType.InitSpell();
+        }
         if (GameStateManager.IsClear == false)
         {
             ResetPlayer();
