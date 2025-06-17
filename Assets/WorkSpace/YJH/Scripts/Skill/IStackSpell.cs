@@ -8,5 +8,6 @@ public interface IStackSpell
     public int MaxStack { get; }
     public float ChargeTime { get; }
     public int UseStack { get; set; }
+    public float Timer { get; }
    
 }

@@ -12,6 +12,8 @@ public class tempskill2 : ISpellType, IStackSpell
 
     public int UseStack { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
+    public float Timer => throw new System.NotImplementedException();
+
     public void InitSpell()
     {
         return;
