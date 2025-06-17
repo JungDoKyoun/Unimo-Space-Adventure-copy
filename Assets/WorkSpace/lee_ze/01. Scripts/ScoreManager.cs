@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
@@ -53,28 +52,40 @@ public class ScoreManager : MonoBehaviour
         totalScore = 0;
     }
 
-    private void CalculateScore()
+    /// <summary>
+    /// 주기 끝날 때 호출
+    /// </summary>
+    public void CalculateScore()
     {
         totalScore = bossKill * 500 + stageScore + itemScore + fuelScore + healthScore;
 
         StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateScore(totalScore));
+
+        InitScore();
     }
 
+    // 보스 죽을 때 호출
     public void CountBossKill()
     {
         bossKill++;
     }
 
+    // 스테이지 끝날 때 호출
     public void CountStageClear(int stageScore)
     {
         this.stageScore += stageScore;
     }
 
+    // 유물 선택 할 때 호출
     public void CountGetItem(int itemScore)
     {
         this.itemScore += itemScore;
     }
 
+    /// <summary>
+    /// 주기 끝날 때 호출(남은 연료 량)
+    /// </summary>
+    /// <param name="leftFuel"></param>
     public void CountLeftFuel(int leftFuel)
     {
         if (leftFuel <= 0)
@@ -87,6 +98,11 @@ public class ScoreManager : MonoBehaviour
         fuelScore = leftFuel;
     }
 
+    /// <summary>
+    /// 주기 끝날 때 호출(현재 체력 / 최대 체력)
+    /// </summary>
+    /// <param name="currentPlayerHP"></param>
+    /// <param name="maxPlayerHP"></param>
     public void CountLeftHP(float currentPlayerHP, float maxPlayerHP)
     {
         if (maxPlayerHP <= 0)

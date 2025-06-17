@@ -9,7 +9,7 @@ public class SceneControl : MonoBehaviourPun
 
     private Button pioneerButton;
 
-    private Button competeButton;
+    //private Button competeButton;
 
     private void Awake()
     {
@@ -36,7 +36,7 @@ public class SceneControl : MonoBehaviourPun
     {
         var pioneer = GameObject.Find("Mode Selection Canvas")?.transform.Find("Cards/Pioneer Button"); // PvE 버튼 할당
 
-        var compete = GameObject.Find("Mode Selection Canvas")?.transform.Find("Cards/Compete Button"); // PvP 버튼 할당
+        //var compete = GameObject.Find("Mode Selection Canvas")?.transform.Find("Cards/Compete Button"); // PvP 버튼 할당
 
         if (pioneer != null)
         {
@@ -45,12 +45,12 @@ public class SceneControl : MonoBehaviourPun
             pioneerButton.onClick.AddListener(() => GoToSpaceship());
         }
 
-        if (compete != null)
-        {
-            competeButton = compete.GetComponent<Button>();
+        //if (compete != null)
+        //{
+        //    competeButton = compete.GetComponent<Button>();
 
-            competeButton.onClick.AddListener(() => GoToCompete());
-        }
+        //    competeButton.onClick.AddListener(() => GoToCompete());
+        //}
     }
 
     public void GoToMain()
@@ -70,11 +70,11 @@ public class SceneControl : MonoBehaviourPun
         SceneManager.LoadScene("Station");
     }
 
-    private void GoToCompete()
-    {
-        // 퀵매치 이동
-        SceneManager.LoadScene("Compete");
-    }
+    //private void GoToCompete()
+    //{
+    //    // 퀵매치 이동
+    //    SceneManager.LoadScene("Compete");
+    //}
 
     private void OnDestroy()
     {
