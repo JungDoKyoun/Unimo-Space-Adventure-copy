@@ -294,5 +294,10 @@ namespace JDG
                 render.material.renderQueue = 3100;
             }
         }
+
+        public void CreateHighlight()
+        {
+
+        }
     }
 }

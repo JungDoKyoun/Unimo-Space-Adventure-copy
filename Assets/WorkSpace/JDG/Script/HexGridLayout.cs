@@ -255,7 +255,7 @@ namespace JDG
                 {
                     hex.SetVisibility(TileVisibility.Visible);
                 }
-                else if (hex.GetTileVisibility() == TileVisibility.Visible)
+                else if (hex.TileData.TileVisibility == TileVisibility.Visible)
                 {
                     hex.SetVisibility(TileVisibility.Visited);
                 }
