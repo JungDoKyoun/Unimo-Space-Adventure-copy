@@ -208,8 +208,11 @@ public partial class PlayerManager
                 switch (playerSpellType)
                 {
                     case IStackSpell:
-                        progressBarCircle.fillAmount = (playerSpellType as IStackSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
-                        progressBarText.text = (playerSpellType as IStackSpell).NowStack.ToString();
+                        if (progressBarCircle != null && progressBarText != null)
+                        {
+                            progressBarCircle.fillAmount = (playerSpellType as IStackSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
+                            progressBarText.text = (playerSpellType as IStackSpell).NowStack.ToString();
+                        }
                         break;
                         case ICoolTimeSpell:
                         //progressBarCircle.fillAmount = (playerSpellType as ICoolTimeSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
