@@ -85,6 +85,8 @@ namespace JDG
                 {
                     currentHP = maxHP;
                 }
+
+                PlayerEvents.ChangeCurrency();
             }
         }
 
@@ -102,6 +104,8 @@ namespace JDG
                 {
                     currentHP = maxHP;
                 }
+
+                PlayerEvents.ChangeCurrency();
             }
         }
     }
