@@ -192,6 +192,8 @@ namespace ZL.Unity.Unimo
             if (FirebaseDataBaseMgr.Instance != null)
             {
                 StartCoroutine(FirebaseDataBaseMgr.Instance.InitIngameCurrency());
+
+                ScoreManager.Instance.CalculateTotalScore();
             }
 
             stageFailPopupScreen.Appear();
