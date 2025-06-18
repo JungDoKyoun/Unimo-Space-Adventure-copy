@@ -42,6 +42,8 @@ namespace JDG
         private MeshRenderer _meshRenderer;
         private List<Face> _faces; //면들의 목록
         private TileData _tileData;
+        private GameObject _outlineObj;
+        private GameObject _highlightObj;
         private float _innerSize; //내부 반지름
         private float _outerSize; //바깥 반지름
         private float _height; //높이
@@ -258,6 +260,12 @@ namespace JDG
 
         public void CreateOutlineMesh(Material outlineMat, float width, float yOffset)
         {
+            if (_outlineObj != null)
+                Destroy(_outlineObj);
+
+            _outlineObj = new GameObject("HighlightOutline");
+            _outlineObj.transform.SetParent(transform, false);
+
             Vector3[] top = new Vector3[6];
             float outSize = _outerSize;
             float offset = _height * 0.5f + yOffset;
@@ -286,7 +294,7 @@ namespace JDG
                 quad.RecalculateNormals();
 
                 var obj = new GameObject($"outline_{i}");
-                obj.transform.SetParent(transform, false);
+                obj.transform.SetParent(_outlineObj.transform, false);
                 obj.AddComponent<MeshFilter>().sharedMesh = quad;
 
                 var render = obj.AddComponent<MeshRenderer>();
@@ -297,9 +305,53 @@ namespace JDG
             }
         }
 
-        public void CreateHighlight(Material highlightMaterial, float highlightScale)
+        public void CreateHighlight(Material highlightMaterial, float highlightScale, float yOffset)
         {
-            
+            if (_highlightObj != null)
+                Destroy(_highlightObj);
+
+            _highlightObj = new GameObject("HighlightOutline");
+            _highlightObj.transform.SetParent(transform, false);
+
+            Vector3[] top = new Vector3[6];
+            float size = _outerSize;
+            float offset = _height * 0.5f + yOffset;
+
+            for(int i = 0; i < 6; i++)
+            {
+                float rad = Mathf.Deg2Rad * (i * 60 + 30);
+                top[i] = new Vector3(_outerSize * Mathf.Cos(rad), offset, _outerSize * Mathf.Sin(rad));
+            }
+
+            for(int i = 0; i < 6; i++)
+            {
+                int j = (i + 1) % 6;
+                Vector3 p0 = top[i];
+                Vector3 p1 = top[j];
+
+                Vector3 dir = (p1 - p0).normalized;
+                Vector3 outbound = Vector3.Cross(Vector3.up, dir);
+
+                Vector3 q0 = p0 + outbound * highlightScale;
+                Vector3 q1 = p1 + outbound * highlightScale;
+
+                Mesh quad = new Mesh();
+                quad.vertices = new[] { p0, p1, q1, q0 };
+                quad.triangles = new[] { 0, 1, 2, 2, 3, 0 };
+                quad.RecalculateNormals();
+
+                var obj = new GameObject($"highlight_{i}");
+                obj.transform.SetParent(_highlightObj.transform, false);
+
+                obj.AddComponent<MeshFilter>().sharedMesh = quad;
+
+                var ren = obj.AddComponent<MeshRenderer>();
+                ren.material = highlightMaterial;
+                ren.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                ren.receiveShadows = false;
+                ren.material.renderQueue = 3100;
+            }
+            _highlightObj.SetActive(false);
         }
     }
 }

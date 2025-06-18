@@ -28,7 +28,12 @@ namespace JDG
         [Header("육각타일의 테두리 관련")]
         [SerializeField] private Material _outlineMaterial;
         [SerializeField] private float _outlineExpand;
-        [SerializeField] private float _yOffset;
+        [SerializeField] private float _oYOffset;
+
+        [Header("육각타일의 하이라이트 관련")]
+        [SerializeField] private Material _highlightMaterial;
+        [SerializeField] private float _highlightScale;
+        [SerializeField] private float _hYOffset;
 
         [Header("타일 역할 배치 변수")]
         [SerializeField] private List<ModeRatioEntry> _modeRatio = new List<ModeRatioEntry>();
@@ -169,7 +174,10 @@ namespace JDG
                 tile.transform.SetParent(transform, true);
 
                 //타일 구분선
-                hexRenderer.CreateOutlineMesh(_outlineMaterial, _outlineExpand, _yOffset);
+                hexRenderer.CreateOutlineMesh(_outlineMaterial, _outlineExpand, _oYOffset);
+
+                //하이라이트
+                hexRenderer.CreateHighlight(_highlightMaterial, _highlightScale, _hYOffset);
             }
 
             Vector3 spawnPos = GetPositionForHexFromCoordinate(_playerCoord) + Vector3.up * 1f;
@@ -503,7 +511,10 @@ namespace JDG
                 tile.transform.SetParent(transform, true);
 
                 //타일 구분선
-                hexRenderer.CreateOutlineMesh(_outlineMaterial, _outlineExpand, _yOffset);
+                hexRenderer.CreateOutlineMesh(_outlineMaterial, _outlineExpand, _oYOffset);
+
+                //하이라이트
+                hexRenderer.CreateHighlight(_highlightMaterial, _highlightScale, _hYOffset);
             }
 
             _playerCoord = playerCoord;
