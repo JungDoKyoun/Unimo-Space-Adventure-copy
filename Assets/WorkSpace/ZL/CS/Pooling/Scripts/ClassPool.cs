@@ -8,7 +8,7 @@ namespace ZL.CS.Pooling
 
         public static TClass Generate()
         {
-            return pool.Cloning();
+            return pool.Clone();
         }
 
         public static TClass Replicate()

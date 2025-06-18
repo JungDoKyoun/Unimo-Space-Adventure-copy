@@ -5,16 +5,28 @@ using UnityEngine;
 
 public static class PlayerEvents
 {
-    public static event Action<float, float> OnHPChanged;
-    public static event Action<float, float> OnFuelChanged;
+    public static event Action<float, float> _OnHPChanged;
+    public static event Action<float, float> _OnFuelChanged;
+    public static event Action _OnCurrencyChanged;
+    public static event Action _OnRelicChanged;
 
     public static void ChangeHP(float maxHP, float currentHP)
     {
-        OnHPChanged?.Invoke(maxHP, currentHP);
+        _OnHPChanged?.Invoke(maxHP, currentHP);
     }
 
     public static void ChangeFuel(float maxFuel, float currenteFuel)
     {
-        OnFuelChanged?.Invoke(maxFuel, currenteFuel);
+        _OnFuelChanged?.Invoke(maxFuel, currenteFuel);
+    }
+
+    public static void ChangeCurrency()
+    {
+        _OnCurrencyChanged?.Invoke();
+    }
+
+    public static void ChangeRelic()
+    {
+        _OnRelicChanged?.Invoke();
     }
 }

@@ -44,11 +44,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 694ea3551c95c1443b0a34c5b2943189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateAllSheetsOnAwake: 1
-  enemyDataSheet: {fileID: 11400000, guid: 8d7343fd00a032341b8a0c345bf7d4ac, type: 2}
   relicDataSheet: {fileID: 11400000, guid: d142871ab51cf0e44900eda7f2e0470f, type: 2}
   relicDropTableSheet: {fileID: 11400000, guid: 872b623a1f64efa4094ffa07b34d28b1, type: 2}
-  spawnPatternDataSheet: {fileID: 11400000, guid: 062271a1db928d149a00abd538eb16cc, type: 2}
-  spawnerDataSheet: {fileID: 11400000, guid: 91f53a1b0cf51f0478045a66fc02b356, type: 2}
-  stageDataSheet: {fileID: 11400000, guid: ba807da462ff77b4b8b70aa9f7219fd5, type: 2}
   relicEffectStringTableSheet: {fileID: 11400000, guid: 3578da5807bfb6c448f3f0ac986d118b, type: 2}
+  readAllSheetsOnAwake: 0
+  sheets:
+  - {fileID: 11400000, guid: 8d7343fd00a032341b8a0c345bf7d4ac, type: 2}
+  - {fileID: 11400000, guid: 42cf08b2a2fba6e44abc031e38696b34, type: 2}
+  - {fileID: 11400000, guid: d142871ab51cf0e44900eda7f2e0470f, type: 2}
+  - {fileID: 11400000, guid: 872b623a1f64efa4094ffa07b34d28b1, type: 2}
+  - {fileID: 11400000, guid: 3578da5807bfb6c448f3f0ac986d118b, type: 2}
+  - {fileID: 11400000, guid: 2a25ec0fc7dc160428ef7f5bf357c401, type: 2}
+  - {fileID: 11400000, guid: 062271a1db928d149a00abd538eb16cc, type: 2}
+  - {fileID: 11400000, guid: 91f53a1b0cf51f0478045a66fc02b356, type: 2}
+  - {fileID: 11400000, guid: ba807da462ff77b4b8b70aa9f7219fd5, type: 2}

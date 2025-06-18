@@ -14,50 +14,52 @@ namespace JDG
 
     public class HexGridLayout : MonoBehaviour
     {
-        [Header("±×¸®µå ¼¼ÆÃ")]
+        [Header("ê·¸ë¦¬ë“œ ì„¸íŒ…")]
         [SerializeField] private Vector2Int _gridSize;
         [SerializeField] private Vector3 _mapOrigin = Vector3.zero;
 
-        [Header("Å¸ÀÏ ¼¼ÆÃ")]
+        [Header("íƒ€ì¼ ì„¸íŒ…")]
         [SerializeField] private int _spawnCount = 80;
         [SerializeField] private float _outerSize = 1f;
         [SerializeField] private float _innerSize = 0f;
         [SerializeField] private float _height = 1f;
         [SerializeField] private Material _material;
 
-        [Header("À°°¢Å¸ÀÏÀÇ Å×µÎ¸® °ü·Ã")]
+        [Header("ìœ¡ê°íƒ€ì¼ì˜ í…Œë‘ë¦¬ ê´€ë ¨")]
         [SerializeField] private Material _outlineMaterial;
         [SerializeField] private float _outlineExpand;
         [SerializeField] private float _yOffset;
 
-        [Header("Å¸ÀÏ ¿ªÇÒ ¹èÄ¡ º¯¼ö")]
+        [Header("íƒ€ì¼ ì—­í•  ë°°ì¹˜ ë³€ìˆ˜")]
         [SerializeField] private List<ModeRatioEntry> _modeRatio = new List<ModeRatioEntry>();
         [SerializeField] private int[] _bossDistance;
         [SerializeField] private int[] _bossMinGapByDistance;
         [SerializeField] private EventTileConfig _eventTileConfig;
 
 
-        [Header("ÇÃ·¹ÀÌ¾î °ü·Ã")]
+        [Header("í”Œë ˆì´ì–´ ê´€ë ¨")]
         [SerializeField] private VRPlayerInput _vRPlayerInput;
         private GameObject _playerPrefab;
         private GameObject _playerInstance;
 
-        [Header("UI °ü·Ã")]
+        [Header("UI ê´€ë ¨")]
         private TileSelectionUI _tileSelectionUI;
 
-        [Header("³­ÀÌµµ °ü·Ã")]
+        [Header("ë‚œì´ë„ ê´€ë ¨")]
         [SerializeField] private List<DifficultyEntry> _difficultyEntries = new List<DifficultyEntry>();
 
-        [Header("È¯°æ Å¸ÀÏ °ü·Ã")]
+        [Header("í™˜ê²½ íƒ€ì¼ ê´€ë ¨")]
         [SerializeField] private int _minEnvironmentTileCount;
         [SerializeField] private int _maxEnvironmentTileCount;
         [SerializeField] private Vector3 _offset;
         private Dictionary<string, GameObject> _environmentPrefabs = new Dictionary<string, GameObject>();
+        private Dictionary<Vector2Int, GameObject> _envInstances = new Dictionary<Vector2Int, GameObject>();
+        Dictionary<MeshRenderer, Color> _originalColors = new Dictionary<MeshRenderer, Color>();
 
-        private List<Vector2Int> _tileCoords = new List<Vector2Int>(); //Å¸ÀÏ ÁÂÇ¥ ¸®½ºÆ®
+        private List<Vector2Int> _tileCoords = new List<Vector2Int>(); //íƒ€ì¼ ì¢Œí‘œ ë¦¬ìŠ¤íŠ¸
         private Vector2Int _baseCoord;
         private Vector2Int _playerCoord;
-        private Dictionary<Vector2Int, HexRenderer> _hexMap = new Dictionary<Vector2Int, HexRenderer>(); //Å¸ÀÏ ¿ÀºêÁ§Æ® Á¤º¸
+        private Dictionary<Vector2Int, HexRenderer> _hexMap = new Dictionary<Vector2Int, HexRenderer>(); //íƒ€ì¼ ì˜¤ë¸Œì íŠ¸ ì •ë³´
         private List<Vector2Int> _bossNearShopCount = new List<Vector2Int>();
 
         private void Start()
@@ -166,7 +168,7 @@ namespace JDG
                 _hexMap.Add(coord, hexRenderer);
                 tile.transform.SetParent(transform, true);
 
-                //Å¸ÀÏ ±¸ºĞ¼±
+                //íƒ€ì¼ êµ¬ë¶„ì„ 
                 hexRenderer.CreateOutlineMesh(_outlineMaterial, _outlineExpand, _yOffset);
             }
 
@@ -241,6 +243,7 @@ namespace JDG
 
         public void UpdateFog(int viewRange)
         {
+
             foreach (var pair in _hexMap)
             {
                 Vector2Int coord = pair.Key;
@@ -252,11 +255,13 @@ namespace JDG
                 {
                     hex.SetVisibility(TileVisibility.Visible);
                 }
-                else if (hex.GetTileVisibility() == TileVisibility.Visible)
+                else if (hex.TileData.TileVisibility == TileVisibility.Visible)
                 {
                     hex.SetVisibility(TileVisibility.Visited);
                 }
             }
+
+            UpdateEnvironmentColorsByVisibility();
         }
 
         public Vector2Int GetCoordinateFromPosition(Vector3 pos)
@@ -307,7 +312,7 @@ namespace JDG
                     var coord = valid[randomIndex];
                     _hexMap[coord].TileData.TileType = TileType.Boss;
                     _hexMap[coord].TileData.SceneName = "Boss Stage 1";
-                    //³­ÀÌµµ Ãß°¡µÇ¸é À§¿¡ ¾À³×ÀÓ ÄÚµå »©°í ÀÌ°Å ³ÖÀ¸¸éµÊ
+                    //ë‚œì´ë„ ì¶”ê°€ë˜ë©´ ìœ„ì— ì”¬ë„¤ì„ ì½”ë“œ ë¹¼ê³  ì´ê±° ë„£ìœ¼ë©´ë¨
                     //int dis = HexDistance(_baseCoord, coord);
                     //DifficultyType difficultyType = GetDifficultyTypeByDistance(dis);
                     //_hexMap[coord].TileData.DifficultyType = difficultyType;
@@ -329,7 +334,7 @@ namespace JDG
                         {
                             _hexMap[coord].TileData.TileType = TileType.Boss;
                             _hexMap[coord].TileData.SceneName = "BossScene";
-                            //³­ÀÌµµ Ãß°¡µÇ¸é À§¿¡ ¾À³×ÀÓ ÄÚµå »©°í ÀÌ°Å ³ÖÀ¸¸éµÊ
+                            //ë‚œì´ë„ ì¶”ê°€ë˜ë©´ ìœ„ì— ì”¬ë„¤ì„ ì½”ë“œ ë¹¼ê³  ì´ê±° ë„£ìœ¼ë©´ë¨
                             //int dis = HexDistance(_baseCoord, coord);
                             //DifficultyType difficultyType = GetDifficultyTypeByDistance(dis);
                             //_hexMap[coord].TileData.DifficultyType = difficultyType;
@@ -411,7 +416,7 @@ namespace JDG
                     {
                         _hexMap[coord].TileData.SceneName = "Gather Stage 1";
                     }
-                    //³­ÀÌµµ Ãß°¡µÇ¸é À§¿¡ ¾À³×ÀÓ ÄÚµå »©°í ÀÌ°Å ³ÖÀ¸¸éµÊ
+                    //ë‚œì´ë„ ì¶”ê°€ë˜ë©´ ìœ„ì— ì”¬ë„¤ì„ ì½”ë“œ ë¹¼ê³  ì´ê±° ë„£ìœ¼ë©´ë¨
                     //int dis = HexDistance(_baseCoord, coord);
                     //DifficultyType difficultyType = GetDifficultyTypeByDistance(dis);
                     //_hexMap[coord].TileData.DifficultyType = difficultyType;
@@ -497,7 +502,7 @@ namespace JDG
                 _hexMap.Add(coord, hexRenderer);
                 tile.transform.SetParent(transform, true);
 
-                //Å¸ÀÏ ±¸ºĞ¼±
+                //íƒ€ì¼ êµ¬ë¶„ì„ 
                 hexRenderer.CreateOutlineMesh(_outlineMaterial, _outlineExpand, _yOffset);
             }
 
@@ -644,7 +649,7 @@ namespace JDG
             {
                 TileType tileType = _hexMap[coord].TileData.TileType;
 
-                if (tileType != TileType.Event && tileType != TileType.Boss)
+                if (tileType != TileType.Event && tileType != TileType.Boss && tileType != TileType.Base)
                 {
                     availableCoords.Add(coord);
                 }
@@ -781,6 +786,8 @@ namespace JDG
                 Quaternion rotation = Quaternion.Euler(0, 90, 0);
                 GameObject instance = Instantiate(environmentPrefab, tilePos, rotation);
                 instance.transform.SetParent(_hexMap[coord].transform);
+                instance.SetActive(false);
+                _envInstances.Add(coord, instance);
             }
         }
 
@@ -795,6 +802,60 @@ namespace JDG
                 _environmentPrefabs[path] = prefab;
 
             return prefab;
+        }
+        public void UpdateEnvironmentColorsByVisibility()
+        {
+            foreach(var dic in _envInstances)
+            {
+                Vector2Int coord = dic.Key;
+                GameObject obj = dic.Value;
+
+                if (!_hexMap.ContainsKey(coord))
+                    continue;
+
+                TileData tileData = _hexMap[coord].TileData;
+                var renders = obj.GetComponentsInChildren<MeshRenderer>();
+
+                foreach(var render in renders)
+                {
+                    if (!render.material.HasProperty("_BaseColor"))
+                        continue;
+
+                    if (!_originalColors.ContainsKey(render))
+                    {
+                        _originalColors[render] = render.material.GetColor("_BaseColor");
+                    }
+
+                    Color originalColor = _originalColors[render];
+
+                    switch (tileData.TileVisibility)
+                    {
+                        case TileVisibility.Visible:
+                            render.material.SetColor("_BaseColor", originalColor);
+                            break;
+
+                        case TileVisibility.Visited:
+                            render.material.SetColor("_BaseColor", originalColor * 0.4f);
+                            break;
+
+                        case TileVisibility.Hidden:
+                            if (tileData.TileType == TileType.Boss || tileData.TileType == TileType.Event)
+                            {
+                                obj.SetActive(true);
+                            }
+                            else
+                            {
+                                obj.SetActive(false);
+                            }
+                            break;
+                    }
+                }
+
+                if(tileData.TileVisibility != TileVisibility.Hidden)
+                {
+                    obj.SetActive(true);
+                }
+            }
         }
     }
 }

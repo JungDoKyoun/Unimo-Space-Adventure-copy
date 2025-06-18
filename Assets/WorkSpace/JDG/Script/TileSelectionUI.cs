@@ -78,7 +78,7 @@ namespace JDG
 
             _rewardPrefab = Resources.Load<GameObject>("WorldMap/RewardSlot");
 
-            if (tile.TileData.TileType != TileType.Event && tile.TileData.TileType != TileType.None)
+            if (tile.TileData.TileType != TileType.Event && tile.TileData.TileType != TileType.None && tile.TileData.TileType != TileType.Base)
             {
                 string key = tile.TileData.SceneName;
 
