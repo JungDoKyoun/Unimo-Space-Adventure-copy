@@ -466,6 +466,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     /// <returns></returns>
     public IEnumerator UpdateScore(int currentScore)
     {
+        // 최근 기록
         CurrentScore = currentScore;
 
         var getTask = dbRef.Child("users").Child(user.UserId).Child("score").GetValueAsync();
@@ -483,6 +484,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         {
             if (CurrentScore > savedScore) // 기존 최고 기록(savedScore)보다 방금 세운 기록(currentScore)이 크면
             {
+                // 최고기록 = 최근기록
                 float bestScore = CurrentScore;
 
                 // 최고기록 갱신

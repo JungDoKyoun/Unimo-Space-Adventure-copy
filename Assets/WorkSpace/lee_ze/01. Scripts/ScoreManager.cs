@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using ZL.Unity.Unimo;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -11,9 +12,9 @@ public class ScoreManager : MonoBehaviour
 
     private int itemScore;
 
-    private int fuelScore;
+    private int leftFuelScore;
 
-    private int healthScore;
+    private int leftHealthScore;
 
     private int totalScore;
 
@@ -46,9 +47,9 @@ public class ScoreManager : MonoBehaviour
 
         itemScore = 0;
 
-        fuelScore = 0;
+        leftFuelScore = 0;
 
-        healthScore = 0;
+        leftHealthScore = 0;
 
         totalScore = 0;
     }
@@ -58,7 +59,13 @@ public class ScoreManager : MonoBehaviour
     /// </summary>
     public void CalculateTotalScore()
     {
-        totalScore = bossKill * 500 + stageScore + itemScore + fuelScore + healthScore;
+        // 남은 연료 량 가져오기(leftFuelScore)
+        CountLeftFuel((int)PlayerFuelManager.Fuel);
+
+        // 플레이어 체력 비율 가져오기(leftHealthScore)
+        CountLeftHP(PlayerManager.PlayerStatus.currentHealth, PlayerManager.PlayerStatus.maxHealth);
+
+        totalScore = bossKill * 500 + stageScore + itemScore + leftFuelScore + leftHealthScore;
 
         updateScore = FirebaseDataBaseMgr.Instance.UpdateScore(totalScore);
 
@@ -95,12 +102,12 @@ public class ScoreManager : MonoBehaviour
     {
         if (leftFuel <= 0)
         {
-            fuelScore = 0;
+            leftFuelScore = 0;
 
             return;
         }
 
-        fuelScore = leftFuel;
+        leftFuelScore = leftFuel;
     }
 
     /// <summary>
@@ -112,11 +119,11 @@ public class ScoreManager : MonoBehaviour
     {
         if (maxPlayerHP <= 0)
         {
-            healthScore = 0;
+            leftHealthScore = 0;
 
             return;
         }
 
-        healthScore = (int)((currentPlayerHP / maxPlayerHP) * 100);
+        leftHealthScore = (int)((currentPlayerHP / maxPlayerHP) * 100);
     }
 }
