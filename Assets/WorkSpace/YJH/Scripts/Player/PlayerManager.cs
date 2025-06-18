@@ -1,4 +1,5 @@
 using JDG;
+
 using Photon.Pun;
 
 using UnityEngine;
@@ -15,7 +16,8 @@ public partial class PlayerManager
 
     private static PlayerStatus playerStatus = new PlayerStatus();
     
-    public static PlayerStatus PlayerStatus {  
+    public static PlayerStatus PlayerStatus
+    {  
         get 
         { 
             return playerStatus;
@@ -23,22 +25,27 @@ public partial class PlayerManager
         
         set
         {
-            if (playerStatus.currentHealth != value.currentHealth||playerStatus.maxHealth!=value.maxHealth)
+            if (playerStatus.currentHealth != value.currentHealth || playerStatus.maxHealth != value.maxHealth)
             {
                 if (value.currentHealth < 0)
                 {
                     value.currentHealth = 0;
                 }
-                playerStatus=value;
+
+                playerStatus = value;
+
                 OnHealthChanged?.Invoke(playerStatus.currentHealth);
+
                 //Debug.Log(value.maxHealth);
                 
-                Debug.Log("setby0");
+                //Debug.Log("setby0");
             }
+
             else
             {
                 playerStatus = value;
-                Debug.Log("set");
+
+                //Debug.Log("set");
             }
         } 
     }

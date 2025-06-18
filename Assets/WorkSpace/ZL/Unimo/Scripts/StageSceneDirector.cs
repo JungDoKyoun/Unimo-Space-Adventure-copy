@@ -82,12 +82,52 @@ namespace ZL.Unity.Unimo
 
         private StageFailPopupScreen stageFailPopupScreen = null;
 
+        [Space]
+
+        [SerializeField]
+
         private string loadSceneName = "Station";
 
-        public string LoadSceneName
+        #if UNITY_EDITOR
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Line]
+
+        [Text("<b>테스트 옵션</b>", FontSize = 16)]
+
+        [Margin]
+
+        [Text("<b>체력 무한</b>")]
+
+        private bool infinityHealth = false;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Text("<b>연료 무한</b>")]
+
+        private bool infinityFuel = false;
+
+        private void Update()
         {
-            set => loadSceneName = value;
+            if (infinityHealth == true)
+            {
+                PlayerManager.PlayerStatus.currentHealth = PlayerManager.PlayerStatus.maxHealth;
+            }
+
+            if (infinityFuel == true)
+            {
+                PlayerFuelManager.Fuel = PlayerFuelManager.MaxFuel;
+            }
         }
+
+        #endif
 
         protected override void Awake()
         {
