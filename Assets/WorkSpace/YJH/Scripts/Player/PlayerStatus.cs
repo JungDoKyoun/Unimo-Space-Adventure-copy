@@ -20,24 +20,38 @@ public class PlayerStatus
 
     // 최종속도
     //public float baseSpeed;
+
     public PlayerStatus()
     {
         currentHealth = 0;
+
         maxHealth = 0;
+
         playerDamage = 0;
+
         itemDetectionRange = 0;
+
         gatheringSpeed = 0;
+
         gatheringDelay = 0;
+
         moveSpeed = 0;
     }
-    public PlayerStatus(float nowHP,float maxHp,float playerDamage,float detectionRange, float gatherSpeed,float gatherDelay,float moveSpeed)
+
+    public PlayerStatus(float nowHP, float maxHp, float playerDamage, float detectionRange, float gatherSpeed, float gatherDelay, float moveSpeed)
     {
-        currentHealth=nowHP;
-        maxHealth=maxHp;
+        currentHealth = nowHP;
+
+        maxHealth = maxHp;
+
         this.playerDamage = playerDamage;
-        itemDetectionRange=detectionRange;
+
+        itemDetectionRange = detectionRange;
+
         gatheringSpeed = gatherSpeed;
+
         gatheringDelay = gatherDelay;
+
         this.moveSpeed = moveSpeed;
     }
     
@@ -69,17 +83,25 @@ public class PlayerStatus
         { 
             return null; 
         }
+
         return new PlayerStatus
         {
             currentHealth = a.currentHealth + b.currentHealth,
+
             maxHealth = a.maxHealth + b.maxHealth,
+
             playerDamage = a.playerDamage + b.playerDamage,
+
             itemDetectionRange = a.itemDetectionRange + b.itemDetectionRange,
+
             gatheringSpeed = a.gatheringSpeed + b.gatheringSpeed,
+
             moveSpeed = a.moveSpeed + b.moveSpeed,
+
             gatheringDelay = a.gatheringDelay + b.gatheringDelay
         };
     }
+
     public static PlayerStatus operator -(PlayerStatus a, PlayerStatus b)
     {
         if (a == null || b == null)
@@ -90,13 +112,18 @@ public class PlayerStatus
         return new PlayerStatus
         {
             currentHealth = a.currentHealth - b.currentHealth,
+
             maxHealth = a.maxHealth - b.maxHealth,
+
             playerDamage = a.playerDamage - b.playerDamage,
+
             itemDetectionRange = a.itemDetectionRange - b.itemDetectionRange,
+
             gatheringSpeed = a.gatheringSpeed - b.gatheringSpeed,
+
             moveSpeed = a.moveSpeed - b.moveSpeed,
+
             gatheringDelay = a.gatheringDelay - b.gatheringDelay
         };
     }
-
 }

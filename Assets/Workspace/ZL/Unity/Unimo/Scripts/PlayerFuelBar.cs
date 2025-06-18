@@ -16,6 +16,8 @@ namespace ZL.Unity.Unimo
 
         [GetComponent]
 
+        [Essential]
+
         [ReadOnlyWhenPlayMode]
 
         private SliderValueDisplayer sliderValueDisplayer = null;

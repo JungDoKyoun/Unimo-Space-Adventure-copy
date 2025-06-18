@@ -17,17 +17,17 @@ public partial class PlayerManager
     //[Header("채집")]
 
     //[SerializeField]
-    //
+    
     //private float itemDetectionRange = 5f;
 
     //public float ItemDetectionRange => playerStatus.itemDetectionRange;
 
     //[SerializeField]
-    //
+    
     //private float gatheringSpeed = 4f;
-    //
+    
     //[SerializeField]
-    //
+    
     //private float gatheringDelay = 0.5f;
     
     [SerializeField]
@@ -60,8 +60,6 @@ public partial class PlayerManager
     
     private LayerMask enemyLayerMask;
 
-    [SerializeField]
-    
     private static GameObject attackPrefab;
 
     public GameObject tempAttackPrefab;
@@ -79,8 +77,6 @@ public partial class PlayerManager
     private GameObject targetObject;
 
     private GameObject targetEnemyObject;
-
-    // Start is called before the first frame update
 
     private bool isGatheringCoroutineWork = false;
 
@@ -125,7 +121,8 @@ public partial class PlayerManager
 
     public static event Action<float> OnEnergyChanged = null;
 
-    public void ActionStart()// 멀티용으로 리펙토링한거 나중에 다 해체하기
+    // 멀티용으로 리펙토링한거 나중에 다 해체하기
+    public void ActionStart()
     {
         if (PhotonNetwork.IsConnected == false)
         {
@@ -278,7 +275,7 @@ public partial class PlayerManager
 
     //public void StartFindEnemy()
     //{
-    //    //StartCoroutine (FindEnemy());
+    //    StartCoroutine (FindEnemy());
     //}
 
     public static void SetAttackType(GameObject attackType)
@@ -289,7 +286,7 @@ public partial class PlayerManager
 
         //Debug.Log("setAttack");
 
-        playerAttackType.Damage = playerStatus.playerDamage;// playerDamage;
+        playerAttackType.Damage = playerStatus.playerDamage;
     }
 
     public static void SetSpellType(ISpellType spellType)
@@ -343,11 +340,13 @@ public partial class PlayerManager
             {
                 int offsetIndex = 0;
 
-                if (fireCount % 2 == 0) // 짝수일 때
+                // 짝수일 때
+                if (fireCount % 2 == 0)
                 {
                     int step = (i / 2) + 1;
 
-                    int sign = (i % 2 == 0) ? -1 : 1; // 좌 → 우
+                    // 좌 → 우
+                    int sign = (i % 2 == 0) ? -1 : 1;
 
                     offsetIndex = step * sign;
                 }
@@ -356,7 +355,8 @@ public partial class PlayerManager
                 {
                     if (i == 0)
                     {
-                        offsetIndex = 0; // 중앙
+                        // 중앙
+                        offsetIndex = 0;
                     }
 
                     else
@@ -466,10 +466,10 @@ public partial class PlayerManager
         {
             foreach (Collider collider in targetEnemies)
             {
-                //감지된 콜라이더와의 거리
+                // 감지된 콜라이더와의 거리
                 float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);
 
-                //1.거리 비교 조건
+                // 1.거리 비교 조건
                 if (distance > distanceBetween)
                 {
                     distance = distanceBetween;
@@ -544,10 +544,10 @@ public partial class PlayerManager
 
                 foreach (Collider collider in detectedColliders)
                 {
-                    //감지된 콜라이더와의 거리
+                    // 감지된 콜라이더와의 거리
                     float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);
 
-                    //1.거리 비교 조건
+                    // 1.거리 비교 조건
                     if (distance > distanceBetween)
                     {
                         distance = distanceBetween;
@@ -567,13 +567,13 @@ public partial class PlayerManager
 
                             var colliderScript = collider.GetComponent<Gathering>();
 
-                            //2. 체력 비교 조건
+                            // 2. 체력 비교 조건
                             if (targetScript.CurrentHealth > colliderScript.CurrentHealth)
                             {
                                 targetObject = collider.gameObject;
                             }
 
-                            //3. 등급 비교 조건
+                            // 3. 등급 비교 조건
                             else if (targetScript.CurrentHealth == colliderScript.CurrentHealth)
                             {
                                 //if (targetScript.MaxHealth < colliderScript.MaxHealth)
@@ -624,8 +624,6 @@ public partial class PlayerManager
         }
     }
 
-    
-
     // 아이템 채집중 사용할 코루틴
     private IEnumerator GatheringCoroutine()
     {
@@ -659,7 +657,7 @@ public partial class PlayerManager
 
             targetScript?.TakeDamage(playerStatus.gatheringSpeed);
 
-            if(targetScript?.CurrentHealth <= 0f)
+            if (targetScript?.CurrentHealth <= 0f)
             {
                 //targetScript.OnGatheringEnd();
 
@@ -681,7 +679,7 @@ public partial class PlayerManager
     {
         skillRejectText.text = "스킬을 사용할 수 없습니다.";
 
-        //효과음 출력
+        // 효과음 출력
         if (isSkillRejectActive == false)
         {
             isSkillRejectActive = true;

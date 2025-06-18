@@ -44,13 +44,13 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
-            FixedDebug.Log("인벤토리 초기화됨");
-
             relicDatas.Clear();
 
             relicRerollableCountMax = 99;
 
             RelicRerollableCount = 99;
+
+            FixedDebug.Log("인벤토리 초기화됨");
         }
 
         public static void AddRelic(RelicData relicData)

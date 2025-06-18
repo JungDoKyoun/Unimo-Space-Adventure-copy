@@ -38,7 +38,7 @@ namespace ZL.Unity.Unimo
 
         protected int maxObjectCount = -1;
 
-        protected override IEnumerator SpawnRoutine()
+        protected override IEnumerator WaveRoutine()
         {
             int spawnCount = Random.Range(minSpawnCount, maxSpawnCount);
 

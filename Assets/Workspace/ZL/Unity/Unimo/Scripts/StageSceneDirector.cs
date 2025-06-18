@@ -16,31 +16,7 @@ namespace ZL.Unity.Unimo
 
     public sealed class StageSceneDirector : SceneDirector<StageSceneDirector>
     {
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Line]
-
-        [Text("<b>스테이지 데이터</b>", FontSize = 16)]
-
-        [Margin]
-
-        [Essential]
-
-        [PropertyField]
-
-        private StageData stageData = null;
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [PropertyField]
-
-        [Line]
-
-        private RelicDropTable relicDropTable = null;
+        [Space]
 
         [SerializeField]
 
@@ -82,11 +58,47 @@ namespace ZL.Unity.Unimo
 
         private StageFailPopupScreen stageFailPopupScreen = null;
 
+        #region 스테이지 옵션
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Line]
+
+        [Text("<b>스테이지 옵션</b>", FontSize = 16)]
+
+        [Margin]
+
+        [Essential]
+
+        [Text("<b>스테이지 데이터</b>")]
+
+        private StageData stageData = null;
+
         [Space]
 
         [SerializeField]
 
+        [UsingCustomProperty]
+
+        [Text("<b>유물 드랍 테이블</b>")]
+
+        private RelicDropTable relicDropTable = null;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Text("<b>로드할 씬 이름</b>")]
+
         private string loadSceneName = "Station";
+
+        #endregion
+
+        #region 테스트 옵션
 
         #if UNITY_EDITOR
 
@@ -100,9 +112,9 @@ namespace ZL.Unity.Unimo
 
         [Margin]
 
-        [Text("<b>체력 무한</b>")]
+        [Text("<b>플레이어 무적</b>")]
 
-        private bool infinityHealth = false;
+        private bool isPlayerInvincible = false;
 
         [Space]
 
@@ -110,9 +122,9 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [Text("<b>연료 무한</b>")]
+        [Text("<b>연료 소모 여부</b>")]
 
-        private bool infinityFuel = false;
+        private bool isConsumFuel = true;
 
         [Space]
 
@@ -132,20 +144,9 @@ namespace ZL.Unity.Unimo
 
         private bool alwaysDropRelics = false;
 
-        private void Update()
-        {
-            if (infinityHealth == true)
-            {
-                PlayerManager.PlayerStatus.currentHealth = PlayerManager.PlayerStatus.maxHealth;
-            }
-
-            if (infinityFuel == true)
-            {
-                PlayerFuelManager.Fuel = PlayerFuelManager.MaxFuel;
-            }
-        }
-
         #endif
+
+        #endregion
 
         protected override void Awake()
         {
@@ -159,11 +160,8 @@ namespace ZL.Unity.Unimo
             {
                 GatheringManager.Instance.OnGatherCompleted += StageClear;
             }
-            
-            if (PlayerFuelManager.Instance != null)
-            {
-                PlayerFuelManager.Instance.OnFuelEmpty += StageFail;
-            }
+
+            PlayerFuelManager.Instance.OnFuelEmpty += StageFail;
 
             PlayerManager.OnPlayerDead += StageFail;
         }
@@ -174,12 +172,23 @@ namespace ZL.Unity.Unimo
 
             playerUIScreen.Appear();
 
-            if (PlayerFuelManager.Instance != null)
-            {
-                PlayerFuelManager.Instance.StartConsumFuel();
-            }
+            PlayerFuelManager.Instance.StartConsumFuel();
 
             SpawnSequence.Instance.gameObject.SetActive(true);
+
+            #if UNITY_EDITOR
+
+            if (isPlayerInvincible == true)
+            {
+                PlayerManager.Instance.IsOnHit = true;
+            }
+
+            if (isConsumFuel == false)
+            {
+                PlayerFuelManager.Instance.StopConsumFuel();
+            }
+
+            #endif
         }
 
         protected override void OnDestroy()
@@ -213,16 +222,16 @@ namespace ZL.Unity.Unimo
 
             stageData.DropRewards();
 
-            if (ScoreManager.Instance != null)
-            {
-                ScoreManager.Instance.CountStageClear(stageData.Score); // 점수 축적
-            }
-
             if (FirebaseDataBaseMgr.Instance != null)
             {
-                yield return FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(StageData.DropedInGameMoneyAmount);
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(StageData.DropedInGameMoneyAmount));
 
-                yield return FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(StageData.DropedOutGameMoneyAmount);
+                StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(StageData.DropedOutGameMoneyAmount));
+            }
+
+            if (ScoreManager.Instance != null)
+            {
+                ScoreManager.Instance.CountStageClear(stageData.Score);
             }
 
             stageClearPopupScreen.Appear();
@@ -280,7 +289,7 @@ namespace ZL.Unity.Unimo
 
             if (FirebaseDataBaseMgr.Instance != null)
             {
-                yield return FirebaseDataBaseMgr.Instance.InitIngameCurrency();
+                StartCoroutine(FirebaseDataBaseMgr.Instance.InitIngameCurrency());
 
                 ScoreManager.Instance.CalculateTotalScore();
             }

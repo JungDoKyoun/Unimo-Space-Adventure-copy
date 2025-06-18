@@ -1,4 +1,5 @@
 using System.Collections;
+
 using UnityEngine;
 
 using ZL.Unity.Collections;
@@ -35,11 +36,14 @@ namespace ZL.Unity.Unimo
 
         private void OnDrawGizmosSelected()
         {
+            Gizmos.color = Color.red;
+
             for (int i = 0; i < spawnPoints.Length; ++i)
             {
-                Gizmos.color = Color.red;
-
-                Gizmos.DrawSphere(spawnPoints[i].position, 0.5f);
+                if (spawnPoints[i] != null)
+                {
+                    Gizmos.DrawSphere(spawnPoints[i].position, 0.5f);
+                }
             }
         }
 
@@ -60,7 +64,7 @@ namespace ZL.Unity.Unimo
             spawnPointsClone.Shuffle();
         }
 
-        protected override IEnumerator SpawnRoutine()
+        protected override IEnumerator WaveRoutine()
         {
             if (this.spawnPoints.Length == 0)
             {

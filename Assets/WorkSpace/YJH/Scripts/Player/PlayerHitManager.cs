@@ -57,15 +57,20 @@ public partial class PlayerManager : IDamageable
             if (value < 0f)
             {
                 PlayerStatus tempStatus = PlayerStatus.Clone();
+
                 tempStatus.currentHealth = 0;
-                PlayerStatus=tempStatus;
+
+                PlayerStatus = tempStatus;
             }
 
             else
             {
                 PlayerStatus tempStatus = PlayerStatus.Clone();
+
                 tempStatus.currentHealth = value;
+
                 PlayerStatus = tempStatus;
+
                 //OnHealthChanged?.Invoke(value);
             }
         }
@@ -73,6 +78,11 @@ public partial class PlayerManager : IDamageable
     
     //맞았는지?
     private bool isOnHit = false;
+
+    public bool IsOnHit
+    {
+        set => isOnHit = value;
+    }
 
     public static event Action<float> OnHealthChanged = null;
 
