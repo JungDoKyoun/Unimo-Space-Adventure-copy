@@ -4,98 +4,66 @@ using UnityEditor;
 using UnityEngine;
 using System.IO;
 
+
 public class CameraCapture : MonoBehaviour
 {
+    [Header("캡처 카메라 설정")]
+    public Camera captureCamera;
+    public int captureResolution = 512;
 
-    [Header("캡처할 카메라")]
-    public Camera targetCamera;
+    [Header("대상 건물 리스트")]
+    public List<GameObject> buildingsToCapture;
 
-    [Header("건물 리스트")]
-    public List<GameObject> sceneBuildings = new List<GameObject>();
+    private string saveFolderPath;
 
-    [Header("캡처 해상도")]
-    public int width = 512;
-    public int height = 512;
+    // 카메라가 건물을 찍을 때 사용할 위치 오프셋 (건물 위치 기준 카메라 상대 위치)
+    public Vector3 cameraOffset = new Vector3(0, 10, -10);
 
-    [Header("저장할 공통 파일명")]
-    public string baseFileName = "Building";
-
-    [Header("배경 사진 파일명")]
-    public string backgroundFileName = "Background";
-
-    [ContextMenu("배경 사진 촬영")]
-    public void CaptureBackgroundOnly()
+    void Start()
     {
-        if (targetCamera == null)
+
+        saveFolderPath = Path.Combine(Application.dataPath, "/WorkSpace/YJH/Capture");
+        Directory.CreateDirectory(saveFolderPath);
+
+        foreach (var building in buildingsToCapture)
         {
-            
-            return;
+            CaptureBuildingImage(building);
         }
 
-        
-        CaptureCameraToFile(backgroundFileName);
+#if UNITY_EDITOR
+        UnityEditor.AssetDatabase.Refresh();
+#endif
     }
 
-    [ContextMenu("건물별 사진 촬영")]
-    public void CaptureSceneBuildings()
+    void CaptureBuildingImage(GameObject building)
     {
-        if (targetCamera == null)
-        {
-            return;
-        }
+        // 카메라 위치 이동 & 건물 바라보기
+        captureCamera.transform.position = building.transform.position + cameraOffset;
+        captureCamera.transform.LookAt(building.transform.position);
 
-        if (sceneBuildings.Count == 0)
-        {
-            return;
-        }
+        // RenderTexture 준비
+        RenderTexture rt = new RenderTexture(captureResolution, captureResolution, 24);
+        captureCamera.targetTexture = rt;
 
-        string folderPath = Application.dataPath + "/../Captured";
-        Directory.CreateDirectory(folderPath);
+        // 캡처용 텍스처 생성
+        Texture2D screenShot = new Texture2D(captureResolution, captureResolution, TextureFormat.RGBA32, false);
 
-        // 전체 비활성화
-        foreach (var building in sceneBuildings)
-        {
-            if (building != null)
-                building.SetActive(false);
-        }
-
-        for (int i = 0; i < sceneBuildings.Count; i++)
-        {
-            var building = sceneBuildings[i];
-            if (building == null) continue;
-
-            building.SetActive(true); // 현재 건물만 보이게
-            CaptureCameraToFile($"{baseFileName}_{i}_{building.name}");
-            building.SetActive(false); // 다시 숨김
-        }
-
-        // 전체 다시 활성화
-        foreach (var building in sceneBuildings)
-        {
-            if (building != null)
-                building.SetActive(true);
-        }
-    }
-
-    private void CaptureCameraToFile(string fileName)
-    {
-        RenderTexture rt = new RenderTexture(width, height, 24);
-        targetCamera.targetTexture = rt;
-
-        Texture2D screenShot = new Texture2D(width, height, TextureFormat.RGB24, false);
-        targetCamera.Render();
+        // 렌더링 & 읽기
+        captureCamera.Render();
         RenderTexture.active = rt;
-        screenShot.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+        screenShot.ReadPixels(new Rect(0, 0, captureResolution, captureResolution), 0, 0);
         screenShot.Apply();
 
-        targetCamera.targetTexture = null;
+        // 정리
+        captureCamera.targetTexture = null;
         RenderTexture.active = null;
         rt.Release();
 
-        string folderPath = Application.dataPath + "/../Captured";
-        string fullPath = Path.Combine(folderPath, $"{fileName}.png");
-        File.WriteAllBytes(fullPath, screenShot.EncodeToPNG());
+        // 저장
+        string fileName = building.name + ".png";
+        string filePath = Path.Combine(saveFolderPath, fileName);
+        File.WriteAllBytes(filePath, screenShot.EncodeToPNG());
 
-        Debug.Log($"캡처 완료: {fullPath}");
+        Debug.Log($"캡처 저장 완료: {filePath}");
     }
 }
