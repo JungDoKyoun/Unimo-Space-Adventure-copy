@@ -35,8 +35,6 @@ public partial class PlayerManager
                 playerStatus = value;
 
                 OnHealthChanged?.Invoke(playerStatus.currentHealth);
-
-                //Debug.Log(value.maxHealth);
                 
                 //Debug.Log("setby0");
             }
@@ -154,8 +152,7 @@ public partial class PlayerManager
         {
             PlayerStatus=originStatus.Clone();
             ShowStatusDebug();
-            Debug.Log("건설 매니저 거치지 않음");
-            //Debug.Log(PlayerStatus.currentHealth);
+
         }
     }
     public static void ActiveRelic()

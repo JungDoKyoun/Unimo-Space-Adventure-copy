@@ -56,13 +56,16 @@ public partial class PlayerManager : IDamageable
         {
             if (value < 0f)
             {
-                PlayerStatus.currentHealth = 0f;
+                PlayerStatus tempStatus = PlayerStatus.Clone();
+                tempStatus.currentHealth = 0;
+                PlayerStatus=tempStatus;
             }
 
             else
             {
-                PlayerStatus.currentHealth = value;
-
+                PlayerStatus tempStatus = PlayerStatus.Clone();
+                tempStatus.currentHealth = value;
+                PlayerStatus = tempStatus;
                 //OnHealthChanged?.Invoke(value);
             }
         }
