@@ -44,7 +44,7 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
-            Debug.Log("(테스트) 인벤토리 초기화");
+            Debug.Log("인벤토리 초기화");
 
             relicDatas.Clear();
 

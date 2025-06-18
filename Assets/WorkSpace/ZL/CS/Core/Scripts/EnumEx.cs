@@ -50,7 +50,7 @@ namespace ZL.CS
 
         public static bool Contains(this int instance, int flags)
         {
-            return (instance & (1 << flags)) != 0;
+            return (instance & flags) == flags;
         }
 
         public static TEnum[] GetValues<TEnum>()

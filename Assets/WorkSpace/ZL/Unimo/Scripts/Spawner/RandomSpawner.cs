@@ -40,14 +40,24 @@ namespace ZL.Unity.Unimo
 
         protected override IEnumerator SpawnRoutine()
         {
-            if (objectCount >= maxObjectCount)
-            {
-                yield break;
-            }
-
             int spawnCount = Random.Range(minSpawnCount, maxSpawnCount);
 
-            if (spawnCount == 0)
+            bool IsSpawnable()
+            {
+                if (maxObjectCount != -1 && objectCount >= maxObjectCount)
+                {
+                    return false;
+                }
+
+                if (spawnCount == 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            if (IsSpawnable() == false)
             {
                 yield break;
             }
@@ -56,14 +66,11 @@ namespace ZL.Unity.Unimo
             {
                 Spawn();
 
-                if (objectCount >= maxObjectCount)
-                {
-                    break;
-                }
+                --spawnCount;
 
-                if (--spawnCount == 0)
+                if (IsSpawnable() == false)
                 {
-                    break;
+                    yield break;
                 }
 
                 if (spawnDelay != 0f)

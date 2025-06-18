@@ -1,5 +1,4 @@
 using System.Collections;
-
 using UnityEngine;
 
 using ZL.Unity.Collections;
@@ -24,7 +23,7 @@ namespace ZL.Unity.Unimo
 
         [Margin]
 
-        [Text("<b>스폰 지점들</b>")]
+        [Text("<b>스폰 지점들 (배열 순서대로 스폰)</b>")]
 
         private bool randomSpawnPoint = false;
 
@@ -34,13 +33,40 @@ namespace ZL.Unity.Unimo
 
         private Transform[] spawnPointsClone = null;
 
+        private void OnDrawGizmosSelected()
+        {
+            for (int i = 0; i < spawnPoints.Length; ++i)
+            {
+                Gizmos.color = Color.red;
+
+                Gizmos.DrawSphere(spawnPoints[i].position, 0.5f);
+            }
+        }
+
+        private void OnValidate()
+        {
+            if (Application.isPlaying == true)
+            {
+                return;
+            }
+
+            spawnPointsClone = (Transform[])spawnPoints.Clone();
+        }
+
         private void Awake()
         {
             spawnPointsClone = (Transform[])spawnPoints.Clone();
+
+            spawnPointsClone.Shuffle();
         }
 
         protected override IEnumerator SpawnRoutine()
         {
+            if (this.spawnPoints.Length == 0)
+            {
+                yield break;
+            }
+
             Transform[] spawnPoints;
 
             if (randomSpawnPoint == false)
@@ -50,22 +76,18 @@ namespace ZL.Unity.Unimo
 
             else
             {
-                spawnPointsClone.Shuffle();
-
                 spawnPoints = spawnPointsClone;
+
+                spawnPointsClone.Shuffle();
             }
 
             for (int i = 0; ; ++i)
             {
-                var clone = Clone();
+                Spawn(spawnPoints[i].position);
 
-                clone.transform.position = spawnPoints[i].position;
-
-                clone.gameObject.SetActive(true);
-
-                if (i == spawnPoints.Length - 1)
+                if (i >= spawnPoints.Length - 1)
                 {
-                    break;
+                    yield break;
                 }
 
                 if (spawnDelay != 0f)

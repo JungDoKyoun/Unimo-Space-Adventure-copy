@@ -117,7 +117,7 @@ public partial class PlayerManager
     }
     public static void ActiveRelic()
     {
-        Debug.Log("try use relic");
+        //Debug.Log("try use relic");
 
         //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
 

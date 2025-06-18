@@ -18,9 +18,21 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [Text("<b>스폰 시 바라볼 지점 (null: 랜덤 방향)</b>")]
+        [Text("<b>스폰 시 바라볼 지점 (None: 지정 방향)</b>")]
 
-        private Transform lookAt = null;
+        private Transform lookPoint = null;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [ReadOnlyIf(nameof(lookPoint), null, true)]
+
+        [Text("<b>스폰 시 Y축 방향 (-1: 랜덤 방향)</b>")]
+
+        private float lookAngle = -1f;
 
         [Space]
 
@@ -38,7 +50,7 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [Text("<b>첫 웨이브 간격 (-1: 랜덤, 0: 즉시 첫 웨이브)</b>")]
+        [Text("<b>첫 웨이브 간격 (-1: 기본값 사용, 0: 즉시 첫 웨이브)</b>")]
 
         private float waveInterval = -1f;
 
@@ -71,6 +83,16 @@ namespace ZL.Unity.Unimo
         [Text("<b>스폰 사이의 딜레이</b>")]
 
         protected float spawnDelay = 0f;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Text("<b>스폰된 오브젝트의 수명 (-1: 무한)</b>")]
+
+        protected float lifeTime = -1f;
 
         protected int objectCount = 0;
 
@@ -134,27 +156,34 @@ namespace ZL.Unity.Unimo
 
         protected abstract IEnumerator SpawnRoutine();
 
-        protected PooledObject Clone()
+        protected void Spawn(Vector3 position)
         {
             ++objectCount;
 
             var clone = ObjectPoolManager.Instance.Clone(spawnObjectName);
 
-            clone.OnDisableAction += OnDespawn;
+            clone.transform.position = position;
 
-            if (lookAt != null)
+            if (lookPoint != null)
             {
-                Debug.Log("내일 여기 고치기");
+                clone.transform.LookAt(lookPoint.position, Axis.Y);
+            }
 
-                transform.LookAt(lookAt.position, Axis.Y);
+            else if (lookAngle != -1)
+            {
+                clone.transform.rotation = Quaternion.Euler(0f, lookAngle, 0f);
             }
 
             else
             {
-                clone.transform.rotation = Quaternion.Euler(0f, Random.Range(0, 360f), 0f);
+                clone.transform.rotation = Quaternion.Euler(0f, 360f, 0f);
             }
 
-            return clone;
+            clone.LifeTime = lifeTime;
+
+            clone.OnDisableAction += OnDespawn;
+
+            clone.gameObject.SetActive(true);
         }
 
         private void OnDespawn()

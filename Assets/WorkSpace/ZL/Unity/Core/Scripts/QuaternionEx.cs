@@ -1,41 +1,19 @@
-using System;
-
 using UnityEngine;
 
 using UnityEngine.Animations;
-
-using ZL.CS;
 
 namespace ZL.Unity
 {
     public static partial class QuaternionEx
     {
-        public static Quaternion LookRotation(Vector3 forward, Axis freezeRotation)
+        public static Quaternion LookRotation(Vector3 from, Vector3 to, Axis ignoreAxes)
         {
-            return LookRotation(forward, Vector3.up, freezeRotation);
+            return LookRotation(from, to, Vector3.up, ignoreAxes);
         }
 
-        public static Quaternion LookRotation(Vector3 forward, Vector3 upwards, Axis freezeRotation)
+        public static Quaternion LookRotation(Vector3 from, Vector3 to, Vector3 upwards, Axis ignoreAxes)
         {
-            if (freezeRotation.Contains(Axis.X) == true)
-            {
-                forward.y = 0f;
-            }
-
-            if (freezeRotation.Contains(Axis.Y) == true)
-            {
-                forward.x = 0f;
-            }
-
-            if (freezeRotation.Contains(Axis.Z) == true)
-            {
-                forward.z = 0f;
-            }
-
-            if (forward.sqrMagnitude == 0f)
-            {
-                return Quaternion.identity;
-            }
+            var forward = Vector3Ex.Direction(from, to, ignoreAxes);
 
             return Quaternion.LookRotation(forward, upwards);
         }

@@ -14,17 +14,21 @@ namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Stage Scene Director (Singleton)")]
 
-    public sealed class StageSceneDirector : SceneDirector<StageSceneDirector>
+    public class StageSceneDirector : SceneDirector<StageSceneDirector>
     {
-        [Space]
-
         [SerializeField]
 
         [UsingCustomProperty]
 
+        [Line]
+
+        [Text("<b>스테이지 데이터</b>", FontSize = 16)]
+
+        [Margin]
+
         [Essential]
 
-        [ReadOnlyWhenPlayMode]
+        [PropertyField]
 
         private StageData stageData = null;
 
@@ -32,21 +36,11 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [ReadOnlyWhenPlayMode]
+        [PropertyField]
+
+        [Line]
 
         private RelicDropTable relicDropTable = null;
-
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        [ReadOnlyWhenPlayMode]
-
-        private GameObject spawners = null;
 
         [Space]
 
@@ -90,6 +84,11 @@ namespace ZL.Unity.Unimo
 
         private StageFailPopupScreen stageFailPopupScreen = null;
 
+        protected virtual string LoadSceneName
+        {
+            get => "Station";
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -101,15 +100,15 @@ namespace ZL.Unity.Unimo
 
         protected override IEnumerator Start()
         {
-            yield return base.Start();
-
             PlayerManager.OnPlayerDead += StageFail;
 
-            spawners.SetActive(true);
+            yield return base.Start();
 
             playerUIScreen.Appear();
 
-            PlayerFuelManager.Instance.StartConsumFuel();
+            SpawnSequence.Instance.gameObject.SetActive(true);
+
+            PlayerFuelManager.Instance?.StartConsumFuel();
         }
 
         protected override void OnDestroy()
@@ -167,7 +166,7 @@ namespace ZL.Unity.Unimo
                 }
             }
 
-            LoadScene("Station");
+            LoadScene(LoadSceneName);
         }
 
         public void StageFail()
@@ -204,7 +203,7 @@ namespace ZL.Unity.Unimo
                 yield return null;
             }
 
-            LoadScene("Station");
+            LoadScene(LoadSceneName);
         }
     }
 }

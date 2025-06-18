@@ -27,13 +27,9 @@ namespace ZL.Unity.Unimo
 
         protected override void Spawn()
         {
-            var clone = Clone();
-
             var point = Random.insideUnitCircle * radius;
 
-            clone.transform.position += new Vector3(point.x, 0f, point.y);
-
-            clone.gameObject.SetActive(true);
+            Spawn(transform.position + new Vector3(point.x, 0f, point.y));
         }
     }
 }

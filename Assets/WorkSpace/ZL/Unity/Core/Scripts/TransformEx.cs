@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 
 using UnityEngine;
+
 using UnityEngine.Animations;
 
 namespace ZL.Unity
@@ -304,18 +305,14 @@ namespace ZL.Unity
             return instance.GetChild(instance.childCount - 1);
         }
 
-        public static void LookAt(this Transform instance, Vector3 worldPosition, Axis freezeRotation)
+        public static void LookAt(this Transform instance, Vector3 worldPosition, Axis ignoreAxes)
         {
-            LookAt(instance, worldPosition, Vector3.up, freezeRotation);
+            LookAt(instance, worldPosition, Vector3.up, ignoreAxes);
         }
 
-        public static void LookAt(this Transform instance, Vector3 worldPosition, Vector3 worldUp, Axis freezeRotation)
+        public static void LookAt(this Transform instance, Vector3 worldPosition, Vector3 worldUp, Axis ignoreAxes)
         {
-            var forward = (worldPosition - instance.position).normalized;
-
-            var rotation = QuaternionEx.LookRotation(forward, worldUp, freezeRotation);
-
-            instance.rotation = rotation;
+            instance.rotation = QuaternionEx.LookRotation(instance.position, worldPosition, worldUp, ignoreAxes);
         }
     }
 }
