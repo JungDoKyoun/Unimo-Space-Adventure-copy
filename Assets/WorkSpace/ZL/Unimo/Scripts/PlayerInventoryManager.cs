@@ -62,6 +62,11 @@ namespace ZL.Unity.Unimo
 
             relicDatas.Add(relicData);
 
+            if (ScoreManager.Instance != null)
+            {
+                ScoreManager.Instance.CountGetItem(relicData.Score);
+            }
+
             FixedDebug.Log($"{relicData.name} È¹µæ");
         }
 
