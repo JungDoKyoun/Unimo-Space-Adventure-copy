@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Google.GData.AccessControl;
 
 public class RankList : MonoBehaviour
 {
@@ -54,6 +55,8 @@ public class RankList : MonoBehaviour
     private IEnumerator UpdateRankListPanel()
     {
         StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRank());
+
+        yield return new WaitForSeconds(1f);
 
         yield return new WaitUntil(predicate: () => FirebaseDataBaseMgr.IsRankUpdated == true);
 
