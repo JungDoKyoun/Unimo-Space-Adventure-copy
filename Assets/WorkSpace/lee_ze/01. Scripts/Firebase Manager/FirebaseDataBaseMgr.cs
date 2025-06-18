@@ -500,6 +500,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     public IEnumerator UpdateRank()
     {
+        // Firebase 연결 확인
+        yield return new WaitUntil(() => FirebaseAuthMgr.IsFirebaseReady == true);
+
         IsRankUpdated = false;
 
         var getTask = dbRef.Child("users").OrderByChild("score").LimitToLast(10).GetValueAsync();
