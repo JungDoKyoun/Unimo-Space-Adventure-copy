@@ -4,6 +4,8 @@ using UnityEngine;
 using JDG;
 using ZL.Unity.Tweening;
 using Unity.Mathematics;
+using TMPro;
+using UnityEditor;
 
 namespace JDG
 {
@@ -295,9 +297,9 @@ namespace JDG
             }
         }
 
-        public void CreateHighlight()
+        public void CreateHighlight(Material highlightMaterial, float highlightScale)
         {
-
+            
         }
     }
 }
