@@ -16,7 +16,7 @@ public partial class PlayerManager
     //
     //private float itemDetectionRange = 5f;
 
-    public float ItemDetectionRange => playerStatus.itemDetectionRange;
+    //public float ItemDetectionRange => playerStatus.itemDetectionRange;
 
     //[SerializeField]
     //
@@ -126,7 +126,7 @@ public partial class PlayerManager
 
             OnTargetObjectSet += GatheringItem;
 
-            detectCollider.radius = playerStatus.itemDetectionRange;
+            detectCollider.radius = PlayerStatus.itemDetectionRange;
 
             if (attackPrefab == null)
             {

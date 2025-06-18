@@ -50,6 +50,7 @@ public class ConstructManager : MonoBehaviour
     public event onConstructCostChange OnConstructCostChange;
 
     private static bool isBuildEffectAplly=false;
+    public static bool IsBuildEffectAplly { get { return isBuildEffectAplly; } }
     private static bool isDelinkON = false;
     
     private Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
