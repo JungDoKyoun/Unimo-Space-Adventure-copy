@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
@@ -59,10 +60,14 @@ public class ScoreManager : MonoBehaviour
     {
         totalScore = bossKill * 500 + stageScore + itemScore + fuelScore + healthScore;
 
-        StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateScore(totalScore));
+        updateScore = FirebaseDataBaseMgr.Instance.UpdateScore(totalScore);
+
+        StartCoroutine(updateScore);
 
         InitScore();
     }
+
+    private IEnumerator updateScore = null;
 
     // 보스 죽을 때 호출
     public void CountBossKill()
