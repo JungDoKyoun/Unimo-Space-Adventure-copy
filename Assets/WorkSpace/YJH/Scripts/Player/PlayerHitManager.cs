@@ -78,11 +78,15 @@ public partial class PlayerManager : IDamageable
 
     public static event Action OnPlayerDead = null;
 
+    #pragma warning disable
+
     // 삭제 예정 , 스테이지 매니저에서 관리 예정
     public static event Action OnStageClear = null;
 
     // 삭제 예정 , 스테이지 매니저에서 관리 예정
     public static event Action OnStageFail = null;
+
+    #pragma warning restore
 
     private void OnCollisionStay(Collision collision)
     {
