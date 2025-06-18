@@ -4,13 +4,17 @@ using ZL.Unity.Debugging;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Pooling/Circular Random Spawner")]
+    [AddComponentMenu("ZL/Unimo/Circular Random Spawner")]
 
     public sealed class CircularRandomSpawner : RandomSpawner
     {
         [Space]
 
         [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Text("<b>소환 반경 반지름</b>")]
 
         private float radius = 0f;
 
@@ -23,17 +27,9 @@ namespace ZL.Unity.Unimo
 
         protected override void Spawn()
         {
-            var pooledObject = Cloning();
-
             var point = Random.insideUnitCircle * radius;
 
-            var position = transform.position + new Vector3(point.x, 0f, point.y);
-
-            var eulerAngles = new Vector3(0f, Random.Range(0, 360f), 0f);
-
-            pooledObject.transform.SetPositionAndRotation(position, eulerAngles);
-
-            pooledObject.gameObject.SetActive(true);
+            Spawn(transform.position + new Vector3(point.x, 0f, point.y));
         }
     }
 }

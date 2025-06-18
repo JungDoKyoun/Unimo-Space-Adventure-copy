@@ -17,6 +17,8 @@ namespace ZL.Unity.Singleton
 
         protected virtual void Awake()
         {
+            transform.SetParent(null);
+
             ISingleton<TPrimaryMonoSingleton>.TrySetInstance((TPrimaryMonoSingleton)this);
         }
 

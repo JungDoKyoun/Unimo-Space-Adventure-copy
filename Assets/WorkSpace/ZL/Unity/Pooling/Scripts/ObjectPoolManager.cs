@@ -16,16 +16,16 @@ namespace ZL.Unity.Pooling
 
         private SerializableDictionary<string, ObjectPool> poolDictionary = null;
 
-        public TPooledObject Cloning<TPooledObject>(string key)
+        public TClone Clone<TClone>(string key)
 
-            where TPooledObject : PooledObject
+            where TClone : PooledObject
         {
-            return (TPooledObject)Cloning(key);
+            return (TClone)Clone(key);
         }
 
-        public PooledObject Cloning(string key)
+        public PooledObject Clone(string key)
         {
-            return poolDictionary[key].Cloning();
+            return poolDictionary[key].Clone();
         }
     }
 }

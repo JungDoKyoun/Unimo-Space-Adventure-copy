@@ -1,12 +1,12 @@
 using JDG;
+
 using System;
+
 using System.Collections;
 
 using UnityEngine;
 
 using ZL.Unity.Singleton;
-
-using ZL.Unity.UI;
 
 namespace ZL.Unity.Unimo
 {

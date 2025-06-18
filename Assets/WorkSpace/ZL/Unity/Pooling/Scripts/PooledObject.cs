@@ -8,19 +8,40 @@ namespace ZL.Unity.Pooling
 
     public class PooledObject : MonoBehaviour
     {
+        [Space]
+
+        [SerializeField]
+
+        private float lifeTime = -1f;
+
+        public float LifeTime
+        {
+            set => lifeTime = value;
+        }
+
         public event Action OnDisableAction = null;
 
         private event Action OnCollectedAction = null;
 
-        public static TPooledObject Instantiate<TPooledObject>(ObjectPool<TPooledObject> objectPool)
+        public static TClone Instantiate<TClone>(ObjectPool<TClone> objectPool)
 
-            where TPooledObject : PooledObject
+            where TClone : PooledObject
         {
             var clone = Instantiate(objectPool.Prefab, objectPool.Parent);
 
             clone.OnCollectedAction += () => objectPool.Collect(clone);
 
             return clone;
+        }
+
+        protected virtual void OnEnable()
+        {
+            if (lifeTime != -1f)
+            {
+                Invoke(nameof(Disappear), lifeTime);
+
+                lifeTime = -1f;
+            }
         }
 
         protected virtual void OnDisable()
@@ -45,6 +66,35 @@ namespace ZL.Unity.Pooling
             }
 
             #endif
+
+            OnDisappear();
+        }
+
+        public virtual void Appear()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public virtual void OnAppeared()
+        {
+            
+        }
+
+        public virtual void Disappear()
+        {
+            CancelInvoke(nameof(Disappear));
+
+            OnDisappear();
+        }
+
+        protected virtual void OnDisappear()
+        {
+            OnDisappeared();
+        }
+
+        public virtual void OnDisappeared()
+        {
+            gameObject.SetActive(false);
         }
     }
 }

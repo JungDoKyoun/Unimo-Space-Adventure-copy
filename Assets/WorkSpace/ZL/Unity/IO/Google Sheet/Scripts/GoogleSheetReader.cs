@@ -8,21 +8,19 @@ namespace ZL.Unity.IO.GoogleSheet
 
     public sealed class GoogleSheetReader : MonoBehaviour
     {
-        #if UNITY_EDITOR
-
         [Space]
 
         [SerializeField]
 
         [UsingCustomProperty]
 
-        [Button(nameof(ReadAllSheets))]
+        [PropertyField]
 
         [Margin]
 
-        private bool readAllSheetsOnAwake = true;
+        [Button(nameof(ReadAllSheets))]
 
-        #endif
+        private bool readAllSheetsOnAwake = true;
 
         [Space]
 
@@ -32,16 +30,10 @@ namespace ZL.Unity.IO.GoogleSheet
 
         private void Awake()
         {
-            #if UNITY_EDITOR
-
-            if (readAllSheetsOnAwake == false)
+            if (readAllSheetsOnAwake == true)
             {
-                return;
+                ReadAllSheets();
             }
-
-            #endif
-
-            ReadAllSheets();
         }
 
         public void ReadAllSheets()

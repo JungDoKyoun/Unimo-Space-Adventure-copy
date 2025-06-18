@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 using System.Linq;
 
-using ZL.Unity.Collections;
-
 namespace ZL.Unity.Pooling
 {
     [Serializable]
@@ -28,7 +26,7 @@ namespace ZL.Unity.Pooling
                 return false;
             }
 
-            clone = Cloning();
+            clone = Clone();
 
             clone.Key = key;
 
@@ -42,18 +40,18 @@ namespace ZL.Unity.Pooling
             return clones[key];
         }
 
-        public override void Collect(ManagedPooledObject<TKey> pooledObject)
+        public override void Collect(ManagedPooledObject<TKey> clone)
         {
-            clones.Remove(pooledObject.Key);
+            clones.Remove(clone.Key);
 
-            base.Collect(pooledObject);
+            base.Collect(clone);
         }
 
         public void CollectAll()
         {
-            foreach (var pooledObject in clones.Values.ToArray())
+            foreach (var clone in clones.Values.ToArray())
             {
-                pooledObject.gameObject.SetActive(false);
+                clone.gameObject.SetActive(false);
             }
 
             clones.Clear();
@@ -66,9 +64,9 @@ namespace ZL.Unity.Pooling
     {
         private readonly HashSet<PooledObject> clones = new HashSet<PooledObject>();
 
-        public override PooledObject Cloning()
+        public override PooledObject Clone()
         {
-            var clone = base.Cloning();
+            var clone = base.Clone();
 
             clones.Add(clone);
 
