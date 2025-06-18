@@ -121,7 +121,7 @@ namespace YJH
         public static void GiveStartRelicA()
         {
             InitRelicGiver.Instance?.SetRelicData();
-            Debug.Log("startRElic");
+            //Debug.Log("startRElic");
         }
 
 
