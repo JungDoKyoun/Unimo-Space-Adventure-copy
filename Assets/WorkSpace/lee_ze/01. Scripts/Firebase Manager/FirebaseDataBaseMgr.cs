@@ -43,6 +43,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private static float winCount;
 
+    private static bool isDataBaseReady = false;
+
     private static bool isRankUpdated = false;
 
     #region properties
@@ -129,6 +131,16 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         }
     }
 
+    public static bool IsDataBaseReady
+    {
+        get => isDataBaseReady;
+
+        set
+        {
+            isDataBaseReady = value;
+        }
+    }
+
     #endregion
 
     private void Awake()
@@ -163,6 +175,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         this.dbRef = FirebaseAuthMgr.DBRef;
 
         this.user = FirebaseAuthMgr.User;
+
+        isDataBaseReady = true;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode) // 씬 바뀔 때 마다 수행되는 것
@@ -500,9 +514,6 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     public IEnumerator UpdateRank()
     {
-        // Firebase 연결 확인
-        yield return new WaitUntil(() => FirebaseAuthMgr.IsFirebaseReady == true);
-
         IsRankUpdated = false;
 
         var getTask = dbRef.Child("users").OrderByChild("score").LimitToLast(10).GetValueAsync();
@@ -546,10 +557,10 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         topRankers.Sort((a, b) => b.score.CompareTo(a.score));
 
         // 순위 내림차순 표시 
-        //foreach (var (nickname, score) in topRankers)
-        //{
-        //    Debug.Log($"Nickname: {nickname}, Score: {score}");
-        //}
+        foreach (var (nickname, score) in topRankers)
+        {
+            //Debug.Log($"Nickname: {nickname}, Score: {score}");
+        }
 
         IsRankUpdated = true;
     }
