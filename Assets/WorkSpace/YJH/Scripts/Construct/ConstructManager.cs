@@ -67,7 +67,7 @@ public class ConstructManager : MonoBehaviour
     
     [SerializeField] GameObject[] attackPrefabs;
 
-    public RelicData tempRelic;
+    //public RelicData tempRelic;
     public GameObject initRelicUI;
     private void Awake()
     {

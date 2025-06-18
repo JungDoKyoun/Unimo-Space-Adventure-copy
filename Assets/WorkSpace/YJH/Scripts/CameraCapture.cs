@@ -1,123 +1,69 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using System.IO;
 
+
 public class CameraCapture : MonoBehaviour
 {
-    
-    [MenuItem("Tools/Capture/Save Camera View")]
-    public static void CaptureFromCamera()
-    {
-        Camera targetCamera = Camera.main; // 
+    [Header("ìº¡ì²˜ ì¹´ë©”ë¼ ì„¤ì •")]
+    public Camera captureCamera;
+    public int captureResolution = 512;
 
-        if (targetCamera == null)
+    [Header("ëŒ€ìƒ ê±´ë¬¼ ë¦¬ìŠ¤íŠ¸")]
+    public List<GameObject> buildingsToCapture;
+
+    private string saveFolderPath;
+
+    // ì¹´ë©”ë¼ê°€ ê±´ë¬¼ì„ ì°ì„ ë•Œ ì‚¬ìš©í•  ìœ„ì¹˜ ì˜¤í”„ì…‹ (ê±´ë¬¼ ìœ„ì¹˜ ê¸°ì¤€ ì¹´ë©”ë¼ ìƒëŒ€ ìœ„ì¹˜)
+    public Vector3 cameraOffset = new Vector3(0, 10, -10);
+
+    void Start()
+    {
+
+        saveFolderPath = Path.Combine(Application.dataPath, "/WorkSpace/YJH/Capture");
+        Directory.CreateDirectory(saveFolderPath);
+
+        foreach (var building in buildingsToCapture)
         {
-            Debug.LogError("Main Camera°¡ ¾ø½À´Ï´Ù. targetCamera¸¦ Á÷Á¢ ÁöÁ¤ÇÏ°Å³ª MainCamera¸¦ ¼³Á¤ÇÏ¼¼¿ä.");
-            return;
+            CaptureBuildingImage(building);
         }
 
-        int width = 1920;
-        int height = 1080;
+#if UNITY_EDITOR
+        UnityEditor.AssetDatabase.Refresh();
+#endif
+    }
 
-        RenderTexture rt = new RenderTexture(width, height, 24);
-        targetCamera.targetTexture = rt;
+    void CaptureBuildingImage(GameObject building)
+    {
+        // ì¹´ë©”ë¼ ìœ„ì¹˜ ì´ë™ & ê±´ë¬¼ ë°”ë¼ë³´ê¸°
+        captureCamera.transform.position = building.transform.position + cameraOffset;
+        captureCamera.transform.LookAt(building.transform.position);
 
-        Texture2D screenShot = new Texture2D(width, height, TextureFormat.RGB24, false);
-        targetCamera.Render();
+        // RenderTexture ì¤€ë¹„
+        RenderTexture rt = new RenderTexture(captureResolution, captureResolution, 24);
+        captureCamera.targetTexture = rt;
+
+        // ìº¡ì²˜ìš© í…ìŠ¤ì²˜ ìƒì„±
+        Texture2D screenShot = new Texture2D(captureResolution, captureResolution, TextureFormat.RGBA32, false);
+
+        // ë Œë”ë§ & ì½ê¸°
+        captureCamera.Render();
         RenderTexture.active = rt;
-        screenShot.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+        screenShot.ReadPixels(new Rect(0, 0, captureResolution, captureResolution), 0, 0);
         screenShot.Apply();
 
-        targetCamera.targetTexture = null;
+        // ì •ë¦¬
+        captureCamera.targetTexture = null;
         RenderTexture.active = null;
         rt.Release();
 
-        // ÀúÀå °æ·Î: ÇÁ·ÎÁ§Æ® ·çÆ® / Captured Æú´õ
-        string folderPath = Application.dataPath + "/../Captured";
-        Directory.CreateDirectory(folderPath);
-        string filePath = Path.Combine(folderPath, "CameraShot.png");
-
+        // ì €ì¥
+        string fileName = building.name + ".png";
+        string filePath = Path.Combine(saveFolderPath, fileName);
         File.WriteAllBytes(filePath, screenShot.EncodeToPNG());
 
-        Debug.Log($" Ä«¸Ş¶ó ºä ÀúÀåµÊ: {filePath}");
-    }
-    [MenuItem("Tools/Capture Multiple Objects in Fixed Camera")]
-    static void InitCapture()
-    {
-        Camera camera = Camera.main;
-        if (camera == null)
-        {
-            Debug.LogError("MainCamera°¡ ÇÊ¿äÇÕ´Ï´Ù.");
-            return;
-        }
-
-        // ÇÁ¸®ÆÕ ¸®½ºÆ®
-        GameObject[] buildingPrefabs = Selection.gameObjects;
-        if (buildingPrefabs.Length == 0)
-        {
-            Debug.LogError("Hierarchy ¶Ç´Â Project¿¡¼­ °Ç¹° ÇÁ¸®ÆÕµéÀ» ¼±ÅÃÇÏ¼¼¿ä.");
-            return;
-        }
-
-        // °íÁ¤µÈ À§Ä¡ ¸®½ºÆ® (¹èÄ¡ ÈÄ ±× ÀÚ¸®¿¡¼­ Âï±â)
-        Vector3[] positions = new Vector3[]
-        {
-            new Vector3(0, 0, 0),
-            new Vector3(5, 0, 0),
-            new Vector3(10, 0, 0),
-            new Vector3(15, 0, 0),
-            new Vector3(20, 0, 0)
-            // ÇÊ¿ä ½Ã ´õ Ãß°¡ °¡´É
-        };
-
-        // Ä«¸Ş¶ó °íÁ¤°ª ¼³Á¤
-        Vector3 camPos = new Vector3(0, 10, -10);
-        Quaternion camRot = Quaternion.Euler(45, 0, 0);
-        float orthoSize = 5f;
-
-        camera.transform.position = camPos;
-        camera.transform.rotation = camRot;
-        camera.orthographic = true;
-        camera.orthographicSize = orthoSize;
-        camera.clearFlags = CameraClearFlags.SolidColor;
-        camera.backgroundColor = new Color(0, 0, 0, 0);
-
-        int width = 512;
-        int height = 512;
-
-        string savePath = Application.dataPath + "/../Captured/";
-        Directory.CreateDirectory(savePath);
-
-        for (int i = 0; i < Mathf.Min(buildingPrefabs.Length, positions.Length); i++)
-        {
-            GameObject prefab = buildingPrefabs[i];
-            Vector3 pos = positions[i];
-
-            GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
-            instance.transform.position = pos;
-
-            // Ä¸Ã³
-            RenderTexture rt = new RenderTexture(width, height, 24);
-            camera.targetTexture = rt;
-            camera.Render();
-
-            RenderTexture.active = rt;
-            Texture2D tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
-            tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-            tex.Apply();
-
-            string fileName = savePath + prefab.name + "_area" + i + ".png";
-            File.WriteAllBytes(fileName, tex.EncodeToPNG());
-
-            // Á¤¸®
-            Object.DestroyImmediate(instance);
-            RenderTexture.active = null;
-            camera.targetTexture = null;
-            rt.Release();
-
-            Debug.Log(" Ä¸Ã³ ¿Ï·á: {fileName}");
-        }
+        Debug.Log($"ìº¡ì²˜ ì €ì¥ ì™„ë£Œ: {filePath}");
     }
 }

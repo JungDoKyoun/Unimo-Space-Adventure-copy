@@ -50,6 +50,16 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
+        [Text("<b>웨이브 횟수 (0: 무한)</b>")]
+
+        private int waveCount = 0;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
         [Text("<b>첫 웨이브 간격 (-1: 기본값 사용, 0: 즉시 첫 웨이브)</b>")]
 
         private float waveInterval = -1f;
@@ -103,7 +113,7 @@ namespace ZL.Unity.Unimo
 
         private void OnDisable()
         {
-            StopSpawning();
+            spawningRoutine = null;
         }
 
         public void StartSpawning()
@@ -120,20 +130,15 @@ namespace ZL.Unity.Unimo
 
         public void StopSpawning()
         {
-            if (spawningRoutine == null)
-            {
-                return;
-            }
-
-            StopCoroutine(spawningRoutine);
-
-            spawningRoutine = null;
+            gameObject.SetActive(false);
         }
 
         private IEnumerator spawningRoutine = null;
 
         private IEnumerator SpawningRoutine()
         {
+            int waveCount = this.waveCount;
+
             float waveInterval = this.waveInterval;
 
             if (waveInterval == -1f)
@@ -148,13 +153,20 @@ namespace ZL.Unity.Unimo
                     yield return WaitForSecondsCache.Get(waveInterval);
                 }
 
-                yield return SpawnRoutine();
+                yield return WaveRoutine();
+
+                if (this.waveCount != 0 && --waveCount <= 0)
+                {
+                    break;
+                }
 
                 waveInterval = Random.Range(minWaveInterval, maxWaveInterval);
             }
+
+            StopSpawning();
         }
 
-        protected abstract IEnumerator SpawnRoutine();
+        protected abstract IEnumerator WaveRoutine();
 
         protected void Spawn(Vector3 position)
         {
@@ -162,22 +174,24 @@ namespace ZL.Unity.Unimo
 
             var clone = ObjectPoolManager.Instance.Clone(spawnObjectName);
 
-            clone.transform.position = position;
+            Quaternion rotation;
 
             if (lookPoint != null)
             {
-                clone.transform.LookAt(lookPoint.position, Axis.Y);
+                rotation = QuaternionEx.LookRotation(position, lookPoint.position, Axis.Y);
             }
 
-            else if (lookAngle != -1)
+            else if (lookAngle == -1)
             {
-                clone.transform.rotation = Quaternion.Euler(0f, lookAngle, 0f);
+                rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
             }
 
             else
             {
-                clone.transform.rotation = Quaternion.Euler(0f, 360f, 0f);
+                rotation = Quaternion.Euler(0f, lookAngle, 0f);
             }
+
+            clone.transform.SetPositionAndRotation(position, rotation);
 
             clone.LifeTime = lifeTime;
 

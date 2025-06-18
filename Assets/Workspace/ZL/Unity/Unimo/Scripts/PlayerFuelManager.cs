@@ -55,18 +55,22 @@ namespace ZL.Unity.Unimo
 
         public Action OnFuelEmpty = null;
 
+        private StageData stageData = null;
+
         private void Start()
         {
+            stageData = StageData.Instance;
+
             if (GameStateManager.IsClear == true)
             {
                 return;
             }
 
-            FixedDebug.Log("연료 초기화됨");
-
             fuel = 100f;
 
             MaxFuel = 100f;
+
+            FixedDebug.Log("연료 초기화됨");
         }
 
         public void StartConsumFuel()
@@ -97,13 +101,11 @@ namespace ZL.Unity.Unimo
 
         private IEnumerator ConsumFuelRoutine()
         {
-            var fuelConsumption = StageData.Instance.FuelConsumptionAmount;
-
             while (true)
             {
                 yield return null;
 
-                Fuel -= fuelConsumption * Time.deltaTime;
+                Fuel -= stageData.FuelConsumptionAmount * Time.deltaTime;
             }
         }
     }
