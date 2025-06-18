@@ -38,6 +38,15 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
+        private int score = 0;
+
+        public int Score
+        {
+            get => score;
+        }
+
+        [SerializeField]
+
         private RelicEffect[] effects = null;
 
         public RelicEffect[] Effects
@@ -87,6 +96,8 @@ namespace ZL.Unity.Unimo
 
                 nameof(price),
 
+                nameof(score),
+
                 nameof(effects),
             };
         }
@@ -96,6 +107,8 @@ namespace ZL.Unity.Unimo
             rarity = (RelicRarity)int.Parse(sheet[name, nameof(rarity)].value);
 
             price = int.Parse(sheet[name, nameof(price)].value);
+
+            score = int.Parse(sheet[name, nameof(score)].value);
 
             effects = ArrayEx.Parse(sheet[name, nameof(effects)].value, '\n', RelicEffect.Parse);
         }
@@ -109,6 +122,8 @@ namespace ZL.Unity.Unimo
                 ((int)rarity).ToString(),
 
                 price.ToString(),
+
+                score.ToString(),
 
                 string.Join('\n', effects.Select((relicEffect) => relicEffect.ToString())),
             };
