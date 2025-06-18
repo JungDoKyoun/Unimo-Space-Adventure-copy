@@ -44,7 +44,7 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
-            Debug.Log("인벤토리 초기화");
+            FixedDebug.Log("인벤토리 초기화");
 
             relicDatas.Clear();
 
@@ -62,7 +62,7 @@ namespace ZL.Unity.Unimo
 
             relicDatas.Add(relicData);
 
-            Debug.Log($"(테스트) {relicData.name} 획득");
+            FixedDebug.Log($"{relicData.name} 획득");
         }
 
         public static void RemoveRelic(RelicData relicData)
@@ -74,7 +74,7 @@ namespace ZL.Unity.Unimo
 
             relicDatas.Remove(relicData);
 
-            Debug.Log($"(테스트) {relicData.name} 삭제");
+            FixedDebug.Log($"{relicData.name} 잃음");
         }
     }
 }
