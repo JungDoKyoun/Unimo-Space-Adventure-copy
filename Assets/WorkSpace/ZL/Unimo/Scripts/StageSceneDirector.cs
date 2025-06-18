@@ -114,6 +114,24 @@ namespace ZL.Unity.Unimo
 
         private bool infinityFuel = false;
 
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Text("<b>유물 항상 드롭</b>")]
+
+        [PropertyField]
+
+        [Margin]
+
+        [Button(nameof(StageClear))]
+
+        [Button(nameof(StageFail))]
+
+        private bool alwaysDropRelics = false;
+
         private void Update()
         {
             if (infinityHealth == true)
@@ -173,7 +191,7 @@ namespace ZL.Unity.Unimo
             ISingleton<RelicDropTable>.Release(relicDropTable);
         }
 
-        private void StageClear()
+        public void StageClear()
         {
             if (stageClearRoutine != null)
             {
@@ -212,8 +230,19 @@ namespace ZL.Unity.Unimo
                 yield return null;
             }
 
+            #if UNITY_EDITOR
+
+            if (StageData.DropedRelicDatas == null && alwaysDropRelics == true)
+            {
+                stageData.DropRelics();
+            }
+
+            #endif
+
             if (StageData.DropedRelicDatas != null)
             {
+                FixedDebug.Log("유물 드랍됨");
+
                 relicSelectionScreen.Appear();
 
                 while (relicSelectionScreen.gameObject.activeSelf == true)
@@ -225,7 +254,7 @@ namespace ZL.Unity.Unimo
             LoadScene(loadSceneName);
         }
 
-        private void StageFail()
+        public void StageFail()
         {
             if (stageFailRoutine != null)
             {

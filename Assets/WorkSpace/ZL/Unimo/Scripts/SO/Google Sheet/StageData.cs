@@ -214,9 +214,7 @@ namespace ZL.Unity.Unimo
 
             if (RandomEx.DrawLots(relicChance) == false)
             {
-                Debug.Log("(테스트) 유물 무조건 드랍되게 설정");
-
-                //return;
+                return;
             }
 
             DropRelics();
