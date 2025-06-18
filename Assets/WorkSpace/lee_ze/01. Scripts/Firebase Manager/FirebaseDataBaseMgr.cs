@@ -480,15 +480,15 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             yield break;
         }
 
-        if (getTask.Result.Exists == true && float.TryParse(getTask.Result.Value.ToString(), out float savedScore)) // string으로 불러온 ingame currency를 tryparse로 savedValue에 저장
+        if (getTask.Result.Exists == true && int.TryParse(getTask.Result.Value.ToString(), out int savedScore)) // string으로 불러온 ingame currency를 tryparse로 savedValue에 저장
         {
             if (CurrentScore > savedScore) // 기존 최고 기록(savedScore)보다 방금 세운 기록(currentScore)이 크면
             {
                 // 최고기록 = 최근기록
-                float bestScore = CurrentScore;
+                int bestScore = CurrentScore;
 
                 // 최고기록 갱신
-                var DBTask = dbRef.Child("user").Child(user.UserId).Child("score").SetValueAsync(bestScore);
+                var DBTask = dbRef.Child("users").Child(user.UserId).Child("score").SetValueAsync(bestScore);
 
                 yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
