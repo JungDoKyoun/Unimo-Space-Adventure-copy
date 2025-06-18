@@ -37,14 +37,14 @@ namespace JDG
 
         private void OnEnable()
         {
-            PlayerEvents.OnHPChanged += UpdateHPBar;
-            PlayerEvents.OnFuelChanged += UpdateFuelBar;
+            PlayerEvents._OnHPChanged += UpdateHPBar;
+            PlayerEvents._OnFuelChanged += UpdateFuelBar;
         }
 
         private void OnDisable()
         {
-            PlayerEvents.OnHPChanged -= UpdateHPBar;
-            PlayerEvents.OnFuelChanged -= UpdateFuelBar;
+            PlayerEvents._OnHPChanged -= UpdateHPBar;
+            PlayerEvents._OnFuelChanged -= UpdateFuelBar;
         }
 
         private void UpdateHPBar(float maxHP, float currentHP)

@@ -54,6 +54,9 @@ namespace JDG
 
                 _disabledOverlay.SetActive(true);
                 _buyButton.interactable = false;
+
+                PlayerEvents.ChangeCurrency();
+                PlayerEvents.ChangeRelic();
             }
             else
             {

@@ -12,11 +12,35 @@ namespace ZL.Unity
 
         [SerializeField]
 
-        private SerializableDictionary<string, Sprite> table = new();
+        private Sprite[] datas;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Button(nameof(SerializeDatas))]
+
+        private SerializableDictionary<string, Sprite> dataDictionary = new();
 
         public Sprite this[string key]
         {
-            get => table[key];
+            get => dataDictionary[key];
+        }
+
+        public void SerializeDatas()
+        {
+            dataDictionary.Clear();
+
+            for (int i = 0; i < datas.Length; ++i)
+            {
+                var data = datas[i];
+
+                dataDictionary.Add(data.name, data);
+            }
+
+            FixedEditorUtility.SetDirty(this);
         }
     }
 }

@@ -107,7 +107,7 @@ namespace ZL.Unity.Unimo
 
             foreach (var relicData in StageData.DropedRelicDatas)
             {
-                var relicCard = (RelicCard)relicCardPool.Cloning();
+                var relicCard = (RelicCard)relicCardPool.Clone();
 
                 relicCard.Initialize(relicData);
 

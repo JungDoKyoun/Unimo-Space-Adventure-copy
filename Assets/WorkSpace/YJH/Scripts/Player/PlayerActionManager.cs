@@ -263,14 +263,14 @@ public partial class PlayerManager
 
         playerAttackType = attackPrefab.GetComponent<IAttackType>();
 
-        Debug.Log("setAttack");
+        //Debug.Log("setAttack");
 
         playerAttackType.Damage = playerStatus.playerDamage;// playerDamage;
     }
 
     public static void SetSpellType(ISpellType spellType)
     {
-        Debug.Log("set spell");
+        //Debug.Log("set spell");
 
         playerSpellType = spellType;
 

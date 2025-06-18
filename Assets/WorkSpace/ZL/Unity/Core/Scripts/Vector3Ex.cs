@@ -1,15 +1,13 @@
 using UnityEngine;
 
+using UnityEngine.Animations;
+
+using ZL.CS;
+
 namespace ZL.Unity
 {
     public static partial class Vector3Ex
     {
-        public static Vector3 lockX = new Vector3(0f, 1f, 1f);
-
-        public static Vector3 lockY = new Vector3(1f, 0f, 1f);
-
-        public static Vector3 lockZ = new Vector3(1f, 1f, 0f);
-
         public static Color ToColor(this Vector3 instance)
         {
             instance = Absoulute(instance);
@@ -76,6 +74,28 @@ namespace ZL.Unity
             }
 
             return max;
+        }
+
+        public static Vector3 Direction(Vector3 from, Vector3 to, Axis ignoreAxes)
+        {
+            var direction = to - from;
+
+            if (ignoreAxes.Contains(Axis.X) == true)
+            {
+                direction.x = 0f;
+            }
+
+            if (ignoreAxes.Contains(Axis.Y) == true)
+            {
+                direction.y = 0f;
+            }
+
+            if (ignoreAxes.Contains(Axis.Z) == true)
+            {
+                direction.z = 0f;
+            }
+
+            return direction;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace ZL.CS.Pooling
     {
         protected readonly LinkedList<TClone> collection = new();
 
-        public virtual TClone Cloning()
+        public virtual TClone Clone()
         {
             if (collection.Count != 0)
             {

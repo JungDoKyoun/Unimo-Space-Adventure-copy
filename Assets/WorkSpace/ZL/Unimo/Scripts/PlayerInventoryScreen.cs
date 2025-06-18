@@ -33,7 +33,7 @@ namespace ZL.Unity.Unimo
 
             foreach (var relicData in PlayerInventoryManager.RelicDatas)
             {
-                var relicCard = (RelicCard)relicCardPool.Cloning();
+                var relicCard = (RelicCard)relicCardPool.Clone();
 
                 relicCard.Initialize(relicData);
 
