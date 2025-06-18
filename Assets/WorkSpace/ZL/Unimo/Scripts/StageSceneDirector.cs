@@ -140,6 +140,11 @@ namespace ZL.Unity.Unimo
 
             stageData.DropRewards();
 
+            if (ScoreManager.Instance != null)
+            {
+                ScoreManager.Instance.CountStageClear(stageData.Score); // 점수 축적
+            }
+
             if (FirebaseDataBaseMgr.Instance != null)
             {
                 yield return FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(StageData.DropedInGameMoneyAmount);
