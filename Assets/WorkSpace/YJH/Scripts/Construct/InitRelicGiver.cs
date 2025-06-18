@@ -53,10 +53,11 @@ namespace YJH
             relicCardObject2.SetActive(true);
             relicCardObject3.SetActive(true);
         }
+        
 
         public void AddRelicByCard()
         {
-            
+            PlayerInventoryManager.AddRelic(selectedRelicCardScript.RelicData);
             
         }
         public void SetRelicCard(RelicCard card)

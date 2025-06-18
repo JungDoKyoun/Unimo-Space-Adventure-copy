@@ -464,19 +464,7 @@ public class ConstructManager : MonoBehaviour
         
     }
 
-    //public bool TryGetPlayer()// 이제 안쓸듯
-    //{
-    //    playerManager = FindObjectOfType<PlayerManager>();
-    //    if (playerManager == null)
-    //    {
-    //        return false;
-    //    }
-    //    else
-    //    {
-    //
-    //        return true;
-    //    }
-    //}
+    
     public void SetPlayer()// 게임 종료시 스테이터스 초기화 필요
     {
         if (isBuildEffectAplly == false)//static 변수를 통해서 초기화 조절
@@ -489,10 +477,7 @@ public class ConstructManager : MonoBehaviour
         //SetFinalStatusToPlayer();
     }
 
-    //public void AddStatEffect(BuildEffect buildEffect)//만들어 넣었지만 쓰진 않을듯? 
-    //{
-    //    buildEffects.Add(buildEffect);
-    //}
+   
     public void ModifieStat(BuildEffect buildeffect)
     {
         float speedSum = 0;
@@ -613,6 +598,10 @@ public class ConstructManager : MonoBehaviour
     public void ActiveInitRelic()
     {
         initRelicUI.SetActive(true);
+    }
+    public void DeactiveInitRelic()
+    {
+        initRelicUI.SetActive(false);
     }
 
 }
