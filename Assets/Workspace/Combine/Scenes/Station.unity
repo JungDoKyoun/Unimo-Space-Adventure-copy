@@ -11250,12 +11250,44 @@ PrefabInstance:
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 1919110666439683241, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919110666439683241, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1291232110}
+    - target: {fileID: 1919110666439683241, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1291232109}
+    - target: {fileID: 1919110666439683241, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AddRelicByCard
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919110666439683241, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: DeactiveInitRelic
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919110666439683241, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: YJH.InitRelicGiver, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1919110666439683241, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ConstructManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 2985046069418267581, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
       propertyPath: m_Name
       value: Construct Group
       objectReference: {fileID: 0}
     - target: {fileID: 3060687925972038647, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3221654635333140472, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4043517421725712160, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
@@ -11302,6 +11334,18 @@ PrefabInstance:
       propertyPath: tempRelic
       value: 
       objectReference: {fileID: 11400000, guid: 2adc7d5445368f24d9ae0abe37e2ba71, type: 2}
+    - target: {fileID: 5053168007083461450, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1796
+      objectReference: {fileID: 0}
+    - target: {fileID: 5053168007083461450, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 192
+      objectReference: {fileID: 0}
+    - target: {fileID: 5053168007083461450, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -243
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11316,6 +11360,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 100a89bbf73ca8e459ac22f7411fbf5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1291232110 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3744009439875869137, guid: 0387a2d9db543a74aaf1fad129674deb, type: 3}
+  m_PrefabInstance: {fileID: 1291232108}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72187f866cfb38342a54a8fdbce13356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1310349025
