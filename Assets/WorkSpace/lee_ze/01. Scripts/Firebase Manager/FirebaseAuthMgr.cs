@@ -468,6 +468,8 @@ public class FirebaseAuthMgr : MonoBehaviour
 
             hasUser = false;
 
+            FirebaseDataBaseMgr.IsDataBaseReady = false;
+
             emailField.text = "";
 
             passwordField.text = "";
