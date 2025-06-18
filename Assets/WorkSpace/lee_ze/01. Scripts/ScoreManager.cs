@@ -99,7 +99,7 @@ public class ScoreManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 주기 끝날 때 호출(현재 체력 / 최대 체력)
+    /// 주기 끝날 때 호출(플레이어 현재 체력 / 플레이어 최대 체력)
     /// </summary>
     /// <param name="currentPlayerHP"></param>
     /// <param name="maxPlayerHP"></param>
