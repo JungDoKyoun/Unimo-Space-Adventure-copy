@@ -1998,7 +1998,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -8474,7 +8474,7 @@ MonoBehaviour:
     moveSpeed: 4
   attackPrefabs:
   - {fileID: 7503936081269918129, guid: 07c22d31208dbd6418c693b8554433d7, type: 3}
-  tempRelic: {fileID: 0}
+  tempRelic: {fileID: 11400000, guid: 2adc7d5445368f24d9ae0abe37e2ba71, type: 2}
   initRelicUI: {fileID: 3490026673763155674}
 --- !u!1 &3189036270805826556
 GameObject:
@@ -8626,7 +8626,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7220377493271117240
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8635,7 +8635,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3221654635333140472}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1800}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8656,7 +8656,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 207, y: -243}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3385913842852343531
@@ -8907,14 +8907,14 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 67966940448069924}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ZL.Unity.Unimo.RelicSelectionScreen, Assembly-CSharp
-        m_MethodName: ConfirmSelection
+      - m_Target: {fileID: 4986242008564811913}
+        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+        m_MethodName: DeactiveInitRelic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8924,9 +8924,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ZL.Unity.UI.UIScreen, Assembly-CSharp
-        m_MethodName: Disappear
+      - m_Target: {fileID: 3744009439875869137}
+        m_TargetAssemblyTypeName: YJH.InitRelicGiver, Assembly-CSharp
+        m_MethodName: AddRelicByCard
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9498,7 +9498,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5834091945685938204}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: Init Relic Giver UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11294,6 +11294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d481bbe185dd38149a76f2f060b622fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lifeTime: -1
   toggle: {fileID: 2251099637424042052}
   relicImageTable: {fileID: 11400000, guid: b39b1c7f2fab9e44aba922c73b673167, type: 2}
   relicStringTableSheet: {fileID: 11400000, guid: 2a25ec0fc7dc160428ef7f5bf357c401, type: 2}
@@ -14037,6 +14038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d481bbe185dd38149a76f2f060b622fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lifeTime: -1
   toggle: {fileID: 2613346758321374650}
   relicImageTable: {fileID: 11400000, guid: b39b1c7f2fab9e44aba922c73b673167, type: 2}
   relicStringTableSheet: {fileID: 11400000, guid: 2a25ec0fc7dc160428ef7f5bf357c401, type: 2}
@@ -21070,6 +21072,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d481bbe185dd38149a76f2f060b622fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lifeTime: -1
   toggle: {fileID: 330096948189103442}
   relicImageTable: {fileID: 11400000, guid: b39b1c7f2fab9e44aba922c73b673167, type: 2}
   relicStringTableSheet: {fileID: 11400000, guid: 2a25ec0fc7dc160428ef7f5bf357c401, type: 2}
