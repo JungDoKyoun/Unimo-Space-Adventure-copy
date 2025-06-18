@@ -12,7 +12,7 @@ public class AuraControl : MonoBehaviour
     {
         transform.position = player.transform.position;
         //transform.localScale.x = player.ItemDetectionRange;
-        SetAuraScale(player.ItemDetectionRange);
+        SetAuraScale(PlayerManager.PlayerStatus.itemDetectionRange);
     }
 
     public void SetAuraScale(float playerDetectionRange)//5f -> 1.216

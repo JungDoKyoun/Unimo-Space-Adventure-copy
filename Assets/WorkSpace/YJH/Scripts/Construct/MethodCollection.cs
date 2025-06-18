@@ -93,31 +93,36 @@ namespace YJH
         #endregion
         public static void IncreaseRelicChanceA()//관련 함수 만들어지면 사용 
         {
-
+            
         }
         public static void IncreaseRelicChanceB()
         {
-
+            
         }
         public static void IncreaseRelicChanceC()
         {
-
+            
         }
 
 
         public static void IncreaseRerollChanceA()
         {
-            //RelicDropTable.Instance.Import()
+            PlayerInventoryManager.RelicRerollableCount += 1;
         }
         public static void IncreaseRerollChanceB()
         {
-
+            PlayerInventoryManager.RelicRerollableCount += 1;
         }
         public static void IncreaseRerollChanceC()
         {
-
+            PlayerInventoryManager.RelicRerollableCount += 1;
         }
 
+        public static void GiveStartRelicA()
+        {
+            InitRelicGiver.Instance?.SetRelicData();
+            Debug.Log("startRElic");
+        }
 
 
         public static void ResurrectA()//이건 어케 하지?

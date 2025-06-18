@@ -113,9 +113,9 @@ public partial class PlayerManager : IDamageable
 
         //OnHealthChanged?.Invoke(playerStatus.currentHealth);
 
-        if (playerStatus.currentHealth <= 0f)
+        if (PlayerStatus.currentHealth <= 0f)
         {
-            playerStatus.currentHealth = 0f;
+            PlayerStatus.currentHealth = 0f;
 
             canMove = false;
 

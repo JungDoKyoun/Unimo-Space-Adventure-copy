@@ -96,7 +96,7 @@ public partial class PlayerManager : MonoBehaviourPun
 
             GetRotate(headDirection);
 
-            transform.position += playerStatus.moveSpeed * Time.deltaTime * playerMoveDirection;// + pushSpeed * Time.deltaTime * playerPushDirection;
+            transform.position += PlayerStatus.moveSpeed * Time.deltaTime * playerMoveDirection;// + pushSpeed * Time.deltaTime * playerPushDirection;
             //Debug.Log(playerStatus.moveSpeed);
             if (isMoveSoundPlay)
             {
@@ -131,7 +131,7 @@ public partial class PlayerManager : MonoBehaviourPun
 
             GetRotate(headDirection);
 
-            transform.position += playerStatus.moveSpeed * Time.deltaTime * playerMoveDirection;// + pushSpeed * Time.deltaTime * playerPushDirection;
+            transform.position += PlayerStatus.moveSpeed * Time.deltaTime * playerMoveDirection;// + pushSpeed * Time.deltaTime * playerPushDirection;
 
             if (isMoveSoundPlay)
             {

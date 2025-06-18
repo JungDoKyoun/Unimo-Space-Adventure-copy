@@ -13,9 +13,14 @@ public partial class PlayerManager
 {
     private static PlayerStatus originStatus = new PlayerStatus(10, 10, 5, 5, 4, 0.5f, 4);
 
-    private static PlayerStatus playerStatus = originStatus.Clone();
+    private static PlayerStatus playerStatus = new PlayerStatus();
     
-    public static PlayerStatus PlayerStatus {  get { return playerStatus; } 
+    public static PlayerStatus PlayerStatus {  
+        get 
+        { 
+            return playerStatus;
+        } 
+        
         set
         {
             if (playerStatus.currentHealth != value.currentHealth||playerStatus.maxHealth!=value.maxHealth)
@@ -26,10 +31,14 @@ public partial class PlayerManager
                 }
                 playerStatus=value;
                 OnHealthChanged?.Invoke(playerStatus.currentHealth);
+                //Debug.Log(value.maxHealth);
+                
+                Debug.Log("setby0");
             }
             else
             {
                 playerStatus = value;
+                Debug.Log("set");
             }
         } 
     }
@@ -68,6 +77,12 @@ public partial class PlayerManager
 
     private void Start()
     {
+        if (playerSpellType == null)
+        {
+            SetSpellType(new Dash());
+
+            playerSpellType.InitSpell();
+        }
         if (GameStateManager.IsClear == false)
         {
             ResetPlayer();
@@ -75,7 +90,7 @@ public partial class PlayerManager
         ActionStart();
 
         MoveStart();
-        ConstructManager.SetFinalStatusToPlayer();
+        //ConstructManager.SetFinalStatusToPlayer();
         //PlayerInventoryManager.AddRelic(tempRelic);
         ActiveRelic();
         ShowStatusDebug();
@@ -93,14 +108,24 @@ public partial class PlayerManager
     public void ShowStatusDebug()
     {
         //Debug.Log(playerStatus.currentHealth);
-
+        //
         //Debug.Log(playerStatus.maxHealth);
-
+        //
         //Debug.Log(playerStatus.gatheringDelay);
-
+        //
         //Debug.Log(playerStatus.gatheringSpeed);
-
+        //
         //Debug.Log(playerStatus.playerDamage);
+        //
+        //Debug.Log(originStatus.Clone().currentHealth);
+        //
+        //Debug.Log(originStatus.Clone().maxHealth);
+        //
+        //Debug.Log(originStatus.Clone().gatheringDelay);
+        //
+        //Debug.Log(originStatus.Clone().gatheringSpeed);
+        //
+        //Debug.Log(originStatus.Clone().playerDamage);
     }
 
     private void ResetPlayer()
@@ -118,6 +143,13 @@ public partial class PlayerManager
         //playerSpellType.SetState(false);
 
         playerSpellType = null;
+        if (ConstructManager.IsBuildEffectAplly == false)
+        {
+            PlayerStatus=originStatus.Clone();
+            ShowStatusDebug();
+            Debug.Log("건설 매니저 거치지 않음");
+            //Debug.Log(PlayerStatus.currentHealth);
+        }
     }
     public static void ActiveRelic()
     {
@@ -134,16 +166,16 @@ public partial class PlayerManager
                 switch (relicEffect.Type)
                 {
                     case ZL.Unity.Unimo.RelicEffectType.AttackPower:
-                        playerStatus.playerDamage += relicEffect.Value;
-                        Debug.Log(playerStatus.playerDamage);
+                        PlayerStatus.playerDamage += relicEffect.Value;
+                        Debug.Log(PlayerStatus.playerDamage);
                         break;
                     case ZL.Unity.Unimo.RelicEffectType.MaxHealth:
-                        playerStatus.maxHealth += relicEffect.Value;
-                        Debug.Log(playerStatus.maxHealth);
+                        PlayerStatus.maxHealth += relicEffect.Value;
+                        Debug.Log(PlayerStatus.maxHealth);
                         break;
                     case ZL.Unity.Unimo.RelicEffectType.MovementSpeed:
-                        playerStatus.moveSpeed += relicEffect.Value;
-                        Debug.Log(playerStatus.moveSpeed);
+                        PlayerStatus.moveSpeed += relicEffect.Value;
+                        Debug.Log(PlayerStatus.moveSpeed);
                         break;
                     default:
                         Debug.Log("no exist relic type");
