@@ -14,7 +14,7 @@ namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Stage Scene Director (Singleton)")]
 
-    public class StageSceneDirector : SceneDirector<StageSceneDirector>
+    public sealed class StageSceneDirector : SceneDirector<StageSceneDirector>
     {
         [SerializeField]
 
@@ -41,8 +41,6 @@ namespace ZL.Unity.Unimo
         [Line]
 
         private RelicDropTable relicDropTable = null;
-
-        [Space]
 
         [SerializeField]
 
@@ -84,9 +82,11 @@ namespace ZL.Unity.Unimo
 
         private StageFailPopupScreen stageFailPopupScreen = null;
 
-        protected virtual string LoadSceneName
+        private string loadSceneName = "Station";
+
+        public string LoadSceneName
         {
-            get => "Station";
+            set => loadSceneName = value;
         }
 
         protected override void Awake()
@@ -96,19 +96,32 @@ namespace ZL.Unity.Unimo
             ISingleton<StageData>.TrySetInstance(stageData);
 
             ISingleton<RelicDropTable>.TrySetInstance(relicDropTable);
+
+            if (GatheringManager.Instance != null)
+            {
+                GatheringManager.Instance.OnGatherCompleted += StageClear;
+            }
+            
+            if (PlayerFuelManager.Instance != null)
+            {
+                PlayerFuelManager.Instance.OnFuelEmpty += StageFail;
+            }
+
+            PlayerManager.OnPlayerDead += StageFail;
         }
 
         protected override IEnumerator Start()
         {
-            PlayerManager.OnPlayerDead += StageFail;
-
             yield return base.Start();
 
             playerUIScreen.Appear();
 
-            SpawnSequence.Instance.gameObject.SetActive(true);
+            if (PlayerFuelManager.Instance != null)
+            {
+                PlayerFuelManager.Instance.StartConsumFuel();
+            }
 
-            PlayerFuelManager.Instance?.StartConsumFuel();
+            SpawnSequence.Instance.gameObject.SetActive(true);
         }
 
         protected override void OnDestroy()
@@ -120,7 +133,7 @@ namespace ZL.Unity.Unimo
             ISingleton<RelicDropTable>.Release(relicDropTable);
         }
 
-        public void StageClear()
+        private void StageClear()
         {
             if (stageClearRoutine != null)
             {
@@ -164,10 +177,10 @@ namespace ZL.Unity.Unimo
                 }
             }
 
-            LoadScene(LoadSceneName);
+            LoadScene(loadSceneName);
         }
 
-        public void StageFail()
+        private void StageFail()
         {
             if (stageFailRoutine != null)
             {
@@ -191,7 +204,9 @@ namespace ZL.Unity.Unimo
 
             if (FirebaseDataBaseMgr.Instance != null)
             {
-                StartCoroutine(FirebaseDataBaseMgr.Instance.InitIngameCurrency());
+                yield return FirebaseDataBaseMgr.Instance.InitIngameCurrency();
+
+                ScoreManager.Instance.CalculateTotalScore();
             }
 
             stageFailPopupScreen.Appear();
@@ -201,7 +216,7 @@ namespace ZL.Unity.Unimo
                 yield return null;
             }
 
-            LoadScene(LoadSceneName);
+            LoadScene(loadSceneName);
         }
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ZL.Unity.IO.GoogleSheet
+namespace ZL.Unity.SO.GoogleSheet
 {
     [AddComponentMenu("ZL/Unimo/Google Sheet Reader")]
 

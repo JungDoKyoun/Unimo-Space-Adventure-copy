@@ -2,7 +2,7 @@ using UnityEngine;
 
 using ZL.CS.Singleton;
 
-using ZL.Unity.IO.GoogleSheet;
+using ZL.Unity.SO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {

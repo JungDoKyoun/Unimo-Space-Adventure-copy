@@ -10,7 +10,7 @@ using ZL.Unity.Collections;
 
 using ZL.Unity.IO;
 
-using ZL.Unity.IO.GoogleSheet;
+using ZL.Unity.SO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {

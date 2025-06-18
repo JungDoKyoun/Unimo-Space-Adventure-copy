@@ -1,46 +1,16 @@
 using UnityEngine;
 
-using ZL.Unity.Collections;
+using ZL.Unity.SO;
 
-namespace ZL.Unity
+namespace ZL.Unity.Unimo
 {
     [CreateAssetMenu(menuName = "ZL/Unimo/SO/Image Table", fileName = "Image Table")]
 
-    public sealed class ImageTable : ScriptableObject
+    public sealed class ImageTable : ScriptableObjectDictionary<string, Sprite>
     {
-        [Space]
-
-        [SerializeField]
-
-        private Sprite[] datas;
-
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Button(nameof(SerializeDatas))]
-
-        private SerializableDictionary<string, Sprite> dataDictionary = new();
-
-        public Sprite this[string key]
+        protected override string GetDataKey(Sprite data)
         {
-            get => dataDictionary[key];
-        }
-
-        public void SerializeDatas()
-        {
-            dataDictionary.Clear();
-
-            for (int i = 0; i < datas.Length; ++i)
-            {
-                var data = datas[i];
-
-                dataDictionary.Add(data.name, data);
-            }
-
-            FixedEditorUtility.SetDirty(this);
+            return data.name;
         }
     }
 }

@@ -8,6 +8,11 @@ namespace ZL.Unity.Unimo
 
     public sealed class SpawnSequence : MonoSingleton<SpawnSequence>
     {
+        protected override void Awake()
+        {
+            base.Awake();
 
+            gameObject.SetActive(false);
+        }
     }
 }

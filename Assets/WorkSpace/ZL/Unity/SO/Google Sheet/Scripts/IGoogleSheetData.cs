@@ -2,7 +2,7 @@ using GoogleSheetsToUnity;
 
 using System.Collections.Generic;
 
-namespace ZL.Unity.IO.GoogleSheet
+namespace ZL.Unity.SO.GoogleSheet
 {
     public interface IGoogleSheetData
     {

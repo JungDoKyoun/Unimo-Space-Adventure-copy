@@ -2,7 +2,7 @@ using GoogleSheetsToUnity;
 
 using UnityEngine;
 
-namespace ZL.Unity.IO.GoogleSheet
+namespace ZL.Unity.SO.GoogleSheet
 {
     [CreateAssetMenu(menuName = "ZL/Google Sheet/Google Sheet Config", fileName = "Google Sheet Config")]
 

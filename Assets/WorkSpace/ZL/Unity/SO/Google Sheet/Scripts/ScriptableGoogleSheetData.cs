@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace ZL.Unity.IO.GoogleSheet
+namespace ZL.Unity.SO.GoogleSheet
 {
     public abstract class ScriptableGoogleSheetData : ScriptableObject, IGoogleSheetData
     {

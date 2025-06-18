@@ -14,13 +14,13 @@ using UnityEngine;
 
 using ZL.Unity.Collections;
 
-namespace ZL.Unity.IO.GoogleSheet
+namespace ZL.Unity.SO.GoogleSheet
 {
     public abstract class ScriptableGoogleSheet<TGoogleSheetData> : ScriptableGoogleSheet<string, TGoogleSheetData>
 
         where TGoogleSheetData : ScriptableObject, IGoogleSheetData
     {
-        protected override string GeyDataKey(TGoogleSheetData data)
+        protected override string GetDataKey(TGoogleSheetData data)
         {
             return data.name;
         }
@@ -79,7 +79,7 @@ namespace ZL.Unity.IO.GoogleSheet
 
         [UsingCustomProperty]
 
-        [Button(nameof(SerializeDatas))]
+        [Button(nameof(Serialize))]
 
         protected SerializableDictionary<TKey, TGoogleSheetData> dataDictionary = null;
 
@@ -158,12 +158,12 @@ namespace ZL.Unity.IO.GoogleSheet
                 FixedEditorUtility.SetDirty(data);
             }
 
-            SerializeDatas();
+            Serialize();
 
             FixedDebug.Log($"Successfully read '{name}' from Google sheet.");
         }
 
-        public virtual void SerializeDatas()
+        public virtual void Serialize()
         {
             dataDictionary.Clear();
 
@@ -171,13 +171,13 @@ namespace ZL.Unity.IO.GoogleSheet
             {
                 var data = datas[i];
 
-                dataDictionary.Add(GeyDataKey(data), data);
+                dataDictionary.Add(GetDataKey(data), data);
             }
 
             FixedEditorUtility.SetDirty(this);
         }
 
-        protected abstract TKey GeyDataKey(TGoogleSheetData data);
+        protected abstract TKey GetDataKey(TGoogleSheetData data);
 
         public void Write()
         {

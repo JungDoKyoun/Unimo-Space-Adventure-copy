@@ -26,16 +26,9 @@ namespace ZL.Unity.Unimo
 
             sliderValueDisplayer.SetValue(PlayerFuelManager.Fuel);
 
-            PlayerFuelManager.OnMaxFuelChanged += sliderValueDisplayer.SetMaxValue;
+            PlayerFuelManager.Instance.OnMaxFuelChanged += sliderValueDisplayer.SetMaxValue;
 
-            PlayerFuelManager.OnFuelChanged += sliderValueDisplayer.SetValue;
-        }
-
-        private void OnDestroy()
-        {
-            PlayerFuelManager.OnMaxFuelChanged -= sliderValueDisplayer.SetMaxValue;
-
-            PlayerFuelManager.OnFuelChanged -= sliderValueDisplayer.SetValue;
+            PlayerFuelManager.Instance.OnFuelChanged += sliderValueDisplayer.SetValue;
         }
     }
 }

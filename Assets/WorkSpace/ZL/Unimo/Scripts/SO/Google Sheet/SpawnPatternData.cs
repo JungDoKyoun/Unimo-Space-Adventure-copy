@@ -6,7 +6,7 @@ using UnityEngine;
 
 using ZL.CS.Collections;
 
-using ZL.Unity.IO.GoogleSheet;
+using ZL.Unity.SO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {

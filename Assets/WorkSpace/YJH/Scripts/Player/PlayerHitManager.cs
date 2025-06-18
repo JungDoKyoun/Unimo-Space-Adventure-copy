@@ -6,16 +6,12 @@ using System.Collections;
 
 using UnityEngine;
 
-using UnityEngine.Events;
-
 using ZL.Unity;
 
 using ZL.Unity.Unimo;
 
 public partial class PlayerManager : IDamageable
 {
-    
-
     [SerializeField]
 
     //무적시간
@@ -64,8 +60,8 @@ public partial class PlayerManager : IDamageable
             else
             {
                 PlayerStatus.currentHealth = value;
+
                 //OnHealthChanged?.Invoke(value);
-                
             }
         }
     }

@@ -8,7 +8,7 @@ using ZL.CS.Singleton;
 
 using ZL.Unity.Collections;
 
-using ZL.Unity.IO.GoogleSheet;
+using ZL.Unity.SO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {
@@ -34,7 +34,7 @@ namespace ZL.Unity.Unimo
             get => relicDictionary;
         }
 
-        public override void SerializeDatas()
+        public override void Serialize()
         {
             dataDictionary.Clear();
 
