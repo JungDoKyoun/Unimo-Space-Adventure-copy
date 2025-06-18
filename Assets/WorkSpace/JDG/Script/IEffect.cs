@@ -14,21 +14,22 @@ namespace JDG
     {
         public void Execute(EventEffect eventEffect)
         {
+            Debug.Log("자원 변경");
             if(eventEffect._target == TargetType.IngameCurrency)
             {
                 FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(eventEffect._value);
-                Debug.Log($"인게임 {eventEffect._value} 만큼 변화");
             }
             else if (eventEffect._target == TargetType.MetaCurrency)
             {
                 FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(eventEffect._value);
-                Debug.Log($"메타 {eventEffect._value} 만큼 변화");
             }
             else if(eventEffect._target == TargetType.Blueprint)
             {
                 FirebaseDataBaseMgr.Instance.UpdateRewardBluePrint(eventEffect._value);
-                Debug.Log($"설계도 {eventEffect._value} 만큼 변화");
+                Debug.Log("자원 변경2");
             }
+
+            PlayerEvents.ChangeCurrency();
         }
     }
 
@@ -47,8 +48,8 @@ namespace JDG
             {
                 PlayerInventoryManager.RemoveRelic(eventEffect._relicData);
             }
-            
-            Debug.Log("유물 추가");
+
+            PlayerEvents.ChangeRelic();
         }
     }
 

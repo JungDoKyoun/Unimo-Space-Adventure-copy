@@ -138,8 +138,6 @@ namespace ZL.Unity.Unimo
         {
             TimeEx.Pause();
 
-            GameStateManager.IsClear = true;
-
             stageData.DropRewards();
 
             if (FirebaseDataBaseMgr.Instance != null)

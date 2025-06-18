@@ -45,6 +45,7 @@ namespace JDG
         public void EnterTileScene(HexRenderer tile)
         {
             GameStateManager.IsClear = true;
+            GameStateManager.IsRestoreMap = true;
 
             _choseTileData = tile.TileData;
             GameStateManager.Instance.SaveTileStates(_hexGridLayout.HexMap, _hexGridLayout.PlayerCoord);
@@ -74,6 +75,7 @@ namespace JDG
             {
                 if (stateManager.TileSaveData != null && stateManager.TileSaveData.Count > 0)
                 {
+                    Debug.Log(stateManager.TileSaveData.Count);
                     HexGridLayout layout = FindObjectOfType<HexGridLayout>();
                     layout.CalculateMapOrigin();
                     layout.RestoreMapState(stateManager.TileSaveData, stateManager.PlayerCoord);

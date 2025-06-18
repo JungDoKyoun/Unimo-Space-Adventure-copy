@@ -35,13 +35,13 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     private static int bluePrint;
 
+    private static int currentScore = 0;
+
     private static float winningRate;
 
     private static float playCount;
 
     private static float winCount;
-
-    private static float currentScore = 0;
 
     private static bool isRankUpdated = false;
 
@@ -109,7 +109,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         }
     }
 
-    public static float CurrentScore
+    public static int CurrentScore
     {
         get => currentScore;
 
@@ -469,9 +469,9 @@ public class FirebaseDataBaseMgr : MonoBehaviour
     /// </summary>
     /// <param name="currentScore"></param>
     /// <returns></returns>
-    public IEnumerator UpdateScore(float currentScore)
+    public IEnumerator UpdateScore(int currentScore)
     {
-        CurrentScore += currentScore;
+        CurrentScore = currentScore;
 
         var getTask = dbRef.Child("users").Child(user.UserId).Child("score").GetValueAsync();
 
