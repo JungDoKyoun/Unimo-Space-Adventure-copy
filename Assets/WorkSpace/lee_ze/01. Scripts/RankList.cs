@@ -53,16 +53,23 @@ public class RankList : MonoBehaviour
     // 업데이트 버튼에 할당 할 함수
     private IEnumerator UpdateRankListPanel()
     {
-        StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRank());
+        yield return FirebaseDataBaseMgr.Instance.UpdateRank();
 
         yield return new WaitUntil(predicate: () => FirebaseDataBaseMgr.IsRankUpdated == true);
 
-        StartCoroutine(SetRankListPanel());
+        yield return SetRankListPanel();
     }
 
     private IEnumerator SetRankListPanel()
     {
         yield return new WaitUntil(predicate: () => FirebaseDataBaseMgr.IsRankUpdated == true);
+
+        if (FirebaseDataBaseMgr.TopRankers.Count == 0)
+        {
+            Debug.LogWarning("TopRankers 데이터가 없습니다.");
+
+            yield break;
+        }
 
         foreach (Transform child in content)
         {
