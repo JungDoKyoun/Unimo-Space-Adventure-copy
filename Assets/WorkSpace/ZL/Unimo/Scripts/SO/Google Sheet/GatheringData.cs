@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-using ZL.Unity.IO.GoogleSheet;
+using ZL.Unity.SO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {

@@ -6,16 +6,12 @@ using System.Collections;
 
 using UnityEngine;
 
-using UnityEngine.Events;
-
 using ZL.Unity;
 
 using ZL.Unity.Unimo;
 
 public partial class PlayerManager : IDamageable
 {
-    
-
     [SerializeField]
 
     //무적시간
@@ -49,7 +45,9 @@ public partial class PlayerManager : IDamageable
     [SerializeField]
 
     private Collider mainCollider;
+
     //public RelicData tempRelic;
+
     public float CurrentHealth
     {
         get => PlayerStatus.currentHealth;
@@ -64,8 +62,8 @@ public partial class PlayerManager : IDamageable
             else
             {
                 PlayerStatus.currentHealth = value;
+
                 //OnHealthChanged?.Invoke(value);
-                
             }
         }
     }
@@ -77,9 +75,11 @@ public partial class PlayerManager : IDamageable
 
     public static event Action OnPlayerDead = null;
 
-    public static event Action OnStageClear = null; // 삭제 예정 , 스테이지 매니저에서 관리 예정
+    // 삭제 예정 , 스테이지 매니저에서 관리 예정
+    public static event Action OnStageClear = null;
 
-    public static event Action OnStageFail = null;// 삭제 예정 , 스테이지 매니저에서 관리 예정
+    // 삭제 예정 , 스테이지 매니저에서 관리 예정
+    public static event Action OnStageFail = null;
 
     private void OnCollisionStay(Collision collision)
     {
@@ -127,6 +127,7 @@ public partial class PlayerManager : IDamageable
 
             OnStageFail?.Invoke();
         }
+
         else
         {
             StartCoroutine(PlayerBlink());

@@ -1,11 +1,15 @@
 using Photon.Pun;
+
 using System;
+
 using System.Collections;
 
 using TMPro;
 
 using UnityEngine;
+
 using UnityEngine.UI;
+
 using ZL.Unity.Unimo;
 
 public partial class PlayerManager 
@@ -92,8 +96,15 @@ public partial class PlayerManager
     {
         get => selfManager;
     }
-    [SerializeField] Image progressBarCircle;
-    [SerializeField] TMP_Text progressBarText;
+
+    [SerializeField]
+    
+    Image progressBarCircle;
+
+    [SerializeField]
+    
+    TMP_Text progressBarText;
+
     //[SerializeField]
 
     //private float fireRate = 0.3f;
@@ -152,7 +163,7 @@ public partial class PlayerManager
 
             else
             {
-                Debug.Log("nullspell");
+                //Debug.Log("nullspell");
 
                 ISpellType temp = new Dash();
 
@@ -205,29 +216,42 @@ public partial class PlayerManager
             if (playerSpellType != null)
             {
                 playerSpellType.UpdateTime();
+
                 switch (playerSpellType)
                 {
                     case IStackSpell:
+
                         if (progressBarCircle != null && progressBarText != null)
-                        {if ((playerSpellType as IStackSpell).NowStack == (playerSpellType as IStackSpell).MaxStack)
+                        {
+                            if ((playerSpellType as IStackSpell).NowStack == (playerSpellType as IStackSpell).MaxStack)
                             {
                                 progressBarCircle.fillAmount = 1;
                             }
+
                             else
                             {
                                 progressBarCircle.fillAmount = (playerSpellType as IStackSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
                             }
+
                             progressBarText.text = (playerSpellType as IStackSpell).NowStack.ToString();
                         }
+
                         break;
-                        case ICoolTimeSpell:
+
+                    case ICoolTimeSpell:
+
                         //progressBarCircle.fillAmount = (playerSpellType as ICoolTimeSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
+
                         //progressBarText.text = (playerSpellType as ICoolTimeSpell).NowStack.ToString(); 나중에 쿨타임 스킬 필요하면 리펙토링
+
                         break;
-                        default:
+
+                    default:
+
                         break;
                 }
-                //progressBarCircle.fillAmount=
+
+                //progressBarCircle.fillAmount =
             }
         }
 
@@ -706,7 +730,7 @@ public partial class PlayerManager
     //    }
     //}
 
-    // 아이템 채집중 사용할 코로틴
+    // 아이템 채집중 사용할 코루틴
     private IEnumerator GatheringCoroutine()
     {
         //IGatheringObject targetScript = null;

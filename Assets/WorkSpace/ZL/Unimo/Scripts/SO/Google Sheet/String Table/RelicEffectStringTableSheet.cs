@@ -4,7 +4,7 @@ using UnityEngine;
 
 using ZL.CS.Singleton;
 
-using ZL.Unity.IO.GoogleSheet;
+using ZL.Unity.SO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
 {
@@ -17,7 +17,7 @@ namespace ZL.Unity.Unimo
             get => ISingleton<RelicEffectStringTableSheet>.Instance;
         }
 
-        protected override RelicEffectType GeyDataKey(StringTable data)
+        protected override RelicEffectType GetDataKey(StringTable data)
         {
             return Enum.Parse<RelicEffectType>(data.name);
         }

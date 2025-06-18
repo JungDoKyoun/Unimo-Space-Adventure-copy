@@ -1,3 +1,5 @@
+using System;
+
 using TMPro;
 
 using UnityEngine;
@@ -41,14 +43,19 @@ namespace ZL.Unity.Unimo
             {
                 gatheringCount = MathEx.Clamp(value, 0, targetGatheringCount);
 
+                OnGatheringCountChanged?.Invoke(gatheringCount);
+
                 gatherProgressTextUI.text = $"목표 자원: {gatheringCount}/{targetGatheringCount}";
 
                 if (gatheringCount >= targetGatheringCount)
                 {
-                    StageSceneDirector.Instance.StageClear();
+                    OnGatherCompleted?.Invoke();
                 }
             }
         }
+        public event Action<int> OnGatheringCountChanged = null;
+
+        public event Action OnGatherCompleted = null;
 
         private void Start()
         {

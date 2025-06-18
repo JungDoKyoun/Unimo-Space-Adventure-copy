@@ -17,6 +17,8 @@ namespace ZL.Unity.Directing
 
     }
 
+    [DefaultExecutionOrder((int)ScriptExecutionOrder.SceneDirector)]
+
     public abstract class SceneDirector<TSceneDirector> : MonoSingleton<TSceneDirector>
 
         where TSceneDirector : SceneDirector<TSceneDirector>

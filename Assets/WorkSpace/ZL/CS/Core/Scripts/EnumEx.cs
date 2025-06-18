@@ -8,49 +8,33 @@ namespace ZL.CS
 
             where TEnum : Enum
         {
-            var enumUnion = new EnumUnion<TEnum>()
-            {
-                enumValue = instance,
-            };
+            return Convert.ToInt32(instance);
+        }
 
-            unsafe
-            {
-                int* pointer = &enumUnion.intValue;
+        public static ulong ToULong<TEnum>(this TEnum instance)
 
-                pointer -= 1;
-
-                return *pointer;
-            }
+            where TEnum : Enum
+        {
+            return Convert.ToUInt64(instance);
         }
 
         public static TEnum ToEnum<TEnum>(this int instance)
 
             where TEnum : Enum
         {
-            var enumUnion = new EnumUnion<TEnum>();
-
-            unsafe
-            {
-                int* pointer = &enumUnion.intValue;
-
-                pointer -= 1;
-
-                *pointer = instance;
-            }
-
-            return enumUnion.enumValue;
+            return (TEnum)Enum.ToObject(typeof(TEnum), instance);
         }
 
-        public static bool Contains<TEnum>(this TEnum instance, TEnum flags)
+        public static bool HasFlag<TEnum>(this TEnum instance, TEnum flag)
 
             where TEnum : Enum
         {
-            return instance.ToInt().Contains(flags.ToInt());
+            return HasFlag(instance.ToULong(), flag.ToULong());
         }
 
-        public static bool Contains(this int instance, int flags)
+        public static bool HasFlag(this ulong instance, ulong flag)
         {
-            return (instance & flags) == flags;
+            return (instance & flag) == flag;
         }
 
         public static TEnum[] GetValues<TEnum>()
