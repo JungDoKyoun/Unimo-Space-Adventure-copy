@@ -50,6 +50,7 @@ public class ConstructManager : MonoBehaviour
     public event onConstructCostChange OnConstructCostChange;
 
     private static bool isBuildEffectAplly=false;
+    public static bool IsBuildEffectAplly { get { return isBuildEffectAplly; } }
     private static bool isDelinkON = false;
     
     private Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
@@ -67,7 +68,7 @@ public class ConstructManager : MonoBehaviour
     [SerializeField] GameObject[] attackPrefabs;
 
     public RelicData tempRelic;
-
+    public GameObject initRelicUI;
     private void Awake()
     {
         
@@ -86,15 +87,15 @@ public class ConstructManager : MonoBehaviour
             isDelinkON =true;
         }
     }
-    private void Start()
-    {
-        if (tempRelic != null)
-        {
-            PlayerInventoryManager.AddRelic(tempRelic);
-            //Debug.Log(tempRelic.Effects[0].Value);
-            //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
-        }
-    }
+    //private void Start()
+    //{
+    //    if (tempRelic != null)
+    //    {
+    //        //PlayerInventoryManager.AddRelic(tempRelic);
+    //        //Debug.Log(tempRelic.Effects[0].Value);
+    //        //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
+    //    }
+    //}
     private void OnDestroy()
     {
         OnConstructCostChange -= SetConstructCostText;
@@ -577,7 +578,7 @@ public class ConstructManager : MonoBehaviour
 
         SetFinalStatusToPlayer();
     }
-
+    
     public void SetOwnCost()
     {
 
@@ -609,6 +610,9 @@ public class ConstructManager : MonoBehaviour
 
     }
     
-    
+    public void ActiveInitRelic()
+    {
+        initRelicUI.SetActive(true);
+    }
 
 }

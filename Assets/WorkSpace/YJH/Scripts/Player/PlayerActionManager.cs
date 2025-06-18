@@ -16,7 +16,7 @@ public partial class PlayerManager
     //
     //private float itemDetectionRange = 5f;
 
-    public float ItemDetectionRange => playerStatus.itemDetectionRange;
+    //public float ItemDetectionRange => playerStatus.itemDetectionRange;
 
     //[SerializeField]
     //
@@ -126,7 +126,7 @@ public partial class PlayerManager
 
             OnTargetObjectSet += GatheringItem;
 
-            detectCollider.radius = playerStatus.itemDetectionRange;
+            detectCollider.radius = PlayerStatus.itemDetectionRange;
 
             if (attackPrefab == null)
             {
@@ -152,7 +152,7 @@ public partial class PlayerManager
 
             else
             {
-                //Debug.Log("nullspell");
+                Debug.Log("nullspell");
 
                 ISpellType temp = new Dash();
 
@@ -209,8 +209,14 @@ public partial class PlayerManager
                 {
                     case IStackSpell:
                         if (progressBarCircle != null && progressBarText != null)
-                        {
-                            progressBarCircle.fillAmount = (playerSpellType as IStackSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
+                        {if ((playerSpellType as IStackSpell).NowStack == (playerSpellType as IStackSpell).MaxStack)
+                            {
+                                progressBarCircle.fillAmount = 1;
+                            }
+                            else
+                            {
+                                progressBarCircle.fillAmount = (playerSpellType as IStackSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
+                            }
                             progressBarText.text = (playerSpellType as IStackSpell).NowStack.ToString();
                         }
                         break;
