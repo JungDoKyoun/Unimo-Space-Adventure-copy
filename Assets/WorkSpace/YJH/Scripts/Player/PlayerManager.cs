@@ -160,29 +160,38 @@ public partial class PlayerManager
         //Debug.Log("try use relic");
 
         //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
-
+        PlayerStatus temp = PlayerStatus.Clone();
         foreach (var relic in PlayerInventoryManager.RelicDatas)
         {
-            Debug.Log("relic data exist");
+            //Debug.Log("relic data exist");
             foreach (var relicEffect in relic.Effects)
             {
-                Debug.Log("relic effect exist");
+                //Debug.Log("relic effect exist");
                 switch (relicEffect.Type)
                 {
                     case ZL.Unity.Unimo.RelicEffectType.AttackPower:
-                        PlayerStatus.playerDamage += relicEffect.Value;
-                        Debug.Log(PlayerStatus.playerDamage);
+                        
+                        temp=PlayerStatus.Clone();
+                        temp.playerDamage += relicEffect.Value;
+                        PlayerStatus = temp;
+                        //Debug.Log(PlayerStatus.playerDamage);
                         break;
                     case ZL.Unity.Unimo.RelicEffectType.MaxHealth:
-                        PlayerStatus.maxHealth += relicEffect.Value;
-                        Debug.Log(PlayerStatus.maxHealth);
+                        temp = PlayerStatus.Clone();
+                        temp.maxHealth += relicEffect.Value;
+                        temp.currentHealth += relicEffect.Value;
+                        PlayerStatus = temp;
+
+                       // Debug.Log(PlayerStatus.maxHealth);
                         break;
                     case ZL.Unity.Unimo.RelicEffectType.MovementSpeed:
-                        PlayerStatus.moveSpeed += relicEffect.Value;
-                        Debug.Log(PlayerStatus.moveSpeed);
+                        temp = PlayerStatus.Clone();
+                        temp.moveSpeed += relicEffect.Value;
+                        PlayerStatus= temp;
+                        //Debug.Log(PlayerStatus.moveSpeed);
                         break;
                     default:
-                        Debug.Log("no exist relic type");
+                        //Debug.Log("no exist relic type");
                         break;
                 }
 
