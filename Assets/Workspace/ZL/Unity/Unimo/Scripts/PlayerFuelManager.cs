@@ -62,6 +62,8 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
+            FixedDebug.Log("연료 초기화됨");
+
             fuel = 100f;
 
             MaxFuel = 100f;
