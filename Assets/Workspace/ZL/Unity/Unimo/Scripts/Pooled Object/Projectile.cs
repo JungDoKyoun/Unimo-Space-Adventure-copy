@@ -1,33 +1,34 @@
 using UnityEngine;
 
-using ZL.Unity.Pooling;
+using UnityEngine.Animations;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Projectile (Pooled)")]
+    [AddComponentMenu("ZL/Unimo/Enemy Projectile (Pooled)")]
 
-    public sealed class Projectile : PooledObject, IDamager
+    public sealed class Projectile : Enemy, IDamager
     {
-        [Space]
-
-        [SerializeField]
-
-        private float speed = 0f;
-
-        [SerializeField]
-
-        private float damage = 0f;
-
         private void FixedUpdate()
         {
-            transform.position += speed * Time.fixedDeltaTime * transform.forward;
+            if (isStoped == true)
+            {
+                return;
+            }
+
+            if (rotationSpeed != 0f)
+            {
+                rigidbody.LookTowards(Destination.position, rotationSpeed * Time.fixedDeltaTime, Axis.Y);
+            }
+
+            if (enemyData.MovementSpeed != 0f)
+            {
+                rigidbody.MoveForward(enemyData.MovementSpeed * Time.fixedDeltaTime);
+            }
         }
 
         public void GiveDamage(IDamageable damageable, Vector3 contact)
         {
-            damageable.TakeDamage(damage, contact);
-
-            Disappear();
+            damageable.TakeDamage(enemyData.AttackPower, contact);
         }
     }
 }

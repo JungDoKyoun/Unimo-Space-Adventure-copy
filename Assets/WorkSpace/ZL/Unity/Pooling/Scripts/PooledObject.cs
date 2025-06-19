@@ -12,6 +12,14 @@ namespace ZL.Unity.Pooling
 
         [SerializeField]
 
+        [UsingCustomProperty]
+
+        [Button(nameof(Appear))]
+
+        [Button(nameof(Disappear))]
+
+        [Margin]
+
         private float lifeTime = -1f;
 
         public float LifeTime
@@ -32,16 +40,6 @@ namespace ZL.Unity.Pooling
             clone.OnCollectedAction += () => objectPool.Collect(clone);
 
             return clone;
-        }
-
-        protected virtual void OnEnable()
-        {
-            if (lifeTime != -1f)
-            {
-                Invoke(nameof(Disappear), lifeTime);
-
-                lifeTime = -1f;
-            }
         }
 
         protected virtual void OnDisable()
@@ -66,8 +64,6 @@ namespace ZL.Unity.Pooling
             }
 
             #endif
-
-            OnDisappear();
         }
 
         public virtual void Appear()
@@ -77,7 +73,12 @@ namespace ZL.Unity.Pooling
 
         public virtual void OnAppeared()
         {
-            
+            if (lifeTime != -1f)
+            {
+                Invoke(nameof(Disappear), lifeTime);
+
+                lifeTime = -1f;
+            }
         }
 
         public virtual void Disappear()
@@ -92,7 +93,7 @@ namespace ZL.Unity.Pooling
             OnDisappeared();
         }
 
-        public virtual void OnDisappeared()
+        public void OnDisappeared()
         {
             gameObject.SetActive(false);
         }

@@ -51,7 +51,7 @@ namespace ZL.Unity.Pooling
         {
             foreach (var clone in clones.Values.ToArray())
             {
-                clone.gameObject.SetActive(false);
+                clone.Disappear();
             }
 
             clones.Clear();

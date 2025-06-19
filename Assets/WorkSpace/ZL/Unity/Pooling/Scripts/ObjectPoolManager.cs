@@ -8,7 +8,7 @@ namespace ZL.Unity.Pooling
 {
     [AddComponentMenu("ZL/Pooling/Object Pool Manager (Singleton)")]
 
-    public class ObjectPoolManager : MonoSingleton<ObjectPoolManager>
+    public sealed class ObjectPoolManager : MonoSingleton<ObjectPoolManager>
     {
         [Space]
 

@@ -25,11 +25,20 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private float moveSpeed = 0f;
+        private float rotationSpeed = 0f;
 
-        public float MoveSpeed
+        public float RotationSpeed
         {
-            get => moveSpeed;
+            get => rotationSpeed;
+        }
+
+        [SerializeField]
+
+        private float movementSpeed = 0f;
+
+        public float MovementSpeed
+        {
+            get => movementSpeed;
         }
 
         [SerializeField]
@@ -67,7 +76,7 @@ namespace ZL.Unity.Unimo
 
                 nameof(maxHealth),
 
-                nameof(moveSpeed),
+                nameof(movementSpeed),
 
                 nameof(attackPower),
 
@@ -81,7 +90,7 @@ namespace ZL.Unity.Unimo
         {
             maxHealth = float.Parse(sheet[name, nameof(maxHealth)].value);
 
-            moveSpeed = float.Parse(sheet[name, nameof(moveSpeed)].value);
+            movementSpeed = float.Parse(sheet[name, nameof(movementSpeed)].value);
 
             attackPower = float.Parse(sheet[name, nameof(attackPower)].value);
 
@@ -98,7 +107,7 @@ namespace ZL.Unity.Unimo
 
                 maxHealth.ToString(),
 
-                moveSpeed.ToString(),
+                movementSpeed.ToString(),
 
                 attackPower.ToString(),
 

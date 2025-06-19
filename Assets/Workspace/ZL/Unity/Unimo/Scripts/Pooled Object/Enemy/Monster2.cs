@@ -42,21 +42,16 @@ namespace ZL.Unity.Unimo
 
         private Transform muzzle = null;
 
-        protected override void OnEnable()
+        protected override void OnDisable()
         {
-            base.OnEnable();
-
             attackCooldownTimer = 0f;
+
+            base.OnDisable();
         }
 
         private void FixedUpdate()
         {
             animator.SetBool("IsMoving", false);
-
-            if (Destination == null)
-            {
-                return;
-            }
 
             if (isStoped == true)
             {
@@ -65,7 +60,7 @@ namespace ZL.Unity.Unimo
 
             if (rotationSpeed != 0f)
             {
-                rigidbody.LookTowards(Destination.position, Axis.Y, rotationSpeed);
+                rigidbody.LookTowards(Destination.position, rotationSpeed * Time.fixedDeltaTime, Axis.Y);
             }
 
             if (Vector3.Distance(transform.position, Destination.position) <= stopDistance)
@@ -73,20 +68,21 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
-            if (enemyData.MoveSpeed != 0f)
+            if (enemyData.MovementSpeed != 0f)
             {
                 animator.SetBool("IsMoving", true);
 
-                var movementSpeed = enemyData.MoveSpeed * Time.fixedDeltaTime;
-
-                var nextPosition = rigidbody.position + rigidbody.rotation * Vector3.forward * movementSpeed;
-
-                rigidbody.MovePosition(nextPosition);
+                rigidbody.MoveForward(enemyData.MovementSpeed * Time.fixedDeltaTime);
             }
         }
 
         private void Update()
         {
+            if (isStoped == true)
+            {
+                return;
+            }
+
             if (attackCooldownTimer > 0f)
             {
                 attackCooldownTimer -= Time.deltaTime;
@@ -95,11 +91,6 @@ namespace ZL.Unity.Unimo
             }
 
             if (Destination == null)
-            {
-                return;
-            }
-
-            if (isStoped == true)
             {
                 return;
             }
@@ -125,7 +116,7 @@ namespace ZL.Unity.Unimo
 
             projectile.transform.SetPositionAndRotation(muzzle);
 
-            projectile.gameObject.SetActive(true);
+            projectile.Appear();
         }
     }
 }

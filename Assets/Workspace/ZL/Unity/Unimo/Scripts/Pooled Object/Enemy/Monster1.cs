@@ -10,11 +10,6 @@ namespace ZL.Unity.Unimo
     {
         private void FixedUpdate()
         {
-            if (Destination == null)
-            {
-                return;
-            }
-
             if (isStoped == true)
             {
                 return;
@@ -22,14 +17,12 @@ namespace ZL.Unity.Unimo
 
             if (rotationSpeed != 0f)
             {
-                rigidbody.LookTowards(Destination.position, Axis.Y, rotationSpeed);
+                rigidbody.LookTowards(Destination.position, rotationSpeed * Time.fixedDeltaTime, Axis.Y);
             }
 
-            if (enemyData.MoveSpeed != 0f)
+            if (enemyData.MovementSpeed != 0f)
             {
-                var forwardMove = rigidbody.rotation * Vector3.forward * enemyData.MoveSpeed * Time.fixedDeltaTime;
-
-                rigidbody.MovePosition(rigidbody.position + forwardMove);
+                rigidbody.MoveForward(enemyData.MovementSpeed * Time.fixedDeltaTime);
             }
         }
 

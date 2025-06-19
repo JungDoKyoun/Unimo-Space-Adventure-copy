@@ -18,27 +18,11 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [Text("<b>스폰 시 바라볼 지점 (None: 지정 방향)</b>")]
+        [Line]
 
-        private Transform lookPoint = null;
+        [Text("<b>기본 옵션</b>", FontSize = 16)]
 
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [ReadOnlyIf(nameof(lookPoint), null, true)]
-
-        [Text("<b>스폰 시 Y축 방향 (-1: 랜덤 방향)</b>")]
-
-        private float lookAngle = -1f;
-
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
+        [Margin]
 
         [Text("<b>스폰 할 오브젝트 이름</b>")]
 
@@ -60,7 +44,7 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [Text("<b>첫 웨이브 간격 (-1: 기본값 사용, 0: 즉시 첫 웨이브)</b>")]
+        [Text("<b>첫 웨이브 간격 (-1: 지정 범위, 0: 즉시 첫 웨이브)</b>")]
 
         private float waveInterval = -1f;
 
@@ -103,6 +87,38 @@ namespace ZL.Unity.Unimo
         [Text("<b>스폰된 오브젝트의 수명 (-1: 무한)</b>")]
 
         protected float lifeTime = -1f;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Text("<b>플레이어를 향해 회전하는 속도 (-1: 기본값)</b>")]
+
+        private float rotationSpeed = -1f;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Text("<b>스폰 시 바라볼 지점 (None: 지정 방향)</b>")]
+
+        private Transform lookPoint = null;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [ReadOnlyIf(nameof(lookPoint), null, true)]
+
+        [Text("<b>스폰 시 Y축 방향 (-1: 랜덤 방향)</b>")]
+
+        private float lookAngle = -1f;
 
         protected int objectCount = 0;
 
@@ -197,7 +213,12 @@ namespace ZL.Unity.Unimo
 
             clone.OnDisableAction += OnDespawn;
 
-            clone.gameObject.SetActive(true);
+            if (clone is Enemy enemy)
+            {
+                enemy.RotationSpeed = rotationSpeed;
+            }
+
+            clone.Appear();
         }
 
         private void OnDespawn()
