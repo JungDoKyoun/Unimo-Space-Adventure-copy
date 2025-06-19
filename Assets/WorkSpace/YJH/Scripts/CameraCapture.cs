@@ -22,13 +22,24 @@ public class CameraCapture : MonoBehaviour
     void Start()
     {
 
-        saveFolderPath = Path.Combine(Application.dataPath, "/WorkSpace/YJH/Capture");
+        saveFolderPath = Path.Combine(Application.dataPath, "WorkSpace/YJH/Capture");
         Directory.CreateDirectory(saveFolderPath);
+        Debug.Log($"Save Path: {saveFolderPath}");
+        foreach (var f in buildingsToCapture)
+        {
+            f.SetActive(false);
+        }
 
         foreach (var building in buildingsToCapture)
         {
+            building.SetActive(true);
             CaptureBuildingImage(building);
+            building.SetActive(false);
         }
+        //foreach (var f in buildingsToCapture)
+        //{
+        //    f.SetActive(true);
+        //}
 
 #if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
@@ -37,33 +48,35 @@ public class CameraCapture : MonoBehaviour
 
     void CaptureBuildingImage(GameObject building)
     {
-        // 카메라 위치 이동 & 건물 바라보기
-        captureCamera.transform.position = building.transform.position + cameraOffset;
+        // 카메라가 해당 건물을 바라보게 설정
         captureCamera.transform.LookAt(building.transform.position);
 
-        // RenderTexture 준비
-        RenderTexture rt = new RenderTexture(captureResolution, captureResolution, 24);
+        // 전체 시야를 RenderTexture로 렌더링
+        int fullWidth = 1024;
+        int fullHeight = 1024;
+        RenderTexture rt = new RenderTexture(fullWidth, fullHeight, 24);
         captureCamera.targetTexture = rt;
-
-        // 캡처용 텍스처 생성
-        Texture2D screenShot = new Texture2D(captureResolution, captureResolution, TextureFormat.RGBA32, false);
-
-        // 렌더링 & 읽기
         captureCamera.Render();
         RenderTexture.active = rt;
-        screenShot.ReadPixels(new Rect(0, 0, captureResolution, captureResolution), 0, 0);
-        screenShot.Apply();
 
-        // 정리
+        // 중앙 정사각형 영역 잘라내기
+        int cropSize = captureResolution;
+        int startX = (fullWidth - cropSize) / 2;
+        int startY = (fullHeight - cropSize) / 2;
+
+        Texture2D cropped = new Texture2D(cropSize, cropSize, TextureFormat.RGBA32, false);
+        cropped.ReadPixels(new Rect(startX, startY, cropSize, cropSize), 0, 0);
+        cropped.Apply();
+
+        // 렌더 텍스처 해제
         captureCamera.targetTexture = null;
         RenderTexture.active = null;
         rt.Release();
 
-        // 저장
+        // 파일 저장
         string fileName = building.name + ".png";
         string filePath = Path.Combine(saveFolderPath, fileName);
-        File.WriteAllBytes(filePath, screenShot.EncodeToPNG());
-
+        File.WriteAllBytes(filePath, cropped.EncodeToPNG());
         Debug.Log($"캡처 저장 완료: {filePath}");
     }
 }
