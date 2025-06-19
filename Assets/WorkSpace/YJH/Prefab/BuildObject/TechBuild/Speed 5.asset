@@ -14,15 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isBuildConstructed: 0
   buildID: Speed5
-  buildName: 
-  buildingDescription: 
+  buildName: "\uC8FC\uC720\uC18C"
+  buildingDescription: "\uB354 \uB9CE\uC740 \uAE30\uB984\uC744 \uBCF4\uAD00\uD574
+    \uC18D\uB3C4\uB97C \uC99D\uAC00\uC2DC\uD0A8\uB2E4"
   buildRequires:
   - Speed4
   buildUnlocks: []
-  buildCosts: []
-  buildPosition: {x: 0, y: 0, z: 0}
-  buildIcon: {fileID: 0}
-  buildingImage: {fileID: 0}
+  buildCosts:
+  - key: MetaCurrency
+    value: 500
+  imageIndex: 5
+  buildIcon: {fileID: 21300000, guid: fbeb7c7e66a8d7b43955522b38e225e5, type: 3}
+  buildingImage: {fileID: 21300000, guid: 6b6e6421ddd7f1d41860b1264d159de1, type: 3}
+  imagePriority: 5
   buildType: 
   isbuildRepeatable: 0
   buildEffect: {fileID: 11400000, guid: 0918fb16cfedda446ab4e0427e7e2725, type: 2}

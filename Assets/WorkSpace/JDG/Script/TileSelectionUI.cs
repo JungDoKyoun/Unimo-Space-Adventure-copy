@@ -117,6 +117,8 @@ namespace JDG
             {
                 _actionButtonName.text = "Ω√¿€";
             }
+
+            Debug.Log(tile.TileData.SceneName);
         }
 
         private void CreateRewardSlot(string name, int min, int max, string iconName)
@@ -154,7 +156,6 @@ namespace JDG
         {
             Vector3 target = _hexGrid.GetPositionForHexFromCoordinate(tile.TileData.Coord);
             _playerController.MoveTo(target);
-            _playerController.UpdateFog();
         }
 
         public void OnActionButtonClicked()
