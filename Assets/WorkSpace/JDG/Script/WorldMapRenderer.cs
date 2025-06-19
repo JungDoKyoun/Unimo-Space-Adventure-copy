@@ -35,15 +35,10 @@ namespace JDG
 
                 if (_hexGridLayout.TryGetTile(coord, out HexRenderer tile))
                 {
-                    if (tile.TileData.TileVisibility != TileVisibility.Visible)
-                        return;
-
-                    if (!_hexGridLayout.IsMoveable(coord))
+                    if (tile.TileData.TileVisibility == TileVisibility.Visible)
                     {
-                        return;
+                        _tileSelectionUI.ShowUI(tile, transform.position);
                     }
-
-                    _tileSelectionUI.ShowUI(tile, transform.position);
                 }
             } 
         }
