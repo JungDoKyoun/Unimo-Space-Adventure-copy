@@ -80,17 +80,17 @@ namespace ZL.Unity
         {
             var direction = to - from;
 
-            if (ignoreAxes.Contains(Axis.X) == true)
+            if (EnumEx.HasFlag(ignoreAxes, Axis.X) == true)
             {
                 direction.x = 0f;
             }
 
-            if (ignoreAxes.Contains(Axis.Y) == true)
+            if (EnumEx.HasFlag(ignoreAxes, Axis.Y) == true)
             {
                 direction.y = 0f;
             }
 
-            if (ignoreAxes.Contains(Axis.Z) == true)
+            if (EnumEx.HasFlag(ignoreAxes, Axis.Z) == true)
             {
                 direction.z = 0f;
             }

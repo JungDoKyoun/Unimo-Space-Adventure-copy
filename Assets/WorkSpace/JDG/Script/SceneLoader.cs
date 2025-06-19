@@ -75,7 +75,7 @@ namespace JDG
             {
                 if (stateManager.TileSaveData != null && stateManager.TileSaveData.Count > 0)
                 {
-                    Debug.Log(stateManager.TileSaveData.Count);
+                    //Debug.Log(stateManager.TileSaveData.Count);
                     HexGridLayout layout = FindObjectOfType<HexGridLayout>();
                     layout.CalculateMapOrigin();
                     layout.RestoreMapState(stateManager.TileSaveData, stateManager.PlayerCoord);

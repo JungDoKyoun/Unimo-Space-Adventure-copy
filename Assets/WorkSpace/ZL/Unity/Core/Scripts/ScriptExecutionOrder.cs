@@ -13,5 +13,7 @@ namespace ZL.Unity
         Default = 0,
 
         Lazy,
+
+        SceneDirector
     }
 }

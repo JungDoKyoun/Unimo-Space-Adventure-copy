@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEngine;
-using ZL.Unity.Unimo;
-using UnityEngine.SceneManagement;
 using JDG;
-using GoogleSheetsToUnity;
+
+using System.Collections;
+
+using UnityEngine.SceneManagement;
+
+using ZL.Unity.Unimo;
+
 namespace YJH
 {
     public static class MethodCollection
@@ -13,35 +13,48 @@ namespace YJH
         public static string sheetName;
 
         #region 시작시 인게임 재화 추가 함수
+
         public static void IncreaseIngameCurrencyA()
         {
             IEnumerator method = FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(50);
+
             CoroutineRunner.Instance.Run(method);
+
             //Debug.Log("work!");
         }
 
         public static void IncreaseIngameCurrencyB()
         {
             IEnumerator method = FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(100);
+
             CoroutineRunner.Instance.Run(method);
         }
+
         public static void IncreaseIngameCurrencyC()
         {
             IEnumerator method = FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(150);
+
             CoroutineRunner.Instance.Run(method);
         }
+
         public static void IncreaseIngameCurrencyD()
         {
             IEnumerator method = FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(200);
+
             CoroutineRunner.Instance.Run(method);
         }
+
         public static void IncreaseIngameCurrencyE()
         {
             IEnumerator method = FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(250);
+
             CoroutineRunner.Instance.Run(method);
         }
+
         #endregion 
+
         #region 게임종료시 힐관련 함수
+
         private static void HealPlayer(float healAmount)
         {
             if (GameStateManager.IsClear == true)
@@ -53,13 +66,18 @@ namespace YJH
         public static void DelinkHealPlayer()
         {
             SceneManager.sceneLoaded-=HealAfterStageEndAA;
+
             SceneManager.sceneLoaded-=HealAfterStageEndBB;
+
             SceneManager.sceneLoaded-=HealAfterStageEndCC;
         }
-        public static void HealAfterStageEndA()//스테이지 종료를 나타내는 이벤트가 있다면 거기에 할당하기
+
+        //스테이지 종료를 나타내는 이벤트가 있다면 거기에 할당하기
+        public static void HealAfterStageEndA()
         {
             SceneManager.sceneLoaded += HealAfterStageEndAA;
         }
+
         private static void HealAfterStageEndAA(Scene scene, LoadSceneMode mode)
         {
             if (scene.name == "Station")
@@ -72,6 +90,7 @@ namespace YJH
         {
             SceneManager.sceneLoaded += HealAfterStageEndBB;
         }
+
         private static void HealAfterStageEndBB(Scene scene, LoadSceneMode mode)
         {
             if (scene.name == "Station")
@@ -79,10 +98,12 @@ namespace YJH
                 HealPlayer(2);
             }
         }
+
         public static void HealAfterStageEndC()
         {
             SceneManager.sceneLoaded += HealAfterStageEndCC;
         }
+
         private static void HealAfterStageEndCC(Scene scene, LoadSceneMode mode)
         {
             if (scene.name == "Station")
@@ -90,29 +111,34 @@ namespace YJH
                 HealPlayer(3);
             }
         }
+
         #endregion
-        public static void IncreaseRelicChanceA()//관련 함수 만들어지면 사용 
+
+        //관련 함수 만들어지면 사용 
+        public static void IncreaseRelicChanceA()
         {
-            
+
         }
+
         public static void IncreaseRelicChanceB()
         {
-            
+
         }
         public static void IncreaseRelicChanceC()
         {
-            
-        }
 
+        }
 
         public static void IncreaseRerollChanceA()
         {
             PlayerInventoryManager.RelicRerollableCount += 1;
         }
+
         public static void IncreaseRerollChanceB()
         {
             PlayerInventoryManager.RelicRerollableCount += 1;
         }
+
         public static void IncreaseRerollChanceC()
         {
             PlayerInventoryManager.RelicRerollableCount += 1;
@@ -121,25 +147,24 @@ namespace YJH
         public static void GiveStartRelicA()
         {
             InitRelicGiver.Instance?.SetRelicData();
-            Debug.Log("startRElic");
-        }
 
+            //Debug.Log("startRelic");
+        }
 
         public static void ResurrectA()//이건 어케 하지?
         {
 
         }
+
         public static void ResurrectB()
         {
 
         }
 
-        public static void IncreaseWorldMapMovingCount()//담당자 오면 하기
+        //담당자 오면 하기
+        public static void IncreaseWorldMapMovingCount()
         {
 
         }
-
-
-        
     }
 }

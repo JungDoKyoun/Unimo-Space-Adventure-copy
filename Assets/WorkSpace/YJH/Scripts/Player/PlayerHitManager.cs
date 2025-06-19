@@ -6,16 +6,12 @@ using System.Collections;
 
 using UnityEngine;
 
-using UnityEngine.Events;
-
 using ZL.Unity;
 
 using ZL.Unity.Unimo;
 
 public partial class PlayerManager : IDamageable
 {
-    
-
     [SerializeField]
 
     //무적시간
@@ -49,7 +45,9 @@ public partial class PlayerManager : IDamageable
     [SerializeField]
 
     private Collider mainCollider;
+
     //public RelicData tempRelic;
+
     public float CurrentHealth
     {
         get => PlayerStatus.currentHealth;
@@ -58,14 +56,22 @@ public partial class PlayerManager : IDamageable
         {
             if (value < 0f)
             {
-                PlayerStatus.currentHealth = 0f;
+                PlayerStatus tempStatus = PlayerStatus.Clone();
+
+                tempStatus.currentHealth = 0;
+
+                PlayerStatus = tempStatus;
             }
 
             else
             {
-                PlayerStatus.currentHealth = value;
+                PlayerStatus tempStatus = PlayerStatus.Clone();
+
+                tempStatus.currentHealth = value;
+
+                PlayerStatus = tempStatus;
+
                 //OnHealthChanged?.Invoke(value);
-                
             }
         }
     }
@@ -73,13 +79,24 @@ public partial class PlayerManager : IDamageable
     //맞았는지?
     private bool isOnHit = false;
 
+    public bool IsOnHit
+    {
+        set => isOnHit = value;
+    }
+
     public static event Action<float> OnHealthChanged = null;
 
     public static event Action OnPlayerDead = null;
 
-    public static event Action OnStageClear = null; // 삭제 예정 , 스테이지 매니저에서 관리 예정
+    #pragma warning disable
 
-    public static event Action OnStageFail = null;// 삭제 예정 , 스테이지 매니저에서 관리 예정
+    // 삭제 예정 , 스테이지 매니저에서 관리 예정
+    public static event Action OnStageClear = null;
+
+    // 삭제 예정 , 스테이지 매니저에서 관리 예정
+    public static event Action OnStageFail = null;
+
+    #pragma warning restore
 
     private void OnCollisionStay(Collision collision)
     {
@@ -127,6 +144,7 @@ public partial class PlayerManager : IDamageable
 
             OnStageFail?.Invoke();
         }
+
         else
         {
             StartCoroutine(PlayerBlink());

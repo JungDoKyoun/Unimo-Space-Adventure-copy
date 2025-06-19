@@ -1,11 +1,15 @@
 using Photon.Pun;
+
 using System;
+
 using System.Collections;
 
 using TMPro;
 
 using UnityEngine;
+
 using UnityEngine.UI;
+
 using ZL.Unity.Unimo;
 
 public partial class PlayerManager 
@@ -13,17 +17,17 @@ public partial class PlayerManager
     //[Header("채집")]
 
     //[SerializeField]
-    //
+    
     //private float itemDetectionRange = 5f;
 
     //public float ItemDetectionRange => playerStatus.itemDetectionRange;
 
     //[SerializeField]
-    //
+    
     //private float gatheringSpeed = 4f;
-    //
+    
     //[SerializeField]
-    //
+    
     //private float gatheringDelay = 0.5f;
     
     [SerializeField]
@@ -56,8 +60,6 @@ public partial class PlayerManager
     
     private LayerMask enemyLayerMask;
 
-    [SerializeField]
-    
     private static GameObject attackPrefab;
 
     public GameObject tempAttackPrefab;
@@ -76,8 +78,6 @@ public partial class PlayerManager
 
     private GameObject targetEnemyObject;
 
-    // Start is called before the first frame update
-
     private bool isGatheringCoroutineWork = false;
 
     public delegate void OnTargetSet();
@@ -92,8 +92,15 @@ public partial class PlayerManager
     {
         get => selfManager;
     }
-    [SerializeField] Image progressBarCircle;
-    [SerializeField] TMP_Text progressBarText;
+
+    [SerializeField]
+    
+    Image progressBarCircle;
+
+    [SerializeField]
+    
+    TMP_Text progressBarText;
+
     //[SerializeField]
 
     //private float fireRate = 0.3f;
@@ -114,7 +121,8 @@ public partial class PlayerManager
 
     public static event Action<float> OnEnergyChanged = null;
 
-    public void ActionStart()// 멀티용으로 리펙토링한거 나중에 다 해체하기
+    // 멀티용으로 리펙토링한거 나중에 다 해체하기
+    public void ActionStart()
     {
         if (PhotonNetwork.IsConnected == false)
         {
@@ -152,7 +160,7 @@ public partial class PlayerManager
 
             else
             {
-                Debug.Log("nullspell");
+                //Debug.Log("nullspell");
 
                 ISpellType temp = new Dash();
 
@@ -205,29 +213,42 @@ public partial class PlayerManager
             if (playerSpellType != null)
             {
                 playerSpellType.UpdateTime();
+
                 switch (playerSpellType)
                 {
                     case IStackSpell:
+
                         if (progressBarCircle != null && progressBarText != null)
-                        {if ((playerSpellType as IStackSpell).NowStack == (playerSpellType as IStackSpell).MaxStack)
+                        {
+                            if ((playerSpellType as IStackSpell).NowStack == (playerSpellType as IStackSpell).MaxStack)
                             {
                                 progressBarCircle.fillAmount = 1;
                             }
+
                             else
                             {
                                 progressBarCircle.fillAmount = (playerSpellType as IStackSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
                             }
+
                             progressBarText.text = (playerSpellType as IStackSpell).NowStack.ToString();
                         }
+
                         break;
-                        case ICoolTimeSpell:
+
+                    case ICoolTimeSpell:
+
                         //progressBarCircle.fillAmount = (playerSpellType as ICoolTimeSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
+
                         //progressBarText.text = (playerSpellType as ICoolTimeSpell).NowStack.ToString(); 나중에 쿨타임 스킬 필요하면 리펙토링
+
                         break;
-                        default:
+
+                    default:
+
                         break;
                 }
-                //progressBarCircle.fillAmount=
+
+                //progressBarCircle.fillAmount =
             }
         }
 
@@ -254,7 +275,7 @@ public partial class PlayerManager
 
     //public void StartFindEnemy()
     //{
-    //    //StartCoroutine (FindEnemy());
+    //    StartCoroutine (FindEnemy());
     //}
 
     public static void SetAttackType(GameObject attackType)
@@ -265,7 +286,7 @@ public partial class PlayerManager
 
         //Debug.Log("setAttack");
 
-        playerAttackType.Damage = playerStatus.playerDamage;// playerDamage;
+        playerAttackType.Damage = playerStatus.playerDamage;
     }
 
     public static void SetSpellType(ISpellType spellType)
@@ -319,11 +340,13 @@ public partial class PlayerManager
             {
                 int offsetIndex = 0;
 
-                if (fireCount % 2 == 0) // 짝수일 때
+                // 짝수일 때
+                if (fireCount % 2 == 0)
                 {
                     int step = (i / 2) + 1;
 
-                    int sign = (i % 2 == 0) ? -1 : 1; // 좌 → 우
+                    // 좌 → 우
+                    int sign = (i % 2 == 0) ? -1 : 1;
 
                     offsetIndex = step * sign;
                 }
@@ -332,7 +355,8 @@ public partial class PlayerManager
                 {
                     if (i == 0)
                     {
-                        offsetIndex = 0; // 중앙
+                        // 중앙
+                        offsetIndex = 0;
                     }
 
                     else
@@ -442,10 +466,10 @@ public partial class PlayerManager
         {
             foreach (Collider collider in targetEnemies)
             {
-                //감지된 콜라이더와의 거리
+                // 감지된 콜라이더와의 거리
                 float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);
 
-                //1.거리 비교 조건
+                // 1.거리 비교 조건
                 if (distance > distanceBetween)
                 {
                     distance = distanceBetween;
@@ -520,10 +544,10 @@ public partial class PlayerManager
 
                 foreach (Collider collider in detectedColliders)
                 {
-                    //감지된 콜라이더와의 거리
+                    // 감지된 콜라이더와의 거리
                     float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);
 
-                    //1.거리 비교 조건
+                    // 1.거리 비교 조건
                     if (distance > distanceBetween)
                     {
                         distance = distanceBetween;
@@ -543,13 +567,13 @@ public partial class PlayerManager
 
                             var colliderScript = collider.GetComponent<Gathering>();
 
-                            //2. 체력 비교 조건
+                            // 2. 체력 비교 조건
                             if (targetScript.CurrentHealth > colliderScript.CurrentHealth)
                             {
                                 targetObject = collider.gameObject;
                             }
 
-                            //3. 등급 비교 조건
+                            // 3. 등급 비교 조건
                             else if (targetScript.CurrentHealth == colliderScript.CurrentHealth)
                             {
                                 //if (targetScript.MaxHealth < colliderScript.MaxHealth)
@@ -600,113 +624,7 @@ public partial class PlayerManager
         }
     }
 
-    //private IEnumerator FindItem()
-    //{
-    //    while (true)
-    //    {
-    //        yield return new WaitForSeconds(0.5f);
-    //
-    //        if (targetObject == null)
-    //        {
-    //            //Debug.Log("null");
-    //
-    //            isGathering = false;
-    //
-    //            //gatheringEffect.SetActive(false);
-    //        }
-    //
-    //        else
-    //        {
-    //            //Debug.Log(Vector3.Distance(transform.position, targetObject.transform.position));
-    //
-    //            if (Vector3.Distance(transform.position, targetObject.transform.position) > itemDetectionRange+float.Epsilon)
-    //            {
-    //                isGathering = false;
-    //
-    //                targetObject = null;
-    //
-    //                //gatheringEffect.SetActive(false);
-    //            }
-    //        }
-    //
-    //        while (isGathering == false && playerSpellType.ReturnState() == false)
-    //        {
-    //            yield return new WaitForSeconds(0.1f);
-    //
-    //            Collider[] detectedColliders = Physics.OverlapSphere(transform.position, itemDetectionRange, itemLayerMask);
-    //
-    //            if (detectedColliders.Length > 0)
-    //            {
-    //                float distance = float.MaxValue;
-    //
-    //                foreach (Collider collider in detectedColliders)
-    //                {
-    //                    //감지된 콜라이더와의 거리
-    //                    float distanceBetween = Vector3.Distance(transform.position, collider.transform.position);
-    //
-    //                    //1.거리 비교 조건
-    //                    if (distance > distanceBetween)
-    //                    {
-    //                        distance = distanceBetween;
-    //
-    //                        targetObject = collider.gameObject;
-    //                    }
-    //
-    //                    else if (distance == distanceBetween)
-    //                    {
-    //                        if (targetObject != null)
-    //                        {
-    //                            //var targetScript = targetObject.GetComponent<IGatheringObject>();
-    //
-    //                            var targetScript = targetObject.GetComponent<Gathering>();
-    //
-    //                            //var colliderScript = collider.GetComponent<IGatheringObject>();
-    //
-    //                            var colliderScript = collider.GetComponent<Gathering>();
-    //
-    //                            //2. 체력 비교 조건
-    //                            if (targetScript.CurrentHealth > colliderScript.CurrentHealth)
-    //                            {
-    //                                targetObject = collider.gameObject;
-    //                            }
-    //
-    //                            //3. 등급 비교 조건
-    //                            else if (targetScript.CurrentHealth == colliderScript.CurrentHealth)
-    //                            {
-    //                                //if (targetScript.MaxHealth < colliderScript.MaxHealth)
-    //
-    //                                if (targetScript.GatheringData.MaxHealth < colliderScript.GatheringData.MaxHealth)
-    //                                {
-    //                                    targetObject = collider.gameObject;
-    //                                }
-    //                            }
-    //                        }
-    //                    }
-    //                }
-    //
-    //                isGathering = true;
-    //
-    //                if (targetObject != null)
-    //                {
-    //                    ActiveGatheringBeam();
-    //                }
-    //
-    //                OnTargetObjectSet?.Invoke();
-    //            }
-    //
-    //            else
-    //            {
-    //                isGathering = false;
-    //
-    //                DeactiveGatheringBeam();
-    //
-    //                targetObject = null;
-    //            }
-    //        }
-    //    }
-    //}
-
-    // 아이템 채집중 사용할 코로틴
+    // 아이템 채집중 사용할 코루틴
     private IEnumerator GatheringCoroutine()
     {
         //IGatheringObject targetScript = null;
@@ -739,7 +657,7 @@ public partial class PlayerManager
 
             targetScript?.TakeDamage(playerStatus.gatheringSpeed);
 
-            if(targetScript?.CurrentHealth <= 0f)
+            if (targetScript?.CurrentHealth <= 0f)
             {
                 //targetScript.OnGatheringEnd();
 
@@ -761,7 +679,7 @@ public partial class PlayerManager
     {
         skillRejectText.text = "스킬을 사용할 수 없습니다.";
 
-        //효과음 출력
+        // 효과음 출력
         if (isSkillRejectActive == false)
         {
             isSkillRejectActive = true;

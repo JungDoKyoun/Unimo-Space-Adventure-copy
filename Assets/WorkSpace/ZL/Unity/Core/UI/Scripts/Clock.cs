@@ -20,11 +20,9 @@ namespace ZL.Unity
 
         [UsingCustomProperty]
 
-        [GetComponentInChildren]
+        [Alias("Time Stamp Text (UI)")]
 
-        [Essential]
-
-        private TextController timeStampText = null;
+        private TextController timeStampTextUI = null;
 
         [Space]
 
@@ -165,19 +163,19 @@ namespace ZL.Unity
 
             seconds = timeSpan.Seconds;
 
-            if (timeStampText == null)
+            if (timeStampTextUI == null)
             {
                 return;
             }
 
             if (isBlinked == false)
             {
-                timeStampText.text = string.Format(timeStampFormat, hour, minute, (int)seconds);
+                timeStampTextUI.text = string.Format(timeStampFormat, hour, minute, (int)seconds);
             }
 
             else
             {
-                timeStampText.text = string.Format(timeStampFormat_Blinked, hour, minute, (int)seconds);
+                timeStampTextUI.text = string.Format(timeStampFormat_Blinked, hour, minute, (int)seconds);
             }
         }
 
