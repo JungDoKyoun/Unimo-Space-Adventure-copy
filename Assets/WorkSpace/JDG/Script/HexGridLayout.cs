@@ -12,6 +12,18 @@ namespace JDG
         Mode
     }
 
+    public struct TileStep
+    {
+        public Vector2Int Coord { get; private set; }
+        public int Step { get; private set; }
+
+        public TileStep(Vector2Int coord, int step)
+        {
+            Coord = coord;
+            Step = step;
+        }
+    }
+
     public class HexGridLayout : MonoBehaviour
     {
         [Header("그리드 세팅")]
@@ -66,6 +78,7 @@ namespace JDG
         private Vector2Int _playerCoord;
         private Dictionary<Vector2Int, HexRenderer> _hexMap = new Dictionary<Vector2Int, HexRenderer>(); //타일 오브젝트 정보
         private List<Vector2Int> _bossNearShopCount = new List<Vector2Int>();
+        private HashSet<Vector2Int> _playerMovealbeTile = new HashSet<Vector2Int>();
 
         private void Start()
         {
@@ -128,12 +141,12 @@ namespace JDG
 
             Vector2Int[] evenOffsets =
             {
-                new(x + 1, y), new(x, y + 1), new(x - 1, y + 1), new(x - 1, y), new(x - 1, y - 1), new(x, y - 1)
+                new(x, y - 1), new(x - 1, y - 1), new(x - 1, y), new(x - 1, y + 1), new(x, y + 1), new(x + 1, y)
             };
 
             Vector2Int[] oddOffsets =
             {
-                new(x + 1, y), new(x + 1, y + 1), new(x, y + 1), new(x - 1, y), new (x, y -1), new(x + 1, y - 1)
+                new(x + 1, y - 1), new(x, y - 1), new(x - 1, y), new(x , y + 1), new (x + 1, y + 1), new(x + 1, y)
             };
 
             var offsets = (y % 2 == 0) ? evenOffsets : oddOffsets;
@@ -147,6 +160,23 @@ namespace JDG
             }
 
             return result;
+        }
+        public Vector2Int[] GetNeighborsForDraw(Vector2Int coord)
+        {
+            int x = coord.x;
+            int y = coord.y;
+
+            Vector2Int[] evenOffsets =
+            {
+                new(x, y - 1), new(x - 1, y - 1), new(x - 1, y), new(x - 1, y + 1), new(x, y + 1), new(x + 1, y)
+            };
+
+            Vector2Int[] oddOffsets =
+            {
+                new(x + 1, y - 1), new(x, y - 1), new(x - 1, y), new(x , y + 1), new (x + 1, y + 1), new(x + 1, y)
+            };
+
+            return (y % 2 == 0) ? evenOffsets : oddOffsets;
         }
 
         private void LayoutGrid()
@@ -204,6 +234,7 @@ namespace JDG
             AssignEnvironment();
             SetEnvironmentPrefab();
             player.UpdateFog();
+            ShowMovealbeTile(_playerCoord, player.MoveableDistance);
         }
 
 
@@ -341,12 +372,12 @@ namespace JDG
                         if (!placedBosses.Exists(b => HexDistance(b, coord) < minGap))
                         {
                             _hexMap[coord].TileData.TileType = TileType.Boss;
-                            _hexMap[coord].TileData.SceneName = "BossScene";
+                            _hexMap[coord].TileData.SceneName = "Boss Stage 1";
                             //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
                             //int dis = HexDistance(_baseCoord, coord);
-                            //DifficultyType difficultyType = GetDifficultyTypeByDistance(dis);
-                            //_hexMap[coord].TileData.DifficultyType = difficultyType;
-                            //_hexMap[coord].TileData.SceneName = $"BossScene_{difficultyType}";
+                            //DifficultyType difficultytype = GetDifficultyTypeByDistance(dis);
+                            //_hexMap[coord].TileData.DifficultyType = difficultytype;
+                            //_hexMap[coord].TileData.SceneName = $"Boss Stage {difficultytype + 1}";
 
                             placedBosses.Add(coord);
                             candidateCoords.Remove(coord);
@@ -420,23 +451,23 @@ namespace JDG
                     {
                         _hexMap[coord].TileData.SceneName = "Explore Stage Scene";
                     }
-                    else if (modeType == ModeType.Gather)
-                    {
-                        _hexMap[coord].TileData.SceneName = "Gather Stage 1";
-                    }
+                    //else if (modeType == ModeType.Gather)
+                    //{
+                    //    _hexMap[coord].TileData.SceneName = "Gather Stage 1";
+                    //}
                     //난이도 추가되면 위에 씬네임 코드 빼고 이거 넣으면됨
-                    //int dis = HexDistance(_baseCoord, coord);
-                    //DifficultyType difficultyType = GetDifficultyTypeByDistance(dis);
-                    //_hexMap[coord].TileData.DifficultyType = difficultyType;
+                    int dis = HexDistance(_baseCoord, coord);
+                    DifficultyType difficultyType = GetDifficultyTypeByDistance(dis);
+                    _hexMap[coord].TileData.DifficultyType = difficultyType;
 
                     //if (modeType == ModeType.Explore)
                     //{
-                    //    _hexMap[coord].TileData.SceneName = $"ExploreScene_{difficultyType}";
+                    //    _hexMap[coord].TileData.SceneName = $"Explore Scene_{(int)difficultyType + 1}";
                     //}
-                    //else if (modeType == ModeType.Gather)
-                    //{
-                    //    _hexMap[coord].TileData.SceneName = $"GatherScene_{difficultyType}";
-                    //}
+                    if (modeType == ModeType.Gather)
+                    {
+                        _hexMap[coord].TileData.SceneName = $"Gather Stage {(int)difficultyType + 1}";
+                    }
 
                     candidateCoords.RemoveAt(randomIndex);
                 }
@@ -540,6 +571,7 @@ namespace JDG
 
             SetEnvironmentPrefab();
             player.UpdateFog();
+            ShowMovealbeTile(_playerCoord, player.MoveableDistance);
         }
 
         public void CalculateMapOrigin()
@@ -582,75 +614,6 @@ namespace JDG
                 }
             }
         }
-
-        //private void AssignEnvironment()
-        //{
-        //    List<Vector2Int> availableCoords = new List<Vector2Int>();
-
-        //    foreach (var coord in _tileCoords)
-        //    {
-        //        TileType type = _hexMap[coord].TileData.TileType;
-
-        //        if (type != TileType.Event && type != TileType.Boss)
-        //        {
-        //            availableCoords.Add(coord);
-        //        }
-        //        else
-        //        {
-        //            _hexMap[coord].TileData.EnvironmentType = EnvironmentType.None;
-        //        }
-        //    }
-
-        //    availableCoords.Sort((a, b) => a.x != b.x ? a.x.CompareTo(b.x) : a.y.CompareTo(b.y));
-
-        //    List<EnvironmentType> allEvT = TileEnvironmentManager.Instance.GetAllEnvironmentTypes().FindAll(evt => evt != EnvironmentType.None);
-        //    Dictionary<EnvironmentType, int> allEnvironmentTypeCount = new Dictionary<EnvironmentType, int>();
-
-        //    foreach (var type in allEvT)
-        //    {
-        //        allEnvironmentTypeCount[type] = 0;
-        //    }
-
-        //    int totalCount = availableCoords.Count;
-        //    int eventTypeMaxCount = Mathf.CeilToInt(totalCount / allEvT.Count);
-        //    int index = 0;
-
-        //    while (index < availableCoords.Count)
-        //    {
-        //        int remain = availableCoords.Count - index;
-        //        int size = (remain < _minEnvironmentTileCount) ? remain : Random.Range(_minEnvironmentTileCount, Mathf.Min(_maxEnvironmentTileCount + 1, remain + 1));
-        //        EnvironmentType evT = GetBalancedEnviromentType(allEvT, allEnvironmentTypeCount, eventTypeMaxCount);
-
-        //        for (int i = 0; i < size && index < availableCoords.Count; i++)
-        //        {
-        //            Vector2Int coord = availableCoords[index];
-        //            _hexMap[coord].TileData.EnvironmentType = evT;
-        //            index++;
-        //        }
-        //    }
-        //}
-
-        //private EnvironmentType GetBalancedEnviromentType(List<EnvironmentType> types, Dictionary<EnvironmentType, int> envCount, int eventMaxCount)
-        //{
-        //    List<EnvironmentType> candidate = new List<EnvironmentType>();
-
-        //    foreach (var type in types)
-        //    {
-        //        if (envCount[type] < eventMaxCount)
-        //        {
-        //            candidate.Add(type);
-        //        }
-        //    }
-
-        //    if (candidate.Count == 0)
-        //    {
-        //        return types[Random.Range(0, types.Count)];
-        //    }
-
-        //    EnvironmentType chose = candidate[Random.Range(0, candidate.Count)];
-        //    envCount[chose]++;
-        //    return chose;
-        //}
 
         private void AssignEnvironment()
         {
@@ -867,6 +830,78 @@ namespace JDG
                     obj.SetActive(true);
                 }
             }
+        }
+
+        public HashSet<Vector2Int> GetMoveableTile(Vector2Int startPos, int maxMoveDistance)
+        {
+            HashSet<Vector2Int> result = new HashSet<Vector2Int>();
+            Queue<TileStep> tileSteps = new Queue<TileStep>();
+            result.Add(startPos);
+            tileSteps.Enqueue(new TileStep(startPos, 0));
+
+            while(tileSteps.Count > 0)
+            {
+                TileStep current = tileSteps.Dequeue();
+                Vector2Int currentCoord = current.Coord;
+                int dist = current.Step;
+
+                if (dist == maxMoveDistance)
+                    continue;
+
+                foreach(var next in GetNeighbors(currentCoord))
+                {
+                    if (!_hexMap.ContainsKey(next))
+                        continue;
+
+                    if(!result.Contains(next))
+                    {
+                        result.Add(next);
+                        tileSteps.Enqueue(new TileStep(next, dist + 1));
+                    }
+                }
+            }
+
+            result.Remove(startPos);
+            return result;
+        }
+
+        public void ShowMovealbeTile(Vector2Int start, int maxMoveDistance)
+        {
+            foreach (var hex in _hexMap)
+                hex.Value.HideHighlight();
+
+            _playerMovealbeTile.Clear();
+
+            foreach (var coord in GetMoveableTile(start, maxMoveDistance))
+                _playerMovealbeTile.Add(coord);
+
+            foreach (var tile in _playerMovealbeTile)
+            {
+                bool[] draw = IsDrawEdge(tile, _playerMovealbeTile);
+                _hexMap[tile].ShowHighlight(draw);
+            }
+        }
+
+        public bool IsMoveable(Vector2Int movePos)
+        {
+            return _playerMovealbeTile.Contains(movePos);
+        }
+
+        public bool[] IsDrawEdge(Vector2Int coord, HashSet<Vector2Int> movealbeTiles)
+        {
+            bool[] draw = new bool[6];
+            var next = GetNeighborsForDraw(coord);
+
+            for (int i = 0; i < 6; i++)
+            {
+                Vector2Int neighbor = next[i];
+                if (!_hexMap.ContainsKey(neighbor) ||!movealbeTiles.Contains(neighbor))
+                    draw[i] = true;
+                else
+                    draw[i] = false;
+            }
+
+            return draw;
         }
     }
 }

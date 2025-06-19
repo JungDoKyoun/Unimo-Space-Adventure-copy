@@ -4722,7 +4722,7 @@ MonoBehaviour:
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 0
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
@@ -13568,14 +13568,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gridSize: {x: 20, y: 20}
   _mapOrigin: {x: 0, y: 60, z: -19}
-  _spawnCount: 400
+  _spawnCount: 100
   _outerSize: 1
   _innerSize: 0
   _height: 0.5
   _material: {fileID: 2100000, guid: 0998fb421169edd44a89873c6205968e, type: 2}
   _outlineMaterial: {fileID: 2100000, guid: 95f455c8231041b44a7aa5166e420403, type: 2}
   _outlineExpand: 0.01
-  _yOffset: 0
+  _oYOffset: 0
+  _highlightMaterial: {fileID: 2100000, guid: 31cc861a43b06034dbabbe43f8a8178b, type: 2}
+  _highlightScale: 0.1
+  _hYOffset: 0.03
   _modeRatio:
   - _modeType: 1
     _modeRatio: 0.5
@@ -13589,9 +13592,9 @@ MonoBehaviour:
   - _difficultyType: 0
     _distance: 0
   - _difficultyType: 1
-    _distance: 10
+    _distance: 2
   - _difficultyType: 2
-    _distance: 20
+    _distance: 4
   _minEnvironmentTileCount: 2
   _maxEnvironmentTileCount: 4
   _offset: {x: 0, y: 0.3, z: 0}
