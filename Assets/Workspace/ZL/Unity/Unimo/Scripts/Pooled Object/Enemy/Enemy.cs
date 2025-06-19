@@ -46,9 +46,7 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [GetComponentInChildren]
-
-        [ReadOnly(true)]
+        [ReadOnlyWhenPlayMode]
 
         protected Animator animator = null;
 
@@ -148,7 +146,10 @@ namespace ZL.Unity.Unimo
 
         protected override void OnDisappear()
         {
-            animator.SetTrigger("Disappear");
+            if (animator != null)
+            {
+                animator.SetTrigger("Disappear");
+            }
         }
     }
 }

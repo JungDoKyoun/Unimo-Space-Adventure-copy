@@ -43,7 +43,7 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private float attackPower = 0;
+        private float attackPower = 0f;
 
         public float AttackPower
         {
@@ -76,6 +76,8 @@ namespace ZL.Unity.Unimo
 
                 nameof(maxHealth),
 
+                nameof(rotationSpeed),
+
                 nameof(movementSpeed),
 
                 nameof(attackPower),
@@ -89,6 +91,8 @@ namespace ZL.Unity.Unimo
         public override void Import(GstuSpreadSheet sheet)
         {
             maxHealth = float.Parse(sheet[name, nameof(maxHealth)].value);
+
+            rotationSpeed = float.Parse(sheet[name, nameof(rotationSpeed)].value);
 
             movementSpeed = float.Parse(sheet[name, nameof(movementSpeed)].value);
 
@@ -106,6 +110,8 @@ namespace ZL.Unity.Unimo
                 name.ToString(),
 
                 maxHealth.ToString(),
+
+                rotationSpeed.ToString(),
 
                 movementSpeed.ToString(),
 

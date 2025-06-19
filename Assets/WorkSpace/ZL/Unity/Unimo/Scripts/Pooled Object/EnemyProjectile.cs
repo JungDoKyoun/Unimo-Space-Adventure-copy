@@ -6,8 +6,13 @@ namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Enemy Projectile (Pooled)")]
 
-    public sealed class Projectile : Enemy, IDamager
+    public sealed class EnemyProjectile : Enemy, IDamager
     {
+        private void OnEnable()
+        {
+            OnAppeared();
+        }
+
         private void FixedUpdate()
         {
             if (isStoped == true)
@@ -24,6 +29,16 @@ namespace ZL.Unity.Unimo
             {
                 rigidbody.MoveForward(enemyData.MovementSpeed * Time.fixedDeltaTime);
             }
+        }
+
+        public override void Appear()
+        {
+            base.Appear();
+        }
+
+        protected override void OnDisappear()
+        {
+            OnDisappeared();
         }
 
         public void GiveDamage(IDamageable damageable, Vector3 contact)
