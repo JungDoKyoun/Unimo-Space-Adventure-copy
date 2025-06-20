@@ -75,8 +75,7 @@ public class ConstructManager : MonoBehaviour
         Instance = this;
         OnConstructCostChange += SetConstructCostText;
         SetOwnCost();
-        ChangeBuildStateImage();
-        //DecideProgress();//나중에 이미지 변경 시스템 완벽하게 바꾸면 변경하기
+        DecideProgress();//나중에 이미지 변경 시스템 완벽하게 바꾸면 변경하기
         ToDictionary();
         SetAllDic();
         SetImagePriorityDicNum();
@@ -122,7 +121,6 @@ public class ConstructManager : MonoBehaviour
         {
             imagePriority.Add(i, 0);
         }
-        imagePriority.Add(-1, 999);
     }
     private void SetAllDic()
     {
@@ -198,7 +196,7 @@ public class ConstructManager : MonoBehaviour
             int costNum;
             StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
             //SetPlayer();
-            //DecideProgress();//나중에 이미지 메커니즘 완벽하게 변경하면 바꾸기
+            DecideProgress();//나중에 이미지 메커니즘 완벽하게 변경하면 바꾸기
             
             //블루 프린트 함수 추가하기
 
@@ -211,9 +209,9 @@ public class ConstructManager : MonoBehaviour
     }
     public void TrySetConstructImage(ConstructBase building)
     {
-        if (imagePriority[building.imageIndex - 1] < building.imagePriority)
+        if (imagePriority[building.imageIndex] < building.imagePriority)
         {
-            buildingImages[building.imageIndex-1].sprite = building.buildingImage;
+            buildingImages[building.imageIndex].sprite = building.buildingImage;
         }
     }
 
@@ -223,9 +221,9 @@ public class ConstructManager : MonoBehaviour
         {
             if (temp.isBuildConstructed == true)
             {
-                if (imagePriority[temp.imageIndex-1] < temp.imagePriority)
+                if (imagePriority[temp.imageIndex] < temp.imagePriority)
                 {
-                    buildingImages[temp.imageIndex-1].sprite = temp.buildingImage;
+                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
                 }
             }
         }
@@ -233,9 +231,9 @@ public class ConstructManager : MonoBehaviour
         {
             if (temp.isBuildConstructed == true)
             {
-                if (imagePriority[temp.imageIndex - 1] < temp.imagePriority)
+                if (imagePriority[temp.imageIndex] < temp.imagePriority)
                 {
-                    buildingImages[temp.imageIndex - 1].sprite = temp.buildingImage;
+                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
                 }
             }
         }
@@ -243,9 +241,9 @@ public class ConstructManager : MonoBehaviour
         {
             if (temp.isBuildConstructed == true)
             {
-                if (imagePriority[temp.imageIndex - 1] < temp.imagePriority)
+                if (imagePriority[temp.imageIndex] < temp.imagePriority)
                 {
-                    buildingImages[temp.imageIndex - 1].sprite = temp.buildingImage;
+                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
                 }
             }
         }
@@ -315,8 +313,15 @@ public class ConstructManager : MonoBehaviour
     }
     public void ChangeBuildStateImage()
     {
-        
-        buildStateImage.sprite = buildStateImageList[0];
+        //Debug.Log(buildStateImageList.Count);
+        for(int i=0;i<buildStateImageList.Count;i++)
+        {
+            if((1.0f/buildStateImageList.Count)*i<=buildStateProgress && buildStateProgress < (1.0f / buildStateImageList.Count)*(i+1))
+            {
+                buildStateImage.sprite = buildStateImageList[i];
+                //Debug.Log("changeto");
+            }
+        }
     }
    public void ResetApplyBuildEffect()
     {

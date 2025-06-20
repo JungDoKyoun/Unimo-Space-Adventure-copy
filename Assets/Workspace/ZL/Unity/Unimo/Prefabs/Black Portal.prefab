@@ -9687,6 +9687,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1532513690866338718}
+  - component: {fileID: 7333610022724632953}
+  - component: {fileID: 5892893664713341336}
   m_Layer: 0
   m_Name: Black Portal
   m_TagString: Untagged
@@ -9711,6 +9713,61 @@ Transform:
   - {fileID: 8958921629073218358}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7333610022724632953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3832165327490923181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 399d516a4e4457e48bb0fd74599af16f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEnableEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5892893664713341336}
+        m_TargetAssemblyTypeName: ZL.Unity.EventTimer, Assembly-CSharp
+        m_MethodName: Invoke
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5892893664713341336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3832165327490923181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a402206ee5a0dc649a791d3f57b39218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 1.2
+  onTimeEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3832165327490923181}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6265020490394343027
 GameObject:
   m_ObjectHideFlags: 0
@@ -14554,7 +14611,7 @@ GameObject:
   - component: {fileID: 8667104094008358597}
   - component: {fileID: 8672757415026072472}
   m_Layer: 0
-  m_Name: Model
+  m_Name: Animator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

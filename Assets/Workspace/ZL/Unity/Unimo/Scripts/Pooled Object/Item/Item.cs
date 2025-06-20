@@ -49,18 +49,20 @@ namespace ZL.Unity.Unimo
         public override void OnAppeared()
         {
             collider.enabled = true;
+
+            base.OnAppeared();
         }
 
         public override void Disappear()
         {
             base.Disappear();
 
-            animator.SetTrigger("Disappear");
+            collider.enabled = false;
         }
 
         protected override void OnDisappear()
         {
-            collider.enabled = false;
+            animator.SetTrigger("Disappear");
         }
 
         public abstract void GetItem(PlayerManager player);

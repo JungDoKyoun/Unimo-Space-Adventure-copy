@@ -10,23 +10,16 @@ namespace ZL.Unity.Unimo
     {
         private bool isDashing = false;
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-
-            isDashing = false;
-        }
-
         private void FixedUpdate()
         {
             if (isStoped == true)
             {
                 return;
             }
-
+            
             if (rotationSpeed != 0f)
             {
-                rigidbody.LookTowards(Destination.position, Axis.Y, rotationSpeed);
+                rigidbody.LookTowards(Destination.position, rotationSpeed * Time.fixedDeltaTime, Axis.Y);
             }
 
             if (isDashing == false)
@@ -34,26 +27,24 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
-            if (enemyData.MoveSpeed != 0f)
+            if (enemyData.MovementSpeed != 0f)
             {
-                float movementSpeed = enemyData.MoveSpeed * Time.fixedDeltaTime;
-
-                var nextPosition = rigidbody.position + rigidbody.rotation * Vector3.forward * movementSpeed;
-
-                rigidbody.MovePosition(nextPosition);
+                rigidbody.MoveForward(enemyData.MovementSpeed * Time.fixedDeltaTime);
             }
+        }
+
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            isDashing = false;
+
+            OnDisappeared();
         }
 
         public void GiveDamage(IDamageable damageable, Vector3 contact)
         {
             damageable.TakeDamage(enemyData.AttackPower, contact);
-        }
-
-        protected override void OnDisappear()
-        {
-            base.OnDisappear();
-
-            OnDisappeared();
         }
 
         public void Dash()

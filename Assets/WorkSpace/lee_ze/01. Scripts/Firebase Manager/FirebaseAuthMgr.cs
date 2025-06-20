@@ -466,8 +466,6 @@ public class FirebaseAuthMgr : MonoBehaviour
 
             User = null;
 
-            DBRef = null;
-
             hasUser = false;
 
             FirebaseDataBaseMgr.IsDataBaseReady = false;

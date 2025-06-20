@@ -14,6 +14,12 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
+        [Line]
+
+        [Text("<b>랜덤 스포너 옵션</b>", FontSize = 16)]
+
+        [Margin]
+
         [Text("<b>웨이브에 소환할 최소 오브젝트 수</b>")]
 
         protected int minSpawnCount = 0;

@@ -174,7 +174,10 @@ namespace ZL.Unity.Unimo
 
             PlayerFuelManager.Instance.StartConsumFuel();
 
-            SpawnSequence.Instance.gameObject.SetActive(true);
+            if (SpawnSequence.Instance != null)
+            {
+                SpawnSequence.Instance.gameObject.SetActive(true);
+            }
 
             #if UNITY_EDITOR
 

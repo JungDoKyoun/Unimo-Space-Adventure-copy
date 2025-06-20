@@ -11,14 +11,12 @@ namespace JDG
         [SerializeField] private float _moveSpeed;
         [SerializeField] private int _viewRange;
         [SerializeField] private float _rotationSpeed;
-        [SerializeField] private int _moveableDistance;
 
         private HexGridLayout _hexGridLayout;
         private Vector3 _targetPos;
         private bool _isMoving = false;
 
         public int ViewRange { get { return _viewRange; } set { _viewRange = value; } }
-        public int MoveableDistance { get { return _moveableDistance; } set { _moveableDistance = value; } }
         public bool IsMoving => _isMoving;
 
         public void Init(HexGridLayout hexGrid)
@@ -64,13 +62,10 @@ namespace JDG
                     yield return null;
                 }
 
-
                 transform.position = _targetPos;
-                Vector2Int startCoord = _hexGridLayout.GetCoordinateFromPosition(transform.position);
                 _isMoving = false;
 
                 UpdateFog();
-                _hexGridLayout.ShowMovealbeTile(startCoord, _moveableDistance);
             }
         }
 

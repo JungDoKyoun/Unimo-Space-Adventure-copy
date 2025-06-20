@@ -514,11 +514,7 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     public IEnumerator UpdateRank()
     {
-        yield return new WaitUntil(() => dbRef != null);
-
         IsRankUpdated = false;
-
-        topRankers.Clear(); // 기존 랭킹 초기화
 
         var getTask = dbRef.Child("users").OrderByChild("score").LimitToLast(10).GetValueAsync();
 
@@ -531,16 +527,18 @@ public class FirebaseDataBaseMgr : MonoBehaviour
             yield break;
         }
 
+        topRankers.Clear(); // 기존 랭킹 초기화
+
         DataSnapshot snapshot = getTask.Result;
 
         foreach (var userSnapshot in snapshot.Children)
         {
             string nickname = "";
 
-            int score = 0;
+            float score = 0f;
 
             // Score 가져오기
-            if (userSnapshot.HasChild("score") && int.TryParse(userSnapshot.Child("score").Value.ToString(), out int parsedScore))
+            if (userSnapshot.HasChild("score") && float.TryParse(userSnapshot.Child("score").Value.ToString(), out float parsedScore))
             {
                 score = parsedScore;
             }
@@ -558,17 +556,10 @@ public class FirebaseDataBaseMgr : MonoBehaviour
         // 내림차순 정렬
         topRankers.Sort((a, b) => b.score.CompareTo(a.score));
 
-        if (topRankers.Count < 3)
-        {
-            Debug.Log(topRankers.Count);
-
-            Debug.Log("제대로 안들어옴");
-        }
-
         // 순위 내림차순 표시 
         foreach (var (nickname, score) in topRankers)
         {
-            Debug.Log($"Nickname: {nickname}, Score: {score}");
+            //Debug.Log($"Nickname: {nickname}, Score: {score}");
         }
 
         IsRankUpdated = true;

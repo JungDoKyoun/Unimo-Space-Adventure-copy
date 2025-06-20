@@ -7,81 +7,63 @@ using System.IO;
 
 public class CameraCapture : MonoBehaviour
 {
-    public KeyCode captureKey = KeyCode.Q;
-    public int width = 1024;
-    public int height = 1024;
+    [Header("캡처 카메라 설정")]
+    public Camera captureCamera;
+    public int captureResolution = 512;
+
+    [Header("대상 건물 리스트")]
+    public List<GameObject> buildingsToCapture;
 
     private string saveFolderPath;
-    private Camera targetCamera;
-    private void Start()
+
+    // 카메라가 건물을 찍을 때 사용할 위치 오프셋 (건물 위치 기준 카메라 상대 위치)
+    public Vector3 cameraOffset = new Vector3(0, 10, -10);
+
+    void Start()
     {
-        // 저장 경로를 Assets/WorkSpace/YJH/Capture 로 설정
-        saveFolderPath = Path.Combine(Application.dataPath, "WorkSpace/YJH/Capture");
+
+        saveFolderPath = Path.Combine(Application.dataPath, "/WorkSpace/YJH/Capture");
         Directory.CreateDirectory(saveFolderPath);
-        targetCamera = Camera.main ?? FindObjectOfType<Camera>();
-        if (targetCamera == null)
+
+        foreach (var building in buildingsToCapture)
         {
-            
-            return;
+            CaptureBuildingImage(building);
         }
 
-        // 투명 배경 설정
-        targetCamera.clearFlags = CameraClearFlags.SolidColor;
-        targetCamera.backgroundColor = new Color(0, 0, 0, 0);
-
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(captureKey))
-        {
-            StartCoroutine(CaptureTransparent());
-            Debug.Log("pressed");
-
-
-        }
-
-    }
-
-    private IEnumerator CaptureTransparent()
-    {
-        yield return new WaitForEndOfFrame();
-
-        RenderTexture rt = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32);
-        Texture2D tex = new Texture2D(width, height, TextureFormat.RGBA32, false);
-
-        targetCamera.targetTexture = rt;
-        RenderTexture.active = rt;
-
-        targetCamera.Render();
-
-        tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-        tex.Apply();
-
-        targetCamera.targetTexture = null;
-        RenderTexture.active = null;
-        rt.Release();
-
-        byte[] pngBytes = tex.EncodeToPNG();
-
-        string fileName = GenerateFileName();
-        string filePath = Path.Combine(saveFolderPath, fileName);
-        File.WriteAllBytes(filePath, pngBytes);
 #if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
 #endif
-        //Debug.Log($"📸 투명 배경 캡처 저장 완료: {filePath}");
     }
 
-    private string GenerateFileName()
+    void CaptureBuildingImage(GameObject building)
     {
-        int index = 1;
-        string fileName;
-        do
-        {
-            fileName = $"building{index}.png";
-            index++;
-        } while (File.Exists(Path.Combine(saveFolderPath, fileName)));
-        return fileName;
+        // 카메라 위치 이동 & 건물 바라보기
+        captureCamera.transform.position = building.transform.position + cameraOffset;
+        captureCamera.transform.LookAt(building.transform.position);
+
+        // RenderTexture 준비
+        RenderTexture rt = new RenderTexture(captureResolution, captureResolution, 24);
+        captureCamera.targetTexture = rt;
+
+        // 캡처용 텍스처 생성
+        Texture2D screenShot = new Texture2D(captureResolution, captureResolution, TextureFormat.RGBA32, false);
+
+        // 렌더링 & 읽기
+        captureCamera.Render();
+        RenderTexture.active = rt;
+        screenShot.ReadPixels(new Rect(0, 0, captureResolution, captureResolution), 0, 0);
+        screenShot.Apply();
+
+        // 정리
+        captureCamera.targetTexture = null;
+        RenderTexture.active = null;
+        rt.Release();
+
+        // 저장
+        string fileName = building.name + ".png";
+        string filePath = Path.Combine(saveFolderPath, fileName);
+        File.WriteAllBytes(filePath, screenShot.EncodeToPNG());
+
+        Debug.Log($"캡처 저장 완료: {filePath}");
     }
 }

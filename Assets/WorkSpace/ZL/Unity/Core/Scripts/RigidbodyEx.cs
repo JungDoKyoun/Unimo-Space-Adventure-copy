@@ -6,6 +6,13 @@ namespace ZL.Unity
 {
     public static partial class RigidbodyEx
     {
+        public static void MoveForward(this Rigidbody instance, float distance)
+        {
+            var nextPosition = instance.position + instance.rotation * Vector3.forward * distance;
+
+            instance.MovePosition(nextPosition);
+        }
+
         public static void MoveTowards(this Rigidbody instance, Transform target, float maxDistanceDelta)
         {
             MoveTowards(instance, target.position, maxDistanceDelta);
@@ -13,8 +20,6 @@ namespace ZL.Unity
 
         public static void MoveTowards(this Rigidbody instance, Vector3 targetPosition, float maxDistanceDelta)
         {
-            maxDistanceDelta *= Time.fixedDeltaTime;
-
             var nextPosition = Vector3.MoveTowards(instance.position, targetPosition, maxDistanceDelta);
 
             instance.MovePosition(nextPosition);
@@ -31,16 +36,14 @@ namespace ZL.Unity
             instance.constraints = constraints;
         }
 
-        public static void LookTowards(this Rigidbody instance, Vector3 worldPosition, Axis ignoreAxes, float maxDegreesDelta)
+        public static void LookTowards(this Rigidbody instance, Vector3 worldPosition, float maxDegreesDelta, Axis ignoreAxes)
         {
-            LookTowards(instance, worldPosition, Vector3.up, ignoreAxes, maxDegreesDelta);
+            LookTowards(instance, worldPosition, Vector3.up, maxDegreesDelta, ignoreAxes);
         }
 
-        public static void LookTowards(this Rigidbody instance, Vector3 worldPosition, Vector3 upwards, Axis ignoreAxes, float maxDegreesDelta)
+        public static void LookTowards(this Rigidbody instance, Vector3 worldPosition, Vector3 upwards, float maxDegreesDelta, Axis ignoreAxes)
         {
             var targetRotation = QuaternionEx.LookRotation(instance.position, worldPosition, upwards, ignoreAxes);
-
-            maxDegreesDelta *= Time.fixedDeltaTime;
 
             var nextRotation = Quaternion.RotateTowards(instance.rotation, targetRotation, maxDegreesDelta);
 

@@ -1,5 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JDG;
+using ZL.Unity.Tweening;
+using Unity.Mathematics;
+using TMPro;
+using UnityEditor;
 
 namespace JDG
 {
@@ -36,8 +42,6 @@ namespace JDG
         private MeshRenderer _meshRenderer;
         private List<Face> _faces; //면들의 목록
         private TileData _tileData;
-        private GameObject _outlineObj;
-        private GameObject _highlightObj;
         private float _innerSize; //내부 반지름
         private float _outerSize; //바깥 반지름
         private float _height; //높이
@@ -91,7 +95,7 @@ namespace JDG
             _faces = new List<Face>();
 
             //육각타일의 윗면
-            for (int point = 0; point < 6; point++)
+            for(int point = 0; point < 6; point++)
             {
                 _faces.Add(CreateFace(_innerSize, _outerSize, _height / 2f, _height / 2f, point));
             }
@@ -123,14 +127,14 @@ namespace JDG
             List<Vector2> uvs = new List<Vector2>();
 
             //면에있는 각 항목 분리해서 구분
-            for (int i = 0; i < _faces.Count; i++)
+            for(int i = 0; i < _faces.Count; i++)
             {
                 vertices.AddRange(_faces[i].Vertices);
                 uvs.AddRange(_faces[i].UVS);
 
                 int offset = (4 * i);
 
-                foreach (int triangle in _faces[i].Triangles)
+                foreach(int triangle in _faces[i].Triangles)
                 {
                     tris.Add(triangle + offset);
                 }
@@ -155,7 +159,7 @@ namespace JDG
             List<int> triangels = new List<int>() { 0, 1, 2, 2, 3, 0 };
             List<Vector2> uvs = new List<Vector2>() { new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1) };
 
-            if (reverse)
+            if(reverse)
             {
                 vertices.Reverse();
             }
@@ -195,7 +199,7 @@ namespace JDG
 
             Color color = Color.white;
 
-            switch (_tileData.TileType)
+            switch(_tileData.TileType)
             {
                 case TileType.Base:
                     color = Color.blue;
@@ -223,19 +227,19 @@ namespace JDG
             switch (_tileData.TileVisibility)
             {
                 case TileVisibility.Hidden:
-                    if (_tileData.TileType != TileType.Boss && _tileData.TileType != TileType.Event)
+                    if(_tileData.TileType != TileType.Boss && _tileData.TileType != TileType.Event)
                     {
                         color = Color.black;
                     }
                     break;
-                case TileVisibility.Visited:
-                    color *= 0.5f;
+                case TileVisibility.Visited: 
+                    color *= 0.5f; 
                     break;
-                case TileVisibility.Visible:
+                case TileVisibility.Visible: 
                     break;
             }
 
-            if (_tileData.IsCleared)
+            if(_tileData.IsCleared)
             {
                 if (_tileData.TileType == TileType.Base)
                     return;
@@ -254,23 +258,17 @@ namespace JDG
 
         public void CreateOutlineMesh(Material outlineMat, float width, float yOffset)
         {
-            if (_outlineObj != null)
-                Destroy(_outlineObj);
-
-            _outlineObj = new GameObject("Outline");
-            _outlineObj.transform.SetParent(transform, false);
-
             Vector3[] top = new Vector3[6];
             float outSize = _outerSize;
             float offset = _height * 0.5f + yOffset;
 
-            for (int i = 0; i < 6; i++)
+            for(int i = 0; i < 6; i++)
             {
                 float rad = Mathf.Deg2Rad * (i * 60 + 30);
                 top[i] = new Vector3(outSize * Mathf.Cos(rad), offset, outSize * Mathf.Sin(rad));
             }
 
-            for (int i = 0; i < 6; i++)
+            for(int i = 0; i < 6; i++)
             {
                 int j = (i + 1) % 6;
                 Vector3 p0 = top[i];
@@ -288,7 +286,7 @@ namespace JDG
                 quad.RecalculateNormals();
 
                 var obj = new GameObject($"outline_{i}");
-                obj.transform.SetParent(_outlineObj.transform, false);
+                obj.transform.SetParent(transform, false);
                 obj.AddComponent<MeshFilter>().sharedMesh = quad;
 
                 var render = obj.AddComponent<MeshRenderer>();
@@ -299,88 +297,9 @@ namespace JDG
             }
         }
 
-        public void CreateHighlight(Material highlightMaterial, float highlightScale, float yOffset)
+        public void CreateHighlight(Material highlightMaterial, float highlightScale)
         {
-            if (_highlightObj != null)
-                Destroy(_highlightObj);
-
-            _highlightObj = new GameObject("HighlightOutline");
-            _highlightObj.transform.SetParent(transform, false);
-
-            Vector3[] top = new Vector3[6];
-            float size = _outerSize;
-            float offset = _height * 0.5f + yOffset;
-
-            Color[] dbg = { Color.red, Color.yellow, Color.green, Color.cyan, Color.blue, Color.magenta };
-
-            for (int i = 0; i < 6; i++)
-            {
-                float rad = Mathf.Deg2Rad * (i * 60 + 30);
-                top[i] = new Vector3(_outerSize * Mathf.Cos(rad), offset, _outerSize * Mathf.Sin(rad));
-            }
-
-            for (int i = 0; i < 6; i++)
-            {
-                int j = (i + 1) % 6;
-                Vector3 p0 = top[i];
-                Vector3 p1 = top[j];
-
-                Vector3 dir = (p1 - p0).normalized;
-                Vector3 outbound = Vector3.Cross(Vector3.up, dir);
-
-                Vector3 q0 = p0 + outbound * highlightScale;
-                Vector3 q1 = p1 + outbound * highlightScale;
-
-                Mesh quad = new Mesh();
-                quad.vertices = new[] { p0, p1, q1, q0 };
-                quad.triangles = new[] { 0, 1, 2, 2, 3, 0 };
-                quad.RecalculateNormals();
-
-                var obj = new GameObject($"highlight_{i}");
-                obj.transform.SetParent(_highlightObj.transform, false);
-
-                obj.AddComponent<MeshFilter>().sharedMesh = quad;
-
-                var ren = obj.AddComponent<MeshRenderer>();
-                ren.material = highlightMaterial;
-                ren.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-                ren.receiveShadows = false;
-                ren.material.renderQueue = 3100;
-            }
-            _highlightObj.SetActive(false);
-        }
-
-        public void ShowHighlight(bool[] draw)
-        {
-            if (_outlineObj != null)
-                _outlineObj.SetActive(false);
-
-            if (_highlightObj != null)
-            {
-                _highlightObj.SetActive(true);
-
-                for(int i = 0; i < 6; i++)
-                {
-                    Transform edge = _highlightObj.transform.Find($"highlight_{i}");
-                    if(edge != null)
-                    {
-                        if (draw == null)
-                            edge.gameObject.SetActive(true);
-
-                        else
-                            edge.gameObject.SetActive(draw[i]);
-                    }
-                }
-            }
-        }
-
-        public void HideHighlight()
-        {
-            if (_outlineObj != null)
-                _outlineObj.SetActive(true);
-
-            if (_highlightObj != null)
-                _highlightObj.SetActive(false);
+            
         }
     }
 }

@@ -7920,7 +7920,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10325,8 +10325,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1842860903}
+  - component: {fileID: 1842860902}
   - component: {fileID: 1842860904}
-  - component: {fileID: 1842860905}
   m_Layer: 0
   m_Name: Auth Manager
   m_TagString: Untagged
@@ -10334,6 +10334,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1842860902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842860901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ae395fd50246944994c739614c23371, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startButton: {fileID: 1747303814}
+  loginButton: {fileID: 389267316}
+  signUpButton: {fileID: 2029237150}
+  logoutButton: {fileID: 902804453}
+  emailField: {fileID: 1508076710}
+  passwordField: {fileID: 456216210}
+  nicknameField: {fileID: 1438971199}
+  warningText: {fileID: 591497204}
+  confirmText: {fileID: 591497204}
 --- !u!4 &1842860903
 Transform:
   m_ObjectHideFlags: 0
@@ -10364,27 +10385,6 @@ MonoBehaviour:
   rewardIngameCurrencyText: {fileID: 0}
   rewardMetaCurrencyText: {fileID: 0}
   rewardBluePrintText: {fileID: 0}
---- !u!114 &1842860905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1842860901}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ae395fd50246944994c739614c23371, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startButton: {fileID: 0}
-  loginButton: {fileID: 0}
-  signUpButton: {fileID: 0}
-  logoutButton: {fileID: 0}
-  emailField: {fileID: 0}
-  passwordField: {fileID: 0}
-  nicknameField: {fileID: 0}
-  warningText: {fileID: 0}
-  confirmText: {fileID: 0}
 --- !u!1 &1851221337
 GameObject:
   m_ObjectHideFlags: 0

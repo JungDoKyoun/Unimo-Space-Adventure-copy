@@ -32,11 +32,11 @@ namespace ZL.Unity.Unimo
             get => currentHealth;
         }
 
-        protected override void OnEnable()
+        public override void Appear()
         {
-            base.OnEnable();
-
             currentHealth = gatheringData.MaxHealth;
+
+            base.Appear();
         }
 
         public void TakeDamage(float damage, Vector3 contact = default)

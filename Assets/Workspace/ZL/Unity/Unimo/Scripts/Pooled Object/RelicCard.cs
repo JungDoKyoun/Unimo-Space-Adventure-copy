@@ -10,7 +10,7 @@ using ZL.Unity.Pooling;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Relic Card")]
+    [AddComponentMenu("ZL/Unimo/Relic Card (Pooled)")]
 
     public sealed class RelicCard : PooledObject
     {
@@ -108,12 +108,19 @@ namespace ZL.Unity.Unimo
 
         public event Action<RelicCard> OnDeselectAction = null;
 
+        protected override void OnDisable()
+        {
+            StringTable.OnLanguageChanged -= Refresh;
+
+            base.OnDisable();
+        }
+
         public void Initialize(RelicData relicData)
         {
             this.relicData = relicData;
         }
 
-        protected override void OnEnable()
+        public override void Appear()
         {
             rarityHightlightImageUI.color = relicData.Rarity.GetColor();
 
@@ -126,19 +133,19 @@ namespace ZL.Unity.Unimo
             Refresh();
 
             StringTable.OnLanguageChanged += Refresh;
+
+            base.Appear();
         }
 
-        protected override void OnDisable()
+        public override void Disappear()
         {
-            base.OnDisable();
+            base.Disappear();
 
             toggle.isOn = false;
 
             OnSelectAction = null;
-            
-            OnDeselectAction = null;
 
-            StringTable.OnLanguageChanged -= Refresh;
+            OnDeselectAction = null;
         }
 
         private void Refresh()

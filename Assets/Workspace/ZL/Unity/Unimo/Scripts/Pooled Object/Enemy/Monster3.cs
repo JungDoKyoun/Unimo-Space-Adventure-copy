@@ -30,13 +30,6 @@ namespace ZL.Unity.Unimo
 
         private bool isDashing = false;
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-
-            isDashing = false;
-        }
-
         private void FixedUpdate()
         {
             if (isStoped == true)
@@ -46,21 +39,19 @@ namespace ZL.Unity.Unimo
 
             if (rotationSpeed != 0f)
             {
-                rigidbody.LookTowards(Destination.position, Axis.Y, rotationSpeed);
+                rigidbody.LookTowards(Destination.position, rotationSpeed * Time.fixedDeltaTime, Axis.Y);
             }
 
-            if (enemyData.MoveSpeed != 0f)
+            if (enemyData.MovementSpeed != 0f)
             {
-                float movementSpeed = enemyData.MoveSpeed * Time.fixedDeltaTime;
+                float movementSpeed = enemyData.MovementSpeed;
 
                 if (isDashing == true)
                 {
                     movementSpeed *= dashSpeedMultiply;
                 }
 
-                var nextPosition = rigidbody.position + rigidbody.rotation * Vector3.forward * movementSpeed;
-
-                rigidbody.MovePosition(nextPosition);
+                rigidbody.MoveForward(movementSpeed * Time.fixedDeltaTime);
             }
         }
 
@@ -78,23 +69,20 @@ namespace ZL.Unity.Unimo
             animator.SetTrigger("Encounter");
         }
 
-        public void GiveDamage(IDamageable damageable, Vector3 contact)
-        {
-            damageable.TakeDamage(enemyData.AttackPower, contact);
-        }
-
         public override void OnAppeared()
         {
-            base.OnAppeared();
-
             detector.enabled = true;
+
+            base.OnAppeared();
         }
 
-        protected override void OnDisappear()
+        public override void Disappear()
         {
-            base.OnDisappear();
+            base.Disappear();
 
             detector.enabled = false;
+
+            isDashing = false;
         }
 
         public void Dash()
@@ -102,6 +90,11 @@ namespace ZL.Unity.Unimo
             isStoped = false;
 
             isDashing = true;
+        }
+
+        public void GiveDamage(IDamageable damageable, Vector3 contact)
+        {
+            damageable.TakeDamage(enemyData.AttackPower, contact);
         }
     }
 }

@@ -46,9 +46,7 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [GetComponentInChildren]
-
-        [ReadOnly(true)]
+        [ReadOnlyWhenPlayMode]
 
         protected Animator animator = null;
 
@@ -62,9 +60,12 @@ namespace ZL.Unity.Unimo
 
         protected EnemyData enemyData = null;
 
-        [SerializeField]
+        protected float rotationSpeed = -1f;
 
-        protected float rotationSpeed = 0f;
+        public float RotationSpeed
+        {
+            set => rotationSpeed = value;
+        }
 
         protected float currentHealth = 0f;
 
@@ -87,23 +88,18 @@ namespace ZL.Unity.Unimo
             enemyManager = EnemyManager.Instance;
         }
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-
-            currentHealth = enemyData.MaxHealth;
-        }
-
         protected override void OnDisable()
         {
-            base.OnDisable();
-
             rigidbody.velocity = Vector3.zero;
 
             if (animator != null)
             {
                 animator.Rebind();
             }
+
+            rotationSpeed = -1f;
+
+            base.OnDisable();
         }
 
         public virtual void TakeDamage(float damage, Vector3 contact)
@@ -118,25 +114,42 @@ namespace ZL.Unity.Unimo
             }
         }
 
+        public override void Appear()
+        {
+            currentHealth = enemyData.MaxHealth;
+
+            if (rotationSpeed == -1f)
+            {
+                rotationSpeed = enemyData.RotationSpeed;
+            }
+
+            base.Appear();
+        }
+
         public override void OnAppeared()
         {
             collider.enabled = true;
 
             isStoped = false;
+
+            base.OnAppeared();
         }
 
         public override void Disappear()
         {
             base.Disappear();
 
-            animator.SetTrigger("Disappear");
+            collider.enabled = false;
+
+            isStoped = true;
         }
 
         protected override void OnDisappear()
         {
-            collider.enabled = false;
-
-            isStoped = true;
+            if (animator != null)
+            {
+                animator.SetTrigger("Disappear");
+            }
         }
     }
 }
