@@ -91,9 +91,7 @@ namespace JDG
 
             if (_choseTileData != null && _choseTileData.IsCleared)
             {
-                Vector3 targetPos = _hexGridLayout.GetPositionForHexFromCoordinate(_choseTileData.Coord);
-                targetPos += Vector3.up * 1f;
-                _playerController.MoveTo(targetPos);
+                _playerController.MoveTo(_choseTileData.Coord);
                 GameStateManager.Instance.ResetIsRestoreMap();
             }
         }

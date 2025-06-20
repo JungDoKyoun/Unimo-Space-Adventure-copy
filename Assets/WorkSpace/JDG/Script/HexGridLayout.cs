@@ -257,11 +257,11 @@ namespace JDG
 
         private int HexDistance(Vector2Int a, Vector2Int b)
         {
-            int ax = a.x - (a.y - (a.y & 1)) / 2;
+            int ax = a.x - (a.y - (a.y % 2)) / 2;
             int az = a.y;
             int ay = -ax - az;
 
-            int bx = b.x - (b.y - (b.y & 1)) / 2;
+            int bx = b.x - (b.y - (b.y % 2)) / 2;
             int bz = b.y;
             int by = -bx - bz;
 
@@ -871,10 +871,61 @@ namespace JDG
             return draw;
         }
 
-        //public List<Vector2Int> FindPath(Vector2Int start, Vector2Int goal)
-        //{
-        //    HashSet<Vector2Int> closeset = new HashSet<Vector2Int>();
-        //    PriorityQueue
-        //}
+        public List<Vector2Int> FindPath(Vector2Int start, Vector2Int goal)
+        {
+            HashSet<Vector2Int> closeSet = new HashSet<Vector2Int>();
+            PriorityQueue<Vector2Int> openSet = new PriorityQueue<Vector2Int>();
+            Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
+            Dictionary<Vector2Int, int> gScore = new Dictionary<Vector2Int, int>() { [start] = 0 };
+
+            openSet.Enqueue(start, 0);
+
+            while (openSet.Count > 0)
+            {
+                Vector2Int current = openSet.Dequeue();
+
+                if (closeSet.Contains(current))
+                    continue;
+
+                if (current == goal)
+                    break;
+
+                closeSet.Add(current);
+
+                foreach (var next in GetNeighbors(current))
+                {
+                    if (closeSet.Contains(next))
+                        continue;
+                    if (!_hexMap.ContainsKey(next))
+                        continue;
+
+                    int index = gScore[current] + 1;
+
+                    if (!gScore.ContainsKey(next) || gScore[next] > index)
+                    {
+                        cameFrom[next] = current;
+                        gScore[next] = index;
+                        int fScore = index + HexDistance(next, goal);
+                        openSet.Enqueue(next, fScore);
+                    }
+                }
+
+            }
+            List<Vector2Int> result = new List<Vector2Int>();
+
+            if (!cameFrom.ContainsKey(goal))
+                return result;
+
+            Vector2Int node = goal;
+
+            while (node != start)
+            {
+                result.Add(node);
+                node = cameFrom[node];
+            }
+
+            result.Reverse();
+            return result;
+        }
     }
 }
