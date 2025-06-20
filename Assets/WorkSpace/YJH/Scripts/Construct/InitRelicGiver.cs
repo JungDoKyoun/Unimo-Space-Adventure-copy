@@ -47,6 +47,9 @@ namespace YJH
             relicCardScript1.Initialize(relicDatas[0]);
             relicCardScript2.Initialize(relicDatas[1]);
             relicCardScript3.Initialize(relicDatas[2]);
+            relicCardScript1.Appear();
+            relicCardScript2.Appear();
+            relicCardScript3.Appear();
             Debug.Log("초기 유물 데이터 세팅");
         }
         public void ActiveRelicCard()
