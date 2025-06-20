@@ -136,6 +136,7 @@ public class Dash : ISpellType,IStackSpell
     public void InitSpell()
     {
         skillInfo = Resources.Load<StackSpellScriptableObject>("PlayerSkillSO/Dash");
+        chargeTimer = 0;
     }
 
     public void SetPlayer(PlayerManager player)

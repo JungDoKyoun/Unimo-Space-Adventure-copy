@@ -80,6 +80,7 @@ public class ConstructManager : MonoBehaviour
         SetAllDic();
         SetImagePriorityDicNum();
         SetAllConstructImages();
+        
         if (isDelinkON == false)
         {
             PlayerManager.OnStageFail += YJH.MethodCollection.DelinkHealPlayer;
@@ -87,6 +88,9 @@ public class ConstructManager : MonoBehaviour
             isDelinkON =true;
         }
     }
+
+    
+
     //private void Start()
     //{
     //    if (tempRelic != null)
@@ -469,7 +473,7 @@ public class ConstructManager : MonoBehaviour
     {
         if (isBuildEffectAplly == false)//static 변수를 통해서 초기화 조절
         {
-            //Debug.Log("player!");
+            Debug.Log("플레이어 세팅");
             playerStatus = PlayerManager.OriginStatus.Clone();
             ActiveBuildEffect();
             isBuildEffectAplly = true;

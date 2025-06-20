@@ -74,10 +74,13 @@ public partial class PlayerManager : ISingleton<PlayerManager>
             playerSpellType?.SetPlayer(selfManager);
         }
         SceneManager.sceneLoaded += OnSceneLoaded;
-
+        OnHealthChanged += DebugHealth;
         //selfManager = this;
     }
-
+    public void DebugHealth(float health)
+    {
+        Debug.Log("현재 체력" + health);
+    }
     private void OnDestroy()
     {
         ISingleton<PlayerManager>.Release(this);
@@ -94,8 +97,8 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         {
             selfManager = null;
         }
-        OnTargetObjectSet -= GatheringItem;
-        SceneManager.sceneLoaded -= OnSceneLoaded;  
+        //OnTargetObjectSet -= GatheringItem;
+        //SceneManager.sceneLoaded -= OnSceneLoaded;  
     }
     private void OnDisable()
     {
@@ -136,7 +139,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     {
         if (scene.name != "Station") // 혹은 scene.buildIndex == ...
         {
-            Debug.Log("B 씬 진입: 강제 초기화 실행");
+            
             OnEnable();
         }
     }
