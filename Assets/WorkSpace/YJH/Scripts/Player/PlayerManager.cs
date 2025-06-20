@@ -119,7 +119,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         //SetPlayerStatus(playerStatus);
     }
-
+    
     private void Update()
     {
         ActionUpdate();
@@ -164,9 +164,9 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         //playerSpellType.SetState(false);
 
-        playerSpellType = null;
+        //playerSpellType = null;
 
-        if (ConstructManager.IsBuildEffectAplly == false)
+        if (ConstructManager.IsBuildEffectAplly == false)//건설 매니저 없이 시작할때
         {
             PlayerStatus=originStatus.Clone();
 
