@@ -86,9 +86,41 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         {
             selfManager = null;
         }
+        OnTargetObjectSet -= GatheringItem;
     }
 
     private void Start()
+    {
+        //if (playerSpellType == null)
+        //{
+        //    SetSpellType(new Dash());
+        //
+        //    playerSpellType.InitSpell();
+        //}
+        //
+        //if (GameStateManager.IsClear == false)
+        //{
+        //    ResetPlayer();
+        //}
+        //
+        //ActionStart();
+        //
+        //MoveStart();
+        //
+        ////ConstructManager.SetFinalStatusToPlayer();
+        //
+        ////PlayerInventoryManager.AddRelic(tempRelic);
+        //
+        //ActiveRelic();
+        //
+        //ShowStatusDebug();
+        //
+        ////기획 의도를 보니 이 코드는 조정이 필요함 한 스테이지에서 까인 체력은 안돌아오는듯?
+        ////currentHealth = maxHP;
+        //
+        ////SetPlayerStatus(playerStatus);
+    }
+    private void OnEnable()
     {
         if (playerSpellType == null)
         {
@@ -97,10 +129,9 @@ public partial class PlayerManager : ISingleton<PlayerManager>
             playerSpellType.InitSpell();
         }
 
-        if (GameStateManager.IsClear == false)
-        {
-            ResetPlayer();
-        }
+        
+        ResetPlayer();
+        
 
         ActionStart();
 
@@ -119,7 +150,6 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         //SetPlayerStatus(playerStatus);
     }
-    
     private void Update()
     {
         ActionUpdate();
@@ -171,6 +201,13 @@ public partial class PlayerManager : ISingleton<PlayerManager>
             PlayerStatus=originStatus.Clone();
 
             ShowStatusDebug();
+        }
+        else
+        {
+            PlayerStatus= originStatus.Clone();
+            PlayerStatus temp =ConstructManager.playerStatus;
+            temp=temp.Clone()+PlayerStatus;
+            PlayerStatus = temp;
         }
     }
     public static void ActiveRelic()

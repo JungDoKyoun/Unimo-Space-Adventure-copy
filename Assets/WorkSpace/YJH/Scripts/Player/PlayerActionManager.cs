@@ -124,8 +124,7 @@ public partial class PlayerManager
     // 멀티용으로 리펙토링한거 나중에 다 해체하기
     public void ActionStart()
     {
-        if (PhotonNetwork.IsConnected == false)
-        {
+        
             gatheringAudioSource.clip = gatheringAudioClip;
             
             //StartDetectItem();
@@ -170,40 +169,9 @@ public partial class PlayerManager
 
                 playerSpellType.InitSpell();
             }
-        }
+        
 
-        else if (photonView.IsMine == true)
-        {
-            gatheringAudioSource.clip = gatheringAudioClip;
-
-            OnTargetObjectSet += GatheringItem;
-
-            detectCollider.radius = playerStatus.itemDetectionRange;
-
-            SetAttackType(attackPrefab);
-
-            if (playerSpellType != null)
-            {
-                //Debug.Log("notnullspell");
-
-                playerSpellType.InitSpell();
-            }
-
-            else
-            {
-                //Debug.Log("nullspell");
-
-                ISpellType temp = new Dash();
-
-                //Debug.Log(temp);
-
-                SetSpellType(temp);
-
-                playerSpellType.InitSpell();
-            }
-
-            //SetAttackType(new EnergyBolt());
-        }
+        
     }
 
     public void ActionUpdate()
