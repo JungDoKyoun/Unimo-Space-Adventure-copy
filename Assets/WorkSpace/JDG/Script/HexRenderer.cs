@@ -368,9 +368,7 @@ namespace JDG
             {
                 Transform edge = _highlightObj.transform.Find($"highlight_{i}");
                 if (edge != null)
-                {
                     edge.gameObject.SetActive(draw == null || draw[i]);
-                }
             }
         }
 
