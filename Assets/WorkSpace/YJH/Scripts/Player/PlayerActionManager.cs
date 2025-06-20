@@ -70,7 +70,7 @@ public partial class PlayerManager
 
     //GameObject spellPrefab;
 
-    private static ISpellType playerSpellType = null;
+    private static ISpellType playerSpellType = new Dash();
 
     private int playerOwnEnergy = 0;
 

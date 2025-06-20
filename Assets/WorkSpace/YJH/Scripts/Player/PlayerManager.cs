@@ -74,21 +74,33 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
             playerSpellType?.SetPlayer(selfManager);
         }
-
+        
+       
         //selfManager = this;
     }
 
     private void OnDestroy()
     {
         ISingleton<PlayerManager>.Release(this);
+        playerOwnEnergy = 0;
 
+        isGatheringCoroutineWork = false;
+
+        isSkillRejectActive = false;
+
+        isItemNear = false;
+
+        isGathering = false;
         if (selfManager == this)
         {
             selfManager = null;
         }
         OnTargetObjectSet -= GatheringItem;
     }
-
+    private void OnDisable()
+    {
+        ResetPlayer();
+    }
     private void Start()
     {
         //if (playerSpellType == null)
@@ -145,10 +157,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         ShowStatusDebug();
 
-        //기획 의도를 보니 이 코드는 조정이 필요함 한 스테이지에서 까인 체력은 안돌아오는듯?
-        //currentHealth = maxHP;
-
-        //SetPlayerStatus(playerStatus);
+        
     }
     private void Update()
     {
@@ -193,7 +202,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     }
     private void ResetPlayer()
     {
-        Debug.Log("플레이어 리셋");
+        //Debug.Log("플레이어 리셋");
         playerOwnEnergy = 0;
 
         isGatheringCoroutineWork = false;
@@ -204,22 +213,15 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         isGathering = false;
 
-        //playerSpellType.SetState(false);
-
-        //playerSpellType = null;
+        
 
         if (ConstructManager.IsBuildEffectAplly == false)//건설 매니저 없이 시작할때
         {
             PlayerStatus=originStatus.Clone();
 
-            //ShowStatusDebug(PlayerStatus);
-            //Debug.Log("건설 효과 적용 없음");
         }
         else
         {
-            //Debug.Log("건설 효과 적용 있음");
-            //PlayerStatus= originStatus.Clone();
-            
             
             PlayerStatus temp = ConstructManager.playerStatus; //건설 매니저에서 기본적으로 대입식으로 바꿔서 playerStatusclone을 가지고 있었음     
             temp.currentHealth= PlayerStatus.currentHealth;
