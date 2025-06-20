@@ -356,6 +356,9 @@ namespace JDG
                 ren.material.renderQueue = 3100;
             }
             _highlightObj.SetActive(false);
+<<<<<<< HEAD
+>>>>>>> parent of 7bac9495 ([feat] 난이도 및 플레이어 이동 세분화 및 이동가능 범위 하이라이트 작성)
+=======
 >>>>>>> parent of 7bac9495 ([feat] 난이도 및 플레이어 이동 세분화 및 이동가능 범위 하이라이트 작성)
         }
     }
