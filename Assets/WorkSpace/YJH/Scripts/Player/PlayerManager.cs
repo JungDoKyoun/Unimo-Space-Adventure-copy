@@ -76,7 +76,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         SceneManager.sceneLoaded += OnSceneLoaded;
         //OnHealthChanged += DebugHealth;
         //selfManager = this;
-        ResetPlayer();
+        //ResetPlayer();
         Debug.Log("어웨이크 실행 됨");
     }
     public void DebugHealth(float health)
@@ -104,7 +104,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     }
     private void OnDisable()
     {
-        ResetPlayer();
+        //ResetPlayer();
     }
     private void Start()
     {
@@ -263,21 +263,21 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         else
         {
             
-            pastHealth=PlayerStatus.currentHealth;//라운드 종료시 체력
-            PlayerStatus temp = new PlayerStatus(); //건설효과 + 플레이어 기본 스테이터스
+            //라운드 종료시 체력
+            //PlayerStatus temp = new PlayerStatus(); //건설효과 + 플레이어 기본 스테이터스
             PlayerStatus = ConstructManager.playerStatus;
             Debug.Log("플레이어 건설 효과 적용");
             ShowStatusDebug(PlayerStatus);
-            ActiveRelic();//유물 효과 적용
-            ShowStatusDebug(PlayerStatus);
-            temp = PlayerStatus;
-            if (isFirstRelicActive == false)
-            {
-                temp.currentHealth = pastHealth;//원래 현재 체력 적용
-            }
-
-            //ShowStatusDebug(temp);
+            
+            
+            
+            ActiveRelic();
+            PlayerStatus temp = PlayerStatus.Clone();
+            temp.currentHealth-=gainDemage;
             PlayerStatus = temp;
+            ShowStatusDebug(PlayerStatus);
+            
+            //PlayerStatus = temp;
             ShowStatusDebug(PlayerStatus);
             
         }
@@ -290,7 +290,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     }
     public static void ActiveRelic()
     {
-        isFirstRelicActive = false;
+        //isFirstRelicActive = false;
         //Debug.Log("try use relic");
 
         //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
@@ -320,10 +320,12 @@ public partial class PlayerManager : ISingleton<PlayerManager>
                     case ZL.Unity.Unimo.RelicEffectType.MaxHealth:
 
                         temp = PlayerStatus.Clone();
-
+                        
+                        temp.currentHealth += relicEffect.Value;
+                        
                         temp.maxHealth += relicEffect.Value;
 
-                        temp.currentHealth += relicEffect.Value;
+                        
 
                         PlayerStatus = temp;
                         

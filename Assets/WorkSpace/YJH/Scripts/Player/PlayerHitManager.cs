@@ -47,7 +47,7 @@ public partial class PlayerManager : IDamageable
     private Collider mainCollider;
 
     //public RelicData tempRelic;
-    private static float pastHealth;
+    public static float gainDemage;
     public float CurrentHealth
     {
         get => PlayerStatus.currentHealth;
@@ -65,12 +65,16 @@ public partial class PlayerManager : IDamageable
 
             else
             {
+                if (PlayerStatus.currentHealth<value)
+                {
+                    gainDemage -= value - PlayerStatus.currentHealth;
+                }
+                
                 PlayerStatus tempStatus = PlayerStatus.Clone();
 
                 tempStatus.currentHealth = value;
 
                 PlayerStatus = tempStatus;
-
                 //OnHealthChanged?.Invoke(value);
             }
         }
@@ -126,7 +130,7 @@ public partial class PlayerManager : IDamageable
         
 
         CurrentHealth -= damage;//데미지 입음
-
+        gainDemage += damage;
         //OnHealthChanged?.Invoke(playerStatus.currentHealth);
 
         if (PlayerStatus.currentHealth <= 0f)
