@@ -219,12 +219,11 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         {
             Debug.Log("건설 효과 적용 있음");
             //PlayerStatus= originStatus.Clone();
-            PlayerStatus forSum= originStatus.Clone();
-            ShowStatusDebug(forSum);
-            PlayerStatus constructStatus = ConstructManager.playerStatus; //건설매니저의 스테이터스는 
-            PlayerStatus temp =constructStatus+forSum; // 이게 기본 스탯인데 현재 체력은 
-            ShowStatusDebug(temp);
+            
+            
+            PlayerStatus temp = ConstructManager.playerStatus; //건설 매니저에서 기본적으로 대입식으로 바꿔서 playerStatusclone을 가지고 있었음     
             temp.currentHealth= PlayerStatus.currentHealth;
+            ShowStatusDebug(temp);
             PlayerStatus = temp;
         }
     }
