@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using ZL.Unity.Unimo;
 using JDG;
+using ZL.CS.Singleton;
 
 public class ConstructManager : MonoBehaviour
 {
@@ -53,6 +54,7 @@ public class ConstructManager : MonoBehaviour
     private static bool isBuildEffectAplly=false;
     public static bool IsBuildEffectAplly { get { return isBuildEffectAplly; } }
     private static bool isDelinkON = false;
+    public bool isGiveStartRellic = false;
     
     private Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
     public Dictionary<string, int> OwnBuildCostDic { get { return ownBuildCostDic; } }
@@ -72,8 +74,15 @@ public class ConstructManager : MonoBehaviour
     public GameObject initRelicUI;
     private void Awake()
     {
-        
-        Instance = this;
+        if(Instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+            
         OnConstructCostChange += SetConstructCostText;
         SetOwnCost();
         DecideProgress();//나중에 이미지 변경 시스템 완벽하게 바꾸면 변경하기
@@ -88,6 +97,7 @@ public class ConstructManager : MonoBehaviour
             PlayerManager.OnStageFail += ResetApplyBuildEffect;
             isDelinkON =true;
         }
+        DontDestroyOnLoad(gameObject);  
     }
 
     
@@ -103,6 +113,7 @@ public class ConstructManager : MonoBehaviour
     //}
     private void OnDestroy()
     {
+        
         OnConstructCostChange -= SetConstructCostText;
     }
     public void ToDictionary()
@@ -199,7 +210,8 @@ public class ConstructManager : MonoBehaviour
             //spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
             buildInfoBuildButton.interactable = false;
             int costNum;
-            StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
+            CoroutineRunner.Instance.Run(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
+            //StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
             //SetPlayer();
             DecideProgress();//나중에 이미지 메커니즘 완벽하게 변경하면 바꾸기
             
@@ -379,6 +391,10 @@ public class ConstructManager : MonoBehaviour
     {
         SetPlayer();
         //PlayerManager.SetSpellType(new Dash());//나중에 combat계열 제작시 변경 필요
+        if (isGiveStartRellic == true)
+        {
+            ActiveInitRelic();
+        }
         DeactiveBasePanel();
         //SceneManager.LoadScene("TestScene");
     }
@@ -566,7 +582,7 @@ public class ConstructManager : MonoBehaviour
         }
 
 
-        SetFinalStatusToPlayer();
+        //SetFinalStatusToPlayer();
     }
     
     public void SetOwnCost()
@@ -603,12 +619,18 @@ public class ConstructManager : MonoBehaviour
     public void ActiveInitRelic()
     {
         initRelicUI.SetActive(true);
-        UIManager.Instance.IsUIOpen = true;
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.IsUIOpen = true;
+        }
     }
     public void DeactiveInitRelic()
     {
         initRelicUI.SetActive(false);
-        UIManager.Instance.IsUIOpen = false;
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.IsUIOpen = false;
+        }
     }
 
 }

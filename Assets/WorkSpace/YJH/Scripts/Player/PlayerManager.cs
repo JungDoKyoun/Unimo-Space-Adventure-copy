@@ -21,7 +21,8 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     private static PlayerStatus originStatus = new PlayerStatus(10, 10, 5, 5, 4, 0.5f, 4);
 
     private static PlayerStatus playerStatus = new PlayerStatus();
-    
+    private int debnum=0;
+    private static bool isFirstRelicActive = true;
     public static PlayerStatus PlayerStatus
     {  
         get 
@@ -43,9 +44,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
                 OnHealthChanged?.Invoke(playerStatus.currentHealth);
                 
                 //Debug.Log("setby0");
-            }
-
-            else
+            }else
             {
                 playerStatus = value;
                 OnHealthChanged?.Invoke(playerStatus.currentHealth);
@@ -73,8 +72,9 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
             playerSpellType?.SetPlayer(selfManager);
         }
+        ConstructManager.SetFinalStatusToPlayer();
         SceneManager.sceneLoaded += OnSceneLoaded;
-        OnHealthChanged += DebugHealth;
+        //OnHealthChanged += DebugHealth;
         //selfManager = this;
         ResetPlayer();
         Debug.Log("어웨이크 실행 됨");
@@ -140,39 +140,15 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
        
-        if (playerSpellType == null)
-        {
-            SetSpellType(new Dash());
-
-            playerSpellType.InitSpell();
-        }
-        else
-        {
-            playerSpellType.InitSpell();
-        }
-
-        Debug.Log("1");
-        ResetPlayer();
-        Debug.Log("2");
-        ActionStart();
-        Debug.Log("3");
-        MoveStart();
-        Debug.Log("4");
-        Debug.Log("씬변경 감지함");
-
-        //ConstructManager.SetFinalStatusToPlayer();
-
-        //PlayerInventoryManager.AddRelic(tempRelic);
-
-        ActiveRelic();
-        
-    }
-    private void OnEnable()
-    {
         //if (playerSpellType == null)
         //{
         //    SetSpellType(new Dash());
-        //
+        //    playerSpellType?.SetPlayer(selfManager);
+        //    playerSpellType.InitSpell();
+        //}
+        //else
+        //{
+        //    playerSpellType?.SetPlayer(selfManager);
         //    playerSpellType.InitSpell();
         //}
         //
@@ -183,11 +159,39 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         //
         //MoveStart();
         //
-        ////ConstructManager.SetFinalStatusToPlayer();
-        //
-        ////PlayerInventoryManager.AddRelic(tempRelic);
-        //
-        //ActiveRelic();
+        //Debug.Log("씬변경 감지함"+debnum);
+        //debnum++;
+
+        //ConstructManager.SetFinalStatusToPlayer();
+
+        //PlayerInventoryManager.AddRelic(tempRelic);
+
+        
+        
+    }
+    private void OnEnable()
+    {
+        if (playerSpellType == null)
+        {
+            SetSpellType(new Dash());
+            playerSpellType?.SetPlayer(selfManager);
+            playerSpellType.InitSpell();
+        }
+        else
+        {
+            playerSpellType?.SetPlayer(selfManager);
+            playerSpellType.InitSpell();
+        }
+
+
+        ResetPlayer();
+
+        ActionStart();
+
+        MoveStart();
+
+        Debug.Log("활성화 함수 호출됨" + debnum);
+        debnum++;
 
     }
     private void Update()
@@ -195,6 +199,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         ActionUpdate();
 
         MoveUpdate();
+        //Debug.Log(isOnHit);
     }
 
     public void ShowStatusDebug()
@@ -230,6 +235,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         Debug.Log("채집 파워" + status.gatheringSpeed + "\n원본 : " + originStatus.Clone().gatheringSpeed);
 
         Debug.Log("데미지" + status.playerDamage + "\n원본 : " + originStatus.Clone().playerDamage);
+        Debug.Log("속도" + status.moveSpeed + "\n원본 : " + originStatus.Clone().moveSpeed);
     }
     private void ResetPlayer()
     {
@@ -243,25 +249,48 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         isItemNear = false;
 
         isGathering = false;
-
-        
+        canMove = true;
+        IsOnHit = false;
+        targetObject = null;    
         //스탯 초기화
         if (ConstructManager.IsBuildEffectAplly == false)//건설 매니저 없이 시작할때
         {
             PlayerStatus=originStatus.Clone();
-
+            ActiveRelic();
+            Debug.Log("플레이어 건설 효과 미적용");
+            
         }
         else
         {
             
-            PlayerStatus temp = ConstructManager.playerStatus; //건설 매니저에서 기본적으로 대입식으로 바꿔서 playerStatusclone을 가지고 있었음     
-            temp.currentHealth= PlayerStatus.currentHealth;
+            pastHealth=PlayerStatus.currentHealth;//라운드 종료시 체력
+            PlayerStatus temp = new PlayerStatus(); //건설효과 + 플레이어 기본 스테이터스
+            PlayerStatus = ConstructManager.playerStatus;
+            Debug.Log("플레이어 건설 효과 적용");
+            ShowStatusDebug(PlayerStatus);
+            ActiveRelic();//유물 효과 적용
+            ShowStatusDebug(PlayerStatus);
+            temp = PlayerStatus;
+            if (isFirstRelicActive == false)
+            {
+                temp.currentHealth = pastHealth;//원래 현재 체력 적용
+            }
+
             //ShowStatusDebug(temp);
             PlayerStatus = temp;
+            ShowStatusDebug(PlayerStatus);
+            
         }
+        if (gatheringCoroutine != null)
+        {
+            StopCoroutine(gatheringCoroutine);
+        }
+        
+        ShowStatusDebug(PlayerStatus);
     }
     public static void ActiveRelic()
     {
+        isFirstRelicActive = false;
         //Debug.Log("try use relic");
 
         //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
@@ -310,13 +339,13 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
                         PlayerStatus= temp;
 
-                        //Debug.Log(PlayerStatus.moveSpeed);
+                        Debug.Log("속도 유물 적용");
 
                         break;
 
                     default:
                         
-                        //Debug.Log("no exist relic type");
+                        Debug.Log("no exist relic type");
 
                         break;
                 }
@@ -336,39 +365,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
     private void OnTriggerStay(Collider other)
     {
-        if (PhotonNetwork.IsConnected == false)
-        {
-            if (other.gameObject.layer == LayerMask.NameToLayer("Gathering"))
-            {
-                isItemNear = true;
-            }
-
-            else
-            {
-                isItemNear = false;
-            }
-        }
-
-        else
-        {
-            if (photonView.IsMine == true)
-            {
-                if (other.gameObject.layer == LayerMask.NameToLayer("Gathering"))
-                {
-                    isItemNear = true;
-                }
-
-                else
-                {
-                    isItemNear = false;
-                }
-            }
-
-            else
-            {
-                return;
-            }
-        }
+        
 
         if (isOnHit == true)
         {
@@ -385,6 +382,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
             var contact = mainCollider.ClosestPoint(other);
 
             damager.GiveDamage(this, contact);
+            //Debug.Log("데미지 받음?trigger");
         }
     }
 }

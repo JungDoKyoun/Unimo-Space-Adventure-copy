@@ -120,66 +120,65 @@ public partial class PlayerManager
     private SphereCollider detectCollider;
 
     public static event Action<float> OnEnergyChanged = null;
-
+    private Coroutine gatheringCoroutine;
     // 멀티용으로 리펙토링한거 나중에 다 해체하기
     public void ActionStart()
     {
         
-            gatheringAudioSource.clip = gatheringAudioClip;
+            //gatheringAudioSource.clip = gatheringAudioClip;
             
             //StartDetectItem();
 
             //StartFindEnemy();
 
-            OnTargetObjectSet += GatheringItem;
+            //OnTargetObjectSet += GatheringItem;
 
-            detectCollider.radius = PlayerStatus.itemDetectionRange;
+        //detectCollider.radius = PlayerStatus.itemDetectionRange;
 
-            if (attackPrefab == null)
-            {
-                //Debug.Log("nullattack");
+        if (attackPrefab == null)
+        {
+            //Debug.Log("nullattack");
 
-                SetAttackType(tempAttackPrefab);
-            Debug.Log("공격 설정 없음");
-            }
+            SetAttackType(tempAttackPrefab);
+           // Debug.Log("공격 설정 없음");
+        }
+        else
+        {
+            //Debug.Log("attackexist");
 
-            else
-            {
-                //Debug.Log("attackexist");
-
-                SetAttackType(attackPrefab);
-            Debug.Log("공격 설정 있음");
+            SetAttackType(attackPrefab);
+            //Debug.Log("공격 설정 있음");
 
         }
-           
-
-            if (playerSpellType != null)
-            {
-                Debug.Log("스펠 장착되어 있음");
-
-                playerSpellType.InitSpell();
-            }else
-            {
-            
-                Debug.Log("스펠 없음");
-
-                ISpellType temp = new Dash();
-
-                //Debug.Log(temp);
-
-                SetSpellType(temp);
-
-                playerSpellType.InitSpell();
-            }
 
 
-        Debug.Log("actionstart끝");
+        if (playerSpellType != null)
+        {
+            //Debug.Log("스펠 장착되어 있음");
+
+            playerSpellType.InitSpell();
+        }
+        else
+        {
+
+            //Debug.Log("스펠 없음");
+
+            ISpellType temp = new Dash();
+
+            //Debug.Log(temp);
+
+            SetSpellType(temp);
+
+            playerSpellType.InitSpell();
+        }
+
+
+       // Debug.Log("actionstart끝");
     }
 
     public void ActionUpdate()
     {
-        if (PhotonNetwork.IsConnected == false || photonView.IsMine==true)
-        {
+        
             if (playerSpellType != null)
             {
                 playerSpellType.UpdateTime();
@@ -220,22 +219,10 @@ public partial class PlayerManager
 
                 //progressBarCircle.fillAmount =
             }
-        }
+        
 
-        if (isItemNear == true)
-        {
-            if (PhotonNetwork.IsConnected == false)
-            {
-                FindItemUpdate();
-            }
-
-            else if (photonView.IsMine == true)
-            {
-                FindItemUpdate();
-
-                //photonView.RPC("FindItemUpdate", RpcTarget.All);
-            }
-        }
+        
+        FindItemUpdate();
     }
 
     //public void StartDetectItem()
@@ -417,7 +404,7 @@ public partial class PlayerManager
         {
             isGatheringCoroutineWork = true;
 
-            StartCoroutine(GatheringCoroutine());
+            gatheringCoroutine= StartCoroutine(GatheringCoroutine());
         }
 
         else
@@ -476,10 +463,7 @@ public partial class PlayerManager
 
     private void FindItemUpdate()
     {
-        if (PhotonNetwork.IsConnected == true && photonView.IsMine != true)
-        {
-            return;
-        }
+       // Debug.Log("아이템 찾는중");
 
         if (targetObject == null)
         {
@@ -561,33 +545,21 @@ public partial class PlayerManager
 
                 if (targetObject != null)
                 {
-                    if (PhotonNetwork.IsConnected)
-                    {
-                        photonView.RPC("ActiveGatheringBeam", RpcTarget.All);
-                    }
 
-                    else
-                    {
-                        ActiveGatheringBeam();
-                    }
+                    ActiveGatheringBeam();
+                    
                 }
-
-                OnTargetObjectSet?.Invoke();
+                GatheringItem();
+                //OnTargetObjectSet?.Invoke();
             }
 
             else
             {
                 isGathering = false;
 
-                if (PhotonNetwork.IsConnected)
-                {
-                    photonView.RPC("DeactiveGatheringBeam", RpcTarget.All);
-                }
 
-                else
-                {
-                    DeactiveGatheringBeam();
-                }
+                DeactiveGatheringBeam();
+                
 
                 targetObject = null;
             }
@@ -625,8 +597,9 @@ public partial class PlayerManager
 
             //targetScript.CurrentHealth -= gatheringSpeed;
 
-            targetScript?.TakeDamage(playerStatus.gatheringSpeed);
 
+            targetScript?.TakeDamage(playerStatus.gatheringSpeed);
+            //Debug.Log(targetScript.name+""+targetScript.CurrentHealth);
             if (targetScript?.CurrentHealth <= 0f)
             {
                 //targetScript.OnGatheringEnd();
