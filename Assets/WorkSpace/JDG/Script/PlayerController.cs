@@ -11,7 +11,7 @@ namespace JDG
         [SerializeField] private float _moveSpeed;
         [SerializeField] private int _viewRange;
         [SerializeField] private float _rotationSpeed;
-        [SerializeField] private int _moveAmonut;
+        [SerializeField] private int _moveAmount;
 
         private HexGridLayout _hexGridLayout;
         private Vector3 _targetPos;
@@ -24,24 +24,32 @@ namespace JDG
         {
             _hexGridLayout = hexGrid;
             Vector2Int coord = _hexGridLayout.GetCoordinateFromPosition(transform.position);
-            _hexGridLayout.ShowMoveableTile(coord, _moveAmonut);
+            _hexGridLayout.UpdateFog(ViewRange);
+            _hexGridLayout.ShowMoveableTile(coord, _moveAmount);
         }
 
-        public void MoveTo(Vector3 targetPos)
+        public void MoveTo(Vector2Int target)
         {
-            if(!_isMoving)
-            {
-                _targetPos = targetPos + Vector3.up;
-                _isMoving = true;
-                StartCoroutine(MoveAction());
-            }
+            if (_isMoving)
+                return;
+
+            Vector2Int playerCoord = _hexGridLayout.GetCoordinateFromPosition(transform.position);
+            List<Vector2Int> paths = _hexGridLayout.FindPath(playerCoord, target);
+
+            if (paths == null || paths.Count == 0)
+                return;
+
+            StartCoroutine(MoveAction(paths));
         }
 
-        private IEnumerator MoveAction()
+        private IEnumerator MoveAction(List<Vector2Int> paths)
         {
-            if(_isMoving)
+            _isMoving = true;
+
+            foreach(var path in paths)
             {
-                Vector3 dir = _targetPos - transform.position;
+                Vector3 targetPos = _hexGridLayout.GetPositionForHexFromCoordinate(path) + Vector3.up;
+                Vector3 dir = (targetPos - transform.position).normalized;
                 dir.y = 0;
 
                 if(dir != Vector3.zero)
@@ -58,19 +66,21 @@ namespace JDG
                     transform.rotation = targetRo;
                 }
 
-                while(Vector3.Distance(transform.position, _targetPos) > 0.01f)
+                while(Vector3.Distance(transform.position, targetPos) > 0.01f)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, _targetPos, _moveSpeed * Time.deltaTime);
+                    transform.position = Vector3.MoveTowards(transform.position, targetPos, _moveSpeed * Time.deltaTime);
 
                     yield return null;
                 }
 
-                transform.position = _targetPos;
-                _isMoving = false;
+                transform.position = targetPos;
 
                 UpdateFog();
-                _hexGridLayout.ShowMoveableTile(_hexGridLayout.GetCoordinateFromPosition(transform.position), _moveAmonut);
             }
+
+            _isMoving = false;
+            Vector2Int playerCoord = _hexGridLayout.PlayerCoord;
+            _hexGridLayout.ShowMoveableTile(playerCoord, _moveAmount);
         }
 
         public void UpdateFog()

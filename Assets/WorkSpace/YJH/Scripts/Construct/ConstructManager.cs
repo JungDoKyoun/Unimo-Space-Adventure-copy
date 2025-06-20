@@ -9,6 +9,7 @@ using Firebase.Extensions;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using ZL.Unity.Unimo;
+using JDG;
 
 public class ConstructManager : MonoBehaviour
 {
@@ -597,12 +598,13 @@ public class ConstructManager : MonoBehaviour
     
     public void ActiveInitRelic()
     {
-
         initRelicUI.SetActive(true);
+        UIManager.Instance.IsUIOpen = true;
     }
     public void DeactiveInitRelic()
     {
         initRelicUI.SetActive(false);
+        UIManager.Instance.IsUIOpen = false;
     }
 
 }

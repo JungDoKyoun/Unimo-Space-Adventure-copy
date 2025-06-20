@@ -152,8 +152,7 @@ namespace JDG
 
         private void MovePlayerTo(HexRenderer tile)
         {
-            Vector3 target = _hexGrid.GetPositionForHexFromCoordinate(tile.TileData.Coord);
-            _playerController.MoveTo(target);
+            _playerController.MoveTo(tile.TileData.Coord);
             _playerController.UpdateFog();
         }
 
@@ -198,7 +197,6 @@ namespace JDG
         public void OnCancleButtonClicked()
         {
             HideUI();
-            UIManager.Instance.IsUIOpen = false;
         }
 
         private EventDataSO GetRandomEvent(EventType type)
