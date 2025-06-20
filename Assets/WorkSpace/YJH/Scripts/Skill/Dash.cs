@@ -84,6 +84,10 @@ public class Dash : ISpellType,IStackSpell
 
     public void UpdateTime()
     {
+        if (skillInfo == null)
+        {
+            Debug.Log("스킬정보 없음");
+        }
         if (skillInfo.nowStack < skillInfo.maxStack)
         {
             chargeTimer += Time.deltaTime;
@@ -136,7 +140,15 @@ public class Dash : ISpellType,IStackSpell
     public void InitSpell()
     {
         skillInfo = Resources.Load<StackSpellScriptableObject>("PlayerSkillSO/Dash");
-        chargeTimer = 0;
+        if(skillInfo == null)
+        {
+            Debug.Log("스킬 정보 받아오기 실패");
+        }
+        else
+        {
+            Debug.Log("스킬 정보 존재함");
+        }
+            chargeTimer = 0;
     }
 
     public void SetPlayer(PlayerManager player)

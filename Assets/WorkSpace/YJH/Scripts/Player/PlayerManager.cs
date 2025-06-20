@@ -76,6 +76,8 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         SceneManager.sceneLoaded += OnSceneLoaded;
         OnHealthChanged += DebugHealth;
         //selfManager = this;
+        ResetPlayer();
+        Debug.Log("어웨이크 실행 됨");
     }
     public void DebugHealth(float health)
     {
@@ -135,36 +137,57 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         //
         ////SetPlayerStatus(playerStatus);
     }
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name != "Station") // 혹은 scene.buildIndex == ...
-        {
-            
-            OnEnable();
-        }
-    }
-    private void OnEnable()
-    {
+       
         if (playerSpellType == null)
         {
             SetSpellType(new Dash());
 
             playerSpellType.InitSpell();
         }
+        else
+        {
+            playerSpellType.InitSpell();
+        }
 
-        
+        Debug.Log("1");
         ResetPlayer();
-        
-
+        Debug.Log("2");
         ActionStart();
-
+        Debug.Log("3");
         MoveStart();
+        Debug.Log("4");
+        Debug.Log("씬변경 감지함");
 
         //ConstructManager.SetFinalStatusToPlayer();
 
         //PlayerInventoryManager.AddRelic(tempRelic);
 
         ActiveRelic();
+        
+    }
+    private void OnEnable()
+    {
+        //if (playerSpellType == null)
+        //{
+        //    SetSpellType(new Dash());
+        //
+        //    playerSpellType.InitSpell();
+        //}
+        //
+        //
+        //ResetPlayer();
+        //
+        //ActionStart();
+        //
+        //MoveStart();
+        //
+        ////ConstructManager.SetFinalStatusToPlayer();
+        //
+        ////PlayerInventoryManager.AddRelic(tempRelic);
+        //
+        //ActiveRelic();
 
     }
     private void Update()
@@ -210,7 +233,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     }
     private void ResetPlayer()
     {
-        //Debug.Log("플레이어 리셋");
+        Debug.Log("플레이어 리셋");
         playerOwnEnergy = 0;
 
         isGatheringCoroutineWork = false;
@@ -222,7 +245,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         isGathering = false;
 
         
-
+        //스탯 초기화
         if (ConstructManager.IsBuildEffectAplly == false)//건설 매니저 없이 시작할때
         {
             PlayerStatus=originStatus.Clone();

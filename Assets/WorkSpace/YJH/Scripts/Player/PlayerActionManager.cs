@@ -140,6 +140,7 @@ public partial class PlayerManager
                 //Debug.Log("nullattack");
 
                 SetAttackType(tempAttackPrefab);
+            Debug.Log("공격 설정 없음");
             }
 
             else
@@ -147,19 +148,20 @@ public partial class PlayerManager
                 //Debug.Log("attackexist");
 
                 SetAttackType(attackPrefab);
-            }
+            Debug.Log("공격 설정 있음");
+
+        }
            
 
             if (playerSpellType != null)
             {
-                //Debug.Log("notnullspell");
+                Debug.Log("스펠 장착되어 있음");
 
                 playerSpellType.InitSpell();
-            }
-
-            else
+            }else
             {
-                //Debug.Log("nullspell");
+            
+                Debug.Log("스펠 없음");
 
                 ISpellType temp = new Dash();
 
@@ -169,9 +171,9 @@ public partial class PlayerManager
 
                 playerSpellType.InitSpell();
             }
-        
 
-        
+
+        Debug.Log("actionstart끝");
     }
 
     public void ActionUpdate()
