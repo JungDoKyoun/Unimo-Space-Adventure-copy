@@ -22,30 +22,16 @@ namespace ZL.Unity.Unimo
 
         [GetComponent]
 
+        [Essential]
+
+        [ReadOnlyWhenPlayMode]
+
         private Toggle toggle = null;
 
         public Toggle Toggle
         {
             get => toggle;
         }
-
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        private ImageTable relicImageTable = null;
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        private StringTableSheet relicStringTableSheet = null;
 
         [Space]
 
@@ -92,6 +78,24 @@ namespace ZL.Unity.Unimo
         private StringTable relicNameStringTable = null;
 
         private StringTable relicDescriptionStringTable = null;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        private ImageTable relicImageTable = null;
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        private StringTableSheet relicStringTableSheet = null;
 
         [Space]
 
@@ -151,6 +155,8 @@ namespace ZL.Unity.Unimo
         private void Refresh()
         {
             relicNameTextUI.text = relicNameStringTable.Value;
+
+            relicData.Refresh();
 
             relicDescriptionTextUI.text = string.Format(relicDescriptionStringTable.Value, relicData.EffectsArgs);
         }
