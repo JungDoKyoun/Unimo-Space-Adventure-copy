@@ -343,7 +343,7 @@ namespace JDG
                     int dis = HexDistance(_baseCoord, coord);
                     DifficultyType difficultyType = GetDifficultyTypeByDistance(dis);
                     _hexMap[coord].TileData.DifficultyType = difficultyType;
-                    _hexMap[coord].TileData.SceneName = $"Boss Stage {(int)difficultyType}";
+                    _hexMap[coord].TileData.SceneName = $"Boss Stage {(int)difficultyType + 1}";
 
                     placedBosses.Add(coord);
                     candidateCoords.Remove(coord);
@@ -365,7 +365,7 @@ namespace JDG
                             int dis = HexDistance(_baseCoord, coord);
                             DifficultyType difficultyType = GetDifficultyTypeByDistance(dis);
                             _hexMap[coord].TileData.DifficultyType = difficultyType;
-                            _hexMap[coord].TileData.SceneName = $"Boss Stage {(int)difficultyType}";
+                            _hexMap[coord].TileData.SceneName = $"Boss Stage {(int)difficultyType + 1}";
 
                             placedBosses.Add(coord);
                             candidateCoords.Remove(coord);
@@ -450,11 +450,11 @@ namespace JDG
 
                     if (modeType == ModeType.Explore)
                     {
-                        _hexMap[coord].TileData.SceneName = $"Explore Stage {(int)difficultyType}";
+                        _hexMap[coord].TileData.SceneName = $"Explore Stage {(int)difficultyType + 1}";
                     }
                     else if (modeType == ModeType.Gather)
                     {
-                        _hexMap[coord].TileData.SceneName = $"Gather Stage {(int)difficultyType}";
+                        _hexMap[coord].TileData.SceneName = $"Gather Stage {(int)difficultyType + 1}";
                     }
 
                     candidateCoords.RemoveAt(randomIndex);
@@ -870,5 +870,11 @@ namespace JDG
 
             return draw;
         }
+
+        //public List<Vector2Int> FindPath(Vector2Int start, Vector2Int goal)
+        //{
+        //    HashSet<Vector2Int> closeset = new HashSet<Vector2Int>();
+        //    PriorityQueue
+        //}
     }
 }

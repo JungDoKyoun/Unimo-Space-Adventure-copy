@@ -35,7 +35,7 @@ namespace JDG
 
                 if (_hexGridLayout.TryGetTile(coord, out HexRenderer tile))
                 {
-                    if (tile.TileData.TileVisibility == TileVisibility.Visible)
+                    if (_hexGridLayout.IsMoveable(coord) && tile.TileData.TileVisibility == TileVisibility.Visible)
                     {
                         _tileSelectionUI.ShowUI(tile, transform.position);
                     }
