@@ -46,6 +46,9 @@ namespace JDG
         private float _outerSize; //�ٱ� ������
         private float _height; //����
 
+        private GameObject _outlineObj;
+        private GameObject _highlightObj;
+
         private void Awake()
         {
             _mesh = new Mesh();
@@ -258,15 +261,11 @@ namespace JDG
 
         public void CreateOutlineMesh(Material outlineMat, float width, float yOffset)
         {
-<<<<<<< HEAD
-=======
             if (_outlineObj != null)
                 Destroy(_outlineObj);
 
-            _outlineObj = new GameObject("HighlightOutline");
+            _outlineObj = new GameObject("Outline");
             _outlineObj.transform.SetParent(transform, false);
-
->>>>>>> parent of 7bac9495 ([feat] 난이도 및 플레이어 이동 세분화 및 이동가능 범위 하이라이트 작성)
             Vector3[] top = new Vector3[6];
             float outSize = _outerSize;
             float offset = _height * 0.5f + yOffset;
@@ -306,11 +305,8 @@ namespace JDG
             }
         }
 
-        public void CreateHighlight(Material highlightMaterial, float highlightScale)
+        public void CreateHighlight(Material highlightMaterial, float highlightScale, float yOffset)
         {
-<<<<<<< HEAD
-            
-=======
             if (_highlightObj != null)
                 Destroy(_highlightObj);
 
@@ -356,10 +352,35 @@ namespace JDG
                 ren.material.renderQueue = 3100;
             }
             _highlightObj.SetActive(false);
-<<<<<<< HEAD
->>>>>>> parent of 7bac9495 ([feat] 난이도 및 플레이어 이동 세분화 및 이동가능 범위 하이라이트 작성)
-=======
->>>>>>> parent of 7bac9495 ([feat] 난이도 및 플레이어 이동 세분화 및 이동가능 범위 하이라이트 작성)
+        }
+
+        public void ShowHighlight(bool[] draw)
+        {
+            if (_outlineObj != null) 
+                _outlineObj.SetActive(false);
+
+            if (_highlightObj == null) 
+                return;
+                
+            _highlightObj.SetActive(true);
+
+            for (int i = 0; i < 6; i++)
+            {
+                Transform edge = _highlightObj.transform.Find($"highlight_{i}");
+                if (edge != null)
+                {
+                    edge.gameObject.SetActive(draw == null || draw[i]);
+                }
+            }
+        }
+
+        public void HideHighlight()
+        {
+            if (_outlineObj != null)
+                _outlineObj.SetActive(true);
+
+            if (_highlightObj != null) 
+                _highlightObj.SetActive(false);
         }
     }
 }

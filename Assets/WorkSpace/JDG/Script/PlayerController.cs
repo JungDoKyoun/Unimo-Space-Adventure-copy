@@ -11,6 +11,7 @@ namespace JDG
         [SerializeField] private float _moveSpeed;
         [SerializeField] private int _viewRange;
         [SerializeField] private float _rotationSpeed;
+        [SerializeField] private int _moveAmonut;
 
         private HexGridLayout _hexGridLayout;
         private Vector3 _targetPos;
@@ -22,6 +23,8 @@ namespace JDG
         public void Init(HexGridLayout hexGrid)
         {
             _hexGridLayout = hexGrid;
+            Vector2Int coord = _hexGridLayout.GetCoordinateFromPosition(transform.position);
+            _hexGridLayout.ShowMoveableTile(coord, _moveAmonut);
         }
 
         public void MoveTo(Vector3 targetPos)
@@ -66,6 +69,7 @@ namespace JDG
                 _isMoving = false;
 
                 UpdateFog();
+                _hexGridLayout.ShowMoveableTile(_hexGridLayout.GetCoordinateFromPosition(transform.position), _moveAmonut);
             }
         }
 
