@@ -179,9 +179,21 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         //Debug.Log(originStatus.Clone().playerDamage);
     }
+    public void ShowStatusDebug(PlayerStatus status)
+    {
+        Debug.Log("현재 체력"+status.currentHealth+"\n원본 : "+ originStatus.Clone().currentHealth);
 
+        Debug.Log("최대 체력" + status.maxHealth + "\n원본 : " + originStatus.Clone().maxHealth);
+
+        Debug.Log("채집 간격" + status.gatheringDelay + "\n원본 : " + originStatus.Clone().gatheringDelay);
+
+        Debug.Log("채집 파워" + status.gatheringSpeed + "\n원본 : " + originStatus.Clone().gatheringSpeed);
+
+        Debug.Log("데미지" + status.playerDamage + "\n원본 : " + originStatus.Clone().playerDamage);
+    }
     private void ResetPlayer()
     {
+        Debug.Log("플레이어 리셋");
         playerOwnEnergy = 0;
 
         isGatheringCoroutineWork = false;
@@ -200,14 +212,18 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         {
             PlayerStatus=originStatus.Clone();
 
-            ShowStatusDebug();
+            ShowStatusDebug(PlayerStatus);
+            Debug.Log("건설 효과 적용 없음");
         }
         else
         {
+            Debug.Log("건설 효과 적용 있음");
             //PlayerStatus= originStatus.Clone();
             PlayerStatus forSum= originStatus.Clone();
+            ShowStatusDebug(forSum);
             PlayerStatus constructStatus = ConstructManager.playerStatus; //더하기만 하면 될거고
             PlayerStatus temp =constructStatus+forSum; // 이게 기본 스탯인데 현재 체력은 
+            ShowStatusDebug(temp);
             temp.currentHealth= PlayerStatus.currentHealth;
             PlayerStatus = temp;
         }

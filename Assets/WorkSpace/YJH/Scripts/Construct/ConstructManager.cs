@@ -591,7 +591,7 @@ public class ConstructManager : MonoBehaviour
     public static void SetFinalStatusToPlayer()
     {
         PlayerManager.PlayerStatus=playerStatus;//후일 초기화 생각하면 대입이 맞을듯
-
+        Debug.Log("건설매니저 효과 적용");
 
     }
     
