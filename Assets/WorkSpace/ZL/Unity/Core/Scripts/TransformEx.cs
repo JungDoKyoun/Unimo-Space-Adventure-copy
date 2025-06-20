@@ -312,7 +312,12 @@ namespace ZL.Unity
 
         public static void LookAt(this Transform instance, Vector3 worldPosition, Vector3 worldUp, Axis ignoreAxes)
         {
-            instance.rotation = QuaternionEx.LookRotation(instance.position, worldPosition, worldUp, ignoreAxes);
+            if (QuaternionEx.TryLookRotation(instance.position, worldPosition, worldUp, ignoreAxes, out var rotation) == false)
+            {
+                return;
+            }
+
+            instance.rotation = rotation;
         }
     }
 }

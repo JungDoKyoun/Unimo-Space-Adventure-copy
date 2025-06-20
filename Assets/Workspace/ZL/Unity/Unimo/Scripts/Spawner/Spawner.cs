@@ -194,7 +194,10 @@ namespace ZL.Unity.Unimo
 
             if (lookPoint != null)
             {
-                rotation = QuaternionEx.LookRotation(position, lookPoint.position, Axis.Y);
+                if (QuaternionEx.TryLookRotation(position, lookPoint.position, Axis.Y, out rotation) == false)
+                {
+                    rotation = clone.transform.rotation;
+                }
             }
 
             else if (lookAngle == -1)

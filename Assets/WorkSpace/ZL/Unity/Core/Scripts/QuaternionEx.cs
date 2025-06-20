@@ -6,16 +6,25 @@ namespace ZL.Unity
 {
     public static partial class QuaternionEx
     {
-        public static Quaternion LookRotation(Vector3 from, Vector3 to, Axis ignoreAxes)
+        public static bool TryLookRotation(Vector3 from, Vector3 to, Axis ignoreAxes, out Quaternion result)
         {
-            return LookRotation(from, to, Vector3.up, ignoreAxes);
+            return TryLookRotation(from, to, Vector3.up, ignoreAxes, out result);
         }
 
-        public static Quaternion LookRotation(Vector3 from, Vector3 to, Vector3 upwards, Axis ignoreAxes)
+        public static bool TryLookRotation(Vector3 from, Vector3 to, Vector3 upwards, Axis ignoreAxes, out Quaternion result)
         {
             var forward = Vector3Ex.Direction(from, to, ignoreAxes);
 
-            return Quaternion.LookRotation(forward, upwards);
+            if (forward.sqrMagnitude == 0f)
+            {
+                result = Quaternion.identity;
+
+                return false;
+            }
+
+            result = Quaternion.LookRotation(forward, upwards);
+
+            return true;
         }
     }
 }
