@@ -204,9 +204,11 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         }
         else
         {
-            PlayerStatus= originStatus.Clone();
-            PlayerStatus temp =ConstructManager.playerStatus;
-            temp=temp.Clone()+PlayerStatus;
+            //PlayerStatus= originStatus.Clone();
+            PlayerStatus forSum= originStatus.Clone();
+            PlayerStatus constructStatus = ConstructManager.playerStatus; //더하기만 하면 될거고
+            PlayerStatus temp =constructStatus+forSum; // 이게 기본 스탯인데 현재 체력은 
+            temp.currentHealth= PlayerStatus.currentHealth;
             PlayerStatus = temp;
         }
     }
