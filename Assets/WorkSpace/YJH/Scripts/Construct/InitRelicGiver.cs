@@ -50,7 +50,7 @@ namespace YJH
             relicCardScript1.Appear();
             relicCardScript2.Appear();
             relicCardScript3.Appear();
-            Debug.Log("초기 유물 데이터 세팅");
+            //Debug.Log("초기 유물 데이터 세팅");
         }
         public void ActiveRelicCard()
         {
@@ -68,7 +68,7 @@ namespace YJH
         public void SetRelicCard(RelicCard card)
         {
             selectedRelicCardScript= card;
-            Debug.Log("유물 선택됨: "+card.name);
+           // Debug.Log("유물 선택됨: "+card.name);
         }
         public void DeSetRelicCard(RelicCard card)
         {
