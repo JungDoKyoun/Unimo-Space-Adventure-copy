@@ -43,7 +43,10 @@ namespace ZL.Unity
 
         public static void LookTowards(this Rigidbody instance, Vector3 worldPosition, Vector3 upwards, float maxDegreesDelta, Axis ignoreAxes)
         {
-            var targetRotation = QuaternionEx.LookRotation(instance.position, worldPosition, upwards, ignoreAxes);
+            if (QuaternionEx.TryLookRotation(instance.position, worldPosition, upwards, ignoreAxes, out var targetRotation) == false)
+            {
+                return;
+            }
 
             var nextRotation = Quaternion.RotateTowards(instance.rotation, targetRotation, maxDegreesDelta);
 
