@@ -8,8 +8,6 @@ using UnityEngine;
 
 using ZL.Unity.Collections;
 
-using ZL.Unity.IO;
-
 using ZL.Unity.SO.GoogleSheet;
 
 namespace ZL.Unity.Unimo
@@ -26,32 +24,12 @@ namespace ZL.Unity.Unimo
 
         public string Value
         {
-            get => this[Language];
+            get => this[StringTableManager.Instance.TargetLanguage];
         }
 
         public string this[StringTableLanguage key]
         {
             get => table[key];
-        }
-
-        public static StringTableLanguage Language
-        {
-            get => languagePref.Value;
-
-            set => languagePref.Value = value;
-        }
-
-        private static readonly EnumPref<StringTableLanguage> languagePref = new("Language", StringTableLanguage.Korean);
-
-        public static event Action OnLanguageChanged = null;
-
-        [RuntimeInitializeOnLoadMethod]
-
-        private static void Initialize()
-        {
-            languagePref.LoadValue();
-
-            languagePref.OnValueChanged += (x) => OnLanguageChanged?.Invoke();
         }
 
         public override List<string> GetHeaders()

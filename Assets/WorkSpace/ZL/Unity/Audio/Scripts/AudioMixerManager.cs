@@ -44,6 +44,8 @@ namespace ZL.Unity.Audio
 
         [Button(nameof(SaveVolumes))]
 
+        [Margin]
+
         private SerializableDictionary<string, float, FloatPref> parameterPrefs = null;
 
         #if UNITY_EDITOR
@@ -58,13 +60,6 @@ namespace ZL.Unity.Audio
             foreach (var parameterPref in parameterPrefs)
             {
                 parameterPref.Value = Mathf.Clamp01(parameterPref.Value);
-
-                if (Application.isPlaying == false)
-                {
-                    continue;
-                }
-
-                SetVolume(parameterPref.Key, parameterPref.Value);
             }
         }
 

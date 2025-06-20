@@ -162,7 +162,6 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         //PlayerInventoryManager.AddRelic(tempRelic);
 
         ActiveRelic();
-
     }
     private void Update()
     {

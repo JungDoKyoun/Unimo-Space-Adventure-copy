@@ -114,7 +114,10 @@ namespace ZL.Unity.Unimo
 
         protected override void OnDisable()
         {
-            StringTable.OnLanguageChanged -= Refresh;
+            if (StringTableManager.Instance != null)
+            {
+                StringTableManager.Instance.OnLanguageChanged -= Refresh;
+            }
 
             base.OnDisable();
         }
@@ -136,7 +139,7 @@ namespace ZL.Unity.Unimo
 
             Refresh();
 
-            StringTable.OnLanguageChanged += Refresh;
+            StringTableManager.Instance.OnLanguageChanged += Refresh;
 
             base.Appear();
         }
