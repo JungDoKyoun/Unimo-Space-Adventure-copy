@@ -163,9 +163,6 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         ActiveRelic();
 
-        ShowStatusDebug();
-
-        
     }
     private void Update()
     {
