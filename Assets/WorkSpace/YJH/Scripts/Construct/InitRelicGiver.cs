@@ -27,12 +27,14 @@ namespace YJH
             {
                 return;
             }
+            SetRelicData();
             relicCardScript1.OnSelectAction += SetRelicCard;
             relicCardScript2.OnSelectAction += SetRelicCard;
             relicCardScript3.OnSelectAction += SetRelicCard;
-            relicCardScript1.OnDeselectAction += DeSetRelicCard;
-            relicCardScript2.OnDeselectAction += DeSetRelicCard;
-            relicCardScript3.OnDeselectAction += DeSetRelicCard;
+            //relicCardScript1.OnDeselectAction += DeSetRelicCard;
+            //relicCardScript2.OnDeselectAction += DeSetRelicCard;
+            //relicCardScript3.OnDeselectAction += DeSetRelicCard;
+            
         }
 
         
@@ -45,7 +47,7 @@ namespace YJH
             relicCardScript1.Initialize(relicDatas[0]);
             relicCardScript2.Initialize(relicDatas[1]);
             relicCardScript3.Initialize(relicDatas[2]);
-            //Debug.Log("SetRelic");
+            Debug.Log("초기 유물 데이터 세팅");
         }
         public void ActiveRelicCard()
         {
@@ -63,6 +65,7 @@ namespace YJH
         public void SetRelicCard(RelicCard card)
         {
             selectedRelicCardScript= card;
+            Debug.Log("유물 선택됨: "+card.name);
         }
         public void DeSetRelicCard(RelicCard card)
         {

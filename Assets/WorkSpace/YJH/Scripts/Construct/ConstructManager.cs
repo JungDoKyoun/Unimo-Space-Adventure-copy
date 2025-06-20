@@ -592,6 +592,7 @@ public class ConstructManager : MonoBehaviour
     
     public void ActiveInitRelic()
     {
+
         initRelicUI.SetActive(true);
     }
     public void DeactiveInitRelic()

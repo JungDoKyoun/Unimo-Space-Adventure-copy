@@ -1,7 +1,8 @@
 using JDG;
 
 using System.Collections;
-
+//using System.Diagnostics;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 using ZL.Unity.Unimo;
@@ -146,9 +147,8 @@ namespace YJH
 
         public static void GiveStartRelicA()
         {
-            InitRelicGiver.Instance?.SetRelicData();
-
-            //Debug.Log("startRelic");
+            ConstructManager.Instance?.ActiveInitRelic();
+            Debug.Log("시작시 유물 지급 건물 작동");
         }
 
         public static void ResurrectA()//이건 어케 하지?
