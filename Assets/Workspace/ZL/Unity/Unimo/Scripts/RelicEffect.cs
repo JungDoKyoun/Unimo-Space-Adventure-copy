@@ -14,7 +14,7 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private RelicEffectType type;
+        private RelicEffectType type = RelicEffectType.None;
 
         public RelicEffectType Type
         {
@@ -23,30 +23,26 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private float value;
+        private float value = 0f;
 
         public float Value
         {
             get => value;
         }
 
-        private List<object> args = null;
+        private object[] args = null;
 
-        public List<object> Args
+        public object[] Args
         {
             get
             {
                 if (args == null)
                 {
-                    args = new()
-                    {
-                        RelicEffectStringTableSheet.Instance[type].Value
-                    };
+                    args = new object[2];
 
-                    if (value != 0f)
-                    {
-                        args.Add(value);
-                    }
+                    args[0] = RelicEffectStringTableSheet.Instance[type].Value;
+
+                    args[1] = value;
                 }
 
                 return args;
@@ -68,6 +64,11 @@ namespace ZL.Unity.Unimo
         public override string ToString()
         {
             return $"{(int)type}, {value}";
+        }
+
+        public void Refresh()
+        {
+            Args[0] = RelicEffectStringTableSheet.Instance[type].Value;
         }
     }
 }

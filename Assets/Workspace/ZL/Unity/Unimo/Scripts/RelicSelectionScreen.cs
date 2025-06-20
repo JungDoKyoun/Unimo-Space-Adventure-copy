@@ -115,7 +115,7 @@ namespace ZL.Unity.Unimo
 
                 relicCard.OnDeselectAction += DeselectRelicCard;
 
-                relicCard.gameObject.SetActive(true);
+                relicCard.Appear();
             }
         }
 

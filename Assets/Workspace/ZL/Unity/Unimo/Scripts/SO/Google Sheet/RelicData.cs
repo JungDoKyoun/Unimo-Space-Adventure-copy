@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using UnityEngine;
-
 using ZL.CS.Collections;
 
 using ZL.Unity.SO.GoogleSheet;
@@ -66,20 +65,14 @@ namespace ZL.Unity.Unimo
 
                     for (int i = 0; i < effects.Length; ++i)
                     {
-                        length += Effects[i].Args.Count;
+                        length += effects[i].Args.Length;
                     }
 
                     effectsArgs = new object[length];
 
-                    int index = 0;
+                    Refresh();
 
-                    for (int i = 0; i < effects.Length; ++i)
-                    {
-                        for (int j = 0; j < Effects[i].Args.Count; ++j)
-                        {
-                            effectsArgs[index++] = Effects[i].Args[j];
-                        }
-                    }
+                    //StringTable.OnLanguageChanged += Refresh;
                 }
 
                 return effectsArgs;
@@ -127,6 +120,20 @@ namespace ZL.Unity.Unimo
 
                 string.Join('\n', effects.Select((relicEffect) => relicEffect.ToString())),
             };
+        }
+
+        public void Refresh()
+        {
+            int k = 0;
+
+            for (int i = 0; i < effects.Length; ++i)
+            {
+                effects[i].Refresh();
+
+                EffectsArgs[k] = effects[i].Args[0];
+
+                k += effects[i].Args.Length;
+            }
         }
     }
 }

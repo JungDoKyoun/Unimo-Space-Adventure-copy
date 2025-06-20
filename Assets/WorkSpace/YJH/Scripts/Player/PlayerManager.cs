@@ -3,7 +3,6 @@ using JDG;
 using Photon.Pun;
 
 using UnityEngine;
-
 using ZL.CS.Singleton;
 
 using ZL.Unity;
@@ -11,7 +10,7 @@ using ZL.Unity;
 using ZL.Unity.Phys;
 
 using ZL.Unity.Unimo;
-
+using UnityEngine.SceneManagement;
 public partial class PlayerManager : ISingleton<PlayerManager>
 {
     public static PlayerManager Instance
@@ -49,7 +48,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
             else
             {
                 playerStatus = value;
-
+                OnHealthChanged?.Invoke(playerStatus.currentHealth);
                 //Debug.Log("set");
             }
         } 
@@ -74,6 +73,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
             playerSpellType?.SetPlayer(selfManager);
         }
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
         //selfManager = this;
     }
@@ -81,14 +81,66 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     private void OnDestroy()
     {
         ISingleton<PlayerManager>.Release(this);
+        playerOwnEnergy = 0;
 
+        isGatheringCoroutineWork = false;
+
+        isSkillRejectActive = false;
+
+        isItemNear = false;
+
+        isGathering = false;
         if (selfManager == this)
         {
             selfManager = null;
         }
+        OnTargetObjectSet -= GatheringItem;
+        SceneManager.sceneLoaded -= OnSceneLoaded;  
     }
-
+    private void OnDisable()
+    {
+        ResetPlayer();
+    }
     private void Start()
+    {
+        //if (playerSpellType == null)
+        //{
+        //    SetSpellType(new Dash());
+        //
+        //    playerSpellType.InitSpell();
+        //}
+        //
+        //if (GameStateManager.IsClear == false)
+        //{
+        //    ResetPlayer();
+        //}
+        //
+        //ActionStart();
+        //
+        //MoveStart();
+        //
+        ////ConstructManager.SetFinalStatusToPlayer();
+        //
+        ////PlayerInventoryManager.AddRelic(tempRelic);
+        //
+        //ActiveRelic();
+        //
+        //ShowStatusDebug();
+        //
+        ////기획 의도를 보니 이 코드는 조정이 필요함 한 스테이지에서 까인 체력은 안돌아오는듯?
+        ////currentHealth = maxHP;
+        //
+        ////SetPlayerStatus(playerStatus);
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name != "Station") // 혹은 scene.buildIndex == ...
+        {
+            Debug.Log("B 씬 진입: 강제 초기화 실행");
+            OnEnable();
+        }
+    }
+    private void OnEnable()
     {
         if (playerSpellType == null)
         {
@@ -97,10 +149,9 @@ public partial class PlayerManager : ISingleton<PlayerManager>
             playerSpellType.InitSpell();
         }
 
-        if (GameStateManager.IsClear == false)
-        {
-            ResetPlayer();
-        }
+        
+        ResetPlayer();
+        
 
         ActionStart();
 
@@ -112,14 +163,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         ActiveRelic();
 
-        ShowStatusDebug();
-
-        //기획 의도를 보니 이 코드는 조정이 필요함 한 스테이지에서 까인 체력은 안돌아오는듯?
-        //currentHealth = maxHP;
-
-        //SetPlayerStatus(playerStatus);
     }
-
     private void Update()
     {
         ActionUpdate();
@@ -149,9 +193,21 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         //Debug.Log(originStatus.Clone().playerDamage);
     }
+    public void ShowStatusDebug(PlayerStatus status)
+    {
+        Debug.Log("현재 체력"+status.currentHealth+"\n원본 : "+ originStatus.Clone().currentHealth);
 
+        Debug.Log("최대 체력" + status.maxHealth + "\n원본 : " + originStatus.Clone().maxHealth);
+
+        Debug.Log("채집 간격" + status.gatheringDelay + "\n원본 : " + originStatus.Clone().gatheringDelay);
+
+        Debug.Log("채집 파워" + status.gatheringSpeed + "\n원본 : " + originStatus.Clone().gatheringSpeed);
+
+        Debug.Log("데미지" + status.playerDamage + "\n원본 : " + originStatus.Clone().playerDamage);
+    }
     private void ResetPlayer()
     {
+        //Debug.Log("플레이어 리셋");
         playerOwnEnergy = 0;
 
         isGatheringCoroutineWork = false;
@@ -162,15 +218,20 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         isGathering = false;
 
-        //playerSpellType.SetState(false);
+        
 
-        playerSpellType = null;
-
-        if (ConstructManager.IsBuildEffectAplly == false)
+        if (ConstructManager.IsBuildEffectAplly == false)//건설 매니저 없이 시작할때
         {
             PlayerStatus=originStatus.Clone();
 
-            ShowStatusDebug();
+        }
+        else
+        {
+            
+            PlayerStatus temp = ConstructManager.playerStatus; //건설 매니저에서 기본적으로 대입식으로 바꿔서 playerStatusclone을 가지고 있었음     
+            temp.currentHealth= PlayerStatus.currentHealth;
+            //ShowStatusDebug(temp);
+            PlayerStatus = temp;
         }
     }
     public static void ActiveRelic()
