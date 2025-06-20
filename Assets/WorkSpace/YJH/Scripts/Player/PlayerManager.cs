@@ -3,7 +3,6 @@ using JDG;
 using Photon.Pun;
 
 using UnityEngine;
-
 using ZL.CS.Singleton;
 
 using ZL.Unity;
@@ -11,7 +10,7 @@ using ZL.Unity;
 using ZL.Unity.Phys;
 
 using ZL.Unity.Unimo;
-
+using UnityEngine.SceneManagement;
 public partial class PlayerManager : ISingleton<PlayerManager>
 {
     public static PlayerManager Instance
@@ -74,8 +73,8 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
             playerSpellType?.SetPlayer(selfManager);
         }
-        
-       
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         //selfManager = this;
     }
 
@@ -96,6 +95,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
             selfManager = null;
         }
         OnTargetObjectSet -= GatheringItem;
+        SceneManager.sceneLoaded -= OnSceneLoaded;  
     }
     private void OnDisable()
     {
@@ -131,6 +131,14 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         ////currentHealth = maxHP;
         //
         ////SetPlayerStatus(playerStatus);
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name != "Station") // 혹은 scene.buildIndex == ...
+        {
+            Debug.Log("B 씬 진입: 강제 초기화 실행");
+            OnEnable();
+        }
     }
     private void OnEnable()
     {
