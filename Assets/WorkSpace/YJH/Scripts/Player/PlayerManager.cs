@@ -49,7 +49,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
             else
             {
                 playerStatus = value;
-
+                OnHealthChanged?.Invoke(playerStatus.currentHealth);
                 //Debug.Log("set");
             }
         } 
@@ -212,18 +212,18 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         {
             PlayerStatus=originStatus.Clone();
 
-            ShowStatusDebug(PlayerStatus);
-            Debug.Log("건설 효과 적용 없음");
+            //ShowStatusDebug(PlayerStatus);
+            //Debug.Log("건설 효과 적용 없음");
         }
         else
         {
-            Debug.Log("건설 효과 적용 있음");
+            //Debug.Log("건설 효과 적용 있음");
             //PlayerStatus= originStatus.Clone();
             
             
             PlayerStatus temp = ConstructManager.playerStatus; //건설 매니저에서 기본적으로 대입식으로 바꿔서 playerStatusclone을 가지고 있었음     
             temp.currentHealth= PlayerStatus.currentHealth;
-            ShowStatusDebug(temp);
+            //ShowStatusDebug(temp);
             PlayerStatus = temp;
         }
     }
