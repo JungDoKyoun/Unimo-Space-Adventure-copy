@@ -72,7 +72,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
             playerSpellType?.SetPlayer(selfManager);
         }
-        ConstructManager.SetFinalStatusToPlayer();
+        //ConstructManager.SetFinalStatusToPlayer();
         SceneManager.sceneLoaded += OnSceneLoaded;
         //OnHealthChanged += DebugHealth;
         //selfManager = this;
@@ -224,7 +224,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         //Debug.Log(originStatus.Clone().playerDamage);
     }
-    public void ShowStatusDebug(PlayerStatus status)
+    public static void ShowStatusDebug(PlayerStatus status)
     {
         Debug.Log("현재 체력"+status.currentHealth+"\n원본 : "+ originStatus.Clone().currentHealth);
 
@@ -252,43 +252,110 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         canMove = true;
         IsOnHit = false;
         targetObject = null;    
-        //스탯 초기화
-        if (ConstructManager.IsBuildEffectAplly == false)//건설 매니저 없이 시작할때
-        {
-            PlayerStatus=originStatus.Clone();
-            ActiveRelic();
-            Debug.Log("플레이어 건설 효과 미적용");
-            
-        }
-        else
-        {
-            
-            //라운드 종료시 체력
-            //PlayerStatus temp = new PlayerStatus(); //건설효과 + 플레이어 기본 스테이터스
-            PlayerStatus = ConstructManager.playerStatus;
-            Debug.Log("플레이어 건설 효과 적용");
-            ShowStatusDebug(PlayerStatus);
-            
-            
-            
-            ActiveRelic();
-            PlayerStatus temp = PlayerStatus.Clone();
-            temp.currentHealth-=gainDemage;
-            PlayerStatus = temp;
-            ShowStatusDebug(PlayerStatus);
-            
-            //PlayerStatus = temp;
-            ShowStatusDebug(PlayerStatus);
-            
-        }
+        //스탯 초기화 필요할 까?
+        
         if (gatheringCoroutine != null)
         {
             StopCoroutine(gatheringCoroutine);
         }
-        
+        Debug.Log("플레이어 리셋후 문구:");
         ShowStatusDebug(PlayerStatus);
     }
-    public static void ActiveRelic()
+    public static void ResetStatus()
+    {
+        if (ConstructManager.IsBuildEffectAplly == false)//건설 매니저 없이 시작할때
+        {
+            PlayerStatus = originStatus.Clone();
+            //ActiveRelic();
+            Debug.Log("플레이어 건설 효과 미적용");
+
+        }
+        else
+        {
+
+            //라운드 종료시 체력
+            //PlayerStatus temp = new PlayerStatus(); //건설효과 + 플레이어 기본 스테이터스
+            PlayerStatus = ConstructManager.playerStatus;//이게 건설 매니저의 setfinalstatusto player랑 다를게 없다
+            Debug.Log("플레이어 건설 효과 적용");
+
+            //ActiveRelic();
+            PlayerStatus temp = PlayerStatus.Clone();
+            temp.currentHealth -= gainDemage;
+            PlayerStatus = temp;
+
+            //PlayerStatus = temp;
+            Debug.Log("플레이어 스탯 초기화 후 문구:");
+            ShowStatusDebug(PlayerStatus);
+
+        }
+    }
+    //public static void ActiveRelic()
+    //{
+    //    //isFirstRelicActive = false;
+    //    //Debug.Log("try use relic");
+    //
+    //    //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
+    //
+    //    PlayerStatus temp = PlayerStatus.Clone();
+    //
+    //    foreach (var relic in PlayerInventoryManager.RelicDatas)
+    //    {
+    //        //Debug.Log("relic data exist");
+    //        foreach (var relicEffect in relic.Effects)
+    //        {
+    //            //Debug.Log("relic effect exist");
+    //            switch (relicEffect.Type)
+    //            {
+    //                case ZL.Unity.Unimo.RelicEffectType.AttackPower:
+    //                    
+    //                    temp=PlayerStatus.Clone();
+    //
+    //                    temp.playerDamage += relicEffect.Value;
+    //
+    //                    PlayerStatus = temp;
+    //
+    //                    //Debug.Log(PlayerStatus.playerDamage);
+    //
+    //                    break;
+    //
+    //                case ZL.Unity.Unimo.RelicEffectType.MaxHealth:
+    //
+    //                    temp = PlayerStatus.Clone();
+    //                    
+    //                    temp.currentHealth += relicEffect.Value;
+    //                    
+    //                    temp.maxHealth += relicEffect.Value;
+    //
+    //                    
+    //
+    //                    PlayerStatus = temp;
+    //                    
+    //                    // Debug.Log(PlayerStatus.maxHealth);
+    //
+    //                    break;
+    //
+    //                case ZL.Unity.Unimo.RelicEffectType.MovementSpeed:
+    //
+    //                    temp = PlayerStatus.Clone();
+    //
+    //                    temp.moveSpeed += relicEffect.Value;
+    //
+    //                    PlayerStatus= temp;
+    //
+    //                    Debug.Log("속도 유물 적용");
+    //
+    //                    break;
+    //
+    //                default:
+    //                    
+    //                    Debug.Log("no exist relic type");
+    //
+    //                    break;
+    //            }
+    //        }
+    //    }
+    //}
+    public static void DeactiveRelic(RelicData relicData)
     {
         //isFirstRelicActive = false;
         //Debug.Log("try use relic");
@@ -297,17 +364,81 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         PlayerStatus temp = PlayerStatus.Clone();
 
-        foreach (var relic in PlayerInventoryManager.RelicDatas)
-        {
+        
             //Debug.Log("relic data exist");
-            foreach (var relicEffect in relic.Effects)
+            foreach (var relicEffect in relicData.Effects)
             {
                 //Debug.Log("relic effect exist");
                 switch (relicEffect.Type)
                 {
                     case ZL.Unity.Unimo.RelicEffectType.AttackPower:
-                        
-                        temp=PlayerStatus.Clone();
+
+                        temp = PlayerStatus.Clone();
+
+                        temp.playerDamage -= relicEffect.Value;
+
+                        PlayerStatus = temp;
+
+                        //Debug.Log(PlayerStatus.playerDamage);
+
+                        break;
+
+                    case ZL.Unity.Unimo.RelicEffectType.MaxHealth:
+
+                        temp = PlayerStatus.Clone();
+
+                        temp.currentHealth -= relicEffect.Value;
+
+                        temp.maxHealth += relicEffect.Value;
+
+
+
+                        PlayerStatus = temp;
+
+                        // Debug.Log(PlayerStatus.maxHealth);
+
+                        break;
+
+                    case ZL.Unity.Unimo.RelicEffectType.MovementSpeed:
+
+                        temp = PlayerStatus.Clone();
+
+                        temp.moveSpeed -= relicEffect.Value;
+
+                        PlayerStatus = temp;
+
+                        //Debug.Log("속도 유물 적용");
+
+                        break;
+
+                    default:
+
+                        Debug.Log("no exist relic type");
+
+                        break;
+                }
+            }
+        
+    }
+    public static void ActiveRelic(RelicData relicData)
+    {
+        //isFirstRelicActive = false;
+        Debug.Log("try use relic");
+
+        //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
+
+        PlayerStatus temp = PlayerStatus.Clone();
+
+        
+            //Debug.Log("relic data exist");
+            foreach (var relicEffect in relicData.Effects)
+            {
+                //Debug.Log("relic effect exist");
+                switch (relicEffect.Type)
+                {
+                    case ZL.Unity.Unimo.RelicEffectType.AttackPower:
+
+                        temp = PlayerStatus.Clone();
 
                         temp.playerDamage += relicEffect.Value;
 
@@ -320,15 +451,15 @@ public partial class PlayerManager : ISingleton<PlayerManager>
                     case ZL.Unity.Unimo.RelicEffectType.MaxHealth:
 
                         temp = PlayerStatus.Clone();
-                        
+
                         temp.currentHealth += relicEffect.Value;
-                        
+
                         temp.maxHealth += relicEffect.Value;
 
-                        
+
 
                         PlayerStatus = temp;
-                        
+
                         // Debug.Log(PlayerStatus.maxHealth);
 
                         break;
@@ -339,20 +470,21 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
                         temp.moveSpeed += relicEffect.Value;
 
-                        PlayerStatus= temp;
+                        PlayerStatus = temp;
 
-                        Debug.Log("속도 유물 적용");
+                        //Debug.Log("속도 유물 적용");
 
                         break;
 
                     default:
-                        
-                        Debug.Log("no exist relic type");
+
+                        //Debug.Log("no exist relic type");
 
                         break;
                 }
             }
-        }
+        Debug.Log("유물 활성화 종료");
+        ShowStatusDebug(PlayerStatus);
     }
 
     private void OnTriggerEnter(Collider other)

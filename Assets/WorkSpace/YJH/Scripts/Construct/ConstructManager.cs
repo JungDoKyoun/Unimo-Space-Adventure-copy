@@ -380,16 +380,12 @@ public class ConstructManager : MonoBehaviour
     {
         panel.SetActive(false);
     }
-    //public void TempGameStart()
-    //{
-    //    SetPlayer();
-    //    PlayerManager.SetSpellType(new Dash());
-    //    SceneManager.LoadScene("TestScene");
-    //    
-    //}
+   
+
     public void GameStartButtonPressed()
     {
         SetPlayer();
+        PlayerManager.ResetStatus();
         //PlayerManager.SetSpellType(new Dash());//나중에 combat계열 제작시 변경 필요
         if (isGiveStartRellic == true)
         {
@@ -609,7 +605,7 @@ public class ConstructManager : MonoBehaviour
         
         
     }
-    public static void SetFinalStatusToPlayer()
+    public static void SetFinalStatusToPlayer()//이거 하나 확인
     {
         PlayerManager.PlayerStatus=playerStatus;//후일 초기화 생각하면 대입이 맞을듯
         Debug.Log("건설매니저 효과 적용");

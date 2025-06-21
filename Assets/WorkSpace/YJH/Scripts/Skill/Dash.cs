@@ -142,11 +142,11 @@ public class Dash : ISpellType,IStackSpell
         skillInfo = Resources.Load<StackSpellScriptableObject>("PlayerSkillSO/Dash");
         if(skillInfo == null)
         {
-            Debug.Log("스킬 정보 받아오기 실패");
+            //Debug.Log("스킬 정보 받아오기 실패");
         }
         else
         {
-            Debug.Log("스킬 정보 존재함");
+           // Debug.Log("스킬 정보 존재함");
         }
             chargeTimer = 0;
     }
