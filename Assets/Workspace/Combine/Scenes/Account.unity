@@ -10954,6 +10954,80 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1924612788}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1934025172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1934025174}
+  - component: {fileID: 1934025173}
+  m_Layer: 0
+  m_Name: Fake Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1934025173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934025172}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c180452cbc5998d4f8370e1728ad93bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gatheringAuraPlane: {fileID: 0}
+  gatheringEffect: {fileID: 0}
+  gatheringAudioClip: {fileID: 0}
+  gatheringAudioSource: {fileID: 0}
+  itemLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  tempAttackPrefab: {fileID: 0}
+  progressBarCircle: {fileID: 0}
+  progressBarText: {fileID: 0}
+  skillRejectText: {fileID: 0}
+  detectCollider: {fileID: 0}
+  playerCharacterBody: {fileID: 0}
+  moveSoundSource: {fileID: 0}
+  moveSoundClip: {fileID: 0}
+  isMoveSoundPlay: 0
+  rotateSpeed: 10
+  isGathering: 0
+  isStunning: 0
+  canMove: 1
+  onHitTime: 1
+  onHitBlinkTime: 0.1
+  cartRenderer: {fileID: 0}
+  bodyRenderer: {fileID: 0}
+  faceRenderer: {fileID: 0}
+  hitEffect: {fileID: 0}
+  mainCollider: {fileID: 0}
+--- !u!4 &1934025174
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934025172}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.54, y: 3.18, z: 12.98}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1944157652
 GameObject:
   m_ObjectHideFlags: 0
@@ -12183,3 +12257,4 @@ SceneRoots:
   - {fileID: 1016507062}
   - {fileID: 7914627356901316133}
   - {fileID: 2172005645993260731}
+  - {fileID: 1934025174}
