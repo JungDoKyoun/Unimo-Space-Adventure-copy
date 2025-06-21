@@ -61,7 +61,7 @@ namespace ZL.Unity.Unimo
             }
 
             relicDatas.Add(relicData);
-
+            PlayerManager.ActiveRelic(relicData);
             if (ScoreManager.Instance != null)
             {
                 ScoreManager.Instance.CountGetItem(relicData.Score);
@@ -78,7 +78,7 @@ namespace ZL.Unity.Unimo
             }
 
             relicDatas.Remove(relicData);
-
+            PlayerManager.DeactiveRelic(relicData);
             FixedDebug.Log($"{relicData.name} ¿“¿Ω");
         }
     }
