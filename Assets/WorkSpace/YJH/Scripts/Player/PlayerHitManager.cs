@@ -124,7 +124,7 @@ public partial class PlayerManager : IDamageable
     public void TakeDamage(float damage, Vector3 contact)
     {
         isOnHit = true;
-        //Debug.Log("데미지 받음");
+        Debug.Log("데미지 받음");
         
         PlayHitEffect(contact);
         

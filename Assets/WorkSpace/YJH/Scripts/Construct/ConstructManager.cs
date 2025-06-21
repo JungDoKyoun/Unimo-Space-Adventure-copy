@@ -11,6 +11,7 @@ using Unity.VisualScripting;
 using ZL.Unity.Unimo;
 using JDG;
 using ZL.CS.Singleton;
+using YJH;
 
 public class ConstructManager : MonoBehaviour
 {
@@ -90,19 +91,20 @@ public class ConstructManager : MonoBehaviour
         SetAllDic();
         SetImagePriorityDicNum();
         SetAllConstructImages();
+        //GameStateManager.IsClear = true;// 버그 터짐 이거 말고 다른 방법 써야 할듯
         
-        if (isDelinkON == false)
-        {
-            PlayerManager.OnStageFail += YJH.MethodCollection.DelinkHealPlayer;
-            PlayerManager.OnStageFail += ResetApplyBuildEffect;
-            
-            isDelinkON =true;
-        }
-
+        PlayerManager.OnStageFail += YJH.MethodCollection.DelinkHealPlayer;
+        PlayerManager.OnStageFail += ResetApplyBuildEffect;
         DontDestroyOnLoad(gameObject);  
     }
 
-    
+    private void Update()
+    {
+        if (GameStateManager.IsClear == false)
+        {
+            ResetApplyBuildEffect();
+        }
+    }
 
     //private void Start()
     //{
@@ -384,17 +386,24 @@ public class ConstructManager : MonoBehaviour
     }
    
 
-    public void GameStartButtonPressed()
+    public void GameStartButtonPressed()//현재 플레이어 사망 후 돌아가면 건설 UI가 열리지 않음 아마 오류로 인해서 그런듯?
     {
+        Debug.Log("플레이어에게 건설효과 적용 여부:" + isBuildEffectAplly);
         SetPlayer();
         PlayerManager.ResetStatus();
+        Debug.Log("건설매니저가 스탯 초기화 시킴");
+        InitRelicGiver.Instance.SetRelicData();
         //PlayerManager.SetSpellType(new Dash());//나중에 combat계열 제작시 변경 필요
         if (isGiveStartRellic == true)
         {
             ActiveInitRelic();
         }
-        DeactiveBasePanel();
+        
         //SceneManager.LoadScene("TestScene");
+    }
+    public void EndConstructButtonPressed()
+    {
+        DeactiveBasePanel();
     }
     public void DeactiveBasePanel()
     {
@@ -402,6 +411,7 @@ public class ConstructManager : MonoBehaviour
     }
     public void ActiveBasePanel()
     {
+        Debug.Log("건설 화면 등장");
         basePanel.SetActive(true);
     }
 
@@ -488,11 +498,18 @@ public class ConstructManager : MonoBehaviour
     {
         if (isBuildEffectAplly == false)//static 변수를 통해서 초기화 조절
         {
-            Debug.Log("플레이어 세팅");
+            Debug.Log("건설매니저가 플레이어 세팅");
             playerStatus = PlayerManager.OriginStatus.Clone();
             ActiveBuildEffect();
             isBuildEffectAplly = true;
         }
+        //if (GameStateManager.IsClear==false)//static 변수를 통해서 초기화 조절
+        //{
+        //    Debug.Log("플레이어 세팅");
+        //    playerStatus = PlayerManager.OriginStatus.Clone();
+        //    ActiveBuildEffect();
+        //    isBuildEffectAplly = true;
+        //}
         //SetFinalStatusToPlayer();
     }
 
@@ -617,6 +634,7 @@ public class ConstructManager : MonoBehaviour
     public void ActiveInitRelic()
     {
         initRelicUI.SetActive(true);
+        isGiveStartRellic = false;
         if (UIManager.Instance != null)
         {
             UIManager.Instance.IsUIOpen = true;

@@ -25086,7 +25086,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4986242007553043429}
         m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
-        m_MethodName: GameStartButtonPressed
+        m_MethodName: EndConstructButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -28546,6 +28546,7 @@ MonoBehaviour:
     gatheringSpeed: 5
     gatheringDelay: 1
     moveSpeed: 4
+  isGiveStartRellic: 0
   attackPrefabs:
   - {fileID: 7503936081269918129, guid: 07c22d31208dbd6418c693b8554433d7, type: 3}
   initRelicUI: {fileID: 3490026672898235830}

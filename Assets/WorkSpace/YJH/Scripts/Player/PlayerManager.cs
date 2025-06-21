@@ -104,7 +104,8 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     }
     private void OnDisable()
     {
-        //ResetPlayer();
+        ConstructManager.Instance.ResetApplyBuildEffect();
+        Debug.Log("건설 효과 적용 여부 초기화 실행");
     }
     private void Start()
     {
@@ -239,7 +240,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     }
     private void ResetPlayer()
     {
-        Debug.Log("플레이어 리셋");
+        //Debug.Log("플레이어 리셋");
         playerOwnEnergy = 0;
 
         isGatheringCoroutineWork = false;
@@ -262,8 +263,8 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         {
             StopCoroutine(gatheringCoroutine);
         }
-        Debug.Log("플레이어 리셋후 문구:");
-        ShowStatusDebug(PlayerStatus);
+        //Debug.Log("플레이어 리셋후 문구:");
+        //ShowStatusDebug(PlayerStatus);
     }
     public static void ResetStatus()
     {
@@ -293,6 +294,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         }
     }
+    
     //public static void ActiveRelic()
     //{
     //    //isFirstRelicActive = false;

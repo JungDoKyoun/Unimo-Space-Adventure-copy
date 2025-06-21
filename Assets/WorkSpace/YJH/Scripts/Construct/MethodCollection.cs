@@ -148,7 +148,7 @@ namespace YJH
 
         public static void GiveStartRelicA()
         {
-            ConstructManager.Instance?.ActiveInitRelic();
+            ConstructManager.Instance.isGiveStartRellic=true;
             //Debug.Log("시작시 유물 지급 건물 작동");
         }
 
