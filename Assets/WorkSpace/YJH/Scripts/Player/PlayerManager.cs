@@ -251,7 +251,11 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         isGathering = false;
         canMove = true;
         IsOnHit = false;
-        targetObject = null;    
+        targetObject = null;
+        if (playerSpellType != null)
+        {
+            playerSpellType.SetState(false);
+        }
         //스탯 초기화 필요할 까?
         
         if (gatheringCoroutine != null)

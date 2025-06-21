@@ -95,8 +95,10 @@ public class ConstructManager : MonoBehaviour
         {
             PlayerManager.OnStageFail += YJH.MethodCollection.DelinkHealPlayer;
             PlayerManager.OnStageFail += ResetApplyBuildEffect;
+            
             isDelinkON =true;
         }
+
         DontDestroyOnLoad(gameObject);  
     }
 
