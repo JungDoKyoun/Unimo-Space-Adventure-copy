@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Energy Item (Pooled)")]
+    [AddComponentMenu("ZL/Unimo/Energy Item (Spawned)")]
 
     public sealed class EnergyItem : Item
     {

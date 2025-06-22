@@ -3,6 +3,7 @@ using JDG;
 using Photon.Pun;
 
 using UnityEngine;
+
 using ZL.CS.Singleton;
 
 using ZL.Unity;
@@ -10,7 +11,9 @@ using ZL.Unity;
 using ZL.Unity.Phys;
 
 using ZL.Unity.Unimo;
+
 using UnityEngine.SceneManagement;
+
 public partial class PlayerManager : ISingleton<PlayerManager>
 {
     public static PlayerManager Instance
@@ -48,7 +51,9 @@ public partial class PlayerManager : ISingleton<PlayerManager>
             else
             {
                 playerStatus = value;
+
                 OnHealthChanged?.Invoke(playerStatus.currentHealth);
+
                 //Debug.Log("set");
             }
         } 
@@ -73,6 +78,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
             playerSpellType?.SetPlayer(selfManager);
         }
+
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         //selfManager = this;
@@ -81,6 +87,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     private void OnDestroy()
     {
         ISingleton<PlayerManager>.Release(this);
+
         playerOwnEnergy = 0;
 
         isGatheringCoroutineWork = false;
@@ -90,56 +97,65 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         isItemNear = false;
 
         isGathering = false;
+
         if (selfManager == this)
         {
             selfManager = null;
         }
+
         OnTargetObjectSet -= GatheringItem;
+
         SceneManager.sceneLoaded -= OnSceneLoaded;  
     }
+
     private void OnDisable()
     {
         ResetPlayer();
     }
-    private void Start()
+
+    /*private void Start()
     {
-        //if (playerSpellType == null)
-        //{
-        //    SetSpellType(new Dash());
-        //
-        //    playerSpellType.InitSpell();
-        //}
-        //
-        //if (GameStateManager.IsClear == false)
-        //{
-        //    ResetPlayer();
-        //}
-        //
-        //ActionStart();
-        //
-        //MoveStart();
-        //
-        ////ConstructManager.SetFinalStatusToPlayer();
-        //
-        ////PlayerInventoryManager.AddRelic(tempRelic);
-        //
-        //ActiveRelic();
-        //
-        //ShowStatusDebug();
-        //
-        ////기획 의도를 보니 이 코드는 조정이 필요함 한 스테이지에서 까인 체력은 안돌아오는듯?
-        ////currentHealth = maxHP;
-        //
-        ////SetPlayerStatus(playerStatus);
-    }
+        if (playerSpellType == null)
+        {
+            SetSpellType(new Dash());
+
+            playerSpellType.InitSpell();
+        }
+
+        if (GameStateManager.IsClear == false)
+        {
+            ResetPlayer();
+        }
+
+        ActionStart();
+
+        MoveStart();
+
+        //ConstructManager.SetFinalStatusToPlayer();
+
+        //PlayerInventoryManager.AddRelic(tempRelic);
+
+        ActiveRelic();
+
+        ShowStatusDebug();
+
+        //기획 의도를 보니 이 코드는 조정이 필요함 한 스테이지에서 까인 체력은 안돌아오는듯?
+        //currentHealth = maxHP;
+
+        //SetPlayerStatus(playerStatus);
+    }*/
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name != "Station") // 혹은 scene.buildIndex == ...
+        // 혹은 scene.buildIndex == ...
+        if (scene.name != "Station")
         {
             Debug.Log("B 씬 진입: 강제 초기화 실행");
+
             OnEnable();
         }
     }
+
     private void OnEnable()
     {
         if (playerSpellType == null)
@@ -149,9 +165,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
             playerSpellType.InitSpell();
         }
 
-        
         ResetPlayer();
-        
 
         ActionStart();
 
@@ -163,6 +177,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         ActiveRelic();
     }
+
     private void Update()
     {
         ActionUpdate();
@@ -170,29 +185,30 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         MoveUpdate();
     }
 
-    public void ShowStatusDebug()
+    /*public void ShowStatusDebug()
     {
-        //Debug.Log(playerStatus.currentHealth);
+        Debug.Log(playerStatus.currentHealth);
 
-        //Debug.Log(playerStatus.maxHealth);
+        Debug.Log(playerStatus.maxHealth);
 
-        //Debug.Log(playerStatus.gatheringDelay);
+        Debug.Log(playerStatus.gatheringDelay);
 
-        //Debug.Log(playerStatus.gatheringSpeed);
+        Debug.Log(playerStatus.gatheringSpeed);
 
-        //Debug.Log(playerStatus.playerDamage);
+        Debug.Log(playerStatus.playerDamage);
 
-        //Debug.Log(originStatus.Clone().currentHealth);
+        Debug.Log(originStatus.Clone().currentHealth);
 
-        //Debug.Log(originStatus.Clone().maxHealth);
+        Debug.Log(originStatus.Clone().maxHealth);
 
-        //Debug.Log(originStatus.Clone().gatheringDelay);
+        Debug.Log(originStatus.Clone().gatheringDelay);
 
-        //Debug.Log(originStatus.Clone().gatheringSpeed);
+        Debug.Log(originStatus.Clone().gatheringSpeed);
 
-        //Debug.Log(originStatus.Clone().playerDamage);
-    }
-    public void ShowStatusDebug(PlayerStatus status)
+        Debug.Log(originStatus.Clone().playerDamage);
+    }*/
+
+    /*public void ShowStatusDebug(PlayerStatus status)
     {
         Debug.Log("현재 체력"+status.currentHealth+"\n원본 : "+ originStatus.Clone().currentHealth);
 
@@ -203,7 +219,8 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         Debug.Log("채집 파워" + status.gatheringSpeed + "\n원본 : " + originStatus.Clone().gatheringSpeed);
 
         Debug.Log("데미지" + status.playerDamage + "\n원본 : " + originStatus.Clone().playerDamage);
-    }
+    }*/
+
     private void ResetPlayer()
     {
         //Debug.Log("플레이어 리셋");
@@ -217,22 +234,25 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         isGathering = false;
 
-        
-
-        if (ConstructManager.IsBuildEffectAplly == false)//건설 매니저 없이 시작할때
+        //건설 매니저 없이 시작할때
+        if (ConstructManager.IsBuildEffectAplly == false)
         {
             PlayerStatus=originStatus.Clone();
-
         }
+
         else
         {
-            
-            PlayerStatus temp = ConstructManager.playerStatus; //건설 매니저에서 기본적으로 대입식으로 바꿔서 playerStatusclone을 가지고 있었음     
+            //건설 매니저에서 기본적으로 대입식으로 바꿔서 playerStatusclone을 가지고 있었음
+            PlayerStatus temp = ConstructManager.playerStatus;
+
             temp.currentHealth= PlayerStatus.currentHealth;
+
             //ShowStatusDebug(temp);
+
             PlayerStatus = temp;
         }
     }
+
     public static void ActiveRelic()
     {
         //Debug.Log("try use relic");

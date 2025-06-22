@@ -6,7 +6,7 @@ using ZL.Unity.Pooling;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Monster 2 (Pooled)")]
+    [AddComponentMenu("ZL/Unimo/Monster 2 (Spawned)")]
 
     public sealed class Monster2 : Enemy, IDamager
     {
@@ -42,17 +42,8 @@ namespace ZL.Unity.Unimo
 
         private Transform muzzle = null;
 
-        protected override void OnDisable()
-        {
-            attackCooldownTimer = 0f;
-
-            base.OnDisable();
-        }
-
         private void FixedUpdate()
         {
-            animator.SetBool("IsMoving", false);
-
             if (isStoped == true)
             {
                 return;
@@ -63,17 +54,19 @@ namespace ZL.Unity.Unimo
                 rigidbody.LookTowards(Destination.position, rotationSpeed * Time.fixedDeltaTime, Axis.Y);
             }
 
-            if (Vector3.Distance(transform.position, Destination.position) <= stopDistance)
+            if (transform.position.DistanceTo(Destination.position, Axis.Y) <= stopDistance)
             {
-                return;
+                animator.SetBool("IsMoving", false);
             }
 
-            if (enemyData.MovementSpeed != 0f)
+            else if (enemyData.MovementSpeed != 0f)
             {
                 animator.SetBool("IsMoving", true);
 
                 rigidbody.MoveForward(enemyData.MovementSpeed * Time.fixedDeltaTime);
             }
+
+            CheckDistanceToSpawner();
         }
 
         private void Update()
@@ -90,24 +83,17 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
-            if (Destination == null)
+            if (Destination != null)
             {
-                return;
-            }
-
-            if (Vector3.Distance(transform.position, Destination.position) > attackDistance)
-            {
-                return;
+                if (transform.position.DistanceTo(Destination.position, Axis.Y) > attackDistance)
+                {
+                    return;
+                }
             }
 
             attackCooldownTimer = attackCooldown;
 
             animator.SetTrigger("Attack");
-        }
-
-        public void GiveDamage(IDamageable damageable, Vector3 contact)
-        {
-            damageable.TakeDamage(enemyData.AttackPower, contact);
         }
 
         public void Shoot()
@@ -117,6 +103,18 @@ namespace ZL.Unity.Unimo
             projectile.transform.SetPositionAndRotation(muzzle);
 
             projectile.Appear();
+        }
+
+        public void GiveDamage(IDamageable damageable, Vector3 contact)
+        {
+            damageable.TakeDamage(enemyData.AttackPower, contact);
+        }
+
+        public override void OnDisappeared()
+        {
+            base.OnDisappeared();
+
+            attackCooldownTimer = 0f;
         }
     }
 }

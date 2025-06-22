@@ -4,7 +4,7 @@ using UnityEngine.Animations;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Boss Monster 1 (Pooled)")]
+    [AddComponentMenu("ZL/Unimo/Boss Monster 1 (Spawned")]
 
     public sealed class BossMonster1 : Enemy
     {

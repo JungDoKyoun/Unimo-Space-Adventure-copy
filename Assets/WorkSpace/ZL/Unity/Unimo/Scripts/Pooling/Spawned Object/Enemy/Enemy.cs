@@ -1,10 +1,8 @@
 using UnityEngine;
 
-using ZL.Unity.Pooling;
-
 namespace ZL.Unity.Unimo
 {
-    public abstract class Enemy : PooledObject, IDamageable
+    public abstract class Enemy : SpawnedObject, IDamageable
     {
         [Space]
 
@@ -88,35 +86,14 @@ namespace ZL.Unity.Unimo
             enemyManager = EnemyManager.Instance;
         }
 
-        protected override void OnDisable()
-        {
-            rigidbody.velocity = Vector3.zero;
-
-            if (animator != null)
-            {
-                animator.Rebind();
-            }
-
-            rotationSpeed = -1f;
-
-            base.OnDisable();
-        }
-
-        public virtual void TakeDamage(float damage, Vector3 contact)
-        {
-            currentHealth -= damage;
-
-            if (currentHealth <= 0f)
-            {
-                currentHealth = 0f;
-
-                Disappear();
-            }
-        }
-
         public override void Appear()
         {
             currentHealth = enemyData.MaxHealth;
+
+            if (spawner != null)
+            {
+                rotationSpeed = spawner.RotationSpeed;
+            }
 
             if (rotationSpeed == -1f)
             {
@@ -150,6 +127,37 @@ namespace ZL.Unity.Unimo
             {
                 animator.SetTrigger("Disappear");
             }
+        }
+
+        public override void OnDisappeared()
+        {
+            base.OnDisappeared();
+
+            rigidbody.velocity = Vector3.zero;
+
+            if (animator != null)
+            {
+                animator.Rebind();
+            }
+
+            rotationSpeed = -1f;
+        }
+
+        public virtual void TakeDamage(float damage, Vector3 contact)
+        {
+            currentHealth -= damage;
+
+            if (currentHealth <= 0f)
+            {
+                currentHealth = 0f;
+
+                Killed();
+            }
+        }
+
+        protected virtual void Killed()
+        {
+            Disappear();
         }
     }
 }

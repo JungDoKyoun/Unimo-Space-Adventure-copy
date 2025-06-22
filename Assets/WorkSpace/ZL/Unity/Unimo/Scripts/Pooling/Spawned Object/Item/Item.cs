@@ -1,10 +1,8 @@
 using UnityEngine;
 
-using ZL.Unity.Pooling;
-
 namespace ZL.Unity.Unimo
 {
-    public abstract class Item : PooledObject
+    public abstract class Item : SpawnedObject
     {
         [Space]
 
@@ -36,16 +34,6 @@ namespace ZL.Unity.Unimo
 
         protected Animator animator = null;
 
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            if (animator != null)
-            {
-                animator.Rebind();
-            }
-        }
-
         public override void OnAppeared()
         {
             collider.enabled = true;
@@ -63,6 +51,16 @@ namespace ZL.Unity.Unimo
         protected override void OnDisappear()
         {
             animator.SetTrigger("Disappear");
+        }
+
+        public override void OnDisappeared()
+        {
+            base.OnDisappeared();
+
+            if (animator != null)
+            {
+                animator.Rebind();
+            }
         }
 
         public abstract void GetItem(PlayerManager player);

@@ -6,7 +6,7 @@ using ZL.Unity.Phys;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Monster 3 (Pooled)")]
+    [AddComponentMenu("ZL/Unimo/Monster 3 (Spawned)")]
 
     public sealed class Monster3 : Enemy, IDamager
     {
@@ -53,6 +53,8 @@ namespace ZL.Unity.Unimo
 
                 rigidbody.MoveForward(movementSpeed * Time.fixedDeltaTime);
             }
+
+            CheckDistanceToSpawner();
         }
 
         private void Update()

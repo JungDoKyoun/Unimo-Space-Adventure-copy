@@ -1,12 +1,10 @@
 using UnityEngine;
 
-using ZL.Unity.Pooling;
-
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Gathering (Pooled)")]
+    [AddComponentMenu("ZL/Unimo/Gathering (Spawned)")]
 
-    public sealed class Gathering : PooledObject, IDamageable
+    public sealed class Gathering : SpawnedObject, IDamageable
     {
         [Space]
 

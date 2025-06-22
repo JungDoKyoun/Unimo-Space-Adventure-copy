@@ -34,9 +34,11 @@ namespace ZL.Unity.Unimo
 
         private Transform[] spawnPointsClone = null;
 
-        private void OnDrawGizmosSelected()
+        protected override void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.red;
+            base.OnDrawGizmosSelected();
+
+            Gizmos.color = Color.green;
 
             for (int i = 0; i < spawnPoints.Length; ++i)
             {

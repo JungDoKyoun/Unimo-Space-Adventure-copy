@@ -8,27 +8,6 @@ namespace ZL.Unity.Pooling
 
     public class PooledObject : MonoBehaviour
     {
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Button(nameof(Appear))]
-
-        [Button(nameof(Disappear))]
-
-        [Margin]
-
-        private float lifeTime = -1f;
-
-        public float LifeTime
-        {
-            set => lifeTime = value;
-        }
-
-        public event Action OnDisableAction = null;
-
         private event Action OnCollectedAction = null;
 
         public static TClone Instantiate<TClone>(ObjectPool<TClone> objectPool)
@@ -42,14 +21,14 @@ namespace ZL.Unity.Pooling
             return clone;
         }
 
-        protected virtual void OnDisable()
+        public virtual void Appear()
         {
-            if (OnDisableAction != null)
-            {
-                OnDisableAction.Invoke();
+            gameObject.SetActive(true);
+        }
 
-                OnDisableAction = null;
-            }
+        public virtual void Disappear()
+        {
+            gameObject.SetActive(false);
 
             if (OnCollectedAction != null)
             {
@@ -64,38 +43,6 @@ namespace ZL.Unity.Pooling
             }
 
             #endif
-        }
-
-        public virtual void Appear()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public virtual void OnAppeared()
-        {
-            if (lifeTime != -1f)
-            {
-                Invoke(nameof(Disappear), lifeTime);
-
-                lifeTime = -1f;
-            }
-        }
-
-        public virtual void Disappear()
-        {
-            CancelInvoke(nameof(Disappear));
-
-            OnDisappear();
-        }
-
-        protected virtual void OnDisappear()
-        {
-            OnDisappeared();
-        }
-
-        public void OnDisappeared()
-        {
-            gameObject.SetActive(false);
         }
     }
 }

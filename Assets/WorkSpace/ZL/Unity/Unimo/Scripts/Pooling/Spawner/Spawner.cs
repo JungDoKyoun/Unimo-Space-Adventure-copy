@@ -5,15 +5,13 @@ using UnityEngine;
 using UnityEngine.Animations;
 
 using ZL.Unity.Coroutines;
-
+using ZL.Unity.Debugging;
 using ZL.Unity.Pooling;
 
 namespace ZL.Unity.Unimo
 {
     public abstract class Spawner : MonoBehaviour
     {
-        [Space]
-
         [SerializeField]
 
         [UsingCustomProperty]
@@ -88,6 +86,26 @@ namespace ZL.Unity.Unimo
 
         protected float lifeTime = -1f;
 
+        public float LifeTime
+        {
+            get => lifeTime;
+        }
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Text("<b>오브젝트가 디스폰되는 거리 (-1: 무한)</b>")]
+
+        protected float despawnDistance = -1f;
+
+        public float DespawnDistance
+        {
+            get => despawnDistance;
+        }
+
         [Space]
 
         [SerializeField]
@@ -97,6 +115,11 @@ namespace ZL.Unity.Unimo
         [Text("<b>플레이어를 향해 회전하는 속도 (-1: 기본값)</b>")]
 
         private float rotationSpeed = -1f;
+
+        public float RotationSpeed
+        {
+            get => rotationSpeed;
+        }
 
         [Space]
 
@@ -121,6 +144,18 @@ namespace ZL.Unity.Unimo
         private float lookAngle = -1f;
 
         protected int objectCount = 0;
+
+        protected virtual void OnDrawGizmosSelected()
+        {
+            if (despawnDistance == -1f)
+            {
+                return;
+            }
+
+            Gizmos.color = Color.red;
+
+            GizmosEx.DrawPolygon(transform.position, despawnDistance, 64);
+        }
 
         private void OnEnable()
         {
@@ -188,7 +223,7 @@ namespace ZL.Unity.Unimo
         {
             ++objectCount;
 
-            var clone = ObjectPoolManager.Instance.Clone(spawnObjectName);
+            var spawnedObject = ObjectPoolManager.Instance.Clone<SpawnedObject>(spawnObjectName);
 
             Quaternion rotation;
 
@@ -196,7 +231,7 @@ namespace ZL.Unity.Unimo
             {
                 if (QuaternionEx.TryLookRotation(position, lookPoint.position, Axis.Y, out rotation) == false)
                 {
-                    rotation = clone.transform.rotation;
+                    rotation = spawnedObject.transform.rotation;
                 }
             }
 
@@ -210,21 +245,14 @@ namespace ZL.Unity.Unimo
                 rotation = Quaternion.Euler(0f, lookAngle, 0f);
             }
 
-            clone.transform.SetPositionAndRotation(position, rotation);
+            spawnedObject.transform.SetPositionAndRotation(position, rotation);
 
-            clone.LifeTime = lifeTime;
+            spawnedObject.Spawner = this;
 
-            clone.OnDisableAction += OnDespawn;
-
-            if (clone is Enemy enemy)
-            {
-                enemy.RotationSpeed = rotationSpeed;
-            }
-
-            clone.Appear();
+            spawnedObject.Appear();
         }
 
-        private void OnDespawn()
+        public void Despawn()
         {
             --objectCount;
         }

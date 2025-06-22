@@ -10,7 +10,7 @@ namespace ZL.Unity.Pooling
 
     public sealed class ManagedObjectPool<TKey> : ObjectPool<ManagedPooledObject<TKey>>
     {
-        private readonly Dictionary<TKey, ManagedPooledObject<TKey>> clones = new Dictionary<TKey, ManagedPooledObject<TKey>>();
+        private readonly Dictionary<TKey, ManagedPooledObject<TKey>> clones = new();
 
         public ManagedPooledObject<TKey> this[TKey key]
         {
@@ -62,7 +62,7 @@ namespace ZL.Unity.Pooling
 
     public class ManagedObjectPool : ObjectPool<PooledObject>
     {
-        private readonly HashSet<PooledObject> clones = new HashSet<PooledObject>();
+        private readonly HashSet<PooledObject> clones = new();
 
         public override PooledObject Clone()
         {
@@ -84,7 +84,7 @@ namespace ZL.Unity.Pooling
         {
             foreach (var clone in clones.ToArray())
             {
-                clone.gameObject.SetActive(false);
+                clone.Disappear();
             }
 
             clones.Clear();

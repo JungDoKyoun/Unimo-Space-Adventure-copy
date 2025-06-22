@@ -18,9 +18,11 @@ namespace ZL.Unity.Unimo
 
         private float radius = 0f;
 
-        private void OnDrawGizmosSelected()
+        protected override void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.red;
+            base.OnDrawGizmosSelected();
+
+            Gizmos.color = Color.green;
 
             GizmosEx.DrawPolygon(transform.position, radius, 64);
         }

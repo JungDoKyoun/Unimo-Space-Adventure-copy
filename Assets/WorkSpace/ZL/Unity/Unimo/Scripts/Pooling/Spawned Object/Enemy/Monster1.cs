@@ -4,7 +4,7 @@ using UnityEngine.Animations;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/Monster 1 (Pooled)")]
+    [AddComponentMenu("ZL/Unimo/Monster 1 (Spawned)")]
 
     public sealed class Monster1 : Enemy, IDamager
     {
@@ -24,6 +24,13 @@ namespace ZL.Unity.Unimo
             {
                 rigidbody.MoveForward(enemyData.MovementSpeed * Time.fixedDeltaTime);
             }
+
+            if (spawner == null)
+            {
+                return;
+            }
+
+            CheckDistanceToSpawner();
         }
 
         public void GiveDamage(IDamageable damageable, Vector3 contact)

@@ -112,16 +112,6 @@ namespace ZL.Unity.Unimo
 
         public event Action<RelicCard> OnDeselectAction = null;
 
-        protected override void OnDisable()
-        {
-            if (StringTableManager.Instance != null)
-            {
-                StringTableManager.Instance.OnLanguageChanged -= Refresh;
-            }
-
-            base.OnDisable();
-        }
-
         public void Initialize(RelicData relicData)
         {
             this.relicData = relicData;
@@ -153,6 +143,11 @@ namespace ZL.Unity.Unimo
             OnSelectAction = null;
 
             OnDeselectAction = null;
+
+            if (StringTableManager.Instance != null)
+            {
+                StringTableManager.Instance.OnLanguageChanged -= Refresh;
+            }
         }
 
         private void Refresh()
