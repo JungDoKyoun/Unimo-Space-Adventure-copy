@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using ZL.Unity.Animating;
+
 namespace ZL.Unity.Unimo
 {
     public abstract class Enemy : SpawnedObject, IDamageable
@@ -44,9 +46,11 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
+        [GetComponentInChildren]
+
         [ReadOnlyWhenPlayMode]
 
-        protected Animator animator = null;
+        protected AnimatorGroup animatorGroup = null;
 
         [Space]
 
@@ -123,9 +127,11 @@ namespace ZL.Unity.Unimo
 
         protected override void OnDisappear()
         {
-            if (animator != null)
+            Debug.Log(1);
+
+            if (animatorGroup != null)
             {
-                animator.SetTrigger("Disappear");
+                animatorGroup.SetTrigger("Disappear");
             }
         }
 
@@ -135,9 +141,9 @@ namespace ZL.Unity.Unimo
 
             rigidbody.velocity = Vector3.zero;
 
-            if (animator != null)
+            if (animatorGroup != null)
             {
-                animator.Rebind();
+                animatorGroup.Rebind();
             }
 
             rotationSpeed = -1f;

@@ -6,6 +6,8 @@ namespace ZL.Unity.Unimo
 
     public sealed class EnergyItem : Item
     {
+        [Space]
+
         [SerializeField]
 
         private int energy = 1;

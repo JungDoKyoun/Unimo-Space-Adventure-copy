@@ -90,7 +90,7 @@ public partial class PlayerManager : IDamageable
 
     public static event Action<float> OnHealthChanged = null;
 
-    public static event Action OnPlayerDead = null;
+    public event Action OnPlayerDead = null;
 
     #pragma warning disable
 

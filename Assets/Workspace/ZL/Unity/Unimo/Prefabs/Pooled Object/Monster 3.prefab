@@ -188,10 +188,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84b7b44e411de794da6040779c62e786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: -1
+  spawner: {fileID: 0}
   collider: {fileID: 6449174564486501702}
   rigidbody: {fileID: 8887072876688057377}
-  animator: {fileID: 8595754807682593764}
+  animatorGroup: {fileID: 344293834803135414}
   enemyData: {fileID: 11400000, guid: 677d81ad506f6a14baa7366d860bf7b4, type: 2}
   dashSpeedMultiply: 10
   detector: {fileID: 6289110256848449481}
@@ -425,6 +425,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8411175043002552140}
+  - component: {fileID: 344293834803135414}
   - component: {fileID: 8595754807682593764}
   - component: {fileID: 3972955150679755311}
   m_Layer: 0
@@ -454,6 +455,20 @@ Transform:
   - {fileID: 8951246688118790823}
   m_Father: {fileID: 3334606756893204689}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &344293834803135414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7198483245855549230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ca3d3bd9e44584e8abcac310cc3f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainAnimator: {fileID: 8595754807682593764}
+  childAnimators: []
 --- !u!95 &8595754807682593764
 Animator:
   serializedVersion: 5

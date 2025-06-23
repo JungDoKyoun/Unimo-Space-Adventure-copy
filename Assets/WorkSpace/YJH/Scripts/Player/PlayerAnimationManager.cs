@@ -22,7 +22,7 @@ public class PlayerAnimationManager : MonoBehaviour
 
     private void Start()
     {
-        PlayerManager.OnPlayerDead += PlayDeadAnimation;
+        PlayerManager.Instance.OnPlayerDead += PlayDeadAnimation;
     }
 
     public void PlayDeadAnimation()
@@ -34,10 +34,10 @@ public class PlayerAnimationManager : MonoBehaviour
         StartCoroutine(PlayDisappear());
     }
 
-    private void OnDestroy()
-    {
-        PlayerManager.OnPlayerDead -= PlayDeadAnimation;
-    }
+    //private void OnDestroy()
+    //{
+    //    PlayerManager.OnPlayerDead -= PlayDeadAnimation;
+    //}
 
     private IEnumerator PlayDisappear()
     {
