@@ -120,6 +120,29 @@ namespace ZL.Unity.Unimo
 
         private bool isPlayerInvincible = false;
 
+        private bool IsPlayerInvincible
+        {
+            set
+            {
+                if (PlayerManager.Instance == null)
+                {
+                    return;
+                }
+
+                if (value == true)
+                {
+                    PlayerManager.Instance.StopCoroutine("PlayerBlink");
+
+                    PlayerManager.Instance.IsOnHit = true;
+                }
+
+                else
+                {
+                    PlayerManager.Instance.IsOnHit = false;
+                }
+            }
+        }
+
         [Space]
 
         [SerializeField]
@@ -129,6 +152,27 @@ namespace ZL.Unity.Unimo
         [Text("<b>연료 소모 여부</b>")]
 
         private bool isConsumFuel = true;
+
+        private bool IsConsumFuel
+        {
+            set
+            {
+                if (PlayerFuelManager.Instance == null)
+                {
+                    return;
+                }
+
+                if (value == true)
+                {
+                    PlayerFuelManager.Instance.StartConsumFuel();
+                }
+
+                else
+                {
+                    PlayerFuelManager.Instance.StopConsumFuel();
+                }
+            }
+        }
 
         [Space]
 
@@ -151,6 +195,18 @@ namespace ZL.Unity.Unimo
         #endif
 
         #endregion
+
+        private void OnValidate()
+        {
+            if (Application.isPlaying == false)
+            {
+                return;
+            }
+
+            IsPlayerInvincible = isPlayerInvincible;
+
+            IsConsumFuel = isConsumFuel;
+        }
 
         protected override void Awake()
         {
@@ -185,15 +241,9 @@ namespace ZL.Unity.Unimo
 
             #if UNITY_EDITOR
 
-            if (isPlayerInvincible == true)
-            {
-                PlayerManager.Instance.IsOnHit = true;
-            }
+            IsPlayerInvincible = isPlayerInvincible;
 
-            if (isConsumFuel == false)
-            {
-                PlayerFuelManager.Instance.StopConsumFuel();
-            }
+            IsConsumFuel = isConsumFuel;
 
             #endif
         }
