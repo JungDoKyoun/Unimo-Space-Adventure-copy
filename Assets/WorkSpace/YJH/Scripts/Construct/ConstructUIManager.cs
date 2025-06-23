@@ -129,6 +129,39 @@ public class ConstructUIManager : MonoBehaviour
     //        }
     //    }
     //}
-
-
+    public void ActivePanel(GameObject panel)
+    {
+        panel.SetActive(true);
+    }
+    public void DeactivePanel(GameObject panel)
+    {
+        panel.SetActive(false);
+    }
+    public void BuildButtonPressed(string buildID)
+    {
+        foreach (var temp in techConstructList)
+        {
+            if (temp.buildID == buildID)
+            {
+                ShowBuildInfoPanel(temp);
+                return;
+            }
+        }
+        foreach (var temp in utilityConstructList)
+        {
+            if (temp.buildID == buildID)
+            {
+                ShowBuildInfoPanel(temp);
+                return;
+            }
+        }
+        foreach (var temp in combatConstructList)
+        {
+            if (temp.buildID == buildID)
+            {
+                ShowBuildInfoPanel(temp);
+                return;
+            }
+        }
+    }
 }
