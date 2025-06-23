@@ -109,7 +109,10 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     }
     private void OnDisable()
     {
-        ConstructManager.Instance.ResetApplyBuildEffect();
+        if (ConstructManager.Instance != null)
+        {
+            ConstructManager.Instance.ResetApplyBuildEffect();
+        }
         //Debug.Log("건설 효과 적용 여부 초기화 실행");
     }
     private void Start()
