@@ -72,6 +72,7 @@ public class Dash : ISpellType,IStackSpell
 
             else
             {
+                playerManager.gameObject.transform.LookAt(playerManager.PlayerMoveDirection+ playerManager.gameObject.transform.position);
                 playerManager.PlayerRigBody.AddForce(playerManager.PlayerMoveDirection.normalized * skillInfo.skillPower, ForceMode.Impulse);
             }
         }
