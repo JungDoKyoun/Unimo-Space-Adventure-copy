@@ -77,7 +77,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         //OnHealthChanged += DebugHealth;
         //selfManager = this;
         //ResetPlayer();
-        Debug.Log("어웨이크 실행 됨");
+        //Debug.Log("어웨이크 실행 됨");
     }
     public void DebugHealth(float health)
     {
@@ -105,7 +105,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     private void OnDisable()
     {
         ConstructManager.Instance.ResetApplyBuildEffect();
-        Debug.Log("건설 효과 적용 여부 초기화 실행");
+        //Debug.Log("건설 효과 적용 여부 초기화 실행");
     }
     private void Start()
     {
@@ -429,7 +429,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     public static void ActiveRelic(RelicData relicData)
     {
         //isFirstRelicActive = false;
-        Debug.Log("try use relic");
+        //Debug.Log("try use relic");
 
         //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
 
@@ -489,8 +489,8 @@ public partial class PlayerManager : ISingleton<PlayerManager>
                         break;
                 }
             }
-        Debug.Log("유물 활성화 종료");
-        ShowStatusDebug(PlayerStatus);
+        //Debug.Log("유물 활성화 종료");
+        //ShowStatusDebug(PlayerStatus);
     }
 
     private void OnTriggerEnter(Collider other)
