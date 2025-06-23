@@ -76,9 +76,14 @@ namespace ZL.Unity
             return max;
         }
 
-        public static Vector3 Direction(Vector3 from, Vector3 to, Axis ignoreAxes)
+        public static float DistanceTo(this Vector3 instance, Vector3 to, Axis ignoreAxes)
         {
-            var direction = to - from;
+            return DirectionTo(instance, to, ignoreAxes).magnitude;
+        }
+
+        public static Vector3 DirectionTo(this Vector3 instance, Vector3 to, Axis ignoreAxes)
+        {
+            var direction = to - instance;
 
             if (EnumEx.HasFlag(ignoreAxes, Axis.X) == true)
             {
