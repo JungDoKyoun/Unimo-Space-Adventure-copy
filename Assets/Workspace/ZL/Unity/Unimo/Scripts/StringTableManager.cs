@@ -1,30 +1,65 @@
+using System;
+
 using UnityEngine;
+
+using ZL.Unity.IO;
+
+using ZL.Unity.Singleton;
 
 namespace ZL.Unity.Unimo
 {
-    [AddComponentMenu("ZL/Unimo/String Table Manager")]
+    [AddComponentMenu("ZL/Unimo/String Table Manager (Singleton)")]
 
-    public sealed class StringTableManager : MonoBehaviour
+    public sealed class StringTableManager : MonoSingleton<StringTableManager>
     {
         [Space]
 
         [SerializeField]
 
-        private StringTableLanguage language = StringTableLanguage.English;
+        [UsingCustomProperty]
+
+        [Button(nameof(LoadLanguage))]
+
+        [Button(nameof(SaveLanguage))]
+
+        [Margin]
+
+        private EnumPref<StringTableLanguage> targetLanguagePref = new("Target Language", StringTableLanguage.Korean);
+
+        public StringTableLanguage TargetLanguage
+        {
+            get => targetLanguagePref.Value;
+
+            set => targetLanguagePref.Value = value;
+        }
+
+        public event Action OnLanguageChanged = null;
 
         private void OnValidate()
         {
-            if (Application.isPlaying == false)
-            {
-                return;
-            }
-
-            StringTable.Language = language;
+            targetLanguagePref.Value = targetLanguagePref.Value;
         }
 
-        public void Start()
+        protected override void Awake()
         {
-            StringTable.Language = language;
+            base.Awake();
+
+            targetLanguagePref.OnValueChanged += (value) =>
+            {
+                OnLanguageChanged?.Invoke();
+            };
+
+            LoadLanguage();
+        }
+
+        public void LoadLanguage()
+        {
+            targetLanguagePref.TryLoadValue();
+        }
+
+        public void SaveLanguage()
+        {
+            targetLanguagePref.SaveValue();
         }
     }
 }

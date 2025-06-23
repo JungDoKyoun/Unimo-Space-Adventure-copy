@@ -13,7 +13,7 @@ namespace ZL.Unity
 
         public static bool TryLookRotation(Vector3 from, Vector3 to, Vector3 upwards, Axis ignoreAxes, out Quaternion result)
         {
-            var forward = Vector3Ex.Direction(from, to, ignoreAxes);
+            var forward = from.DirectionTo(to, ignoreAxes);
 
             if (forward.sqrMagnitude == 0f)
             {

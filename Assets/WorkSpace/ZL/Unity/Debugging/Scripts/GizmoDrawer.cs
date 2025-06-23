@@ -14,13 +14,13 @@ namespace ZL.Unity.Debugging
 
         [SerializeField]
 
-        private Color color = new Color(1f, 0f, 0f, 0.5f);
+        private Color color = new(1f, 0f, 0f, 0.5f);
 
         [SerializeField]
 
         protected Vector3 center = Vector3.zero;
 
-        private void OnDrawGizmos()
+        public void OnDrawGizmos()
         {
             if (drawOnSelected == true)
             {
@@ -32,7 +32,7 @@ namespace ZL.Unity.Debugging
             DrawGizmo();
         }
 
-        private void OnDrawGizmosSelected()
+        public void OnDrawGizmosSelected()
         {
             if (drawOnSelected == false)
             {

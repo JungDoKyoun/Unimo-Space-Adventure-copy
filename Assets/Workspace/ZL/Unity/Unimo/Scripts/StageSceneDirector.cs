@@ -16,6 +16,8 @@ namespace ZL.Unity.Unimo
 
     public sealed class StageSceneDirector : SceneDirector<StageSceneDirector>
     {
+        #region 스테이지 UI
+
         [Space]
 
         [SerializeField]
@@ -57,6 +59,8 @@ namespace ZL.Unity.Unimo
         [ReadOnlyWhenPlayMode]
 
         private StageFailPopupScreen stageFailPopupScreen = null;
+
+        #endregion
 
         #region 스테이지 옵션
 
