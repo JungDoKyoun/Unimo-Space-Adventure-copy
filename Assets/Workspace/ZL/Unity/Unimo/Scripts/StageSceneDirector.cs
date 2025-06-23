@@ -192,10 +192,6 @@ namespace ZL.Unity.Unimo
 
         private bool alwaysDropRelics = false;
 
-        #endif
-
-        #endregion
-
         private void OnValidate()
         {
             if (Application.isPlaying == false)
@@ -207,6 +203,10 @@ namespace ZL.Unity.Unimo
 
             IsConsumFuel = isConsumFuel;
         }
+
+        #endif
+
+        #endregion
 
         protected override void Awake()
         {
