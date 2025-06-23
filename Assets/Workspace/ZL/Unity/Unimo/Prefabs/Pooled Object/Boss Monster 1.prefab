@@ -80,7 +80,7 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -107,7 +107,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -136,6 +136,11 @@ MonoBehaviour:
   animatorGroup: {fileID: 4175570962932111827}
   enemyData: {fileID: 11400000, guid: 3ee7bd457cf604d40a9f35cd868b38a9, type: 2}
   hitVFX: {fileID: 5195409640652238348}
+  projectileName: Boss Monster 1_Projectile
+  dashCooldown: 5
+  dashRange: 10
+  dashDuration: 3
+  dashSpeedMultiply: 2
 --- !u!1 &1389402741144541357
 GameObject:
   m_ObjectHideFlags: 0
@@ -1852,12 +1857,16 @@ PrefabInstance:
       value: Fake Shadow
       objectReference: {fileID: 0}
     - target: {fileID: 9001557012747604099, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9001557012747604099, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5000001
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 9001557012747604099, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.5000001
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 9001557012747604099, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
       propertyPath: m_LocalPosition.x

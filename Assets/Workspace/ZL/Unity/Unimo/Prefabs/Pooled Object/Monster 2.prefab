@@ -618,7 +618,7 @@ MonoBehaviour:
   animatorGroup: {fileID: 3959517930652991558}
   enemyData: {fileID: 11400000, guid: d9198271e05b01e4ab109616646f2fd4, type: 2}
   stopDistance: 10
-  projectileName: Monster 2 Projectile
+  projectileName: Monster 2_Projectile
   attackCooldown: 5
   attackDistance: 30
   muzzle: {fileID: 3057050897555738153}
@@ -805,6 +805,18 @@ PrefabInstance:
     - target: {fileID: 781232824022357859, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
       propertyPath: m_Name
       value: Fake Shadow
+      objectReference: {fileID: 0}
+    - target: {fileID: 9001557012747604099, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9001557012747604099, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9001557012747604099, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 9001557012747604099, guid: 0a767e23944b97f4b99090f486148e4b, type: 3}
       propertyPath: m_LocalPosition.x
