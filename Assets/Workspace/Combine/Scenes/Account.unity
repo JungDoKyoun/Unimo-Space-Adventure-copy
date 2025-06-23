@@ -4602,6 +4602,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Application Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 7332494622313930771, guid: 1e21d577a634e63459666f8a97688395, type: 3}
+      propertyPath: cursorVisible
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10151,7 +10155,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1719330750
 Transform:
   m_ObjectHideFlags: 0
@@ -12396,8 +12400,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1167408349}
-  - {fileID: 230172776}
   - {fileID: 1327454497}
+  - {fileID: 230172776}
   - {fileID: 1604272348}
   - {fileID: 1842860903}
   - {fileID: 633373048}
