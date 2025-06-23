@@ -3661,8 +3661,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: GameStartButtonPressed
         m_Mode: 1
         m_Arguments:
@@ -8148,8 +8148,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: ActiveBasePanel
         m_Mode: 1
         m_Arguments:
@@ -15542,6 +15542,70 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1924898421}
   m_CullTransparentMesh: 1
+--- !u!1 &1939510266
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1939510267}
+  - component: {fileID: 1939510268}
+  m_Layer: 0
+  m_Name: Construct UI Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1939510267
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939510266}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 228.94154, y: 274.5955, z: 258.53342}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4043517420464692300}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1939510268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939510266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ae9f7bf755a0494e8e1edd5a45434a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingInfoPanel: {fileID: 622968008496711336}
+  buildingImage: {fileID: 6283294170667567298}
+  buildingTitleText: {fileID: 4511608855799337816}
+  buildingInfoText: {fileID: 2251851209488764154}
+  buildingRequireText: {fileID: 3327447242223277182}
+  buildingCostText: {fileID: 8321567615902764922}
+  constructCostText: {fileID: 4848018662840614243}
+  buildInfoBuildButton: {fileID: 7960588895013387064}
+  basePanel: {fileID: 3221654634476280980}
+  buildStateImage: {fileID: 240708351330792372}
+  buildingImages:
+  - {fileID: 3939638108183202011}
+  - {fileID: 3180519377671465795}
+  - {fileID: 1744279709039938453}
+  - {fileID: 177400039885175876}
+  - {fileID: 7003634176218203002}
+  - {fileID: 8528604064517209662}
+  - {fileID: 3030852064283217429}
+  initRelicUI: {fileID: 3490026672898235830}
+  constructManager: {fileID: 6888278469466970934, guid: c41b48d8a95dab14eb4b0e67df149f7e, type: 3}
 --- !u!1 &1984842941
 GameObject:
   m_ObjectHideFlags: 0
@@ -16774,8 +16838,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -17136,8 +17200,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -17345,21 +17409,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &214368327312126903
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3179744457166467602}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.54, y: 3.18, z: 12.98}
-  m_LocalScale: {x: 0.004367927, y: 0.0036417204, z: 0.0038679722}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &240708351330792372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17430,7 +17479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildings: []
-  constructManager: {fileID: 4986242007553043429}
+  constructManager: {fileID: 0}
 --- !u!1 &287765302452523691
 GameObject:
   m_ObjectHideFlags: 0
@@ -17639,8 +17688,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -17798,8 +17847,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -18046,8 +18095,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -18264,8 +18313,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: DeactivePanel
         m_Mode: 2
         m_Arguments:
@@ -18570,8 +18619,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -19558,8 +19607,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -19632,8 +19681,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -19675,7 +19724,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d481bbe185dd38149a76f2f060b622fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: -1
   toggle: {fileID: 2251099638693958440}
   rarityHightlightImageUI: {fileID: 7725243329852619687}
   relicImageUI: {fileID: 4370908290118971823}
@@ -19728,8 +19776,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -19831,8 +19879,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -19840,7 +19888,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: IncreaseInGame1
+          m_StringArgument: IncreaseInGame2
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1344308084623753751
@@ -20448,8 +20496,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -20534,8 +20582,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -20864,8 +20912,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -20950,8 +20998,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -21251,8 +21299,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: DeactiveInitRelic
         m_Mode: 1
         m_Arguments:
@@ -21513,8 +21561,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -21589,8 +21637,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: DeActiveBuildInfoPanel
         m_Mode: 1
         m_Arguments:
@@ -21764,8 +21812,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -21937,8 +21985,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -22892,8 +22940,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -22948,8 +22996,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -22957,7 +23005,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Damage2
+          m_StringArgument: Damage3
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!224 &2683050320830384804
@@ -23054,8 +23102,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -23216,8 +23264,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -23716,8 +23764,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -23725,7 +23773,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: IncreaseInGame1
+          m_StringArgument: IncreaseInGame4
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!224 &2965390817334749368
@@ -23791,8 +23839,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -24089,8 +24137,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -24190,8 +24238,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -24259,23 +24307,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &3179744457166467602
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 214368327312126903}
-  - component: {fileID: 4986242007553043429}
-  m_Layer: 0
-  m_Name: Construct Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!114 &3180519377671465795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24369,8 +24400,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -24900,7 +24931,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d481bbe185dd38149a76f2f060b622fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: -1
   toggle: {fileID: 330096947055961662}
   rarityHightlightImageUI: {fileID: 3629074757103116362}
   relicImageUI: {fileID: 6750389469301456932}
@@ -24961,8 +24991,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -25084,9 +25114,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
-        m_MethodName: EndConstructButtonPressed
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
+        m_MethodName: DeactiveBasePanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -25440,8 +25470,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: DeactivePanel
         m_Mode: 2
         m_Arguments:
@@ -26016,8 +26046,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -26225,6 +26255,7 @@ Transform:
   - {fileID: 986065428690206654}
   - {fileID: 8957884538388447701}
   - {fileID: 5053168008221075494}
+  - {fileID: 1939510267}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &4046972276871685974
@@ -27201,8 +27232,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -27593,8 +27624,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: ActivePanel
         m_Mode: 2
         m_Arguments:
@@ -28233,8 +28264,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: ActivePanel
         m_Mode: 2
         m_Arguments:
@@ -28461,95 +28492,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: -100, y: 50}
   m_Pivot: {x: 0.5, y: 1}
---- !u!114 &4986242007553043429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3179744457166467602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 100a89bbf73ca8e459ac22f7411fbf5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  techConstructList:
-  - {fileID: 11400000, guid: 01116f80a0acff24e9ec58822b6996ef, type: 2}
-  - {fileID: 11400000, guid: bb402578a6ae2e94aa3b1e66496c604b, type: 2}
-  - {fileID: 11400000, guid: 56ec8982cb444dc4eb1ca9b6edd2cfad, type: 2}
-  - {fileID: 11400000, guid: c91c7a8f9b4e8e24eb481a525cff8493, type: 2}
-  - {fileID: 11400000, guid: 13d58f58332571641846cc18d40fbbd3, type: 2}
-  - {fileID: 11400000, guid: 07034d9fb98981942926ce90bb351173, type: 2}
-  - {fileID: 11400000, guid: 3d544b85fd2f4f141bcb80ec10f141e8, type: 2}
-  - {fileID: 11400000, guid: 88318824d71031447acd194595cb6847, type: 2}
-  - {fileID: 11400000, guid: 67c4e68cfbcc17e40bdbcd45f94bd46c, type: 2}
-  - {fileID: 11400000, guid: 3c055a5056e1e1342899715b2dccdcb1, type: 2}
-  - {fileID: 11400000, guid: 637dd83f9828ca6429369af55440ed7c, type: 2}
-  - {fileID: 11400000, guid: 7c5374aa52b91ca46b5aef51a2ffa003, type: 2}
-  - {fileID: 11400000, guid: 1ffbee01fdf032345a5b335ee1da1708, type: 2}
-  - {fileID: 11400000, guid: 4553cc28262690343a74a20b37a38383, type: 2}
-  - {fileID: 11400000, guid: 00d93e55dc5758f4aaccfa02176ca579, type: 2}
-  - {fileID: 11400000, guid: 43f5eaf77840cb34ea0090e670fb62fc, type: 2}
-  - {fileID: 11400000, guid: b7b95e29eaf2ca64faddc60a700e710d, type: 2}
-  - {fileID: 11400000, guid: fff2fd90fbf5e0545a8f05dba8061725, type: 2}
-  - {fileID: 11400000, guid: cfd2042606cb54849a09e5482daf3086, type: 2}
-  - {fileID: 11400000, guid: 6d7c6fbbb03a932469c81adb1f4ae6fe, type: 2}
-  - {fileID: 11400000, guid: c657c767198efb74b8748e82f37ac3c7, type: 2}
-  - {fileID: 11400000, guid: 76fc10667a59abb4691701a7d0610002, type: 2}
-  - {fileID: 11400000, guid: a81ecb6e839820947819cf531dc7685e, type: 2}
-  - {fileID: 11400000, guid: 3b70d6b341434c3428a70f780973e0c3, type: 2}
-  - {fileID: 11400000, guid: 223ebcf857c698541ae196659021880f, type: 2}
-  utilityConstructList:
-  - {fileID: 11400000, guid: 33e3f3ba25465b947bce2ca2fbd2ecd5, type: 2}
-  - {fileID: 11400000, guid: 9b9dd23c5dd64834584e0e2451e4f09d, type: 2}
-  - {fileID: 11400000, guid: 00ed435b611037c489bb4849c374db70, type: 2}
-  - {fileID: 11400000, guid: a266aadaf1584b44caabe511c0362db9, type: 2}
-  - {fileID: 11400000, guid: f8e616c000f05614a93542cfc3fa4330, type: 2}
-  - {fileID: 11400000, guid: c4a3d88034ea59d41996e05d4f9fadb2, type: 2}
-  - {fileID: 11400000, guid: fd2bef7ae133d924a979938ebaac3c3d, type: 2}
-  - {fileID: 11400000, guid: 4a69b0a21c586974a9a20d32ac968a1f, type: 2}
-  - {fileID: 11400000, guid: 787a220ec9871f542ac7d013579c5728, type: 2}
-  - {fileID: 11400000, guid: c5c56fd2515c4094392cf213d977b0f6, type: 2}
-  - {fileID: 11400000, guid: 98566d3336eea5741870db323ce4f8e5, type: 2}
-  - {fileID: 11400000, guid: b6ee7c17a26547941a03a2d655552241, type: 2}
-  combatConstructList:
-  - {fileID: 11400000, guid: 0f3a7ad83b1e0e14fad8a8f547eb4f80, type: 2}
-  - {fileID: 11400000, guid: 7fa0140b87562a14d8668a307b80e556, type: 2}
-  buildingInfoPanel: {fileID: 622968008496711336}
-  buildingImage: {fileID: 6283294170667567298}
-  buildingTitleText: {fileID: 4511608855799337816}
-  buildingInfoText: {fileID: 2251851209488764154}
-  buildingRequireText: {fileID: 3327447242223277182}
-  buildingCostText: {fileID: 8321567615902764922}
-  constructCostText: {fileID: 4848018662840614243}
-  buildInfoBuildButton: {fileID: 7960588895013387064}
-  basePanel: {fileID: 3221654634476280980}
-  buildStateImage: {fileID: 240708351330792372}
-  buildingImages:
-  - {fileID: 3939638108183202011}
-  - {fileID: 3180519377671465795}
-  - {fileID: 1744279709039938453}
-  - {fileID: 177400039885175876}
-  - {fileID: 7003634176218203002}
-  - {fileID: 8528604064517209662}
-  - {fileID: 3030852064283217429}
-  buildStateImageList:
-  - {fileID: 21300000, guid: 04145775e649fb745911df7e81d7a978, type: 3}
-  - {fileID: 21300000, guid: ef8e47628df7af04294be7146d3b4118, type: 3}
-  - {fileID: 21300000, guid: 74a12c700e8546141935d9d661f7dfc9, type: 3}
-  - {fileID: 21300000, guid: 83cf49c8962e14942a5da8b36ddc0b63, type: 3}
-  originPlayerStatus:
-    currentHealth: 30
-    maxHealth: 0
-    playerDamage: 5
-    itemDetectionRange: 5
-    gatheringSpeed: 5
-    gatheringDelay: 1
-    moveSpeed: 4
-  isGiveStartRellic: 0
-  attackPrefabs:
-  - {fileID: 7503936081269918129, guid: 07c22d31208dbd6418c693b8554433d7, type: 3}
-  initRelicUI: {fileID: 3490026672898235830}
 --- !u!224 &5004215344132670296
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28632,8 +28574,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -28838,8 +28780,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -28894,8 +28836,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -29521,8 +29463,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -30093,8 +30035,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -30979,8 +30921,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -31077,8 +31019,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -32325,8 +32267,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: ActivePanel
         m_Mode: 2
         m_Arguments:
@@ -33092,7 +33034,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d481bbe185dd38149a76f2f060b622fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: -1
   toggle: {fileID: 2613346757309671126}
   rarityHightlightImageUI: {fileID: 7531711793545638847}
   relicImageUI: {fileID: 8728905111734046035}
@@ -33542,8 +33483,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -33551,7 +33492,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: IncreaseInGame1
+          m_StringArgument: IncreaseInGame3
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!222 &7460700132808042244
@@ -33808,7 +33749,7 @@ GameObject:
   - component: {fileID: 3345519929204335385}
   - component: {fileID: 3452167510386331805}
   m_Layer: 5
-  m_Name: Game Start Button
+  m_Name: Deactive Base Panel Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35015,8 +34956,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: DeactivePanel
         m_Mode: 2
         m_Arguments:
@@ -35190,8 +35131,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -37922,8 +37863,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4986242007553043429}
-        m_TargetAssemblyTypeName: ConstructManager, Assembly-CSharp
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: BuildButtonPressed
         m_Mode: 5
         m_Arguments:
@@ -37931,7 +37872,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: IncreaseInGame1
+          m_StringArgument: IncreaseInGame5
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!224 &9122638833456697065
@@ -38187,7 +38128,6 @@ SceneRoots:
   - {fileID: 505704330}
   - {fileID: 69221048}
   - {fileID: 270962695}
-  - {fileID: 214368327312126903}
   - {fileID: 4043517420464692300}
   - {fileID: 2008275168}
   - {fileID: 54873645}
