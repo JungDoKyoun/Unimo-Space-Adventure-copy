@@ -83,7 +83,8 @@ public class ConstructManager : MonoBehaviour
         SetAllConstructImages();
         //GameStateManager.IsClear = true;// 버그 터짐 이거 말고 다른 방법 써야 할듯
         playerStatus = PlayerManager.OriginStatus.Clone();
-        
+        ActiveBuildEffect();
+        PlayerManager.PlayerStatus = playerStatus;
         PlayerManager.OnStageFail += YJH.MethodCollection.DelinkHealPlayer;
         PlayerManager.OnStageFail += ResetApplyBuildEffect;
         SceneManager.sceneLoaded += OnSceneLoaded;
