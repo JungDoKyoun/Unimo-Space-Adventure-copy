@@ -74,6 +74,17 @@ public partial class PlayerManager : MonoBehaviourPun
     public void PlayerMoveBySpeed()
     {
         //Debug.Log("움직이는 중");
+        Vector3 center = Vector3.zero; // 기준 중심 (원점 기준이면)
+        float radius = 20f;
+
+        Vector3 offset = transform.position - center;
+        if (offset.sqrMagnitude > radius * radius)
+        {
+            // 원 밖이면 반지름 거리로 끌어당김
+            transform.position = center + offset.normalized * radius;
+            playerSpellType.StopSpell();
+
+        }
         if (canMove == true)
         {
             Vector2 headDirection = new Vector2(playerMoveDirection.x, playerMoveDirection.z);
@@ -99,15 +110,15 @@ public partial class PlayerManager : MonoBehaviourPun
             GetRotate(headDirection);
 
             transform.position += PlayerStatus.moveSpeed * Time.deltaTime * playerMoveDirection;// + pushSpeed * Time.deltaTime * playerPushDirection;
-            Vector3 center = Vector3.zero; // 기준 중심 (원점 기준이면)
-            float radius = 20f;
-
-            Vector3 offset = transform.position - center;
-            if (offset.sqrMagnitude > radius * radius)
-            {
-                // 원 밖이면 반지름 거리로 끌어당김
-                transform.position = center + offset.normalized * radius;
-            }
+            //Vector3 center = Vector3.zero; // 기준 중심 (원점 기준이면)
+            //float radius = 20f;
+            //
+            //Vector3 offset = transform.position - center;
+            //if (offset.sqrMagnitude > radius * radius)
+            //{
+            //    // 원 밖이면 반지름 거리로 끌어당김
+            //    transform.position = center + offset.normalized * radius;
+            //}
             //Debug.Log(playerStatus.moveSpeed);
 
             if (isMoveSoundPlay == true)

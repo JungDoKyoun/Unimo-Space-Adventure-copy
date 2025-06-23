@@ -36,6 +36,11 @@ public class tempskill1 : ISpellType, IStackSpell
         throw new System.NotImplementedException();
     }
 
+    public void StopSpell()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public void UpdateTime()
     {
         return;
