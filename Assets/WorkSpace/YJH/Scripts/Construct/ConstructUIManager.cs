@@ -39,20 +39,78 @@ public class ConstructUIManager : MonoBehaviour
     {
         Instance = this;
         SetImagePriorityDicNum();
-        Instantiate(constructManager);
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+        if (ConstructManager.Instance == null)
+        {
+            Instantiate(constructManager);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
+
+
+
+
+
+    /*<summary>
+         {
+    imagePriority.Add(i, 0);
+        }
+imagePriority.Add(-1, 999);
+    }
+    Àû¿ë ¿Ï
+
+    private void SetAllDic()
+{
+@@ -210,9 + 211,9 @@ public class ConstructManager : MonoBehaviour
+    }
+    public void TrySetConstructImage(ConstructBase building)
+{
+    if (imagePriority[building.imageIndex] < building.imagePriority)
+        if (imagePriority[building.imageIndex - 1] < building.imagePriority)
+        {
+            buildingImages[building.imageIndex].sprite = building.buildingImage;
+            buildingImages[building.imageIndex - 1].sprite = building.buildingImage;
+        }
+}
+
+@@ -222,9 + 223,9 @@ public class ConstructManager : MonoBehaviour
+{
+            if (temp.isBuildConstructed == true)
+            {
+                if (imagePriority[temp.imageIndex] < temp.imagePriority)
+                if (imagePriority[temp.imageIndex - 1] < temp.imagePriority)
+                {
+                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                    buildingImages[temp.imageIndex - 1].sprite = temp.buildingImage;
+                }
+            }
+        }
+@@ -232,9 + 233,9 @@ public class ConstructManager : MonoBehaviour
+{
+            if (temp.isBuildConstructed == true)
+            {
+                if (imagePriority[temp.imageIndex] < temp.imagePriority)
+                if (imagePriority[temp.imageIndex - 1] < temp.imagePriority)
+                {
+                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                    buildingImages[temp.imageIndex - 1].sprite = temp.buildingImage;
+                }
+            }
+        }
+@@ -242,9 + 243,9 @@ public class ConstructManager : MonoBehaviour
+{
+            if (temp.isBuildConstructed == true)
+            {
+                if (imagePriority[temp.imageIndex] < temp.imagePriority)
+                if (imagePriority[temp.imageIndex - 1] < temp.imagePriority)
+                {
+                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                    buildingImages[temp.imageIndex - 1].sprite = temp.buildingImage;
+                }
+            }
+        }
+    */
+    
     public void DeactiveBasePanel()
     {
         basePanel.SetActive(false);
@@ -110,12 +168,13 @@ public class ConstructUIManager : MonoBehaviour
         {
             imagePriority.Add(i, 0);
         }
+        imagePriority.Add(-1, 999);
     }
     public void TrySetConstructImage(ConstructBase building)
     {
-        if (imagePriority[building.imageIndex] < building.imagePriority)
+        if (imagePriority[building.imageIndex-1] < building.imagePriority)
         {
-            buildingImages[building.imageIndex].sprite = building.buildingImage;
+            buildingImages[building.imageIndex-1].sprite = building.buildingImage;
         }
     }
 

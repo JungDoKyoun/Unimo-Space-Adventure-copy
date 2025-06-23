@@ -78,12 +78,16 @@ public class ConstructManager : MonoBehaviour
         //DecideProgress();//나중에 이미지 변경 시스템 완벽하게 바꾸면 변경하기
         ToDictionary();
         SetAllDic();
+       
         
         SetAllConstructImages();
         //GameStateManager.IsClear = true;// 버그 터짐 이거 말고 다른 방법 써야 할듯
-        
+        playerStatus = PlayerManager.OriginStatus.Clone();
+        ActiveBuildEffect();
+        PlayerManager.PlayerStatus = playerStatus;
         PlayerManager.OnStageFail += YJH.MethodCollection.DelinkHealPlayer;
         PlayerManager.OnStageFail += ResetApplyBuildEffect;
+        SceneManager.sceneLoaded += OnSceneLoaded;
         DontDestroyOnLoad(gameObject);  
     }
 
@@ -94,20 +98,44 @@ public class ConstructManager : MonoBehaviour
             ResetApplyBuildEffect();
         }
     }
+    private void Start()
+    {
 
-    
-    //private void Start()
-    //{
-    //    if (tempRelic != null)
-    //    {
-    //        //PlayerInventoryManager.AddRelic(tempRelic);
-    //        //Debug.Log(tempRelic.Effects[0].Value);
-    //        //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
-    //    }
-    //}
+        if (GameStateManager.IsClear == true)
+        {
+            Debug.Log("스테이지 클리어");
+            return;
+        }
+        else
+        {
+            Debug.Log("스테이지 클리어 실패");
+            isBuildEffectAplly = false;
+            PlayerManager.gainDemage = 0;
+            PlayerManager.ResetStatus();
+            //SetFinalStatusToPlayer();
+        }
+
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (GameStateManager.IsClear == true)
+        {
+            Debug.Log("스테이지 클리어");
+            return;
+        }
+        else
+        {
+            Debug.Log("스테이지 클리어 실패");
+            PlayerManager.gainDemage = 0;
+            isBuildEffectAplly = false;
+            PlayerManager.ResetStatus();
+        }
+    }
+
+
     private void OnDestroy()
     {
-        Debug.Log("건설매니저 사라짐");
+        //Debug.Log("건설매니저 사라짐");
         OnConstructCostChange -= SetConstructCostText;
     }
     public void ToDictionary()
@@ -210,9 +238,9 @@ public class ConstructManager : MonoBehaviour
         {
             if (temp.isBuildConstructed == true)
             {
-                if (ConstructUIManager.Instance.imagePriority[temp.imageIndex] < temp.imagePriority)
+                if (ConstructUIManager.Instance.imagePriority[temp.imageIndex-1] < temp.imagePriority)
                 {
-                    ConstructUIManager.Instance.buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                    ConstructUIManager.Instance.buildingImages[temp.imageIndex-1].sprite = temp.buildingImage;
                 }
             }
         }
@@ -220,9 +248,9 @@ public class ConstructManager : MonoBehaviour
         {
             if (temp.isBuildConstructed == true)
             {
-                if (ConstructUIManager.Instance.imagePriority[temp.imageIndex] < temp.imagePriority)
+                if (ConstructUIManager.Instance.imagePriority[temp.imageIndex - 1] < temp.imagePriority)
                 {
-                    ConstructUIManager.Instance.buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                    ConstructUIManager.Instance.buildingImages[temp.imageIndex - 1].sprite = temp.buildingImage;
                 }
             }
         }
@@ -230,9 +258,9 @@ public class ConstructManager : MonoBehaviour
         {
             if (temp.isBuildConstructed == true)
             {
-                if (ConstructUIManager.Instance.imagePriority[temp.imageIndex] < temp.imagePriority)
+                if (ConstructUIManager.Instance.imagePriority[temp.imageIndex - 1] < temp.imagePriority)
                 {
-                    ConstructUIManager.Instance.buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                    ConstructUIManager.Instance.buildingImages[temp.imageIndex - 1].sprite = temp.buildingImage;
                 }
             }
         }
@@ -495,7 +523,7 @@ public class ConstructManager : MonoBehaviour
     }
     public static void SetFinalStatusToPlayer()//이거 하나 확인
     {
-        PlayerManager.PlayerStatus=playerStatus;//후일 초기화 생각하면 대입이 맞을듯
+        PlayerManager.PlayerStatus=playerStatus+PlayerManager.OriginStatus.Clone();//후일 초기화 생각하면 대입이 맞을듯
         Debug.Log("건설매니저 효과 적용");
 
     }
