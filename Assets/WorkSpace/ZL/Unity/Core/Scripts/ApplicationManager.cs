@@ -14,7 +14,7 @@ namespace ZL.Unity
 
         [SerializeField]
 
-        private BoolPref runInBackgroundPref = new BoolPref("Run In Background", false);
+        private BoolPref runInBackgroundPref = new("Run In Background", false);
 
         public BoolPref RunInBackgroundPref
         {
@@ -25,12 +25,36 @@ namespace ZL.Unity
 
         [SerializeField]
 
-        private IntPref targetFrameRatePref = new IntPref("Target Frame Rate", 60);
+        private IntPref targetFrameRatePref = new("Target Frame Rate", 60);
 
         public IntPref TargetFrameRatePref
         {
             get => targetFrameRatePref;
         }
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Text("Cursor")]
+
+        [AddIndent]
+
+        [Alias("Visible")]
+
+        private bool cursorVisible = false;
+
+        [UsingCustomProperty]
+
+        [AddIndent]
+
+        [Alias("Lock State")]
+
+        [SerializeField]
+
+        private CursorLockMode cursorLockState = CursorLockMode.Locked;
 
         [Space]
 
@@ -70,6 +94,10 @@ namespace ZL.Unity
             };
 
             targetFrameRatePref.TryLoadValue();
+
+            Cursor.visible = cursorVisible;
+
+            Cursor.lockState = cursorLockState;
         }
 
         public void Pause()
