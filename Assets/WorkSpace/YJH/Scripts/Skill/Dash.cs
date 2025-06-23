@@ -67,13 +67,13 @@ public class Dash : ISpellType,IStackSpell
 
             if (playerManager.PlayerMoveDirection.magnitude < float.Epsilon)
             {
-                playerManager.PlayerRigBody.AddForce(playerManager.transform.forward * skillInfo.skillPower, ForceMode.Impulse);
+                playerManager.PlayerRigBody.AddForce(playerManager.transform.forward * skillInfo.skillPower* PlayerManager.PlayerStatus.moveSpeed, ForceMode.Impulse);
             }
 
             else
             {
                 playerManager.gameObject.transform.LookAt(playerManager.PlayerMoveDirection+ playerManager.gameObject.transform.position);
-                playerManager.PlayerRigBody.AddForce(playerManager.PlayerMoveDirection.normalized * skillInfo.skillPower, ForceMode.Impulse);
+                playerManager.PlayerRigBody.AddForce(playerManager.PlayerMoveDirection.normalized * skillInfo.skillPower * PlayerManager.PlayerStatus.moveSpeed, ForceMode.Impulse);
             }
         }
 
