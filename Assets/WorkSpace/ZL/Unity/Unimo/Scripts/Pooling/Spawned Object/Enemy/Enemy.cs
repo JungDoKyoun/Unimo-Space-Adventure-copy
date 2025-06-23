@@ -127,8 +127,6 @@ namespace ZL.Unity.Unimo
 
         protected override void OnDisappear()
         {
-            Debug.Log(1);
-
             if (animatorGroup != null)
             {
                 animatorGroup.SetTrigger("Disappear");
