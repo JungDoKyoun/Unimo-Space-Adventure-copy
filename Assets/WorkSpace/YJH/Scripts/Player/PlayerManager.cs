@@ -74,6 +74,11 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         }
         //ConstructManager.SetFinalStatusToPlayer();
         SceneManager.sceneLoaded += OnSceneLoaded;
+        if (ConstructManager.Instance == null)
+        {
+            PlayerStatus = originStatus.Clone();
+            Debug.Log("디버그용 스탯 초기화 적용");
+        }
         //OnHealthChanged += DebugHealth;
         //selfManager = this;
         //ResetPlayer();
