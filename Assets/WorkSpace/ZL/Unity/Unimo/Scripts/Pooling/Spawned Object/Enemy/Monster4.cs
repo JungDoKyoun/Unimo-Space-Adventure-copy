@@ -32,7 +32,7 @@ namespace ZL.Unity.Unimo
                 rigidbody.MoveForward(enemyData.MovementSpeed * Time.fixedDeltaTime);
             }
 
-            CheckDistanceToSpawner();
+            CheckDespawnCondition();
         }
 
         public override void Disappear()

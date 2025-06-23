@@ -14,7 +14,7 @@ namespace ZL.Unity.Pooling
 
         [SerializeField]
 
-        private SerializableDictionary<string, ObjectPool> poolDictionary = null;
+        private SerializableDictionary<string, ManagedObjectPool> poolDictionary = null;
 
         public TClone Clone<TClone>(string key)
 

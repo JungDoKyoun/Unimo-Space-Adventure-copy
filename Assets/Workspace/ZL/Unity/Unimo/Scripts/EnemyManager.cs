@@ -12,6 +12,10 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
+        [UsingCustomProperty]
+
+        [Text("<b>적이 추적하는 목표</b>")]
+
         private Transform destination = null;
 
         public Transform Destination

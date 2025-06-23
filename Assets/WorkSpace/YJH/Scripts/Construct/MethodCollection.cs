@@ -61,7 +61,7 @@ namespace YJH
             if (GameStateManager.IsClear == true)
             {
                 PlayerManager.Instance.CurrentHealth += healAmount;
-                PlayerManager.gainDemage -= healAmount;
+                PlayerManager.gainDamage -= healAmount;
             }
         }
         

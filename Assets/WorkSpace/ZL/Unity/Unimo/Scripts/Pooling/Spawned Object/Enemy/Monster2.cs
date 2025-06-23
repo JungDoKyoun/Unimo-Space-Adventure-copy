@@ -66,7 +66,7 @@ namespace ZL.Unity.Unimo
                 rigidbody.MoveForward(enemyData.MovementSpeed * Time.fixedDeltaTime);
             }
 
-            CheckDistanceToSpawner();
+            CheckDespawnCondition();
         }
 
         private void Update()

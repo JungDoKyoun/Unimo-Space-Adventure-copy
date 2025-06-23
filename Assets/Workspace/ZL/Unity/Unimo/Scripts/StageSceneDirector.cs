@@ -131,7 +131,7 @@ namespace ZL.Unity.Unimo
 
                 if (value == true)
                 {
-                    PlayerManager.Instance.StopCoroutine("PlayerBlink");
+                    PlayerManager.Instance.StopPlayerBlink();
 
                     PlayerManager.Instance.IsOnHit = true;
                 }

@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -4184278504051708476}
   - component: {fileID: -8123933657952194548}
   m_Layer: 6
-  m_Name: tempEnergybolt
+  m_Name: Energy Bolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -277,7 +277,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: -8123933657952194548}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

@@ -6,6 +6,8 @@ using System.Collections;
 
 using UnityEngine;
 
+using UnityEngine.Animations;
+
 using ZL.Unity;
 
 using ZL.Unity.Unimo;
@@ -40,14 +42,14 @@ public partial class PlayerManager : IDamageable
 
     [SerializeField]
     
-    private GameObject hitEffect;
+    private GameObject hitVFX;
 
     [SerializeField]
 
     private Collider mainCollider;
 
     //public RelicData tempRelic;
-    public static float gainDemage;
+    public static float gainDamage;
     public float CurrentHealth
     {
         get => PlayerStatus.currentHealth;
@@ -67,7 +69,7 @@ public partial class PlayerManager : IDamageable
             {
                 if (PlayerStatus.currentHealth<value)
                 {
-                    gainDemage -= value - PlayerStatus.currentHealth;
+                    gainDamage -= value - PlayerStatus.currentHealth;
                 }
                 
                 PlayerStatus tempStatus = PlayerStatus.Clone();
@@ -75,6 +77,7 @@ public partial class PlayerManager : IDamageable
                 tempStatus.currentHealth = value;
 
                 PlayerStatus = tempStatus;
+
                 //OnHealthChanged?.Invoke(value);
             }
         }
@@ -116,21 +119,28 @@ public partial class PlayerManager : IDamageable
 
         if (collision.gameObject.TryGetComponent<IDamager>(out var damager) == true)
         {
-            damager.GiveDamage(this, collision.GetContact(0).point);
             //Debug.Log("데미지 받음?콜리젼");
+
+            damager.GiveDamage(this, collision.GetContact(0).point);
         }
     }
 
     public void TakeDamage(float damage, Vector3 contact)
     {
         isOnHit = true;
+
         //Debug.Log("데미지 받음");
         
-        PlayHitEffect(contact);
-        
+        //PlayHitEffect(contact);
+
+        hitVFX.transform.LookAt(contact, Axis.Y);
+
+        hitVFX.SetActive(true);
 
         CurrentHealth -= damage;//데미지 입음
-        gainDemage += damage;
+
+        gainDamage += damage;
+
         //OnHealthChanged?.Invoke(playerStatus.currentHealth);
 
         if (PlayerStatus.currentHealth <= 0f)
@@ -148,18 +158,44 @@ public partial class PlayerManager : IDamageable
         else
         {
             //Debug.Log("플레이어 데미지 로직 작동");
-            StartCoroutine(PlayerBlink());
+
+            //StartCoroutine(PlayerBlink());
+
+            StartPlayerBlink();
         }
     }
 
-    public void PlayHitEffect(Vector3 contact)
+    //public void PlayHitEffect(Vector3 contact)
+    //{
+    //    Vector3 forward = contact - mainCollider.bounds.center;
+
+    //    hitVFX.transform.rotation = Quaternion.LookRotation(forward);
+
+    //    hitVFX.SetActive(true);
+    //}
+
+    public void StartPlayerBlink()
     {
-        Vector3 forward = contact - mainCollider.bounds.center;
+        StopPlayerBlink();
 
-        hitEffect.transform.rotation = Quaternion.LookRotation(forward);
+        playerBlink = PlayerBlink();
 
-        hitEffect.SetActive(true);
+        StartCoroutine(playerBlink);
     }
+
+    public void StopPlayerBlink()
+    {
+        if (playerBlink == null)
+        {
+            return;
+        }
+
+        StopCoroutine(playerBlink);
+
+        playerBlink = null;
+    }
+
+    private IEnumerator playerBlink = null;
 
     private IEnumerator PlayerBlink()
     {
@@ -184,7 +220,7 @@ public partial class PlayerManager : IDamageable
 
         ActiveRenderer();
 
-        yield break;
+        playerBlink = null;
     }
 
     [PunRPC]

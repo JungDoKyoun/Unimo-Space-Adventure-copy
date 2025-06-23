@@ -110,7 +110,7 @@ public class ConstructManager : MonoBehaviour
         {
             Debug.Log("스테이지 클리어 실패");
             isBuildEffectAplly = false;
-            PlayerManager.gainDemage = 0;
+            PlayerManager.gainDamage = 0;
             PlayerManager.ResetStatus();
             //SetFinalStatusToPlayer();
         }
@@ -126,7 +126,7 @@ public class ConstructManager : MonoBehaviour
         else
         {
             Debug.Log("스테이지 클리어 실패");
-            PlayerManager.gainDemage = 0;
+            PlayerManager.gainDamage = 0;
             isBuildEffectAplly = false;
             PlayerManager.ResetStatus();
         }

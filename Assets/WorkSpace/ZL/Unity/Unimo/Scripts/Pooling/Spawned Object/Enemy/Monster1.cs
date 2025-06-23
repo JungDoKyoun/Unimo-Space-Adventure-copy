@@ -30,7 +30,7 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
-            CheckDistanceToSpawner();
+            CheckDespawnCondition();
         }
 
         public void GiveDamage(IDamageable damageable, Vector3 contact)

@@ -68,7 +68,7 @@ namespace ZL.Unity.Unimo
             spawner = null;
         }
 
-        protected void CheckDistanceToSpawner()
+        protected void CheckDespawnCondition()
         {
             if (spawner == null)
             {
