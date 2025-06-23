@@ -33,16 +33,18 @@ public class ConstructUIManager : MonoBehaviour
     public static ConstructUIManager Instance { get; private set; }
     public Dictionary<int, int> imagePriority = new Dictionary<int, int>();
 
-
+    public GameObject constructManager;
 
     private void Awake()
     {
         Instance = this;
+        SetImagePriorityDicNum();
+        Instantiate(constructManager);
     }
     // Start is called before the first frame update
     void Start()
     {
-        SetImagePriorityDicNum();
+        
     }
 
     // Update is called once per frame
@@ -139,7 +141,7 @@ public class ConstructUIManager : MonoBehaviour
     }
     public void BuildButtonPressed(string buildID)
     {
-        foreach (var temp in techConstructList)
+        foreach (var temp in ConstructManager.Instance.techConstructList)
         {
             if (temp.buildID == buildID)
             {
@@ -147,7 +149,7 @@ public class ConstructUIManager : MonoBehaviour
                 return;
             }
         }
-        foreach (var temp in utilityConstructList)
+        foreach (var temp in ConstructManager.Instance.utilityConstructList)
         {
             if (temp.buildID == buildID)
             {
@@ -155,7 +157,7 @@ public class ConstructUIManager : MonoBehaviour
                 return;
             }
         }
-        foreach (var temp in combatConstructList)
+        foreach (var temp in ConstructManager.Instance.combatConstructList)
         {
             if (temp.buildID == buildID)
             {
@@ -164,4 +166,36 @@ public class ConstructUIManager : MonoBehaviour
             }
         }
     }
+    public void ShowBuildInfoPanel(ConstructBase buildingInfo)
+    {
+        var requireText = "";
+        buildingInfoPanel.SetActive(true);
+        buildingTitleText.text = buildingInfo.buildName;
+        //buildingInfoText.text=
+        foreach (var temp in buildingInfo.buildRequires)
+        {
+            requireText += " " + temp;
+        }
+        string costText = "";
+        buildingRequireText.text = requireText;
+        foreach (var temp in buildingInfo.BuildCostDic)
+        {
+            costText += "\"" + temp.Key + "\"" + ":" + temp.Value.ToString() + "";
+
+        }
+        buildingCostText.text = costText;
+        buildingInfoText.text = buildingInfo.buildingDescription;
+        buildingImage.sprite = buildingInfo.buildIcon;
+        ConstructManager.Instance.DecideCanBuild(buildingInfo);
+        buildInfoBuildButton.onClick.RemoveAllListeners();
+        buildInfoBuildButton.onClick.AddListener(() => ConstructManager.Instance.TryConstruct(buildingInfo));
+
+
+
+
+    }
+
+    
+
+
 }

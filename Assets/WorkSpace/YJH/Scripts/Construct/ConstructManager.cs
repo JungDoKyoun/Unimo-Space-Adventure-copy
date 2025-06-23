@@ -16,16 +16,16 @@ using YJH;
 public class ConstructManager : MonoBehaviour
 {
     //[SerializeField] List<Transform> spawnPoints= new List<Transform>();
-    [SerializeField] List<TechBuildBase> techConstructList = new List<TechBuildBase>();
-    [SerializeField] List<UtilityBuildBase> utilityConstructList = new List<UtilityBuildBase>();
-    [SerializeField] List<CombatBuildBase> combatConstructList = new List<CombatBuildBase>();
+    public List<TechBuildBase> techConstructList = new List<TechBuildBase>();
+    public List<UtilityBuildBase> utilityConstructList = new List<UtilityBuildBase>();
+    public List<CombatBuildBase> combatConstructList = new List<CombatBuildBase>();
     private Dictionary<string,ConstructBase> allBuildingDic = new Dictionary<string,ConstructBase>();
     
 
     
-    [SerializeField] List<Sprite> buildStateImageList= new List<Sprite>();//나중에 건설 이미지 방식 바뀌면 삭제할 것 
+    //[SerializeField] List<Sprite> buildStateImageList= new List<Sprite>();//나중에 건설 이미지 방식 바뀌면 삭제할 것 
     
-    private float buildStateProgress = 0;
+    //private float buildStateProgress = 0;
     //[SerializeField] List<Button> buildButtons = new List<Button>();
     //[SerializeField] GameObject BuildPanel;
 
@@ -95,6 +95,7 @@ public class ConstructManager : MonoBehaviour
         }
     }
 
+    
     //private void Start()
     //{
     //    if (tempRelic != null)
@@ -106,7 +107,7 @@ public class ConstructManager : MonoBehaviour
     //}
     private void OnDestroy()
     {
-        
+        Debug.Log("건설매니저 사라짐");
         OnConstructCostChange -= SetConstructCostText;
     }
     public void ToDictionary()
@@ -198,17 +199,7 @@ public class ConstructManager : MonoBehaviour
             ConstructUIManager.Instance.buildInfoBuildButton.interactable = false;
             int costNum;
             CoroutineRunner.Instance.Run(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
-            //StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
-            //SetPlayer();
-            //DecideProgress();//나중에 이미지 메커니즘 완벽하게 변경하면 바꾸기
             
-            //블루 프린트 함수 추가하기
-
-            //건설이 완료되었다는 뜻이니까 
-            //건설 반영을 해야 함
-            //어떻게 해야 할까?
-            //건설 베이스에 스폰 인덱스가 있으니까 이 스폰 인덱스를 이용해서 스폰리스트에 접근해서 스폰 리스트 쪽에 반영
-            //반영 하는건 뒤 패널을 편집하는 방식으로 이미지를 이용해서 덮어 씌우기? 동일한 이미지를 여러개 다른 버전으로 만들면 될 거 같다
         
     }
     
@@ -297,7 +288,7 @@ public class ConstructManager : MonoBehaviour
             }
         }
 
-        buildStateProgress =(float)buildedBuildingNum/buildingNum;
+        //buildStateProgress =(float)buildedBuildingNum/buildingNum;
        // Debug.Log(buildStateProgress);
         //DebugBuildedList();
         //ChangeBuildStateImage();
@@ -314,42 +305,9 @@ public class ConstructManager : MonoBehaviour
     {
         isBuildEffectAplly = false;
     }
-    public void BuildButtonPressed(string buildID)
-    {
-        foreach (var temp in techConstructList)
-        {
-            if (temp.buildID == buildID)
-            {
-                ShowBuildInfoPanel(temp);
-                return;
-            }
-        }
-        foreach (var temp in utilityConstructList)
-        {
-            if(temp.buildID == buildID)
-            {
-                ShowBuildInfoPanel(temp);
-                return;
-            }
-        }
-        foreach (var temp in combatConstructList)
-        {
-            if (temp.buildID == buildID)
-            {
-                ShowBuildInfoPanel(temp);
-                return;
-            }
-        }
-    }
+    
 
-    public void ActivePanel(GameObject panel)
-    {
-        panel.SetActive(true);
-    }
-    public void DeactivePanel(GameObject panel)
-    {
-        panel.SetActive(false);
-    }
+    
    
 
     
@@ -364,34 +322,7 @@ public class ConstructManager : MonoBehaviour
     //{
     //    BuildPanel.SetActive(false);
     //}
-    public void ShowBuildInfoPanel(ConstructBase buildingInfo)
-    {
-        var requireText = "";
-        ConstructUIManager.Instance.buildingInfoPanel.SetActive(true);
-        ConstructUIManager.Instance.buildingTitleText.text = buildingInfo.buildName;
-        //buildingInfoText.text=
-        foreach (var temp in buildingInfo.buildRequires)
-        {
-            requireText += " " + temp;
-        }
-        string costText = "";
-        ConstructUIManager.Instance.buildingRequireText.text = requireText;
-        foreach (var temp in buildingInfo.BuildCostDic)
-        {
-            costText += "\"" + temp.Key + "\"" + ":" + temp.Value.ToString() + "";
-
-        }
-        ConstructUIManager.Instance.buildingCostText.text = costText;
-        ConstructUIManager.Instance.buildingInfoText.text = buildingInfo.buildingDescription;
-        ConstructUIManager.Instance.buildingImage.sprite = buildingInfo.buildIcon;
-        DecideCanBuild(buildingInfo);
-        ConstructUIManager.Instance.buildInfoBuildButton.onClick.RemoveAllListeners();
-        ConstructUIManager.Instance.buildInfoBuildButton.onClick.AddListener(() => TryConstruct(buildingInfo));
-
-
-
-
-    }
+    
 
     public void DecideCanBuild(ConstructBase buildingInfo)
     {
