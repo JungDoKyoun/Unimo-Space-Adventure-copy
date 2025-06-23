@@ -221,7 +221,7 @@ Transform:
   - {fileID: 5166824108105122194}
   - {fileID: 4256795630923087701}
   - {fileID: 7629386314814512650}
-  m_Father: {fileID: 1829995321276097704}
+  m_Father: {fileID: 616080454476425188}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7452098469681872726
 Animator:
@@ -547,7 +547,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 2568585099480790707}
+  - {fileID: 616080454476425188}
   - {fileID: 2460573719732020560}
   - {fileID: 3057050897555738153}
   m_Father: {fileID: 0}
@@ -612,10 +612,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4ecc1a21aa195040a1d5f6ac96a9fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: -1
+  spawner: {fileID: 0}
   collider: {fileID: 383969473181332230}
   rigidbody: {fileID: 2836933150279734092}
-  animator: {fileID: 7452098469681872726}
+  animatorGroup: {fileID: 3959517930652991558}
   enemyData: {fileID: 11400000, guid: d9198271e05b01e4ab109616646f2fd4, type: 2}
   stopDistance: 10
   projectileName: Monster 2 Projectile
@@ -712,7 +712,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1829995321276097704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -747,6 +747,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5252705873885771371}
   m_LocalEulerAnglesHint: {x: 50.000015, y: 1.9792265e-14, z: 3.2968144e-15}
+--- !u!1 &8331924173331449153
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 616080454476425188}
+  - component: {fileID: 3959517930652991558}
+  m_Layer: 7
+  m_Name: Animator Group
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &616080454476425188
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8331924173331449153}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 2568585099480790707}
+  m_Father: {fileID: 1829995321276097704}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3959517930652991558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8331924173331449153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ca3d3bd9e44584e8abcac310cc3f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainAnimator: {fileID: 7452098469681872726}
+  childAnimators: []
 --- !u!1001 &1516290338430488201
 PrefabInstance:
   m_ObjectHideFlags: 0

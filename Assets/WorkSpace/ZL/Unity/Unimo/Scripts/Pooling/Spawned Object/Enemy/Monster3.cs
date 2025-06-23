@@ -68,7 +68,7 @@ namespace ZL.Unity.Unimo
 
             detector.enabled = false;
 
-            animator.SetTrigger("Encounter");
+            animatorGroup.SetTrigger("Encounter");
         }
 
         public override void OnAppeared()

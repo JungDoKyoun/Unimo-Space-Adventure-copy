@@ -1,74 +1,106 @@
+using System.Collections.Generic;
+
 using UnityEngine;
 
 namespace ZL.Unity.Animating
 {
     [AddComponentMenu("ZL/Animating/Animator Group")]
 
-    public sealed class AnimatorGroup : Animator
+    public sealed class AnimatorGroup : MonoBehaviour
     {
         [Space]
 
         [SerializeField]
 
-        private Animator[] animators = null;
+        [UsingCustomProperty]
 
-        public void SetFloatAll(AnimationEvent animationEvent)
+        [ReadOnlyWhenPlayMode]
+
+        [Button("Crawling")]
+
+        [Margin]
+
+        private Animator mainAnimator = null;
+
+        [Space]
+
+        [SerializeField]
+
+        private List<Animator> childAnimators = null;
+
+        private int childAnimatorsCount = 0;
+
+        private void Awake()
         {
-            SetFloatAll(animationEvent.stringParameter, animationEvent.floatParameter);
+            childAnimatorsCount = childAnimators.Count;
         }
 
-        public void SetFloatAll(string name, float value)
-        {
-            SetFloat(name, value);
+        #if UNITY_EDITOR
 
-            for (int i = 0; i < animators.Length; ++i)
+        public void Crawling()
+        {
+            if (transform.TryGetComponentInChildren(out mainAnimator) == false)
             {
-                animators[i].SetFloat(name, value);
+                return;
+            }
+
+            if (mainAnimator.transform.TryGetComponentsInChildrenOnly<Animator>(out childAnimators) == false)
+            {
+                return;
+            }
+
+            FixedEditorUtility.SetDirty(this);
+        }
+
+        #endif
+
+        public void SetInteger(string name, int value)
+        {
+            mainAnimator.SetInteger(name, value);
+
+            for (int i = 0; i < childAnimatorsCount; ++i)
+            {
+                childAnimators[i].SetInteger(name, value);
             }
         }
 
-        public void SetBoolAll(string name, bool value)
+        public void SetFloat(string name, float value)
         {
-            SetBoolAll(name, value);
+            mainAnimator.SetFloat(name, value);
 
-            for (int i = 0; i < animators.Length; ++i)
+            for (int i = 0; i < childAnimatorsCount; ++i)
             {
-                animators[i].SetBool(name, value);
+                childAnimators[i].SetFloat(name, value);
             }
         }
 
-        public void SetIntegerAll(AnimationEvent animationEvent)
+        public void SetBool(string name, bool value)
         {
-            SetIntegerAll(animationEvent.stringParameter, animationEvent.intParameter);
-        }
+            mainAnimator.SetBool(name, value);
 
-        public void SetIntegerAll(string name, int value)
-        {
-            SetInteger(name, value);
-
-            for (int i = 0; i < animators.Length; ++i)
+            for (int i = 0; i < childAnimatorsCount; ++i)
             {
-                animators[i].SetInteger(name, value);
+                childAnimators[i].SetBool(name, value);
             }
         }
 
-        public void SetTriggerAll(string name)
+        public void SetTrigger(string name)
         {
-            SetTrigger(name);
+            mainAnimator.SetTrigger(name);
 
-            for (int i = 0; i < animators.Length; ++i)
+            for (int i = 0; i < childAnimatorsCount; ++i)
             {
-                animators[i].SetTrigger(name);
+                childAnimators[i].SetTrigger(name);
             }
         }
 
-        public void RebindAll()
+        public void Rebind()
         {
-            Rebind();
+            mainAnimator.Rebind();
 
-            for (int i = 0; i < animators.Length; ++i)
+            for (int i = 0; i < childAnimatorsCount; ++i)
             {
-                animators[i].Rebind();
+                childAnimators[i].Rebind();
             }
         }
     }

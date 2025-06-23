@@ -221,9 +221,9 @@ namespace ZL.Unity.Unimo
                 GatheringManager.Instance.OnGatherCompleted += StageClear;
             }
 
-            PlayerFuelManager.Instance.OnFuelEmpty += StageFail;
+            PlayerManager.Instance.OnPlayerDead += StageFail;
 
-            PlayerManager.OnPlayerDead += StageFail;
+            PlayerFuelManager.Instance.OnFuelEmpty += StageFail;
         }
 
         protected override IEnumerator Start()

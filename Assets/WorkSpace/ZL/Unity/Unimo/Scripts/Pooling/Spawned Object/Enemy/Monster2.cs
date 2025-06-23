@@ -56,12 +56,12 @@ namespace ZL.Unity.Unimo
 
             if (transform.position.DistanceTo(Destination.position, Axis.Y) <= stopDistance)
             {
-                animator.SetBool("IsMoving", false);
+                animatorGroup.SetBool("IsMoving", false);
             }
 
             else if (enemyData.MovementSpeed != 0f)
             {
-                animator.SetBool("IsMoving", true);
+                animatorGroup.SetBool("IsMoving", true);
 
                 rigidbody.MoveForward(enemyData.MovementSpeed * Time.fixedDeltaTime);
             }
@@ -93,7 +93,7 @@ namespace ZL.Unity.Unimo
 
             attackCooldownTimer = attackCooldown;
 
-            animator.SetTrigger("Attack");
+            animatorGroup.SetTrigger("Attack");
         }
 
         public void Shoot()
