@@ -37,6 +37,7 @@ public class ConstructUIManager : MonoBehaviour
     public AudioSource constructUIAudioSource;
     public AudioClip buildSuccessClip;
 
+    public CanvasGroup stationCanvasGroup;
     private void Awake()
     {
         Instance = this;
@@ -135,6 +136,15 @@ public class ConstructUIManager : MonoBehaviour
     public void DeactivePanel(GameObject panel)
     {
         panel.SetActive(false);
+    }
+
+    public void DisappearButtons()
+    {
+        stationCanvasGroup.alpha = 0;
+    }
+    public void AppearButtons()
+    {
+        stationCanvasGroup.alpha = 1;
     }
     public void BuildButtonPressed(string buildID)
     {
