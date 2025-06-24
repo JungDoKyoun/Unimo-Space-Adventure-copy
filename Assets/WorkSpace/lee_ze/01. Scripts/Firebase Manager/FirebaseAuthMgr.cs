@@ -305,7 +305,9 @@ public class FirebaseAuthMgr : MonoBehaviour
 
             SetButtonInteractable(hasUser);
 
-            FirebaseDataBaseMgr.Instance.InitIngameCurrency();
+            StartCoroutine(FirebaseDataBaseMgr.Instance.InitIngameCurrency());
+
+            FirebaseDataBaseMgr.Instance.InitCurrentScore();
         }
     }
 

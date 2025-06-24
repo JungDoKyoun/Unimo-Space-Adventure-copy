@@ -474,6 +474,11 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     #region Score management
 
+    public void InitCurrentScore()
+    {
+        CurrentScore = 0;
+    }
+
     /// <summary>
     /// 점수 업데이트 할 때 사용.
     /// </summary>
