@@ -33,7 +33,7 @@ public class ConstructUIManager : MonoBehaviour
     public static ConstructUIManager Instance { get; private set; }
     public Dictionary<int, int> imagePriority = new Dictionary<int, int>();
 
-    public GameObject constructManager;
+    public GameObject constructManager;//ÇÁ¸®ÆÕ 
     public AudioSource constructUIAudioSource;
     public AudioClip buildSuccessClip;
 
