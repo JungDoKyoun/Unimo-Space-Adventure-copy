@@ -1,20 +1,36 @@
+using System;
+
 using System.Collections;
+
 using UnityEngine;
 
 using UnityEngine.Animations;
+
 using ZL.Unity.Coroutines;
 
 namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Boss Monster 1 (Spawned)")]
 
-    public sealed class BossMonster1 : Enemy, IDamager
+    public sealed class BossMonster1 : Enemy, IDamager, IEnergizer
     {
         [Space]
 
         [SerializeField]
 
+        [UsingCustomProperty]
+
+        [Essential]
+
         private GameObject hitVFX = null;
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Essential]
+
+        private Transform muzzle = null;
 
         [Space]
 
@@ -26,76 +42,52 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private float dashCooldown = 0f;
+        private DashSkill dashSkill = null;
+
+        [Space]
 
         [SerializeField]
 
-        private float dashRange = 0f;
+        private Skill2 skill2 = null;
 
-        [SerializeField]
+        private int energy = 0;
 
-        private float dashDuration = 0f;
-
-        [SerializeField]
-
-        private float dashSpeedMultiply = 0f;
-
-        private bool isDashing = false;
-
-        public override void OnAppeared()
+        public int Energy
         {
-            base.OnAppeared();
+            get => energy;
 
-            StartCoroutine(BossPatternRoutine());
+            set => energy = value;
         }
 
-        private IEnumerator BossPatternRoutine()
+        private SkillSequence<BossMonster1> skillSequence = null;
+
+        protected override void Awake()
         {
-            while (true)
-            {
-                yield return WaitForFixedUpdateCache.Get();
-            }
+            base.Awake();
+
+            skillSequence = new(dashSkill, skill2);
         }
 
-        private IEnumerator BossPattern1()
+        private void Update()
         {
-            yield return WaitForFixedUpdateCache.Get();
-        }
-
-        private void FixedUpdate()
-        {
-            if (isStoped == true)
-            {
-                return;
-            }
-
-            float movementSpeed = enemyData.MovementSpeed;
-
-            if (isDashing == false)
-            {
-                if (rotationSpeed != 0f)
-                {
-                    rigidbody.LookTowards(Destination.position, rotationSpeed * Time.fixedDeltaTime, Axis.Y);
-                }
-            }
-
-            else
-            {
-                movementSpeed *= dashSpeedMultiply;
-            }
-
-            if (movementSpeed != 0f)
-            {
-                rigidbody.MoveForward(movementSpeed * Time.fixedDeltaTime);
-            }
+            skillSequence.Cooldown(Time.deltaTime);
         }
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.layer == LayerMask.NameToLayer("Item"))
             {
+                var item = other.GetComponent<Item>();
 
+                item.GetItem(this);
             }
+        }
+
+        public override void OnAppeared()
+        {
+            base.OnAppeared();
+
+            StartCoroutine(SkillSequenceRoutine());
         }
 
         public override void TakeDamage(float damage, Vector3 contact)
@@ -110,6 +102,63 @@ namespace ZL.Unity.Unimo
         public void GiveDamage(IDamageable damageable, Vector3 contact)
         {
             damageable.TakeDamage(enemyData.AttackPower, contact);
+        }
+
+        public void GetEnergy(int value)
+        {
+            Energy += value;
+        }
+
+        private IEnumerator SkillSequenceRoutine()
+        {
+            while (true)
+            {
+                yield return skillSequence.Routine();
+            }
+        }
+
+        [Serializable]
+
+        public sealed class DashSkill : Skill<BossMonster1>
+        {
+            public override IEnumerator Routine()
+            {
+                Debug.Log("스킬 1 사용 중");
+
+                skillUser.rotationSpeed = 0f;
+
+                skillUser.movementSpeed *= skillData.Power;
+
+                yield return WaitForSecondsCache.Get(skillData.Duration);
+
+                skillUser.rotationSpeed = skillUser.enemyData.RotationSpeed;
+
+                skillUser.movementSpeed = skillUser.enemyData.MovementSpeed;
+
+                Debug.Log("스킬 1 사용 완료");
+            }
+        }
+
+        [Serializable]
+
+        public sealed class Skill2 : Skill<BossMonster1>
+        {
+            public override IEnumerator Routine()
+            {
+                Debug.Log("스킬 2 사용 중");
+
+                skillUser.rotationSpeed = 0f;
+
+                skillUser.movementSpeed = 0f;
+
+                yield return WaitForSecondsCache.Get(skillData.Duration);
+
+                skillUser.rotationSpeed = skillUser.enemyData.RotationSpeed;
+
+                skillUser.movementSpeed = skillUser.enemyData.MovementSpeed;
+
+                Debug.Log("스킬 2 사용 완료");
+            }
         }
     }
 }

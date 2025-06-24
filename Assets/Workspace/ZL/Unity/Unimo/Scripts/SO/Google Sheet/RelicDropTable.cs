@@ -57,7 +57,7 @@ namespace ZL.Unity.Unimo
             get => relicDropEpic;
         }
 
-        private KeyValuePair<RelicRarity, float>[] table = null;
+        private KeyValuePair<RelicRarity, float>[] rarityTable = null;
 
         public override List<string> GetHeaders()
         {
@@ -109,7 +109,7 @@ namespace ZL.Unity.Unimo
                 return null;
             }
 
-            table ??= new KeyValuePair<RelicRarity, float>[]
+            rarityTable ??= new KeyValuePair<RelicRarity, float>[]
             {
                 new(RelicRarity.Normal, relicDropNormal),
 
@@ -124,26 +124,29 @@ namespace ZL.Unity.Unimo
 
             for (int i = 0; i < count; ++i)
             {
-                float cumulative = 0f;
-
-                for (int j = 0; j < table.Length; ++j)
+                if (MathfEx.CDF(rarityTable, GetWeight, out int j) == true)
                 {
-                    cumulative += table[j].Value;
+                    relics[i] = RelicDataSheet.Instance.GetRandomRelic(rarityTable[j].Key);
+                }
 
-                    if (cumulative <= Random.value)
-                    {
-                        continue;
-                    }
-
-                    var relicDatas = RelicDataSheet.Instance.RelicDictionary[table[j].Key];
-
-                    relics[i] = RandomEx.Range(relicDatas);
-
-                    break;
+                else
+                {
+                    relics[i] = null;
                 }
             }
 
             return relics;
+        }
+
+        private float GetWeight(KeyValuePair<RelicRarity, float> table)
+        {
+            // 유물 중복 출현 방지 조건
+            if (false)
+            {
+                return 0f;
+            }
+
+            return table.Value;
         }
     }
 }

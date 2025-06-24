@@ -14,7 +14,7 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private float dashSpeedMultiply = 0f;
+        private float dashSpeedMultiplier = 0f;
 
         [Space]
 
@@ -28,35 +28,6 @@ namespace ZL.Unity.Unimo
 
         private ArcedDetector detector = null;
 
-        private bool isDashing = false;
-
-        private void FixedUpdate()
-        {
-            if (isStoped == true)
-            {
-                return;
-            }
-
-            if (rotationSpeed != 0f)
-            {
-                rigidbody.LookTowards(Destination.position, rotationSpeed * Time.fixedDeltaTime, Axis.Y);
-            }
-
-            if (enemyData.MovementSpeed != 0f)
-            {
-                float movementSpeed = enemyData.MovementSpeed;
-
-                if (isDashing == true)
-                {
-                    movementSpeed *= dashSpeedMultiply;
-                }
-
-                rigidbody.MoveForward(movementSpeed * Time.fixedDeltaTime);
-            }
-
-            CheckDespawnCondition();
-        }
-
         private void Update()
         {
             if (detector.Detect(Destination) == false)
@@ -64,7 +35,7 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
-            isStoped = true;
+            movementSpeed = 0f;
 
             detector.enabled = false;
 
@@ -83,20 +54,16 @@ namespace ZL.Unity.Unimo
             base.Disappear();
 
             detector.enabled = false;
-
-            isDashing = false;
-        }
-
-        public void Dash()
-        {
-            isStoped = false;
-
-            isDashing = true;
         }
 
         public void GiveDamage(IDamageable damageable, Vector3 contact)
         {
             damageable.TakeDamage(enemyData.AttackPower, contact);
+        }
+
+        public void Dash()
+        {
+            movementSpeed = enemyData.MovementSpeed * dashSpeedMultiplier;
         }
     }
 }

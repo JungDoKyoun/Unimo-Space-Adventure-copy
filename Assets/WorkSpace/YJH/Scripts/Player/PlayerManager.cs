@@ -1,9 +1,21 @@
 using UnityEngine;
+
 using UnityEngine.SceneManagement;
+
 using ZL.CS.Singleton;
+
 using ZL.Unity;
+
 using ZL.Unity.Phys;
+
 using ZL.Unity.Unimo;
+
+public interface IEnergizer
+{
+    public int Energy { get; }
+
+    public void GetEnergy(int value);
+}
 
 public partial class PlayerManager : ISingleton<PlayerManager>
 {
@@ -103,7 +115,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     {
         ISingleton<PlayerManager>.Release(this);
 
-        playerOwnEnergy = 0;
+        energy = 0;
 
         isGatheringCoroutineWork = false;
 
@@ -238,7 +250,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     {
         //Debug.Log("플레이어 리셋");
 
-        playerOwnEnergy = 0;
+        energy = 0;
 
         isGatheringCoroutineWork = false;
 

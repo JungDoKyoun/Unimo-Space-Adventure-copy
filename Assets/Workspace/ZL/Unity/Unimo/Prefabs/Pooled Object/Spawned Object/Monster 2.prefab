@@ -617,10 +617,12 @@ MonoBehaviour:
   rigidbody: {fileID: 2836933150279734092}
   animatorGroup: {fileID: 3959517930652991558}
   enemyData: {fileID: 11400000, guid: d9198271e05b01e4ab109616646f2fd4, type: 2}
+  rotationSpeedMultiply: 1
+  movementSpeedMultiply: 1
   stopDistance: 10
+  attackCooldownTime: 5
+  attackRange: 30
   projectileName: Monster 2_Projectile
-  attackCooldown: 5
-  attackDistance: 30
   muzzle: {fileID: 3057050897555738153}
 --- !u!1 &4682660945450320919
 GameObject:

@@ -16,17 +16,50 @@ using ZL.Unity.Collections;
 
 namespace ZL.Unity.SO.GoogleSheet
 {
-    public abstract class ScriptableGoogleSheet<TGoogleSheetData> : ScriptableGoogleSheet<string, TGoogleSheetData>
+    public abstract class ScriptableGoogleSheet<TKey, TGoogleSheetData> : ScriptableGoogleSheet<TGoogleSheetData>
 
         where TGoogleSheetData : ScriptableObject, IGoogleSheetData
     {
-        protected override string GetDataKey(TGoogleSheetData data)
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Button(nameof(Serialize))]
+
+        protected SerializableDictionary<TKey, TGoogleSheetData> dataDictionary = null;
+
+        public TGoogleSheetData this[TKey key]
         {
-            return data.name;
+            get => dataDictionary[key];
         }
+
+        protected override void OnReadSuccessful(GstuSpreadSheet sheet)
+        {
+            base.OnReadSuccessful(sheet);
+
+            Serialize();
+        }
+
+        public virtual void Serialize()
+        {
+            dataDictionary.Clear();
+
+            for (int i = 0; i < datas.Length; ++i)
+            {
+                var data = datas[i];
+
+                dataDictionary.Add(GetDataKey(data), data);
+            }
+
+            FixedEditorUtility.SetDirty(this);
+        }
+
+        protected abstract TKey GetDataKey(TGoogleSheetData data);
     }
 
-    public abstract class ScriptableGoogleSheet<TKey, TGoogleSheetData> : ScriptableGoogleSheet
+    public abstract class ScriptableGoogleSheet<TGoogleSheetData> : ScriptableGoogleSheet
 
         where TGoogleSheetData : ScriptableObject, IGoogleSheetData
     {
@@ -71,21 +104,6 @@ namespace ZL.Unity.SO.GoogleSheet
         public TGoogleSheetData this[int index]
         {
             get => datas[index];
-        }
-
-        [Space]
-
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Button(nameof(Serialize))]
-
-        protected SerializableDictionary<TKey, TGoogleSheetData> dataDictionary = null;
-
-        public TGoogleSheetData this[TKey key]
-        {
-            get => dataDictionary[key];
         }
 
         #if UNITY_EDITOR
@@ -147,7 +165,7 @@ namespace ZL.Unity.SO.GoogleSheet
             SpreadsheetManager.Read(sheetConfig.GetSearch(), OnReadSuccessful, containsMergedCells);
         }
 
-        private void OnReadSuccessful(GstuSpreadSheet sheet)
+        protected virtual void OnReadSuccessful(GstuSpreadSheet sheet)
         {
             for (int i = 0; i < datas.Length; ++i)
             {
@@ -158,26 +176,8 @@ namespace ZL.Unity.SO.GoogleSheet
                 FixedEditorUtility.SetDirty(data);
             }
 
-            Serialize();
-
             FixedDebug.Log($"Successfully read '{name}' from Google sheet.");
         }
-
-        public virtual void Serialize()
-        {
-            dataDictionary.Clear();
-
-            for (int i = 0; i < datas.Length; ++i)
-            {
-                var data = datas[i];
-
-                dataDictionary.Add(GetDataKey(data), data);
-            }
-
-            FixedEditorUtility.SetDirty(this);
-        }
-
-        protected abstract TKey GetDataKey(TGoogleSheetData data);
 
         public void Write()
         {
@@ -187,7 +187,7 @@ namespace ZL.Unity.SO.GoogleSheet
             {
                 inputData.Add(datas[i].Export());
             }
-            
+
             SpreadsheetManager.Write(sheetConfig.GetSearch(), inputData, OnWriteSuccessful);
         }
 

@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using UnityEngine.Animations;
+
 using ZL.Unity.Animating;
 
 namespace ZL.Unity.Unimo
@@ -62,11 +64,29 @@ namespace ZL.Unity.Unimo
 
         protected EnemyData enemyData = null;
 
-        protected float rotationSpeed = -1f;
+        [Space]
 
-        public float RotationSpeed
+        [SerializeField]
+
+        protected float rotationSpeedMultiplier = 1f;
+
+        public float RotationSpeedMultiplier
         {
-            set => rotationSpeed = value;
+            set => rotationSpeedMultiplier = value;
+        }
+
+        [SerializeField]
+
+        protected float movementSpeedMultiplier = 1f;
+
+        public float MovementSpeedMultiplier
+        {
+            set
+            {
+                movementSpeedMultiplier = value;
+
+                animatorGroup.SetFloat("movementSpeedMultiplier", movementSpeedMultiplier);
+            }
         }
 
         protected float currentHealth = 0f;
@@ -76,33 +96,64 @@ namespace ZL.Unity.Unimo
             get => currentHealth;
         }
 
+        protected float rotationSpeed = 0f;
+
+        protected float movementSpeed = 0f;
+
         private EnemyManager enemyManager = null;
 
-        protected Transform Destination
+        protected virtual Transform Destination
         {
             get => enemyManager.Destination;
         }
 
         protected bool isStoped = true;
 
-        private void Awake()
+        private void OnValidate()
+        {
+            if (Application.isPlaying == false)
+            {
+                return;
+            }
+
+            //RotationSpeedMultiplier = rotationSpeedMultiplier;
+
+            //MovementSpeedMultiplier = movementSpeedMultiplier;
+        }
+
+        protected virtual void Awake()
         {
             enemyManager = EnemyManager.Instance;
         }
 
+        protected virtual void FixedUpdate()
+        {
+            if (isStoped == true)
+            {
+                return;
+            }
+
+            Look();
+
+            Move();
+
+            CheckDespawnCondition();
+        }
+
         public override void Appear()
         {
-            currentHealth = enemyData.MaxHealth;
-
             if (spawner != null)
             {
-                rotationSpeed = spawner.RotationSpeed;
+                rotationSpeedMultiplier = spawner.RotationSpeedMultiplier;
+
+                movementSpeedMultiplier = spawner.MovementSpeedMultiplier;
             }
 
-            if (rotationSpeed == -1f)
-            {
-                rotationSpeed = enemyData.RotationSpeed;
-            }
+            currentHealth = enemyData.MaxHealth;
+
+            rotationSpeed = enemyData.RotationSpeed;
+
+            movementSpeed = enemyData.MovementSpeed;
 
             base.Appear();
         }
@@ -144,7 +195,9 @@ namespace ZL.Unity.Unimo
                 animatorGroup.Rebind();
             }
 
-            rotationSpeed = -1f;
+            rotationSpeedMultiplier = 1f;
+
+            movementSpeedMultiplier = 1f;
         }
 
         public virtual void TakeDamage(float damage, Vector3 contact)
@@ -162,6 +215,33 @@ namespace ZL.Unity.Unimo
         protected virtual void Killed()
         {
             Disappear();
+        }
+
+        protected virtual void Look()
+        {
+            float rotationSpeed = this.rotationSpeed * rotationSpeedMultiplier;
+
+            if (rotationSpeed != 0f)
+            {
+                rigidbody.LookTowards(Destination.position, enemyData.RotationSpeed * Time.fixedDeltaTime, Axis.Y);
+            }
+        }
+
+        protected virtual void Move()
+        {
+            float movementSpeed = this.movementSpeed * movementSpeedMultiplier;
+
+            if (movementSpeed != 0f)
+            {
+                rigidbody.MoveForward(movementSpeed * Time.fixedDeltaTime);
+
+                animatorGroup.SetBool("isMoving", true);
+            }
+
+            else
+            {
+                animatorGroup.SetBool("isMoving", false);
+            }
         }
     }
 }

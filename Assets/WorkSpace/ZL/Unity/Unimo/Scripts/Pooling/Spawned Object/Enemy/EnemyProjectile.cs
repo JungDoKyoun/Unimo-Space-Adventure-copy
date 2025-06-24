@@ -15,9 +15,9 @@ namespace ZL.Unity.Unimo
                 return;
             }
 
-            if (rotationSpeed != 0f)
+            if (rotationSpeedMultiplier != 0f)
             {
-                rigidbody.LookTowards(Destination.position, rotationSpeed * Time.fixedDeltaTime, Axis.Y);
+                rigidbody.LookTowards(Destination.position, rotationSpeedMultiplier * Time.fixedDeltaTime, Axis.Y);
             }
 
             if (enemyData.MovementSpeed != 0f)

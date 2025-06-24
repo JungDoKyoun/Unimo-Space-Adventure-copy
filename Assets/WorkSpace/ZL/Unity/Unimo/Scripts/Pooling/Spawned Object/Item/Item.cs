@@ -65,6 +65,6 @@ namespace ZL.Unity.Unimo
             }
         }
 
-        public abstract void GetItem(PlayerManager player);
+        public abstract void GetItem<T>(T getter);
     }
 }

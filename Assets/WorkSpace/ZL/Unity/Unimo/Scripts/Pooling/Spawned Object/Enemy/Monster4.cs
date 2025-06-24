@@ -1,45 +1,21 @@
 using UnityEngine;
 
-using UnityEngine.Animations;
-
 namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Monster 4 (Spawned)")]
 
     public sealed class Monster4 : Enemy, IDamager
     {
-        private bool isDashing = false;
-
-        private void FixedUpdate()
+        public override void Appear()
         {
-            if (isStoped == true)
-            {
-                return;
-            }
-            
-            if (rotationSpeed != 0f)
-            {
-                rigidbody.LookTowards(Destination.position, rotationSpeed * Time.fixedDeltaTime, Axis.Y);
-            }
+            movementSpeed = 0f;
 
-            if (isDashing == false)
-            {
-                return;
-            }
-
-            if (enemyData.MovementSpeed != 0f)
-            {
-                rigidbody.MoveForward(enemyData.MovementSpeed * Time.fixedDeltaTime);
-            }
-
-            CheckDespawnCondition();
+            base.Appear();
         }
 
         public override void Disappear()
         {
             base.Disappear();
-
-            isDashing = false;
 
             OnDisappeared();
         }
@@ -51,7 +27,7 @@ namespace ZL.Unity.Unimo
 
         public void Dash()
         {
-            isDashing = true;
+            movementSpeed = enemyData.MovementSpeed;
         }
     }
 }

@@ -241,9 +241,9 @@ namespace ZL.Unity.Unimo
 
             #if UNITY_EDITOR
 
-            IsPlayerInvincible = isPlayerInvincible;
+            //IsPlayerInvincible = isPlayerInvincible;
 
-            IsConsumFuel = isConsumFuel;
+            //IsConsumFuel = isConsumFuel;
 
             #endif
         }

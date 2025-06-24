@@ -14,7 +14,7 @@ namespace ZL.Unity.Unimo
 {
     [CreateAssetMenu(menuName = "ZL/Unimo/SO/Relic Data Sheet (Singleton)", fileName = "Relic Data Sheet")]
 
-    public sealed class RelicDataSheet : ScriptableGoogleSheet<RelicData>, ISingleton<RelicDataSheet>
+    public sealed class RelicDataSheet : ScriptableGoogleSheet<string, RelicData>, ISingleton<RelicDataSheet>
     {
         public static RelicDataSheet Instance
         {
@@ -36,8 +36,6 @@ namespace ZL.Unity.Unimo
 
         public override void Serialize()
         {
-            dataDictionary.Clear();
-
             relicDictionary.Clear();
 
             foreach (var relicRarity in EnumEx.GetValues<RelicRarity>())
@@ -49,12 +47,20 @@ namespace ZL.Unity.Unimo
             {
                 var data = datas[i];
 
-                dataDictionary.Add(data.name, data);
-
                 relicDictionary[data.Rarity].Add(data);
             }
 
-            FixedEditorUtility.SetDirty(this);
+            base.Serialize();
+        }
+
+        protected override string GetDataKey(RelicData data)
+        {
+            return data.name;
+        }
+
+        public RelicData GetRandomRelic(RelicRarity rarity)
+        {
+            return RandomEx.Range(relicDictionary[rarity]);
         }
     }
 }

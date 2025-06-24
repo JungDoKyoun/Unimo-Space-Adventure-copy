@@ -68,7 +68,7 @@ namespace ZL.Unity.Unimo
             spawner = null;
         }
 
-        protected void CheckDespawnCondition()
+        protected virtual void CheckDespawnCondition()
         {
             if (spawner == null)
             {

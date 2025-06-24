@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 using UnityEngine.Animations;
-
+using UnityEngine.Serialization;
 using ZL.Unity.Coroutines;
 
 using ZL.Unity.Debugging;
@@ -114,13 +114,13 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [Text("<b>플레이어를 향해 회전하는 속도 (-1: 기본값)</b>")]
+        [Text("<b>목표를 향해 회전하는 속도 배수</b>")]
 
-        private float rotationSpeed = -1f;
+        private float rotationSpeedMultiplier = 1f;
 
-        public float RotationSpeed
+        public float RotationSpeedMultiplier
         {
-            get => rotationSpeed;
+            get => rotationSpeedMultiplier;
         }
 
         [Space]
@@ -129,7 +129,22 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [Text("<b>스폰 시 바라볼 지점 (None: 지정 방향)</b>")]
+        [Text("<b>목표를 향해 다가오는 속도 배수</b>")]
+
+        private float movementSpeedMultiplier = 1f;
+
+        public float MovementSpeedMultiplier
+        {
+            get => movementSpeedMultiplier;
+        }
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Text("<b>스폰 시 바라볼 목표 (None: 지정 방향)</b>")]
 
         private Transform lookPoint = null;
 

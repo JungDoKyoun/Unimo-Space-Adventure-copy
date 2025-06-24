@@ -12,9 +12,12 @@ namespace ZL.Unity.Unimo
 
         private int energy = 1;
 
-        public override void GetItem(PlayerManager player)
+        public override void GetItem<T>(T getter)
         {
-            player.GetEnergy(energy);
+            if (getter is IEnergizer energizer)
+            {
+                energizer.GetEnergy(energy);
+            }
 
             Disappear();
         }

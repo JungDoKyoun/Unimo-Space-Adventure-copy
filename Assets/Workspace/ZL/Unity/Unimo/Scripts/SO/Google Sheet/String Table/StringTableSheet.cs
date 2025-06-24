@@ -6,8 +6,11 @@ namespace ZL.Unity.Unimo
 {
     [CreateAssetMenu(menuName = "ZL/Unimo/SO/String Table Sheet", fileName = "String Table Sheet")]
 
-    public sealed class StringTableSheet : ScriptableGoogleSheet<StringTable>
+    public sealed class StringTableSheet : ScriptableGoogleSheet<string, StringTable>
     {
-
+        protected override string GetDataKey(StringTable data)
+        {
+            return data.name;
+        }
     }
 }

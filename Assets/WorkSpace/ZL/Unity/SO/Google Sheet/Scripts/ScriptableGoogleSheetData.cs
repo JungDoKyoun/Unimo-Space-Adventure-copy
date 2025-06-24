@@ -13,10 +13,5 @@ namespace ZL.Unity.SO.GoogleSheet
         public abstract void Import(GstuSpreadSheet sheet);
 
         public abstract List<string> Export();
-
-        public virtual void ClearCache()
-        {
-
-        }
     }
 }

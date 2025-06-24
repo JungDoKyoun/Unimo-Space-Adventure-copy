@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 using ZL.Unity.Unimo;
 
-public partial class PlayerManager
+public partial class PlayerManager : IEnergizer
 {
     //[Header("채집")]
 
@@ -72,7 +72,14 @@ public partial class PlayerManager
 
     private static ISpellType playerSpellType = new Dash();
 
-    private int playerOwnEnergy = 0;
+    private int energy = 0;
+
+    public int Energy
+    {
+        get => energy;
+
+        set => energy = value;
+    }
 
     private GameObject targetObject;
 
@@ -259,11 +266,11 @@ public partial class PlayerManager
     }
 
     //멀티에서도 공격이 있나? -> 있음
-    public void GetEnergy(int energyNum)
+    public void GetEnergy(int value)
     {
-        playerOwnEnergy += energyNum;
+        Energy += value;
 
-        if (playerOwnEnergy >= playerAttackType.EnergyCost)
+        if (energy >= playerAttackType.EnergyCost)
         {
             FindEnemy();
 
@@ -289,7 +296,7 @@ public partial class PlayerManager
 
             float spacing = 1.5f;
 
-            int fireCount = playerOwnEnergy / playerAttackType.EnergyCost;
+            int fireCount = energy / playerAttackType.EnergyCost;
 
             for (int i = 0; i < fireCount; i++)
             {
@@ -337,16 +344,16 @@ public partial class PlayerManager
                 }
             }
 
-            playerOwnEnergy %= playerAttackType.EnergyCost;
+            energy %= playerAttackType.EnergyCost;
         }
 
-        OnEnergyChanged?.Invoke(playerOwnEnergy);
+        OnEnergyChanged?.Invoke(energy);
     }
 
     // 한번에 2개 이상 먹을 시 가로로 늘려서 발사하는 것으로
     public void PlayerAttack()
     {
-        playerOwnEnergy -= playerAttackType.EnergyCost;
+        energy -= playerAttackType.EnergyCost;
 
         var bullet = Instantiate(attackPrefab, firePos, Quaternion.identity);
 
@@ -367,7 +374,7 @@ public partial class PlayerManager
 
     public void PlayerAttack(Vector3 firePosition)
     {
-        playerOwnEnergy -= playerAttackType.EnergyCost;
+        energy -= playerAttackType.EnergyCost;
 
         GameObject bullet;
 

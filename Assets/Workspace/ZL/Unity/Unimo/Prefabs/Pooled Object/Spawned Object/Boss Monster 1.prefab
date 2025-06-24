@@ -68,6 +68,7 @@ Transform:
   - {fileID: 5859723554664458862}
   - {fileID: 3660126623794924004}
   - {fileID: 5195409640652238349}
+  - {fileID: 5528713568172069907}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &4300569107004590329
@@ -135,12 +136,19 @@ MonoBehaviour:
   rigidbody: {fileID: 9133795306510195421}
   animatorGroup: {fileID: 4175570962932111827}
   enemyData: {fileID: 11400000, guid: 3ee7bd457cf604d40a9f35cd868b38a9, type: 2}
+  rotationSpeedMultiply: 1
+  movementSpeedMultiply: 1
   hitVFX: {fileID: 5195409640652238348}
+  muzzle: {fileID: 5528713568172069907}
   projectileName: Boss Monster 1_Projectile
-  dashCooldown: 5
-  dashRange: 10
-  dashDuration: 3
-  dashSpeedMultiply: 2
+  dashSkill:
+    skillUser: {fileID: 8740797214541353937}
+    skillData: {fileID: 11400000, guid: 0a12550a8aaec6b4caa5145146d6ad25, type: 2}
+    cooldownTimer: 0
+  skill2:
+    skillUser: {fileID: 8740797214541353937}
+    skillData: {fileID: 11400000, guid: 235204dab75176044b22b16adbc7ddb6, type: 2}
+    cooldownTimer: 0
 --- !u!1 &1389402741144541357
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,6 +865,37 @@ Transform:
   - {fileID: 6084639197258804360}
   m_Father: {fileID: 4900813541259332625}
   m_LocalEulerAnglesHint: {x: 14.339794, y: 26.378403, z: 28.182875}
+--- !u!1 &4362621417604413697
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5528713568172069907}
+  m_Layer: 7
+  m_Name: Muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5528713568172069907
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4362621417604413697}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.75, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8894314297383005653}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4504410808584438489
 GameObject:
   m_ObjectHideFlags: 0

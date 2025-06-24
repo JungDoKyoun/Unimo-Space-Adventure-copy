@@ -16,21 +16,23 @@ namespace ZL.Unity.Unimo
 
         private float stopDistance = 0f;
 
-        [SerializeField]
-
-        private string projectileName = "";
+        [Space]
 
         [SerializeField]
 
-        private float attackCooldown = 0f;
+        private float attackCooldownTime = 0f;
 
         [SerializeField]
 
-        private float attackDistance = 0f;
+        private float attackRange = 0f;
 
         private float attackCooldownTimer = 0f;
 
         [Space]
+
+        [SerializeField]
+
+        private string projectileName = "";
 
         [SerializeField]
 
@@ -41,33 +43,6 @@ namespace ZL.Unity.Unimo
         [ReadOnlyWhenPlayMode]
 
         private Transform muzzle = null;
-
-        private void FixedUpdate()
-        {
-            if (isStoped == true)
-            {
-                return;
-            }
-
-            if (rotationSpeed != 0f)
-            {
-                rigidbody.LookTowards(Destination.position, rotationSpeed * Time.fixedDeltaTime, Axis.Y);
-            }
-
-            if (transform.position.DistanceTo(Destination.position, Axis.Y) <= stopDistance)
-            {
-                animatorGroup.SetBool("IsMoving", false);
-            }
-
-            else if (enemyData.MovementSpeed != 0f)
-            {
-                animatorGroup.SetBool("IsMoving", true);
-
-                rigidbody.MoveForward(enemyData.MovementSpeed * Time.fixedDeltaTime);
-            }
-
-            CheckDespawnCondition();
-        }
 
         private void Update()
         {
@@ -85,15 +60,42 @@ namespace ZL.Unity.Unimo
 
             if (Destination != null)
             {
-                if (transform.position.DistanceTo(Destination.position, Axis.Y) > attackDistance)
+                if (transform.position.DistanceTo(Destination.position, Axis.Y) > attackRange)
                 {
                     return;
                 }
             }
 
-            attackCooldownTimer = attackCooldown;
+            attackCooldownTimer = attackCooldownTime;
 
             animatorGroup.SetTrigger("Attack");
+        }
+
+        public override void OnDisappeared()
+        {
+            base.OnDisappeared();
+
+            attackCooldownTimer = 0f;
+        }
+
+        protected override void Move()
+        {
+            if (transform.position.DistanceTo(Destination.position, Axis.Y) > stopDistance)
+            {
+                movementSpeed = enemyData.MovementSpeed;
+            }
+
+            else
+            {
+                movementSpeed = 0f;
+            }
+
+            base.Move();
+        }
+
+        public void GiveDamage(IDamageable damageable, Vector3 contact)
+        {
+            damageable.TakeDamage(enemyData.AttackPower, contact);
         }
 
         public void Shoot()
@@ -103,18 +105,6 @@ namespace ZL.Unity.Unimo
             projectile.transform.SetPositionAndRotation(muzzle);
 
             projectile.Appear();
-        }
-
-        public void GiveDamage(IDamageable damageable, Vector3 contact)
-        {
-            damageable.TakeDamage(enemyData.AttackPower, contact);
-        }
-
-        public override void OnDisappeared()
-        {
-            base.OnDisappeared();
-
-            attackCooldownTimer = 0f;
         }
     }
 }
