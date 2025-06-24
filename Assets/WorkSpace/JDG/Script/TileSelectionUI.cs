@@ -86,26 +86,26 @@ namespace JDG
 
                 if (stageData.InGameMoneyAmountMin > 0)
                 {
-                    CreateRewardSlot("InGameCurrency", stageData.InGameMoneyAmountMin, stageData.InGameMoneyAmountMax, "InGameCurrencyIcon");
+                    CreateRewardSlot(stageData.InGameMoneyAmountMin, stageData.InGameMoneyAmountMax, "InGameCurrencyIcon");
                 }
 
                 // 아웃게임 재화
                 if (stageData.OutGameMoneyAmountMin > 0)
                 {
-                    CreateRewardSlot("OutGameCurrency", stageData.OutGameMoneyAmountMin, stageData.OutGameMoneyAmountMax, "OutGameCurrencyIcon");
+                    CreateRewardSlot(stageData.OutGameMoneyAmountMin, stageData.OutGameMoneyAmountMax, "OutGameCurrencyIcon");
                 }
 
                 // 설계도
                 if (stageData.BluePrintCount > 0)
                 {
                     Debug.Log(stageData.BluePrintCount);
-                    CreateRewardSlot("BluePrint", stageData.BluePrintCount, stageData.BluePrintCount, "BluePrintIcon");
+                    CreateRewardSlot(stageData.BluePrintCount, stageData.BluePrintCount, "BluePrintIcon");
                 }
 
                 // 유물
                 if (stageData.RelicCount > 0)
                 {
-                    CreateRewardSlot("랜덤유물", 0, stageData.RelicCount, "RandomRelicIcon");
+                    CreateRewardSlot(0, stageData.RelicChance, "RandomRelicIcon");
                 }
 
             }
@@ -119,7 +119,7 @@ namespace JDG
             }
         }
 
-        private void CreateRewardSlot(string name, int min, int max, string iconName)
+        private void CreateRewardSlot(float min, float max, string iconName)
         {
             if (min <= 0 && max <= 0)
                 return;
@@ -132,15 +132,23 @@ namespace JDG
             {
                 string count = "";
 
-                if (min == max)
+                if(iconName == "RandomRelicIcon")
                 {
-                    count = $"{min}";
+                    count = $"{max * 100} %";
                 }
                 else
                 {
-                    count = $"{min} ~ {max}";
-                    rewardSlot.SetRewardSlot(icon, name, count);
+                    if (min == max)
+                    {
+                        count = $"{min}";
+                    }
+                    else
+                    {
+                        count = $"{min} ~ {max}";
+                    }
                 }
+
+                rewardSlot.SetRewardSlot(icon, count);
             }
         }
 

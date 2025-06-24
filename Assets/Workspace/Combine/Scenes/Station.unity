@@ -13498,8 +13498,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8dfde5fea2f11a4aabcf2d4330a9e61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridSize: {x: 20, y: 20}
-  _mapOrigin: {x: 0, y: 60, z: -19}
+  _gridSize: {x: 15, y: 15}
+  _mapOrigin: {x: 0, y: 54, z: -19}
   _spawnCount: 400
   _outerSize: 1
   _innerSize: 0
@@ -13524,9 +13524,9 @@ MonoBehaviour:
   - _difficultyType: 0
     _distance: 0
   - _difficultyType: 1
-    _distance: 10
+    _distance: 2
   - _difficultyType: 2
-    _distance: 20
+    _distance: 4
   _minEnvironmentTileCount: 2
   _maxEnvironmentTileCount: 4
   _offset: {x: 0, y: 0.3, z: 0}
@@ -15668,7 +15668,7 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 0.9, y: 1.14}
+  m_CellSize: {x: 0.7, y: 1.14}
   m_Spacing: {x: 0.15, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
