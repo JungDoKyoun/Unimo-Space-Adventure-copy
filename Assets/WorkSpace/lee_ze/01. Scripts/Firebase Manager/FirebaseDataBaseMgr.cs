@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Firebase;
 using Firebase.Database;
 using Firebase.Auth;
 using TMPro;
@@ -201,6 +200,8 @@ public class FirebaseDataBaseMgr : MonoBehaviour
 
     public IEnumerator InitIngameCurrency() // 게임 클리어 실패 시 인게임 재화 초기화
     {
+        yield return new WaitUntil(predicate: () => dbRef != null);
+
         var getTask = dbRef.Child("users").Child(user.UserId).Child("rewardIngameCurrency").SetValueAsync(0);
 
         yield return new WaitUntil(predicate: () => getTask.IsCompleted);
