@@ -58,6 +58,7 @@ public class ConstructUIManager : MonoBehaviour
             Instantiate(constructManager);
         }
         SetAllButtons();
+        ChangeButtonsSpriteAll();
     }
 
     public void SetAllButtons()
