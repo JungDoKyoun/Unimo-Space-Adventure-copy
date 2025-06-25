@@ -17,19 +17,17 @@ namespace JDG
             Debug.Log("자원 변경");
             if(eventEffect._target == TargetType.IngameCurrency)
             {
-                FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(eventEffect._value);
+                EffectCoroutineLuncher.Instance.RunCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardIngameCurrency(eventEffect._value), PlayerEvents.ChangeCurrency);
             }
             else if (eventEffect._target == TargetType.MetaCurrency)
             {
-                FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(eventEffect._value);
+                EffectCoroutineLuncher.Instance.RunCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(eventEffect._value), PlayerEvents.ChangeCurrency);
             }
             else if(eventEffect._target == TargetType.Blueprint)
             {
-                FirebaseDataBaseMgr.Instance.UpdateRewardBluePrint(eventEffect._value);
+                EffectCoroutineLuncher.Instance.RunCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardBluePrint(eventEffect._value), PlayerEvents.ChangeCurrency);
                 Debug.Log("자원 변경2");
             }
-
-            PlayerEvents.ChangeCurrency();
         }
     }
 

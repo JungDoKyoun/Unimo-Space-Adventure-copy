@@ -10,7 +10,7 @@ namespace JDG
 {
     public class TopBarUI : MonoBehaviour
     {
-        [SerializeField] private Image _playerImageUI;
+        //[SerializeField] private Image _playerImageUI;
         [SerializeField] private Image _hpBarUI;
         [SerializeField] private Image _timeBarUI;
         [SerializeField] private Sprite _playerImage;
@@ -26,8 +26,8 @@ namespace JDG
             _maxHP = PlayerManager.PlayerStatus.maxHealth;
             _timeLimitMax = PlayerFuelManager.MaxFuel;
 
-            if (_playerImage != null)
-                _playerImageUI.sprite = _playerImage;
+            //if (_playerImage != null)
+            //    _playerImageUI.sprite = _playerImage;
 
             _curHP = PlayerManager.PlayerStatus.currentHealth;
             _remainingTime = PlayerFuelManager.Fuel;
@@ -71,14 +71,14 @@ namespace JDG
             if (_hpBarUI != null)
             {
                 _hpBarUI.fillAmount = Mathf.Clamp01((float)_curHP / _maxHP);
-                _playerHPText.text = $"{_curHP} / {_maxHP}";
+                _playerHPText.text = $"{(int)_curHP} / {(int)_maxHP}";
 
             }
 
             if (_timeBarUI != null)
             {
                 _timeBarUI.fillAmount = Mathf.Clamp01((float)_remainingTime / _timeLimitMax);
-                _playerFuelText.text = $"{_remainingTime} / {_timeLimitMax}";
+                _playerFuelText.text = $"{(int)_remainingTime} / {(int)_timeLimitMax}";
             }
         }
     }

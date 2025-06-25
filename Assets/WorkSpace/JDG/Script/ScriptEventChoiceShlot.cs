@@ -145,6 +145,7 @@ namespace JDG
 
             //유용한 효과의 문장은 초록색으로 해로운 효과의 문장은 붉은색으로
             List<string> allDes = new List<string>();
+            bool isChoiceValid = true;
 
             foreach (var prob in choiceData._probabilisticEffect)
             {
@@ -174,6 +175,21 @@ namespace JDG
 
                             break;
                     }
+
+                    if(effeect._effectType == EffectType.ChangeCurrentHP)
+                    {
+                        if(!ConditionChecker.IsPlayerHPEnough(effeect._value))
+                        {
+                            isChoiceValid = false;
+                        }
+                    }
+                    else if(effeect._effectType == EffectType.ChangeCurrentFuel)
+                    {
+                        if(!ConditionChecker.IsPlayerFuleEnough(effeect._value))
+                        {
+                            isChoiceValid = false;
+                        }
+                    }
                 }
 
                 string temp = string.Join(",", midleDes);
@@ -196,7 +212,7 @@ namespace JDG
 
             _choiceDesc.text = temp2;
 
-            if (!ConditionChecker.IsChoiceAvailable(choiceData))
+            if (!ConditionChecker.IsChoiceAvailable(choiceData) || !isChoiceValid)
             {
                 _button.interactable = false;
             }
