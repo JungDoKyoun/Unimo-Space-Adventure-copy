@@ -309,11 +309,14 @@ public class ConstructUIManager : MonoBehaviour
         ConstructManager.Instance.DecideCanBuild(buildingInfo);
         buildInfoBuildButton.onClick.RemoveAllListeners();
         buildInfoBuildButton.onClick.AddListener(() => ConstructManager.Instance.TryConstruct(buildingInfo));
+        buildInfoBuildButton.onClick.AddListener(() => ConstructSuccessSoundPlay());
 
 
 
 
     }
+
+
     public void ConstructSuccessSoundPlay()
     {
         if (constructUIAudioSource != null)
