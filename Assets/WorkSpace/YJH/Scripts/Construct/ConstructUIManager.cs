@@ -24,9 +24,16 @@ public class ConstructUIManager : MonoBehaviour
     public Button buildInfoBuildButton;
     public GameObject basePanel;
 
-    public Sprite[] buttonSprites;
+    public Sprite buildedSprite;
+    public Sprite cannotBuildSprite;
+    public Sprite canBuildSprite;
 
-    public Button[] allButtons;
+    public List<Button> allButtons;
+    
+    public GameObject techBuildButtons;
+    public GameObject utilBuildButtons;
+    public GameObject combatBuildButtons;
+    
 
     [Header("건설완료 화면 관련")]
     public Image buildStateImage;//건물 건설 현황을 나타낼 배경 이미지
@@ -50,9 +57,105 @@ public class ConstructUIManager : MonoBehaviour
         {
             Instantiate(constructManager);
         }
+        SetAllButtons();
     }
 
+    public void SetAllButtons()
+    {
+        allButtons = new List<Button>();
+        Button[] techButtons= techBuildButtons.GetComponentsInChildren<Button>(includeInactive: true);
+        Button[] utilButtons= utilBuildButtons.GetComponentsInChildren<Button>(includeInactive: true);
+        Button[] combatButtons= combatBuildButtons.GetComponentsInChildren<Button>(includeInactive: true);
+        foreach (Button button in techButtons)
+        {
+            allButtons.Add(button);
+        }
+        foreach (Button button in utilButtons)
+        {
+            allButtons.Add(button);
+        }
+        foreach(Button button in combatButtons)
+        {
+            allButtons.Add(button);
+        }
 
+
+
+    }
+    public void ChangeButtonsSpriteAll()
+    {
+        if(allButtons == null)
+        {
+            return;
+        }
+        if(allButtons.Count == 0)
+        {
+            return;
+        }
+
+        foreach( Button button in allButtons)
+        {
+            var tempScript = button.GetComponent<ButtonStringHolder>();
+            var tempBuildData = ConstructManager.Instance.AllBuildingDic[tempScript.BuildingID];
+            if(tempBuildData == null)
+            {
+                return;
+            }
+            if (tempBuildData.isBuildConstructed == true)//이미 건설되었으면 
+            {
+                button.gameObject.GetComponent<Image>().sprite=buildedSprite;
+            }
+            else
+            {
+                switch (tempBuildData)
+                {
+                    case TechBuildBase:
+                        if (tempBuildData.TryConstruct(ConstructManager.Instance.techConstructList) == false)//건물을 지을 수 없을때
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = cannotBuildSprite;
+                        }
+                        else//건물을 지을 수는 있을 때 이하 동일
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = canBuildSprite;
+                        }
+
+                            break;
+                    case UtilityBuildBase:
+                        if (tempBuildData.TryConstruct(ConstructManager.Instance.utilityConstructList) == false)
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = cannotBuildSprite;
+                        }
+                        else
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = canBuildSprite;
+                        }
+                            break;
+                    case CombatBuildBase:
+                        if (tempBuildData.TryConstruct(ConstructManager.Instance.combatConstructList) == false)
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = cannotBuildSprite;
+                        }
+                        else
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = canBuildSprite;
+                        }
+                            break;
+                    default:
+                        Debug.Log("non build type");
+                        return;
+
+                }
+            }
+
+
+
+
+
+        }
+
+
+
+    }
     
     public void DeactiveBasePanel()
     {
