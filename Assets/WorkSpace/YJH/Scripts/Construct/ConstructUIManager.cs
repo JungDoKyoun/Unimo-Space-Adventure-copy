@@ -38,6 +38,7 @@ public class ConstructUIManager : MonoBehaviour
     public AudioClip buildSuccessClip;
 
     public CanvasGroup stationCanvasGroup;
+    
     private void Awake()
     {
         Instance = this;
@@ -58,6 +59,11 @@ public class ConstructUIManager : MonoBehaviour
     {
         //Debug.Log("건설 화면 등장");
         basePanel.SetActive(true);
+        //Debug.Log(FirebaseDataBaseMgr.Blueprint);
+        //Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
+        ConstructManager.Instance.SetOwnCost();
+        //StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(10000));//실험용 임시 함수
+        //Debug.Log("실험용 임시 자원 추가");
     }
     public void EndConstructButtonPressed()
     {

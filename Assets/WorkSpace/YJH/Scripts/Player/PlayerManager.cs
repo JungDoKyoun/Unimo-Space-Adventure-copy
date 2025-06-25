@@ -282,12 +282,12 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     }
     public static void ResetStatus()
     {
-        Debug.Log("플레이어 스탯 초기화");
+        //Debug.Log("플레이어 스탯 초기화");
         if (ConstructManager.Instance == null)//건설 매니저 없이 시작할때
         {
             PlayerStatus = originStatus.Clone();
             //ActiveRelic();
-            Debug.Log("플레이어 건설 효과 미적용");
+            //Debug.Log("플레이어 건설 효과 미적용");
 
         }
         else
@@ -296,7 +296,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
             //라운드 종료시 체력
             //PlayerStatus temp = new PlayerStatus(); //건설효과 + 플레이어 기본 스테이터스
             PlayerStatus = ConstructManager.playerStatus;//이게 건설 매니저의 setfinalstatusto player랑 다를게 없다
-            Debug.Log("플레이어 건설 효과 적용");
+            //Debug.Log("플레이어 건설 효과 적용");
 
             //ActiveRelic();
             PlayerStatus temp = PlayerStatus.Clone();
