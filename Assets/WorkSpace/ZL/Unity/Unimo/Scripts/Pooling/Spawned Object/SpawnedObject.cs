@@ -8,37 +8,32 @@ namespace ZL.Unity.Unimo
 {
     public abstract class SpawnedObject : PooledObject
     {
-        [Space]
+        private float lifeTime = -1f;
 
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Button(nameof(Appear))]
-
-        [Button(nameof(Disappear))]
-
-        [Margin]
-
-        [ReadOnly(true)]
-
-        protected Spawner spawner = null;
-
-        public Spawner Spawner
+        public float LifeTime
         {
-            set => spawner = value;
+            set => lifeTime = value;
+        }
+
+        private Vector3 spawnPosition = Vector3.zero;
+
+        public Vector3 SpawnPosition
+        {
+            set => spawnPosition = value;
+        }
+
+        private float despawnRange = -1f;
+
+        public float DespawnRange
+        {
+            set => despawnRange = value;
         }
 
         public virtual void OnAppeared()
         {
-            if (spawner == null)
+            if (lifeTime != -1f)
             {
-                return;
-            }
-
-            if (spawner.LifeTime != -1f)
-            {
-                Invoke(nameof(Disappear), spawner.LifeTime);
+                Invoke(nameof(Disappear), lifeTime);
             }
         }
 
@@ -58,34 +53,27 @@ namespace ZL.Unity.Unimo
         {
             base.Disappear();
 
-            if (spawner == null)
-            {
-                return;
-            }
-
-            spawner.Despawn();
-
-            spawner = null;
+            lifeTime = -1f;
         }
 
         protected virtual void CheckDespawnCondition()
         {
-            if (spawner == null)
+            if (despawnRange == -1f)
             {
                 return;
             }
 
-            if (spawner.DespawnDistance == -1f)
+            if (IsWithinRange(spawnPosition, despawnRange) == true)
             {
                 return;
             }
 
-            float distanceToSpawner = transform.position.DistanceTo(spawner.transform.position, Axis.Y);
+            Disappear();
+        }
 
-            if (distanceToSpawner > spawner.DespawnDistance)
-            {
-                Disappear();
-            }
+        protected bool IsWithinRange(Vector3 position, float distance)
+        {
+            return transform.position.DistanceTo(position, Axis.Y) <= distance;
         }
     }
 }

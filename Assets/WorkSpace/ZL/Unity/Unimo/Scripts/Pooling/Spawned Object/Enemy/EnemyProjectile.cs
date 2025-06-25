@@ -1,33 +1,11 @@
 using UnityEngine;
 
-using UnityEngine.Animations;
-
 namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Enemy Projectile (Spawned)")]
 
     public sealed class EnemyProjectile : Enemy, IDamager
     {
-        private void FixedUpdate()
-        {
-            if (isStoped == true)
-            {
-                return;
-            }
-
-            if (rotationSpeedMultiplier != 0f)
-            {
-                rigidbody.LookTowards(Destination.position, rotationSpeedMultiplier * Time.fixedDeltaTime, Axis.Y);
-            }
-
-            if (enemyData.MovementSpeed != 0f)
-            {
-                rigidbody.MoveForward(enemyData.MovementSpeed * Time.fixedDeltaTime);
-            }
-
-            CheckDespawnCondition();
-        }
-
         public override void Appear()
         {
             base.Appear();

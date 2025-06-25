@@ -8,6 +8,8 @@ using UnityEngine.Animations;
 
 using ZL.Unity.Coroutines;
 
+using ZL.Unity.Pooling;
+
 namespace ZL.Unity.Unimo
 {
     [AddComponentMenu("ZL/Unimo/Boss Monster 1 (Spawned)")]
@@ -48,7 +50,7 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private Skill2 skill2 = null;
+        private EnergyBoltSkill energyBoltskill = null;
 
         private int energy = 0;
 
@@ -65,7 +67,7 @@ namespace ZL.Unity.Unimo
         {
             base.Awake();
 
-            skillSequence = new(dashSkill, skill2);
+            skillSequence = new(dashSkill, energyBoltskill);
         }
 
         private void Update()
@@ -87,7 +89,14 @@ namespace ZL.Unity.Unimo
         {
             base.OnAppeared();
 
-            StartCoroutine(SkillSequenceRoutine());
+            skillSequence.StartRoutine(this);
+        }
+
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            skillSequence.StopRoutine(this);
         }
 
         public override void TakeDamage(float damage, Vector3 contact)
@@ -107,14 +116,8 @@ namespace ZL.Unity.Unimo
         public void GetEnergy(int value)
         {
             Energy += value;
-        }
 
-        private IEnumerator SkillSequenceRoutine()
-        {
-            while (true)
-            {
-                yield return skillSequence.Routine();
-            }
+            energyBoltskill.Cooldown();
         }
 
         [Serializable]
@@ -123,8 +126,6 @@ namespace ZL.Unity.Unimo
         {
             public override IEnumerator Routine()
             {
-                Debug.Log("스킬 1 사용 중");
-
                 skillUser.rotationSpeed = 0f;
 
                 skillUser.movementSpeed *= skillData.Power;
@@ -134,30 +135,76 @@ namespace ZL.Unity.Unimo
                 skillUser.rotationSpeed = skillUser.enemyData.RotationSpeed;
 
                 skillUser.movementSpeed = skillUser.enemyData.MovementSpeed;
-
-                Debug.Log("스킬 1 사용 완료");
             }
         }
 
         [Serializable]
 
-        public sealed class Skill2 : Skill<BossMonster1>
+        public sealed class EnergyBoltSkill : Skill<BossMonster1>
         {
+            [Space]
+
+            [SerializeField]
+
+            [UsingCustomProperty]
+
+            [Essential]
+
+            private Transform muzzle = null;
+
+            [Space]
+
+            [SerializeField]
+
+            [UsingCustomProperty]
+
+            [Essential]
+
+            private string projectileName = "";
+
+            [SerializeField]
+
+            [UsingCustomProperty]
+
+            [Essential]
+
+            [Alias("Projectile Name (Enhanced)")]
+
+            private string projectileName_Enhanced = "";
+
+            public override float GetWeight()
+            {
+                if (skillUser.IsWithinRange(skillUser.Destination.position, skillData.Range) == false)
+                {
+                    return 0f;
+                }
+
+                return base.GetWeight();
+            }
+
             public override IEnumerator Routine()
             {
-                Debug.Log("스킬 2 사용 중");
+                EnemyProjectile projectile;
 
-                skillUser.rotationSpeed = 0f;
+                if (skillUser.energy > 0)
+                {
+                    --skillUser.energy;
 
-                skillUser.movementSpeed = 0f;
+                    projectile = ObjectPoolManager.Instance.Clone<EnemyProjectile>(projectileName_Enhanced);
+                }
 
-                yield return WaitForSecondsCache.Get(skillData.Duration);
+                else
+                {
+                    projectile = ObjectPoolManager.Instance.Clone<EnemyProjectile>(projectileName);
+                }
 
-                skillUser.rotationSpeed = skillUser.enemyData.RotationSpeed;
+                projectile.transform.SetPositionAndRotation(muzzle);
 
-                skillUser.movementSpeed = skillUser.enemyData.MovementSpeed;
+                projectile.LifeTime = skillData.Duration;
 
-                Debug.Log("스킬 2 사용 완료");
+                projectile.Appear();
+
+                yield return null;
             }
         }
     }

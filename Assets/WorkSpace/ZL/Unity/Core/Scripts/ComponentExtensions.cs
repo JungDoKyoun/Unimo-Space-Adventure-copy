@@ -8,7 +8,7 @@ namespace ZL.Unity
 {
     public static partial class ComponentExtensions
     {
-        #region GetComponentInChildren
+        #region Get Component In Children
 
         public static bool TryGetComponentInChildren<TComponent>(this Component instance, out TComponent component)
 
@@ -50,7 +50,7 @@ namespace ZL.Unity
 
         #endregion
 
-        #region GetComponentInParent
+        #region Get Component In Parent
 
         public static bool TryGetComponentInParent<TComponent>(this Component instance, out TComponent component)
 

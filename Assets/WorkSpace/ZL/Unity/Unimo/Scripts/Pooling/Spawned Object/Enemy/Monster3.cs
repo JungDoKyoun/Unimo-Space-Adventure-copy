@@ -1,7 +1,5 @@
 using UnityEngine;
 
-using UnityEngine.Animations;
-
 using ZL.Unity.Phys;
 
 namespace ZL.Unity.Unimo
@@ -27,6 +25,8 @@ namespace ZL.Unity.Unimo
         [ReadOnlyWhenPlayMode]
 
         private ArcedDetector detector = null;
+
+        private bool isDashing = false;
 
         private void Update()
         {
@@ -54,6 +54,26 @@ namespace ZL.Unity.Unimo
             base.Disappear();
 
             detector.enabled = false;
+        }
+
+        protected override void OnDisappear()
+        {
+            if (isDashing == true)
+            {
+                animatorGroup.SetTrigger("DashToDisappear");
+            }
+
+            else
+            {
+                animatorGroup.SetTrigger("Disappear");
+            }
+        }
+
+        public override void OnDisappeared()
+        {
+            base.OnDisappeared();
+
+            isDashing = false;
         }
 
         public void GiveDamage(IDamageable damageable, Vector3 contact)

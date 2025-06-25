@@ -28,24 +28,7 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private float cooldownTimer = 0f;
-
-        public abstract IEnumerator Routine();
-
-        public void SetCooldownTimer()
-        {
-            cooldownTimer = skillData.CooldownTime;
-        }
-
-        public void Cooldown(float deltaTime)
-        {
-            cooldownTimer -= deltaTime;
-
-            if (cooldownTimer < 0f)
-            {
-                cooldownTimer = 0f;
-            }
-        }
+        protected float cooldownTimer = 0f;
 
         public virtual float GetWeight()
         {
@@ -55,6 +38,28 @@ namespace ZL.Unity.Unimo
             }
 
             return skillData.Weight;
+        }
+
+        public abstract IEnumerator Routine();
+
+        public void SetCooldownTimer()
+        {
+            cooldownTimer = skillData.CooldownTime;
+        }
+
+        public void Cooldown()
+        {
+            cooldownTimer = 0f;
+        }
+
+        public void Cooldown(float time)
+        {
+            cooldownTimer -= time;
+
+            if (cooldownTimer < 0f)
+            {
+                cooldownTimer = 0f;
+            }
         }
     }
 }

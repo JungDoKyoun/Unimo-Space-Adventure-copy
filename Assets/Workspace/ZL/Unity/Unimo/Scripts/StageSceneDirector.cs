@@ -186,6 +186,8 @@ namespace ZL.Unity.Unimo
 
         [Margin]
 
+        [ReadOnlyWhenEditMode]
+
         [Button(nameof(StageClear))]
 
         [Button(nameof(StageFail))]

@@ -1,10 +1,12 @@
 using System.Collections;
 
+using UnityEngine;
+
 namespace ZL.Unity.Unimo
 {
     public sealed class SkillSequence<TSkillUser>
 
-        where TSkillUser : class
+        where TSkillUser : MonoBehaviour
     {
         private readonly Skill<TSkillUser>[] skills = null;
 
@@ -13,21 +15,55 @@ namespace ZL.Unity.Unimo
             this.skills = skills;
         }
 
-        public void Cooldown(float deltaTime)
+        public void StartRoutine(TSkillUser skillUser)
         {
-            for (int i = 0; i < skills.Length; ++i)
+            if (routine != null)
             {
-                skills[i].Cooldown(deltaTime);
+                return;
+            }
+
+            routine = Routine();
+
+            skillUser.StartCoroutine(routine);
+        }
+
+        public void StopRoutine(TSkillUser skillUser)
+        {
+            if (routine == null)
+            {
+                return;
+            }
+
+            skillUser.StopCoroutine(routine);
+
+            routine = null;
+        }
+
+        private IEnumerator routine = null;
+
+        private IEnumerator Routine()
+        {
+            while (true)
+            {
+                if (MathfEx.CDF(skills, GetWeight, out int index) == true)
+                {
+                    skills[index].SetCooldownTimer();
+
+                    yield return skills[index].Routine();
+                }
+
+                else
+                {
+                    yield return null;
+                }
             }
         }
 
-        public IEnumerator Routine()
+        public void Cooldown(float time)
         {
-            if (MathfEx.CDF(skills, GetWeight, out int index) == true)
+            for (int i = 0; i < skills.Length; ++i)
             {
-                skills[index].SetCooldownTimer();
-
-                yield return skills[index].Routine();
+                skills[i].Cooldown(time);
             }
         }
 

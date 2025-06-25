@@ -6,9 +6,17 @@ namespace ZL.Unity.Unimo
 
     public sealed class Monster4 : Enemy, IDamager
     {
+        [Space]
+
+        [SerializeField]
+
+        private float chargeDashTime = 0f;
+
         public override void Appear()
         {
             movementSpeed = 0f;
+
+            animatorGroup.SetFloat(nameof(chargeDashTime), chargeDashTime);
 
             base.Appear();
         }

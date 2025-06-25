@@ -60,7 +60,7 @@ namespace ZL.Unity.Unimo
 
             if (Destination != null)
             {
-                if (transform.position.DistanceTo(Destination.position, Axis.Y) > attackRange)
+                if (IsWithinRange(Destination.position, attackRange) == true)
                 {
                     return;
                 }
@@ -80,7 +80,7 @@ namespace ZL.Unity.Unimo
 
         protected override void Move()
         {
-            if (transform.position.DistanceTo(Destination.position, Axis.Y) > stopDistance)
+            if (IsWithinRange(Destination.position, stopDistance) == true)
             {
                 movementSpeed = enemyData.MovementSpeed;
             }

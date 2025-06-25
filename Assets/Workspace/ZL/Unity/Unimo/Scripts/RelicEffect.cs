@@ -1,7 +1,5 @@
 using System;
 
-using System.Collections.Generic;
-
 using UnityEngine;
 
 namespace ZL.Unity.Unimo
@@ -38,11 +36,9 @@ namespace ZL.Unity.Unimo
             {
                 if (args == null)
                 {
-                    args = new object[2];
+                    int argsLength = 2;
 
-                    args[0] = RelicEffectStringTableSheet.Instance[type].Value;
-
-                    args[1] = value;
+                    args = new object[argsLength];
                 }
 
                 return args;
@@ -69,6 +65,8 @@ namespace ZL.Unity.Unimo
         public void Refresh()
         {
             Args[0] = RelicEffectStringTableSheet.Instance[type].Value;
+
+            args[1] = value;
         }
     }
 }

@@ -2,6 +2,8 @@ using System.Collections;
 
 using UnityEngine;
 
+using UnityEngine.Animations;
+
 using ZL.Unity.Collections;
 
 using ZL.Unity.Coroutines;
@@ -18,7 +20,17 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [Text("<b>랜덤 스폰 여부</b>")]
+        [Text("<b>Rotation을 스폰 지점과 동기화</b>")]
+
+        private bool syncRotation = false;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
+        [Text("<b>스폰 지점 랜덤</b>")]
 
         [PropertyField]
 
@@ -38,7 +50,7 @@ namespace ZL.Unity.Unimo
         {
             base.OnDrawGizmosSelected();
 
-            Gizmos.color = Color.green;
+            Gizmos.color = new(0f, 1f, 0f, 0.5f);
 
             for (int i = 0; i < spawnPoints.Length; ++i)
             {
@@ -89,7 +101,9 @@ namespace ZL.Unity.Unimo
 
             for (int i = 0; ; ++i)
             {
-                Spawn(spawnPoints[i].position);
+                var spawnRotation = GetSpawnRotation(spawnPoints[i]);
+
+                Spawn(spawnPoints[i].position, spawnRotation);
 
                 if (i >= spawnPoints.Length - 1)
                 {
@@ -101,6 +115,24 @@ namespace ZL.Unity.Unimo
                     yield return WaitForSecondsCache.Get(spawnDelay);
                 }
             }
+        }
+
+        private Quaternion GetSpawnRotation(Transform spawnPoint)
+        {
+            if (lookPoint != null)
+            {
+                if (QuaternionEx.TryLookRotation(spawnPoint.position, lookPoint.position, Axis.Y, out var spawnRotation) == true)
+                {
+                    return spawnRotation;
+                }
+            }
+
+            if (syncRotation == false)
+            {
+                return Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+            }
+
+            return spawnPoint.rotation;
         }
     }
 }

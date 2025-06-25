@@ -2,14 +2,14 @@ using System.Collections;
 
 using UnityEngine;
 
+using UnityEngine.Animations;
+
 using ZL.Unity.Coroutines;
 
 namespace ZL.Unity.Unimo
 {
     public abstract class RandomSpawner : Spawner
     {
-        [Space]
-
         [SerializeField]
 
         [UsingCustomProperty]
@@ -19,6 +19,16 @@ namespace ZL.Unity.Unimo
         [Text("<b>랜덤 스포너 옵션</b>", FontSize = 16)]
 
         [Margin]
+
+        [Text("<b>스폰 시 Y축 방향 (-1: 랜덤 방향)</b>")]
+
+        private float lookAngle = -1f;
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
 
         [Text("<b>웨이브에 소환할 최소 오브젝트 수</b>")]
 
@@ -87,5 +97,23 @@ namespace ZL.Unity.Unimo
         }
 
         protected abstract void Spawn();
+
+        protected Quaternion GetSpawnRotation(Vector3 spawnPosition)
+        {
+            if (lookPoint != null)
+            {
+                if (QuaternionEx.TryLookRotation(spawnPosition, lookPoint.position, Axis.Y, out var rotation) == true)
+                {
+                    return rotation;
+                }
+            }
+
+            if (lookAngle == -1f)
+            {
+                return Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+            }
+
+            return Quaternion.Euler(0f, lookAngle, 0f);
+        }
     }
 }

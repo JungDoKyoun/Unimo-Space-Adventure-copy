@@ -2,8 +2,6 @@ using UnityEngine;
 
 using UnityEngine.Animations;
 
-using ZL.Unity.Animating;
-
 namespace ZL.Unity.Unimo
 {
     public abstract class Enemy : SpawnedObject, IDamageable
@@ -140,15 +138,35 @@ namespace ZL.Unity.Unimo
             CheckDespawnCondition();
         }
 
-        public override void Appear()
+        protected virtual void Look()
         {
-            if (spawner != null)
-            {
-                rotationSpeedMultiplier = spawner.RotationSpeedMultiplier;
+            float rotationSpeed = this.rotationSpeed * rotationSpeedMultiplier;
 
-                movementSpeedMultiplier = spawner.MovementSpeedMultiplier;
+            if (rotationSpeed != 0f)
+            {
+                rigidbody.LookTowards(Destination.position, enemyData.RotationSpeed * Time.fixedDeltaTime, Axis.Y);
+            }
+        }
+
+        protected virtual void Move()
+        {
+            float movementSpeed = this.movementSpeed * movementSpeedMultiplier;
+
+            if (movementSpeed != 0f)
+            {
+                rigidbody.MoveForward(movementSpeed * Time.fixedDeltaTime);
+
+                animatorGroup.SetBool("isMoving", true);
             }
 
+            else
+            {
+                animatorGroup.SetBool("isMoving", false);
+            }
+        }
+
+        public override void Appear()
+        {
             currentHealth = enemyData.MaxHealth;
 
             rotationSpeed = enemyData.RotationSpeed;
@@ -215,33 +233,6 @@ namespace ZL.Unity.Unimo
         protected virtual void Killed()
         {
             Disappear();
-        }
-
-        protected virtual void Look()
-        {
-            float rotationSpeed = this.rotationSpeed * rotationSpeedMultiplier;
-
-            if (rotationSpeed != 0f)
-            {
-                rigidbody.LookTowards(Destination.position, enemyData.RotationSpeed * Time.fixedDeltaTime, Axis.Y);
-            }
-        }
-
-        protected virtual void Move()
-        {
-            float movementSpeed = this.movementSpeed * movementSpeedMultiplier;
-
-            if (movementSpeed != 0f)
-            {
-                rigidbody.MoveForward(movementSpeed * Time.fixedDeltaTime);
-
-                animatorGroup.SetBool("isMoving", true);
-            }
-
-            else
-            {
-                animatorGroup.SetBool("isMoving", false);
-            }
         }
     }
 }

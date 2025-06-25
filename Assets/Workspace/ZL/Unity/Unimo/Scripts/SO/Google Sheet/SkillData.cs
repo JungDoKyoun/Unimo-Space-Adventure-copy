@@ -32,13 +32,6 @@ namespace ZL.Unity.Unimo
             get => cooldownTime;
         }
 
-        private float cooldownTimer = 0f;
-
-        public float CooldownTimer
-        {
-            get => cooldownTimer;
-        }
-
         [SerializeField]
 
         private float range = 0f;

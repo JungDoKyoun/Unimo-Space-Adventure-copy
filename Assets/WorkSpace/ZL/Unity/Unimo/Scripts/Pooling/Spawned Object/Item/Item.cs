@@ -1,7 +1,5 @@
 using UnityEngine;
 
-using ZL.Unity.Animating;
-
 namespace ZL.Unity.Unimo
 {
     public abstract class Item : SpawnedObject

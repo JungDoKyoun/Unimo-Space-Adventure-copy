@@ -70,10 +70,6 @@ namespace ZL.Unity.Unimo
                     }
 
                     effectsArgs = new object[length];
-
-                    Refresh();
-
-                    //StringTable.OnLanguageChanged += Refresh;
                 }
 
                 return effectsArgs;
@@ -131,9 +127,10 @@ namespace ZL.Unity.Unimo
             {
                 effects[i].Refresh();
 
-                EffectsArgs[k] = effects[i].Args[0];
-
-                k += effects[i].Args.Length;
+                for (int j = 0; j < effects[i].Args.Length; ++j)
+                {
+                    EffectsArgs[k++] = effects[i].Args[j];
+                }
             }
         }
     }

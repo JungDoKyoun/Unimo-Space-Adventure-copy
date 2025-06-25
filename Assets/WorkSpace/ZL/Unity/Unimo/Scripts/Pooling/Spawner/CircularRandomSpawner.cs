@@ -22,16 +22,20 @@ namespace ZL.Unity.Unimo
         {
             base.OnDrawGizmosSelected();
 
-            Gizmos.color = Color.green;
+            Gizmos.color = new(0f, 1f, 0f, 0.5f);
 
             GizmosEx.DrawPolygon(transform.position, radius, 64);
         }
 
         protected override void Spawn()
         {
-            var point = Random.insideUnitCircle * radius;
+            var randomPoint = Random.insideUnitCircle * radius;
 
-            Spawn(transform.position + new Vector3(point.x, 0f, point.y));
+            var spawnPosition = transform.position + new Vector3(randomPoint.x, 0f, randomPoint.y);
+
+            var spawnRotation = GetSpawnRotation(spawnPosition);
+
+            Spawn(spawnPosition, spawnRotation);
         }
     }
 }

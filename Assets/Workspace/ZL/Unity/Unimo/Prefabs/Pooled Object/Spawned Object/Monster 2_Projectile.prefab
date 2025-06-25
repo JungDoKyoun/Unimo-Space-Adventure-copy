@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6112705965444906737}
   - component: {fileID: 5284233992033272194}
-  - component: {fileID: 3883018596662627630}
+  - component: {fileID: 1747654040467558461}
   m_Layer: 0
   m_Name: Animator
   m_TagString: Untagged
@@ -56,7 +56,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3883018596662627630
+--- !u!114 &1747654040467558461
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2181483499620486918}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a0f367e24f5b8a4ab5299a6a2264b81, type: 3}
+  m_Script: {fileID: 11500000, guid: 5cb1770694ebfd04d84970a68103ffd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   events:
@@ -203,6 +203,8 @@ MonoBehaviour:
   rigidbody: {fileID: 4731846350568392968}
   animatorGroup: {fileID: 9137675128068663929}
   enemyData: {fileID: 11400000, guid: e514de2070273804ea4102282e6b73dd, type: 2}
+  rotationSpeedMultiplier: 1
+  movementSpeedMultiplier: 1
 --- !u!1 &7994545853513892359
 GameObject:
   m_ObjectHideFlags: 0

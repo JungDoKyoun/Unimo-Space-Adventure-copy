@@ -15,9 +15,7 @@ namespace ZL.CS
                 instance.Append(value);
             }
 
-            var @string = instance.ToString();
-
-            return @string;
+            return instance.ToString();
         }
 
         public static string Concat(this StringBuilder instance, params string[] values)
@@ -29,9 +27,7 @@ namespace ZL.CS
                 instance.Append(value);
             }
 
-            var @string = instance.ToString();
-
-            return @string;
+            return instance.ToString();
         }
     }
 }

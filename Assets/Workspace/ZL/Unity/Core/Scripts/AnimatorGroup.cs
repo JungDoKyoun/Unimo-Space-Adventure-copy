@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace ZL.Unity.Animating
+namespace ZL.Unity
 {
-    [AddComponentMenu("ZL/Animating/Animator Group")]
+    [AddComponentMenu("ZL/Animator Group")]
 
     public sealed class AnimatorGroup : MonoBehaviour
     {
@@ -16,7 +16,7 @@ namespace ZL.Unity.Animating
 
         [ReadOnlyWhenPlayMode]
 
-        [Button("Crawling")]
+        [Button("FindAnimators")]
 
         [Margin]
 
@@ -30,29 +30,31 @@ namespace ZL.Unity.Animating
 
         private int childAnimatorsCount = 0;
 
-        private void Awake()
-        {
-            childAnimatorsCount = childAnimators.Count;
-        }
-
         #if UNITY_EDITOR
 
-        public void Crawling()
+        public void FindAnimators()
         {
             if (transform.TryGetComponentInChildren(out mainAnimator) == false)
             {
                 return;
             }
 
-            if (mainAnimator.transform.TryGetComponentsInChildrenOnly<Animator>(out childAnimators) == false)
-            {
-                return;
-            }
+            mainAnimator.TryGetComponentsInChildrenOnly(out childAnimators);
 
             FixedEditorUtility.SetDirty(this);
         }
 
         #endif
+
+        private void Awake()
+        {
+            childAnimatorsCount = childAnimators.Count;
+        }
+
+        public void SetInteger(AnimationEvent animationEvent)
+        {
+            SetInteger(animationEvent.stringParameter, animationEvent.intParameter);
+        }
 
         public void SetInteger(string name, int value)
         {
@@ -64,6 +66,11 @@ namespace ZL.Unity.Animating
             }
         }
 
+        public void SetFloat(AnimationEvent animationEvent)
+        {
+            SetFloat(animationEvent.stringParameter, animationEvent.floatParameter);
+        }
+
         public void SetFloat(string name, float value)
         {
             mainAnimator.SetFloat(name, value);
@@ -72,6 +79,16 @@ namespace ZL.Unity.Animating
             {
                 childAnimators[i].SetFloat(name, value);
             }
+        }
+
+        public void SetBoolTrue(string name)
+        {
+            SetBool(name, true);
+        }
+
+        public void SetBoolFalse(string name)
+        {
+            SetBool(name, false);
         }
 
         public void SetBool(string name, bool value)
