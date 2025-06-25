@@ -511,12 +511,28 @@ public class ConstructManager : MonoBehaviour
         }
         else
         {
-            
-            
+
+
             //Debug.Log(FirebaseDataBaseMgr.Blueprint);
             //Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
-            ownBuildCostDic.Add("Blueprint", FirebaseDataBaseMgr.Blueprint);
-            ownBuildCostDic.Add("MetaCurrency", FirebaseDataBaseMgr.MetaCurrency);
+            if (ownBuildCostDic.ContainsKey("Blueprint"))
+            {
+                ownBuildCostDic["Blueprint"] = FirebaseDataBaseMgr.Blueprint;
+            }
+            else
+            {
+                ownBuildCostDic.Add("Blueprint", FirebaseDataBaseMgr.Blueprint);
+            }
+            if (ownBuildCostDic.ContainsKey("MetaCurrency"))
+            {
+                ownBuildCostDic["MetaCurrency"] = FirebaseDataBaseMgr.MetaCurrency;
+            }
+            else
+            {
+                ownBuildCostDic.Add("MetaCurrency", FirebaseDataBaseMgr.MetaCurrency);
+            }
+            
+            
             
             //Debug.Log("파이어 베이스에서 받아옴");
             OnConstructCostChange.Invoke();

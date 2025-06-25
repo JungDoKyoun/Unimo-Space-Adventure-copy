@@ -647,6 +647,7 @@ GameObject:
   - component: {fileID: 54873642}
   - component: {fileID: 54873646}
   - component: {fileID: 54873641}
+  - component: {fileID: 54873647}
   m_Layer: 5
   m_Name: Station Canvas
   m_TagString: Untagged
@@ -773,6 +774,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainButton: {fileID: 76529978}
   worldMapButton: {fileID: 413542639}
+--- !u!225 &54873647
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54873640}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &69221046
 GameObject:
   m_ObjectHideFlags: 0
@@ -8375,6 +8388,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1939510268}
         m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
         m_MethodName: ActiveBasePanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
+        m_MethodName: DisappearButtons
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16274,6 +16299,13 @@ MonoBehaviour:
   constructCostText: {fileID: 4848018662840614243}
   buildInfoBuildButton: {fileID: 7960588895013387064}
   basePanel: {fileID: 3221654634476280980}
+  buttonSprites: []
+  allButtons:
+  - {fileID: 1274152559917613898}
+  - {fileID: 3134278337515781781}
+  - {fileID: 2972739873262712715}
+  - {fileID: 351214697533735557}
+  - {fileID: 1768634198488357925}
   buildStateImage: {fileID: 240708351330792372}
   buildingImages:
   - {fileID: 3939638108183202011}
@@ -16287,6 +16319,7 @@ MonoBehaviour:
   constructManager: {fileID: 6888278469466970934, guid: c41b48d8a95dab14eb4b0e67df149f7e, type: 3}
   constructUIAudioSource: {fileID: 1939510269}
   buildSuccessClip: {fileID: 8300000, guid: bca6c9855dc71ec4a93c01d2cae086e8, type: 3}
+  stationCanvasGroup: {fileID: 54873647}
 --- !u!82 &1939510269
 AudioSource:
   m_ObjectHideFlags: 0
@@ -17522,7 +17555,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -17984,6 +18017,7 @@ GameObject:
   - component: {fileID: 8781782701482102070}
   - component: {fileID: 7510116542670966399}
   - component: {fileID: 5143027989844371414}
+  - component: {fileID: 8781782701482102071}
   m_Layer: 5
   m_Name: Ingame1
   m_TagString: Untagged
@@ -18305,6 +18339,7 @@ GameObject:
   - component: {fileID: 782654470157217628}
   - component: {fileID: 7919755904646187748}
   - component: {fileID: 9122405831795567558}
+  - component: {fileID: 9122405831795567559}
   m_Layer: 5
   m_Name: Ingame5
   m_TagString: Untagged
@@ -18475,6 +18510,7 @@ GameObject:
   - component: {fileID: 2633341258660054092}
   - component: {fileID: 2507641030010299283}
   - component: {fileID: 2738098766318514438}
+  - component: {fileID: 4707154601249477116}
   m_Layer: 5
   m_Name: GiveStartRelic
   m_TagString: Untagged
@@ -18631,6 +18667,7 @@ GameObject:
   - component: {fileID: 4571652126707947960}
   - component: {fileID: 3794396199459450550}
   - component: {fileID: 1748046746584531947}
+  - component: {fileID: 4571652126707947961}
   m_Layer: 5
   m_Name: hp5
   m_TagString: Untagged
@@ -18650,6 +18687,7 @@ GameObject:
   - component: {fileID: 5616141223097402472}
   - component: {fileID: 3284145496288322934}
   - component: {fileID: 5038402940300743829}
+  - component: {fileID: 5616141223097402473}
   m_Layer: 5
   m_Name: Dash
   m_TagString: Untagged
@@ -18771,6 +18809,7 @@ GameObject:
   - component: {fileID: 2928679285104748728}
   - component: {fileID: 3124704506546769131}
   - component: {fileID: 4469476635109999746}
+  - component: {fileID: 8810033844123932430}
   m_Layer: 5
   m_Name: grange3
   m_TagString: Untagged
@@ -19237,6 +19276,7 @@ GameObject:
   - component: {fileID: 6018374765145083821}
   - component: {fileID: 5392651603706003014}
   - component: {fileID: 6279510979183158746}
+  - component: {fileID: 6279510979183158747}
   m_Layer: 5
   m_Name: Heal2
   m_TagString: Untagged
@@ -20032,6 +20072,7 @@ GameObject:
   - component: {fileID: 543727518120874385}
   - component: {fileID: 1430175173837695218}
   - component: {fileID: 6170211849869549443}
+  - component: {fileID: 6170211849869549444}
   m_Layer: 5
   m_Name: grange1
   m_TagString: Untagged
@@ -20068,7 +20109,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -20223,6 +20264,7 @@ GameObject:
   - component: {fileID: 8434844798436871527}
   - component: {fileID: 7970795395277354566}
   - component: {fileID: 2134639871211467269}
+  - component: {fileID: 8434844798436871528}
   m_Layer: 5
   m_Name: Heal1
   m_TagString: Untagged
@@ -21035,7 +21077,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -21876,6 +21918,7 @@ GameObject:
   - component: {fileID: 7394247200187606533}
   - component: {fileID: 8266228332888076916}
   - component: {fileID: 1285142682963231812}
+  - component: {fileID: 8365384576619411266}
   m_Layer: 5
   m_Name: grange4
   m_TagString: Untagged
@@ -23095,6 +23138,7 @@ GameObject:
   - component: {fileID: 4194207649178440660}
   - component: {fileID: 7307670873122584639}
   - component: {fileID: 3396687530547188176}
+  - component: {fileID: 7307670873122584640}
   m_Layer: 5
   m_Name: hp3
   m_TagString: Untagged
@@ -24159,7 +24203,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -24380,7 +24424,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -24460,6 +24504,7 @@ GameObject:
   - component: {fileID: 91451744886787605}
   - component: {fileID: 6153816605804201541}
   - component: {fileID: 3134278337515781781}
+  - component: {fileID: 6153816605804201542}
   m_Layer: 5
   m_Name: speed2
   m_TagString: Untagged
@@ -24487,6 +24532,7 @@ GameObject:
   - component: {fileID: 2939125686913008369}
   - component: {fileID: 4387415024951137342}
   - component: {fileID: 1606727659931996474}
+  - component: {fileID: 7254245996043555878}
   m_Layer: 5
   m_Name: hp4
   m_TagString: Untagged
@@ -24804,7 +24850,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -25203,6 +25249,7 @@ GameObject:
   - component: {fileID: 7460700132808042244}
   - component: {fileID: 6331766514141220398}
   - component: {fileID: 1339083301476825656}
+  - component: {fileID: 7460700132808042245}
   m_Layer: 5
   m_Name: Ingame2
   m_TagString: Untagged
@@ -25343,7 +25390,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -25454,6 +25501,7 @@ GameObject:
   - component: {fileID: 4159433512634784605}
   - component: {fileID: 5620528331539683075}
   - component: {fileID: 2664051306692665342}
+  - component: {fileID: 5620528331539683076}
   m_Layer: 5
   m_Name: dmg2
   m_TagString: Untagged
@@ -25980,6 +26028,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
+        m_MethodName: AppearButtons
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &3453054020280048714
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -26152,7 +26212,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -27274,6 +27334,7 @@ GameObject:
   - component: {fileID: 6663567406342378687}
   - component: {fileID: 1236926994745839061}
   - component: {fileID: 832692066337881188}
+  - component: {fileID: 6663567406342378688}
   m_Layer: 5
   m_Name: IngameRe1
   m_TagString: Untagged
@@ -27808,7 +27869,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -28218,6 +28279,7 @@ GameObject:
   - component: {fileID: 5435373414128159470}
   - component: {fileID: 1515735466676905790}
   - component: {fileID: 2668224767944192701}
+  - component: {fileID: 6755639618375942044}
   m_Layer: 5
   m_Name: dmg3
   m_TagString: Untagged
@@ -28267,6 +28329,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 414002164876623878}
   m_CullTransparentMesh: 1
+--- !u!114 &4571652126707947961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414002164876623878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: HP5
 --- !u!224 &4586355039236370344
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28490,6 +28565,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
+        m_MethodName: DeactivePanel
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1242270787023614169}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1939510268}
+        m_TargetAssemblyTypeName: ConstructUIManager, Assembly-CSharp
+        m_MethodName: DeactivePanel
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 2500053667952103620}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4638867667524248391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28521,7 +28620,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -28722,6 +28821,19 @@ RectTransform:
   m_AnchoredPosition: {x: -150, y: -300}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4707154601249477116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333066084939272928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: GiveStartRelic
 --- !u!1 &4719111721832281471
 GameObject:
   m_ObjectHideFlags: 0
@@ -29212,6 +29324,7 @@ GameObject:
   - component: {fileID: 9161469706109798008}
   - component: {fileID: 6963000413559909482}
   - component: {fileID: 2201862470466113708}
+  - component: {fileID: 9161469706109798009}
   m_Layer: 5
   m_Name: dmg5
   m_TagString: Untagged
@@ -29269,7 +29382,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -29379,6 +29492,7 @@ GameObject:
   - component: {fileID: 5684682047594402582}
   - component: {fileID: 7383755132787377226}
   - component: {fileID: 351214697533735557}
+  - component: {fileID: 7383755132787377227}
   m_Layer: 5
   m_Name: speed4
   m_TagString: Untagged
@@ -30581,6 +30695,7 @@ GameObject:
   - component: {fileID: 5308223920741072909}
   - component: {fileID: 3043857826704572461}
   - component: {fileID: 3065204216781728457}
+  - component: {fileID: 6103037171305169707}
   m_Layer: 5
   m_Name: IngameRe2
   m_TagString: Untagged
@@ -30664,7 +30779,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -30817,6 +30932,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 419749885847698751}
   m_CullTransparentMesh: 1
+--- !u!114 &5616141223097402473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419749885847698751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: Dash
 --- !u!114 &5620528331539683075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30847,6 +30975,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5620528331539683076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3248005209554675740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: Damage2
 --- !u!114 &5628884782733201292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30928,6 +31069,7 @@ GameObject:
   - component: {fileID: 1185222383223737967}
   - component: {fileID: 3281793770059901863}
   - component: {fileID: 1768634198488357925}
+  - component: {fileID: 5654863334871063187}
   m_Layer: 5
   m_Name: speed5
   m_TagString: Untagged
@@ -30935,6 +31077,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &5654863334871063187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5654863334871063186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: Speed5
 --- !u!222 &5684682047594402582
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -31252,7 +31407,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -31332,6 +31487,7 @@ GameObject:
   - component: {fileID: 8988470496711616691}
   - component: {fileID: 2389884491236720380}
   - component: {fileID: 76488796011775430}
+  - component: {fileID: 8988470496711616692}
   m_Layer: 5
   m_Name: gspeed2
   m_TagString: Untagged
@@ -31351,6 +31507,7 @@ GameObject:
   - component: {fileID: 7939542593600526214}
   - component: {fileID: 1198665751233804956}
   - component: {fileID: 3974961445125608024}
+  - component: {fileID: 7939542593600526215}
   m_Layer: 5
   m_Name: hp2
   m_TagString: Untagged
@@ -31598,6 +31755,19 @@ RectTransform:
   m_AnchoredPosition: {x: 300, y: -150}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6103037171305169707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5509023053987285418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: IncreaseReroll2
 --- !u!224 &6104924583039015712
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31655,6 +31825,7 @@ GameObject:
   - component: {fileID: 1558428646269555195}
   - component: {fileID: 6651888886510713708}
   - component: {fileID: 2964703202285536143}
+  - component: {fileID: 6651888886510713709}
   m_Layer: 5
   m_Name: Ingame4
   m_TagString: Untagged
@@ -31733,6 +31904,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6153816605804201542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2936050899523798744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: Speed2
 --- !u!114 &6170211849869549443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31789,6 +31973,19 @@ MonoBehaviour:
           m_StringArgument: GatherRange1
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6170211849869549444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082801415854069034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: GatherRange1
 --- !u!222 &6179654996961748589
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -31887,6 +32084,19 @@ MonoBehaviour:
           m_StringArgument: HealAfterClear2
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6279510979183158747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747715703639335514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: HealAfterClear2
 --- !u!114 &6283294170667567298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32263,6 +32473,7 @@ GameObject:
   - component: {fileID: 6112801876135432654}
   - component: {fileID: 4266950960162912122}
   - component: {fileID: 5628884782733201292}
+  - component: {fileID: 6531573128538488266}
   m_Layer: 5
   m_Name: grange2
   m_TagString: Untagged
@@ -32270,6 +32481,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6531573128538488266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6531573128538488265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: GatherRange2
 --- !u!222 &6537624786888807598
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32456,6 +32680,7 @@ GameObject:
   - component: {fileID: 2204674728169686254}
   - component: {fileID: 642032632709222838}
   - component: {fileID: 611447285628503687}
+  - component: {fileID: 6618626791955709007}
   m_Layer: 5
   m_Name: Heal3
   m_TagString: Untagged
@@ -32463,6 +32688,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6618626791955709007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6618626791955709006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: HealAfterClear3
 --- !u!1 &6625741452858846397
 GameObject:
   m_ObjectHideFlags: 0
@@ -32511,6 +32749,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6651888886510713709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6118411590227961506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: IncreaseInGame4
 --- !u!1 &6661043770568577740
 GameObject:
   m_ObjectHideFlags: 0
@@ -32523,6 +32774,7 @@ GameObject:
   - component: {fileID: 6455721346633349011}
   - component: {fileID: 2129288026534088667}
   - component: {fileID: 1274152559917613898}
+  - component: {fileID: 6661043770568577741}
   m_Layer: 5
   m_Name: speed1
   m_TagString: Untagged
@@ -32530,6 +32782,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6661043770568577741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6661043770568577740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: Speed1
 --- !u!222 &6663567406342378687
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32538,6 +32803,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4132447114085318699}
   m_CullTransparentMesh: 1
+--- !u!114 &6663567406342378688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4132447114085318699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: IncreaseReroll1
 --- !u!222 &6696076877128840686
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32575,7 +32853,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -32709,6 +32987,19 @@ RectTransform:
   m_AnchoredPosition: {x: 300, y: -50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &6755639618375942044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4522551583063327513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: Damage3
 --- !u!1 &6772057501525448966
 GameObject:
   m_ObjectHideFlags: 0
@@ -33165,6 +33456,7 @@ GameObject:
   - component: {fileID: 5360762074246162273}
   - component: {fileID: 3879553921903134107}
   - component: {fileID: 1618121014131095358}
+  - component: {fileID: 8468621604725033790}
   m_Layer: 5
   m_Name: gspeed1
   m_TagString: Untagged
@@ -33560,7 +33852,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -33721,6 +34013,7 @@ GameObject:
   - component: {fileID: 1335060249291405772}
   - component: {fileID: 7645004397070153980}
   - component: {fileID: 7439993710602350178}
+  - component: {fileID: 7645004397070153981}
   m_Layer: 5
   m_Name: Ingame3
   m_TagString: Untagged
@@ -33795,6 +34088,7 @@ GameObject:
   - component: {fileID: 1354914790034825420}
   - component: {fileID: 5502459131148067285}
   - component: {fileID: 2095565941981911090}
+  - component: {fileID: 7072200668047671863}
   m_Layer: 5
   m_Name: gspeed3
   m_TagString: Untagged
@@ -33802,6 +34096,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7072200668047671863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7072200668047671862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: GatherSpeed3
 --- !u!224 &7122758728586842395
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33929,7 +34236,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -34125,6 +34432,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 100}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &7254245996043555878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2947298033419180222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: HP4
 --- !u!222 &7303066450912518434
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -34163,6 +34483,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7307670873122584640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2265784590366032688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: HP3
 --- !u!224 &7325733169901850189
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34231,6 +34564,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7383755132787377227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5020688095043138231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: Speed4
 --- !u!222 &7394247200187606533
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -34359,6 +34705,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3189036272089897104}
   m_CullTransparentMesh: 1
+--- !u!114 &7460700132808042245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3189036272089897104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: IncreaseInGame2
 --- !u!114 &7463613768915191224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34401,6 +34760,7 @@ GameObject:
   - component: {fileID: 591337962065113388}
   - component: {fileID: 8975524594098729229}
   - component: {fileID: 157657229184553362}
+  - component: {fileID: 8975524594098729230}
   m_Layer: 5
   m_Name: grange5
   m_TagString: Untagged
@@ -34709,6 +35069,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7645004397070153981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048674810094680302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: IncreaseInGame3
 --- !u!224 &7652279800728538800
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34813,6 +35186,7 @@ GameObject:
   - component: {fileID: 9171045138478047782}
   - component: {fileID: 6608015885714096903}
   - component: {fileID: 8149297540307747003}
+  - component: {fileID: 9171045138478047783}
   m_Layer: 5
   m_Name: hp1
   m_TagString: Untagged
@@ -34840,6 +35214,7 @@ GameObject:
   - component: {fileID: 3782225543950475538}
   - component: {fileID: 1607962583297910110}
   - component: {fileID: 3211479518298654185}
+  - component: {fileID: 7718313044191396372}
   m_Layer: 5
   m_Name: dmg1
   m_TagString: Untagged
@@ -34847,6 +35222,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7718313044191396372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7718313044191396371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: Damage1
 --- !u!224 &7718618446634738981
 RectTransform:
   m_ObjectHideFlags: 0
@@ -35295,6 +35683,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5930399167866938689}
   m_CullTransparentMesh: 1
+--- !u!114 &7939542593600526215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5930399167866938689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: HP2
 --- !u!1 &7940608076043188437
 GameObject:
   m_ObjectHideFlags: 0
@@ -35323,6 +35724,7 @@ GameObject:
   - component: {fileID: 5955462688035668546}
   - component: {fileID: 7691115023825696383}
   - component: {fileID: 5156767171511121034}
+  - component: {fileID: 7942462436333205281}
   m_Layer: 5
   m_Name: EnergyBolt
   m_TagString: Untagged
@@ -35330,6 +35732,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7942462436333205281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7942462436333205280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: EnergyBolt
 --- !u!114 &7943590927222112378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35537,6 +35952,7 @@ GameObject:
   - component: {fileID: 6405458745052732891}
   - component: {fileID: 8861796178703050213}
   - component: {fileID: 430280404339246685}
+  - component: {fileID: 8861796178703050214}
   m_Layer: 5
   m_Name: gspeed4
   m_TagString: Untagged
@@ -35556,6 +35972,7 @@ GameObject:
   - component: {fileID: 5799949690298517100}
   - component: {fileID: 3216390920874917117}
   - component: {fileID: 2972739873262712715}
+  - component: {fileID: 8422619148607808575}
   m_Layer: 5
   m_Name: speed3
   m_TagString: Untagged
@@ -35889,7 +36306,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -36111,7 +36528,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -36607,6 +37024,19 @@ RectTransform:
   m_AnchoredPosition: {x: -300, y: 100}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &8365384576619411266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1804317204477810867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: GatherRange4
 --- !u!222 &8376588444510347697
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -36683,7 +37113,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -36772,7 +37202,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -36890,6 +37320,19 @@ RectTransform:
   m_AnchoredPosition: {x: 150, y: -50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &8422619148607808575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7993231672798941291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: Speed3
 --- !u!114 &8429240324166033885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36921,7 +37364,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -37008,6 +37451,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1201770699807045629}
   m_CullTransparentMesh: 1
+--- !u!114 &8434844798436871528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201770699807045629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: HealAfterClear1
 --- !u!1 &8456445603337058200
 GameObject:
   m_ObjectHideFlags: 0
@@ -37046,6 +37502,19 @@ RectTransform:
   m_AnchoredPosition: {x: -150, y: -350}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &8468621604725033790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6953018050608697277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: GatherSpeed1
 --- !u!114 &8473258663090312698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37088,6 +37557,7 @@ GameObject:
   - component: {fileID: 1076989201410064485}
   - component: {fileID: 1482914604091211345}
   - component: {fileID: 1322961542822216902}
+  - component: {fileID: 8478732165811105311}
   m_Layer: 5
   m_Name: IngameRe3
   m_TagString: Untagged
@@ -37095,6 +37565,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8478732165811105311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8478732165811105310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: IncreaseReroll3
 --- !u!1 &8481427164043542469
 GameObject:
   m_ObjectHideFlags: 0
@@ -37284,7 +37767,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -37465,6 +37948,7 @@ GameObject:
   - component: {fileID: 4451515579083961258}
   - component: {fileID: 2149844057023661665}
   - component: {fileID: 5437472814107351123}
+  - component: {fileID: 8629486666191335710}
   m_Layer: 5
   m_Name: dmg4
   m_TagString: Untagged
@@ -37472,6 +37956,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8629486666191335710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8629486666191335709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: Damage4
 --- !u!224 &8642302300636652383
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37603,7 +38100,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -37767,7 +38264,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -37835,6 +38332,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 144801851165189340}
   m_CullTransparentMesh: 1
+--- !u!114 &8781782701482102071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144801851165189340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: IncreaseInGame1
 --- !u!224 &8810033844123932429
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37855,6 +38365,19 @@ RectTransform:
   m_AnchoredPosition: {x: -300, y: -50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &8810033844123932430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463043443319230010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: GatherRange3
 --- !u!114 &8810343685340323490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37886,7 +38409,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -38086,6 +38609,7 @@ GameObject:
   - component: {fileID: 9148800042932044789}
   - component: {fileID: 1668385194405629493}
   - component: {fileID: 2837001745209047160}
+  - component: {fileID: 9148800042932044790}
   m_Layer: 5
   m_Name: gspeed5
   m_TagString: Untagged
@@ -38172,6 +38696,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8861796178703050214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7991173270607577399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: GatherSpeed4
 --- !u!224 &8899606543614416130
 RectTransform:
   m_ObjectHideFlags: 0
@@ -38373,6 +38910,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8975524594098729230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7473825623737948032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: GatherRange5
 --- !u!222 &8988470496711616691
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -38381,6 +38931,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5898085806656583491}
   m_CullTransparentMesh: 1
+--- !u!114 &8988470496711616692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5898085806656583491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: GatherSpeed2
 --- !u!224 &8992426379794389674
 RectTransform:
   m_ObjectHideFlags: 0
@@ -38737,6 +39300,19 @@ MonoBehaviour:
           m_StringArgument: IncreaseInGame5
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &9122405831795567559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244158942594122350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: IncreaseInGame5
 --- !u!224 &9122638833456697065
 RectTransform:
   m_ObjectHideFlags: 0
@@ -38808,6 +39384,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8839586385545696559}
   m_CullTransparentMesh: 1
+--- !u!114 &9148800042932044790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8839586385545696559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: GatherSpeed5
 --- !u!1 &9152203923738113371
 GameObject:
   m_ObjectHideFlags: 0
@@ -38843,6 +39432,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4945038370964194411}
   m_CullTransparentMesh: 1
+--- !u!114 &9161469706109798009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4945038370964194411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: Damage5
 --- !u!222 &9171045138478047782
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -38851,6 +39453,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7701223954553455153}
   m_CullTransparentMesh: 1
+--- !u!114 &9171045138478047783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7701223954553455153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c4d4e3b82e2314f869615d33c32b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingID: HP1
 --- !u!224 &9181096161689178545
 RectTransform:
   m_ObjectHideFlags: 0
