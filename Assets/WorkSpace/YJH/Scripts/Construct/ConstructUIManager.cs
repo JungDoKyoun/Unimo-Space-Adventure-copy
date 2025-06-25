@@ -24,6 +24,9 @@ public class ConstructUIManager : MonoBehaviour
     public Button buildInfoBuildButton;
     public GameObject basePanel;
 
+    public Sprite[] buttonSprites;
+
+    public Button[] allButtons;
 
     [Header("건설완료 화면 관련")]
     public Image buildStateImage;//건물 건설 현황을 나타낼 배경 이미지
