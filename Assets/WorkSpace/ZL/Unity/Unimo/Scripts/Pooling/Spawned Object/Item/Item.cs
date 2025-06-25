@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using ZL.Unity.Animating;
+
 namespace ZL.Unity.Unimo
 {
     public abstract class Item : SpawnedObject
@@ -32,7 +34,7 @@ namespace ZL.Unity.Unimo
 
         [ReadOnly(true)]
 
-        protected Animator animator = null;
+        protected AnimatorGroup animatorGroup = null;
 
         public override void OnAppeared()
         {
@@ -50,16 +52,16 @@ namespace ZL.Unity.Unimo
 
         protected override void OnDisappear()
         {
-            animator.SetTrigger("Disappear");
+            animatorGroup.SetTrigger("Disappear");
         }
 
         public override void OnDisappeared()
         {
             base.OnDisappeared();
 
-            if (animator != null)
+            if (animatorGroup != null)
             {
-                animator.Rebind();
+                animatorGroup.Rebind();
             }
         }
 

@@ -16,27 +16,16 @@ using YJH;
 public class ConstructManager : MonoBehaviour
 {
     //[SerializeField] List<Transform> spawnPoints= new List<Transform>();
-    [SerializeField] List<TechBuildBase> techConstructList = new List<TechBuildBase>();
-    [SerializeField] List<UtilityBuildBase> utilityConstructList = new List<UtilityBuildBase>();
-    [SerializeField] List<CombatBuildBase> combatConstructList = new List<CombatBuildBase>();
+    public List<TechBuildBase> techConstructList = new List<TechBuildBase>();
+    public List<UtilityBuildBase> utilityConstructList = new List<UtilityBuildBase>();
+    public List<CombatBuildBase> combatConstructList = new List<CombatBuildBase>();
     private Dictionary<string,ConstructBase> allBuildingDic = new Dictionary<string,ConstructBase>();
-    [Header("UI")]
-    [SerializeField] GameObject buildingInfoPanel;
-    [SerializeField] Image buildingImage;
-    [SerializeField] TMP_Text buildingTitleText;
-    [SerializeField] TMP_Text buildingInfoText;
-    [SerializeField] TMP_Text buildingRequireText;
-    [SerializeField] TMP_Text buildingCostText;
-    [SerializeField] TMP_Text constructCostText;
-    [SerializeField] Button buildInfoBuildButton;
-    [SerializeField] GameObject basePanel;
+    
 
-    [Header("건설완료 화면 관련")]
-    [SerializeField] Image buildStateImage;//건물 건설 현황을 나타낼 배경 이미지
-    [SerializeField] List<Image> buildingImages=new List<Image>();// 건물을 지을 때마다 갱신할 이미지들 모음집
-    [SerializeField] List<Sprite> buildStateImageList= new List<Sprite>();//나중에 건설 이미지 방식 바뀌면 삭제할 것 
-    private Dictionary<int, int> imagePriority=new Dictionary<int, int>();
-    private float buildStateProgress = 0;
+    
+    //[SerializeField] List<Sprite> buildStateImageList= new List<Sprite>();//나중에 건설 이미지 방식 바뀌면 삭제할 것 
+    
+    //private float buildStateProgress = 0;
     //[SerializeField] List<Button> buildButtons = new List<Button>();
     //[SerializeField] GameObject BuildPanel;
 
@@ -72,7 +61,7 @@ public class ConstructManager : MonoBehaviour
     [SerializeField] GameObject[] attackPrefabs;
 
     //public RelicData tempRelic;
-    public GameObject initRelicUI;
+    
     private void Awake()
     {
         if(Instance != null)
@@ -86,15 +75,19 @@ public class ConstructManager : MonoBehaviour
             
         OnConstructCostChange += SetConstructCostText;
         SetOwnCost();
-        DecideProgress();//나중에 이미지 변경 시스템 완벽하게 바꾸면 변경하기
+        //DecideProgress();//나중에 이미지 변경 시스템 완벽하게 바꾸면 변경하기
         ToDictionary();
         SetAllDic();
-        SetImagePriorityDicNum();
+       
+        
         SetAllConstructImages();
         //GameStateManager.IsClear = true;// 버그 터짐 이거 말고 다른 방법 써야 할듯
-        
+        playerStatus = PlayerManager.OriginStatus.Clone();
+        ActiveBuildEffect();
+        PlayerManager.PlayerStatus = playerStatus;
         PlayerManager.OnStageFail += YJH.MethodCollection.DelinkHealPlayer;
         PlayerManager.OnStageFail += ResetApplyBuildEffect;
+        SceneManager.sceneLoaded += OnSceneLoaded;
         DontDestroyOnLoad(gameObject);  
     }
 
@@ -105,19 +98,44 @@ public class ConstructManager : MonoBehaviour
             ResetApplyBuildEffect();
         }
     }
+    private void Start()
+    {
 
-    //private void Start()
-    //{
-    //    if (tempRelic != null)
-    //    {
-    //        //PlayerInventoryManager.AddRelic(tempRelic);
-    //        //Debug.Log(tempRelic.Effects[0].Value);
-    //        //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
-    //    }
-    //}
+        if (GameStateManager.IsClear == true)
+        {
+            Debug.Log("스테이지 클리어");
+            return;
+        }
+        else
+        {
+            Debug.Log("스테이지 클리어 실패");
+            isBuildEffectAplly = false;
+            PlayerManager.gainDemage = 0;
+            PlayerManager.ResetStatus();
+            //SetFinalStatusToPlayer();
+        }
+
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (GameStateManager.IsClear == true)
+        {
+            Debug.Log("스테이지 클리어");
+            return;
+        }
+        else
+        {
+            Debug.Log("스테이지 클리어 실패");
+            PlayerManager.gainDemage = 0;
+            isBuildEffectAplly = false;
+            PlayerManager.ResetStatus();
+        }
+    }
+
+
     private void OnDestroy()
     {
-        
+        //Debug.Log("건설매니저 사라짐");
         OnConstructCostChange -= SetConstructCostText;
     }
     public void ToDictionary()
@@ -135,13 +153,7 @@ public class ConstructManager : MonoBehaviour
             temp.ToDictionary();
         }
     }
-    public void SetImagePriorityDicNum()
-    {
-        for(int i=0;i<buildingImages.Count;i++)
-        {
-            imagePriority.Add(i, 0);
-        }
-    }
+    
     private void SetAllDic()
     {
         foreach (var temp in techConstructList)
@@ -157,7 +169,7 @@ public class ConstructManager : MonoBehaviour
             allBuildingDic.Add(temp.buildID, temp);
         }
     }
-    
+
     public void SetConstructCostText()
     {
         //Debug.Log("costupdate");
@@ -165,10 +177,10 @@ public class ConstructManager : MonoBehaviour
         foreach (var buildCost in ownBuildCostDic)
         {
             tempText += buildCost.Key + ":" + buildCost.Value + " ";
-            
+
         }
 
-        constructCostText.text = tempText;
+        ConstructUIManager.Instance.constructCostText.text = tempText;
     }
 
     public void TryConstruct(ConstructBase building)
@@ -210,31 +222,15 @@ public class ConstructManager : MonoBehaviour
         
             //Debug.Log("buildcom");
             building.ConstructEnd();
-            TrySetConstructImage(building);
+            ConstructUIManager.Instance.TrySetConstructImage(building);
             //spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
-            buildInfoBuildButton.interactable = false;
+            ConstructUIManager.Instance.buildInfoBuildButton.interactable = false;
             int costNum;
             CoroutineRunner.Instance.Run(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
-            //StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
-            //SetPlayer();
-            DecideProgress();//나중에 이미지 메커니즘 완벽하게 변경하면 바꾸기
             
-            //블루 프린트 함수 추가하기
-
-            //건설이 완료되었다는 뜻이니까 
-            //건설 반영을 해야 함
-            //어떻게 해야 할까?
-            //건설 베이스에 스폰 인덱스가 있으니까 이 스폰 인덱스를 이용해서 스폰리스트에 접근해서 스폰 리스트 쪽에 반영
-            //반영 하는건 뒤 패널을 편집하는 방식으로 이미지를 이용해서 덮어 씌우기? 동일한 이미지를 여러개 다른 버전으로 만들면 될 거 같다
         
     }
-    public void TrySetConstructImage(ConstructBase building)
-    {
-        if (imagePriority[building.imageIndex] < building.imagePriority)
-        {
-            buildingImages[building.imageIndex].sprite = building.buildingImage;
-        }
-    }
+    
 
     public void SetAllConstructImages()
     {
@@ -242,9 +238,9 @@ public class ConstructManager : MonoBehaviour
         {
             if (temp.isBuildConstructed == true)
             {
-                if (imagePriority[temp.imageIndex] < temp.imagePriority)
+                if (ConstructUIManager.Instance.imagePriority[temp.imageIndex-1] < temp.imagePriority)
                 {
-                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                    ConstructUIManager.Instance.buildingImages[temp.imageIndex-1].sprite = temp.buildingImage;
                 }
             }
         }
@@ -252,9 +248,9 @@ public class ConstructManager : MonoBehaviour
         {
             if (temp.isBuildConstructed == true)
             {
-                if (imagePriority[temp.imageIndex] < temp.imagePriority)
+                if (ConstructUIManager.Instance.imagePriority[temp.imageIndex - 1] < temp.imagePriority)
                 {
-                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                    ConstructUIManager.Instance.buildingImages[temp.imageIndex - 1].sprite = temp.buildingImage;
                 }
             }
         }
@@ -262,9 +258,9 @@ public class ConstructManager : MonoBehaviour
         {
             if (temp.isBuildConstructed == true)
             {
-                if (imagePriority[temp.imageIndex] < temp.imagePriority)
+                if (ConstructUIManager.Instance.imagePriority[temp.imageIndex - 1] < temp.imagePriority)
                 {
-                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
+                    ConstructUIManager.Instance.buildingImages[temp.imageIndex - 1].sprite = temp.buildingImage;
                 }
             }
         }
@@ -320,10 +316,10 @@ public class ConstructManager : MonoBehaviour
             }
         }
 
-        buildStateProgress =(float)buildedBuildingNum/buildingNum;
+        //buildStateProgress =(float)buildedBuildingNum/buildingNum;
        // Debug.Log(buildStateProgress);
         //DebugBuildedList();
-        ChangeBuildStateImage();
+        //ChangeBuildStateImage();
     }
     public void DebugBuildedList()
     {
@@ -332,88 +328,19 @@ public class ConstructManager : MonoBehaviour
             //Debug.Log(building);
         }
     }
-    public void ChangeBuildStateImage()
-    {
-        //Debug.Log(buildStateImageList.Count);
-        for(int i=0;i<buildStateImageList.Count;i++)
-        {
-            if((1.0f/buildStateImageList.Count)*i<=buildStateProgress && buildStateProgress < (1.0f / buildStateImageList.Count)*(i+1))
-            {
-                buildStateImage.sprite = buildStateImageList[i];
-                //Debug.Log("changeto");
-            }
-        }
-    }
+    
    public void ResetApplyBuildEffect()
     {
         isBuildEffectAplly = false;
     }
-    public void BuildButtonPressed(string buildID)
-    {
-        foreach (var temp in techConstructList)
-        {
-            if (temp.buildID == buildID)
-            {
-                ShowBuildInfoPanel(temp);
-                return;
-            }
-        }
-        foreach (var temp in utilityConstructList)
-        {
-            if(temp.buildID == buildID)
-            {
-                ShowBuildInfoPanel(temp);
-                return;
-            }
-        }
-        foreach (var temp in combatConstructList)
-        {
-            if (temp.buildID == buildID)
-            {
-                ShowBuildInfoPanel(temp);
-                return;
-            }
-        }
-    }
+    
 
-    public void ActivePanel(GameObject panel)
-    {
-        panel.SetActive(true);
-    }
-    public void DeactivePanel(GameObject panel)
-    {
-        panel.SetActive(false);
-    }
+    
    
 
-    public void GameStartButtonPressed()//현재 플레이어 사망 후 돌아가면 건설 UI가 열리지 않음 아마 오류로 인해서 그런듯?
-    {
-        Debug.Log("플레이어에게 건설효과 적용 여부:" + isBuildEffectAplly);
-        SetPlayer();
-        PlayerManager.ResetStatus();
-        Debug.Log("건설매니저가 스탯 초기화 시킴");
-        InitRelicGiver.Instance.SetRelicData();
-        //PlayerManager.SetSpellType(new Dash());//나중에 combat계열 제작시 변경 필요
-        if (isGiveStartRellic == true)
-        {
-            ActiveInitRelic();
-        }
-        
-        //SceneManager.LoadScene("TestScene");
-    }
-    public void EndConstructButtonPressed()
-    {
-        DeactiveBasePanel();
-    }
-    public void DeactiveBasePanel()
-    {
-        basePanel.SetActive(false);
-    }
-    public void ActiveBasePanel()
-    {
-        Debug.Log("건설 화면 등장");
-        basePanel.SetActive(true);
-    }
+    
+
+
 
     //public void ShowBuildPanel()
     //{
@@ -423,38 +350,8 @@ public class ConstructManager : MonoBehaviour
     //{
     //    BuildPanel.SetActive(false);
     //}
-    public void ShowBuildInfoPanel(ConstructBase buildingInfo)
-    {
-        var requireText= "";
-        buildingInfoPanel.SetActive(true);
-        buildingTitleText.text = buildingInfo.buildName;
-        //buildingInfoText.text=
-        foreach (var temp in buildingInfo.buildRequires)
-        {
-            requireText += " "+temp;
-        }
-        string costText="";
-        buildingRequireText.text = requireText;
-        foreach (var temp in buildingInfo.BuildCostDic)
-        {
-            costText += "\""+temp.Key+"\""+":"+temp.Value.ToString()+"";
-            
-        }
-        buildingCostText.text = costText;
-        buildingInfoText.text=buildingInfo.buildingDescription;
-        buildingImage.sprite=buildingInfo.buildIcon;
-        DecideCanBuild( buildingInfo);
-        buildInfoBuildButton.onClick.RemoveAllListeners();
-        buildInfoBuildButton.onClick.AddListener(() => TryConstruct(buildingInfo));
+    
 
-
-
-
-    }
-    public void DeActiveBuildInfoPanel()
-    {
-        buildingInfoPanel.SetActive(false);
-    }
     public void DecideCanBuild(ConstructBase buildingInfo)
     {
         switch (buildingInfo)
@@ -462,31 +359,31 @@ public class ConstructManager : MonoBehaviour
             case TechBuildBase:
                 if (buildingInfo.TryConstruct(techConstructList) == false)
                 {
-                    buildInfoBuildButton.interactable = false;
+                    ConstructUIManager.Instance.buildInfoBuildButton.interactable = false;
                 }
                 else
                 {
-                    buildInfoBuildButton.interactable = true;
+                    ConstructUIManager.Instance.buildInfoBuildButton.interactable = true;
                 }
                 break;
             case UtilityBuildBase:
                 if (buildingInfo.TryConstruct(utilityConstructList) == false)
                 {
-                    buildInfoBuildButton.interactable = false;
+                    ConstructUIManager.Instance.buildInfoBuildButton.interactable = false;
                 }
                 else
                 {
-                    buildInfoBuildButton.interactable = true;
+                    ConstructUIManager.Instance.buildInfoBuildButton.interactable = true;
                 }
                 break;
             case CombatBuildBase:
                 if (buildingInfo.TryConstruct(combatConstructList) == false)
                 {
-                    buildInfoBuildButton.interactable = false;
+                    ConstructUIManager.Instance.buildInfoBuildButton.interactable = false;
                 }
                 else
                 {
-                    buildInfoBuildButton.interactable = true;
+                    ConstructUIManager.Instance.buildInfoBuildButton.interactable = true;
                 }
                 break;
         }
@@ -626,27 +523,11 @@ public class ConstructManager : MonoBehaviour
     }
     public static void SetFinalStatusToPlayer()//이거 하나 확인
     {
-        PlayerManager.PlayerStatus=playerStatus;//후일 초기화 생각하면 대입이 맞을듯
+        PlayerManager.PlayerStatus=playerStatus+PlayerManager.OriginStatus.Clone();//후일 초기화 생각하면 대입이 맞을듯
         Debug.Log("건설매니저 효과 적용");
 
     }
     
-    public void ActiveInitRelic()
-    {
-        initRelicUI.SetActive(true);
-        isGiveStartRellic = false;
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.IsUIOpen = true;
-        }
-    }
-    public void DeactiveInitRelic()
-    {
-        initRelicUI.SetActive(false);
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.IsUIOpen = false;
-        }
-    }
+    
 
 }

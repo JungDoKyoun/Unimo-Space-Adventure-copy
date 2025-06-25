@@ -90,7 +90,7 @@ public partial class PlayerManager : IDamageable
 
     public static event Action<float> OnHealthChanged = null;
 
-    public static event Action OnPlayerDead = null;
+    public event Action OnPlayerDead = null;
 
     #pragma warning disable
 
@@ -124,7 +124,7 @@ public partial class PlayerManager : IDamageable
     public void TakeDamage(float damage, Vector3 contact)
     {
         isOnHit = true;
-        Debug.Log("데미지 받음");
+        //Debug.Log("데미지 받음");
         
         PlayHitEffect(contact);
         

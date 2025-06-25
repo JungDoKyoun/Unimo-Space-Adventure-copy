@@ -13,8 +13,18 @@ public class ConstructDataLoader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //buildinfs=ConstructManager.Instance.
-        StartCoroutine(LoadCSVFile());
+        if (ConstructManager.Instance != null) 
+        {
+            constructManager=ConstructManager.Instance;
+        }
+        else
+        {
+            Debug.Log("건설 매니저 존재하지 않음");
+            return;
+        }
+            //buildinfs=ConstructManager.Instance.
+            StartCoroutine(LoadCSVFile());
+
     }
     private IEnumerator LoadCSVFile()
     {

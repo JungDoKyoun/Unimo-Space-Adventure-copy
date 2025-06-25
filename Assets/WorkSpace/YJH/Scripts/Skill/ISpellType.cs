@@ -15,4 +15,5 @@ public interface ISpellType
     public bool ReturnState();
 
     public void SetState(bool state);
+    public void StopSpell();
 }

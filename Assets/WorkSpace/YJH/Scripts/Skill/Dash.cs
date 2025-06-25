@@ -37,7 +37,8 @@ public class Dash : ISpellType,IStackSpell
     //public delegate void onSkillUseDenied();
     //
     //public event onSkillUseDenied OnSkillUseDenied;
-
+    private Vector3 initPosition=new Vector3();
+    private float dashDistance=5f;
     public PlayerManager PlayerManager { get { return playerManager; } set {playerManager=value ; } }
 
     public int NowStack { get { return skillInfo.nowStack; } set { skillInfo.nowStack = value; } }
@@ -53,10 +54,11 @@ public class Dash : ISpellType,IStackSpell
     [PunRPC]
     public void UseSpell()
     {
+
         if (skillInfo.nowStack >= skillInfo.useStack && isDash == false)
         {
             playerManager.PlayerRigBody.constraints = RigidbodyConstraints.FreezeRotation|RigidbodyConstraints.FreezePositionY;
-
+            initPosition= playerManager.transform.position;
             //Debug.Log("dashed");
 
             skillInfo.nowStack -= skillInfo.useStack;
@@ -67,12 +69,13 @@ public class Dash : ISpellType,IStackSpell
 
             if (playerManager.PlayerMoveDirection.magnitude < float.Epsilon)
             {
-                playerManager.PlayerRigBody.AddForce(playerManager.transform.forward * skillInfo.skillPower, ForceMode.Impulse);
+                playerManager.PlayerRigBody.AddForce(playerManager.transform.forward * skillInfo.skillPower* PlayerManager.PlayerStatus.moveSpeed, ForceMode.Impulse);
             }
 
             else
             {
-                playerManager.PlayerRigBody.AddForce(playerManager.PlayerMoveDirection.normalized * skillInfo.skillPower, ForceMode.Impulse);
+                playerManager.gameObject.transform.LookAt(playerManager.PlayerMoveDirection+ playerManager.gameObject.transform.position);
+                playerManager.PlayerRigBody.AddForce(playerManager.PlayerMoveDirection.normalized * skillInfo.skillPower * PlayerManager.PlayerStatus.moveSpeed, ForceMode.Impulse);
             }
         }
 
@@ -91,6 +94,16 @@ public class Dash : ISpellType,IStackSpell
         if (skillInfo.nowStack < skillInfo.maxStack)
         {
             chargeTimer += Time.deltaTime;
+        }
+        if (isDash == true)
+        {
+            if(playerManager!=null)
+            {
+                if ((playerManager.transform.position - initPosition).magnitude >= dashDistance)
+                {
+                    StopSpell();
+                }
+            }
         }
         //else if(skillInfo.nowStack == skillInfo.maxStack)
         //{
@@ -122,13 +135,7 @@ public class Dash : ISpellType,IStackSpell
         
         if (dashTimer >= skillInfo.skillTime)
         {
-            playerManager.canMove = true;
-
-            isDash = false;
-
-            playerManager.PlayerRigBody.constraints = RigidbodyConstraints.FreezeAll;
-
-            dashTimer = 0;
+            StopSpell();
         }
     }
 
@@ -159,5 +166,16 @@ public class Dash : ISpellType,IStackSpell
     public void SetState(bool state)
     {
         isDash = state;
+    }
+
+    public void StopSpell()
+    {
+        playerManager.canMove = true;
+
+        isDash = false;
+
+        playerManager.PlayerRigBody.constraints = RigidbodyConstraints.FreezeAll;
+
+        dashTimer = 0;
     }
 }

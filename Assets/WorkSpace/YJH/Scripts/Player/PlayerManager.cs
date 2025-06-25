@@ -73,11 +73,16 @@ public partial class PlayerManager : ISingleton<PlayerManager>
             playerSpellType?.SetPlayer(selfManager);
         }
         //ConstructManager.SetFinalStatusToPlayer();
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        //SceneManager.sceneLoaded += OnSceneLoaded;
+        if(ConstructManager.Instance== null)
+        {
+            Debug.Log("디버그용 스테이지에서 시작");
+            PlayerStatus= originStatus.Clone();
+        }
         //OnHealthChanged += DebugHealth;
         //selfManager = this;
         //ResetPlayer();
-        Debug.Log("어웨이크 실행 됨");
+        //Debug.Log("어웨이크 실행 됨");
     }
     public void DebugHealth(float health)
     {
@@ -104,11 +109,19 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     }
     private void OnDisable()
     {
-        ConstructManager.Instance.ResetApplyBuildEffect();
-        Debug.Log("건설 효과 적용 여부 초기화 실행");
+        if (ConstructManager.Instance != null)
+        {
+            ConstructManager.Instance.ResetApplyBuildEffect();
+        }
+        
+        //Debug.Log("건설 효과 적용 여부 초기화 실행");
     }
-    private void Start()
-    {
+    //private void Start()
+    //{
+    //    
+    //
+    //
+        #region 사용하지 않는 코드
         //if (playerSpellType == null)
         //{
         //    SetSpellType(new Dash());
@@ -137,7 +150,8 @@ public partial class PlayerManager : ISingleton<PlayerManager>
         ////currentHealth = maxHP;
         //
         ////SetPlayerStatus(playerStatus);
-    }
+        #endregion
+    //}
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
        
@@ -191,7 +205,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         MoveStart();
 
-        Debug.Log("활성화 함수 호출됨" + debnum);
+        //Debug.Log("활성화 함수 호출됨" + debnum);
         debnum++;
 
     }
@@ -268,7 +282,8 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     }
     public static void ResetStatus()
     {
-        if (ConstructManager.IsBuildEffectAplly == false)//건설 매니저 없이 시작할때
+        Debug.Log("플레이어 스탯 초기화");
+        if (ConstructManager.Instance == null)//건설 매니저 없이 시작할때
         {
             PlayerStatus = originStatus.Clone();
             //ActiveRelic();
@@ -289,8 +304,8 @@ public partial class PlayerManager : ISingleton<PlayerManager>
             PlayerStatus = temp;
 
             //PlayerStatus = temp;
-            Debug.Log("플레이어 스탯 초기화 후 문구:");
-            ShowStatusDebug(PlayerStatus);
+            //Debug.Log("플레이어 스탯 초기화 후 문구:");
+            //ShowStatusDebug(PlayerStatus);
 
         }
     }
@@ -429,7 +444,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
     public static void ActiveRelic(RelicData relicData)
     {
         //isFirstRelicActive = false;
-        Debug.Log("try use relic");
+        //Debug.Log("try use relic");
 
         //Debug.Log(PlayerInventoryManager.RelicDatas.Count);
 
@@ -489,8 +504,8 @@ public partial class PlayerManager : ISingleton<PlayerManager>
                         break;
                 }
             }
-        Debug.Log("유물 활성화 종료");
-        ShowStatusDebug(PlayerStatus);
+        //Debug.Log("유물 활성화 종료");
+        //ShowStatusDebug(PlayerStatus);
     }
 
     private void OnTriggerEnter(Collider other)

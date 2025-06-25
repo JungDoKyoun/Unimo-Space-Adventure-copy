@@ -43,6 +43,8 @@ namespace ZL.Unity.Unimo
         public void GiveDamage(IDamageable damageable, Vector3 contact)
         {
             damageable.TakeDamage(enemyData.AttackPower, contact);
+
+            Disappear();
         }
     }
 }

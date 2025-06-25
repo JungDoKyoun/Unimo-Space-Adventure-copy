@@ -44,7 +44,7 @@ namespace ZL.Unity
 
         [Alias("Visible")]
 
-        private bool cursorVisible = false;
+        private bool cursorVisible = true;
 
         [UsingCustomProperty]
 
@@ -54,7 +54,7 @@ namespace ZL.Unity
 
         [SerializeField]
 
-        private CursorLockMode cursorLockState = CursorLockMode.Locked;
+        private CursorLockMode cursorLockState = CursorLockMode.None;
 
         [Space]
 
@@ -74,6 +74,15 @@ namespace ZL.Unity
 
         private void OnValidate()
         {
+            if (Application.isPlaying == false)
+            {
+                return;
+            }
+
+            Cursor.visible = cursorVisible;
+
+            Cursor.lockState = cursorLockState;
+
             TimeEx.TimeScale = timeScale;
         }
 
@@ -98,6 +107,8 @@ namespace ZL.Unity
             Cursor.visible = cursorVisible;
 
             Cursor.lockState = cursorLockState;
+
+            TimeEx.TimeScale = timeScale;
         }
 
         public void Pause()

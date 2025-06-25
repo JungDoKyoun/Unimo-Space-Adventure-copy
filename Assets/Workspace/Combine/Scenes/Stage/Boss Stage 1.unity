@@ -202,7 +202,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 277967499474406009, guid: 56ea20b2e7614c74f887c555b7861807, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 323171095362642245, guid: 56ea20b2e7614c74f887c555b7861807, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -243,6 +243,14 @@ PrefabInstance:
     - target: {fileID: 3072616164364921298, guid: 56ea20b2e7614c74f887c555b7861807, type: 3}
       propertyPath: events.items.Array.data[0].value.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: ZL.Unity.Pooling.PooledObject, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4366891711951985304, guid: 56ea20b2e7614c74f887c555b7861807, type: 3}
+      propertyPath: m_CullingMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5195409640652238348, guid: 56ea20b2e7614c74f887c555b7861807, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5752471288111883776, guid: 56ea20b2e7614c74f887c555b7861807, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -331,7 +339,7 @@ PrefabInstance:
     - target: {fileID: 8740797214541353937, guid: 56ea20b2e7614c74f887c555b7861807, type: 3}
       propertyPath: animator
       value: 
-      objectReference: {fileID: 6267522661683953272}
+      objectReference: {fileID: 0}
     - target: {fileID: 8894314297383005653, guid: 56ea20b2e7614c74f887c555b7861807, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -511,7 +519,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2986791867811737639, guid: 62c4f15e4f2046f4e8dfc653d4cd87fa, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 170.08
       objectReference: {fileID: 0}
     - target: {fileID: 2986791867811737639, guid: 62c4f15e4f2046f4e8dfc653d4cd87fa, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -685,6 +693,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4647040213018384590, guid: 62c4f15e4f2046f4e8dfc653d4cd87fa, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5132558656387261430, guid: 62c4f15e4f2046f4e8dfc653d4cd87fa, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -841,6 +853,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8067943962234219081, guid: 62c4f15e4f2046f4e8dfc653d4cd87fa, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8153971726551391806, guid: 62c4f15e4f2046f4e8dfc653d4cd87fa, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -970,11 +986,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5813047454945659377, guid: 62c4f15e4f2046f4e8dfc653d4cd87fa, type: 3}
   m_PrefabInstance: {fileID: 1764169856768282918}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &6267522661683953272 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 6450837348649475978, guid: 56ea20b2e7614c74f887c555b7861807, type: 3}
-  m_PrefabInstance: {fileID: 1116695639748698610}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
