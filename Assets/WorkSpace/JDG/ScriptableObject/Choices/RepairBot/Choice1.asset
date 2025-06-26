@@ -16,9 +16,10 @@ MonoBehaviour:
   _choiceDesc: "80% \uD655\uB960\uB85C HP \uC804\uBD80 \uD68C\uBCF5 \uD639\uC740 
     20% \uD655\uB960\uB85C (-10) HP \uC190\uC2E4 "
   _eventRequiredRelics: []
-  _eventRequiredBuildings:
-  - a
-  _eventRequiredCurrency: []
+  _eventRequiredBuildings: []
+  _eventRequiredCurrency:
+  - _resourceData: {fileID: 11400000, guid: fb8a3e6f11d5a9747ba6006be8f3afd7, type: 2}
+    _value: 20
   _probabilisticEffect:
   - _probability: 0.8
     _effects:
@@ -27,10 +28,20 @@ MonoBehaviour:
       _target: 5
       _value: 1000
       _relicData: {fileID: 0}
+    - _choiceEffectType: 2
+      _effectType: 1
+      _target: 2
+      _value: -20
+      _relicData: {fileID: 0}
   - _probability: 0.2
     _effects:
     - _choiceEffectType: 2
       _effectType: 4
       _target: 5
       _value: -10
+      _relicData: {fileID: 0}
+    - _choiceEffectType: 2
+      _effectType: 1
+      _target: 2
+      _value: -20
       _relicData: {fileID: 0}

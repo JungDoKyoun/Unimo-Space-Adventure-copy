@@ -17,7 +17,7 @@ public class AuraControl : MonoBehaviour
 
     public void SetAuraScale(float playerDetectionRange)//5f -> 1.216
     {
-        transform.localScale = new Vector3((playerDetectionRange / 5) * 1.216f, (playerDetectionRange / 5) * 1.216f, (playerDetectionRange / 5) * 1.216f);
+        transform.localScale = new Vector3((playerDetectionRange / 5) * 1f, (playerDetectionRange / 5) * 1f, (playerDetectionRange / 5) * 1);
     }
 
 

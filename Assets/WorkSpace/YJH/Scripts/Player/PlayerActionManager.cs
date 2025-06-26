@@ -12,28 +12,28 @@ using UnityEngine.UI;
 
 using ZL.Unity.Unimo;
 
-public partial class PlayerManager : IEnergizer
+public partial class PlayerManager 
 {
     //[Header("채집")]
 
     //[SerializeField]
-
+    
     //private float itemDetectionRange = 5f;
 
     //public float ItemDetectionRange => playerStatus.itemDetectionRange;
 
     //[SerializeField]
-
+    
     //private float gatheringSpeed = 4f;
-
+    
     //[SerializeField]
-
+    
     //private float gatheringDelay = 0.5f;
-
+    
     [SerializeField]
 
     private GameObject gatheringAuraPlane;
-
+    
     [SerializeField]
 
     private GameObject gatheringEffect;
@@ -41,23 +41,23 @@ public partial class PlayerManager : IEnergizer
     [Header("채집 소리")]
 
     [SerializeField]
-
+    
     private AudioClip gatheringAudioClip;
 
     [SerializeField]
-
+    
     private AudioSource gatheringAudioSource;
 
     [Header("탐지할 오브젝트의 레이어")]
 
     [SerializeField]
-
+    
     private LayerMask itemLayerMask;
 
     [Header("탐지할 적의 레이어")]
 
     [SerializeField]
-
+    
     private LayerMask enemyLayerMask;
 
     private static GameObject attackPrefab;
@@ -72,14 +72,7 @@ public partial class PlayerManager : IEnergizer
 
     private static ISpellType playerSpellType = new Dash();
 
-    private int energy = 0;
-
-    public int Energy
-    {
-        get => energy;
-
-        set => energy = value;
-    }
+    private int playerOwnEnergy = 0;
 
     private GameObject targetObject;
 
@@ -101,11 +94,11 @@ public partial class PlayerManager : IEnergizer
     }
 
     [SerializeField]
-
+    
     Image progressBarCircle;
 
     [SerializeField]
-
+    
     TMP_Text progressBarText;
 
     //[SerializeField]
@@ -127,19 +120,19 @@ public partial class PlayerManager : IEnergizer
     private SphereCollider detectCollider;
 
     public static event Action<float> OnEnergyChanged = null;
-
     private Coroutine gatheringCoroutine;
-
+    
     // 멀티용으로 리펙토링한거 나중에 다 해체하기
     public void ActionStart()
     {
-        //gatheringAudioSource.clip = gatheringAudioClip;
+        
+            //gatheringAudioSource.clip = gatheringAudioClip;
+            
+            //StartDetectItem();
 
-        //StartDetectItem();
+            //StartFindEnemy();
 
-        //StartFindEnemy();
-
-        //OnTargetObjectSet += GatheringItem;
+            //OnTargetObjectSet += GatheringItem;
 
         //detectCollider.radius = PlayerStatus.itemDetectionRange;
 
@@ -148,18 +141,17 @@ public partial class PlayerManager : IEnergizer
             //Debug.Log("nullattack");
 
             SetAttackType(tempAttackPrefab);
-
-            // Debug.Log("공격 설정 없음");
+           // Debug.Log("공격 설정 없음");
         }
-
         else
         {
             //Debug.Log("attackexist");
 
             SetAttackType(attackPrefab);
-
             //Debug.Log("공격 설정 있음");
+
         }
+
 
         if (playerSpellType != null)
         {
@@ -167,9 +159,9 @@ public partial class PlayerManager : IEnergizer
 
             playerSpellType.InitSpell();
         }
-
         else
         {
+
             //Debug.Log("스펠 없음");
 
             ISpellType temp = new Dash();
@@ -181,52 +173,56 @@ public partial class PlayerManager : IEnergizer
             playerSpellType.InitSpell();
         }
 
-        //Debug.Log("actionstart끝");
-    }
 
+       // Debug.Log("actionstart끝");
+    }
+   
     public void ActionUpdate()
     {
-        if (playerSpellType != null)
-        {
-            playerSpellType.UpdateTime();
-
-            switch (playerSpellType)
+        
+            if (playerSpellType != null)
             {
-                case IStackSpell:
+                playerSpellType.UpdateTime();
 
-                    if (progressBarCircle != null && progressBarText != null)
-                    {
-                        if ((playerSpellType as IStackSpell).NowStack == (playerSpellType as IStackSpell).MaxStack)
+                switch (playerSpellType)
+                {
+                    case IStackSpell:
+
+                        if (progressBarCircle != null && progressBarText != null)
                         {
-                            progressBarCircle.fillAmount = 1;
+                            if ((playerSpellType as IStackSpell).NowStack == (playerSpellType as IStackSpell).MaxStack)
+                            {
+                                progressBarCircle.fillAmount = 1;
+                            }
+
+                            else
+                            {
+                                progressBarCircle.fillAmount = (playerSpellType as IStackSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
+                            }
+
+                            progressBarText.text = (playerSpellType as IStackSpell).NowStack.ToString();
                         }
 
-                        else
-                        {
-                            progressBarCircle.fillAmount = (playerSpellType as IStackSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
-                        }
+                        break;
 
-                        progressBarText.text = (playerSpellType as IStackSpell).NowStack.ToString();
-                    }
+                    case ICoolTimeSpell:
 
-                    break;
+                        //progressBarCircle.fillAmount = (playerSpellType as ICoolTimeSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
 
-                case ICoolTimeSpell:
+                        //progressBarText.text = (playerSpellType as ICoolTimeSpell).NowStack.ToString(); 나중에 쿨타임 스킬 필요하면 리펙토링
 
-                    //progressBarCircle.fillAmount = (playerSpellType as ICoolTimeSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
+                        break;
 
-                    //progressBarText.text = (playerSpellType as ICoolTimeSpell).NowStack.ToString(); 나중에 쿨타임 스킬 필요하면 리펙토링
+                    default:
 
-                    break;
+                        break;
+                }
 
-                default:
-
-                    break;
+                //progressBarCircle.fillAmount =
             }
+        
 
-            //progressBarCircle.fillAmount =
-        }
-
+        
         FindItemUpdate();
     }
 
@@ -266,11 +262,11 @@ public partial class PlayerManager : IEnergizer
     }
 
     //멀티에서도 공격이 있나? -> 있음
-    public void GetEnergy(int value)
+    public void GetEnergy(int energyNum)
     {
-        Energy += value;
+        playerOwnEnergy += energyNum;
 
-        if (energy >= playerAttackType.EnergyCost)
+        if (playerOwnEnergy >= playerAttackType.EnergyCost)
         {
             FindEnemy();
 
@@ -296,7 +292,7 @@ public partial class PlayerManager : IEnergizer
 
             float spacing = 1.5f;
 
-            int fireCount = energy / playerAttackType.EnergyCost;
+            int fireCount = playerOwnEnergy / playerAttackType.EnergyCost;
 
             for (int i = 0; i < fireCount; i++)
             {
@@ -344,17 +340,17 @@ public partial class PlayerManager : IEnergizer
                 }
             }
 
-            energy %= playerAttackType.EnergyCost;
+            playerOwnEnergy %= playerAttackType.EnergyCost;
         }
 
-        OnEnergyChanged?.Invoke(energy);
+        OnEnergyChanged?.Invoke(playerOwnEnergy);
     }
 
     // 한번에 2개 이상 먹을 시 가로로 늘려서 발사하는 것으로
     public void PlayerAttack()
     {
-        energy -= playerAttackType.EnergyCost;
-
+        playerOwnEnergy -= playerAttackType.EnergyCost;
+        
         var bullet = Instantiate(attackPrefab, firePos, Quaternion.identity);
 
         //bullet.transform.LookAt(targetEnemyObject.transform);
@@ -374,7 +370,7 @@ public partial class PlayerManager : IEnergizer
 
     public void PlayerAttack(Vector3 firePosition)
     {
-        energy -= playerAttackType.EnergyCost;
+        playerOwnEnergy -= playerAttackType.EnergyCost;
 
         GameObject bullet;
 
@@ -400,7 +396,7 @@ public partial class PlayerManager : IEnergizer
             bullet.GetComponent<IAttackType>().Shoot(firePos - transform.position);
         }
     }
-
+   
     public void GatheringItem()
     {
         //Debug.Log("gathering2");
@@ -409,7 +405,7 @@ public partial class PlayerManager : IEnergizer
         {
             isGatheringCoroutineWork = true;
 
-            gatheringCoroutine = StartCoroutine(GatheringCoroutine());
+            gatheringCoroutine= StartCoroutine(GatheringCoroutine());
         }
 
         else
@@ -468,7 +464,7 @@ public partial class PlayerManager : IEnergizer
 
     private void FindItemUpdate()
     {
-        // Debug.Log("아이템 찾는중");
+       // Debug.Log("아이템 찾는중");
 
         if (targetObject == null)
         {
@@ -552,7 +548,7 @@ public partial class PlayerManager : IEnergizer
                 {
 
                     ActiveGatheringBeam();
-
+                    
                 }
                 GatheringItem();
                 //OnTargetObjectSet?.Invoke();
@@ -564,7 +560,7 @@ public partial class PlayerManager : IEnergizer
 
 
                 DeactiveGatheringBeam();
-
+                
 
                 targetObject = null;
             }
@@ -617,7 +613,7 @@ public partial class PlayerManager : IEnergizer
 
                 yield break;
             }
-
+            
         }
     }
 
@@ -672,7 +668,7 @@ public partial class PlayerManager : IEnergizer
     {
         Gizmos.color = Color.red;
 
-        Gizmos.DrawWireSphere(transform.position, playerStatus.itemDetectionRange);
+        Gizmos.DrawWireSphere(transform.position,playerStatus.itemDetectionRange);
     }
 
     public void OnUseSpell()
@@ -681,6 +677,6 @@ public partial class PlayerManager : IEnergizer
 
         playerSpellType.UseSpell();
 
-        DeactiveGatheringBeam();
+        DeactiveGatheringBeam() ;
     }
 }

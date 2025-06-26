@@ -24,6 +24,16 @@ public class ConstructUIManager : MonoBehaviour
     public Button buildInfoBuildButton;
     public GameObject basePanel;
 
+    public Sprite buildedSprite;
+    public Sprite cannotBuildSprite;
+    public Sprite canBuildSprite;
+
+    public List<Button> allButtons;
+    
+    public GameObject techBuildButtons;
+    public GameObject utilBuildButtons;
+    public GameObject combatBuildButtons;
+    
 
     [Header("건설완료 화면 관련")]
     public Image buildStateImage;//건물 건설 현황을 나타낼 배경 이미지
@@ -37,6 +47,8 @@ public class ConstructUIManager : MonoBehaviour
     public AudioSource constructUIAudioSource;
     public AudioClip buildSuccessClip;
 
+    public CanvasGroup stationCanvasGroup;
+    
     private void Awake()
     {
         Instance = this;
@@ -45,9 +57,106 @@ public class ConstructUIManager : MonoBehaviour
         {
             Instantiate(constructManager);
         }
+        SetAllButtons();
+        ChangeButtonsSpriteAll();
     }
 
+    public void SetAllButtons()
+    {
+        allButtons = new List<Button>();
+        Button[] techButtons= techBuildButtons.GetComponentsInChildren<Button>(includeInactive: true);
+        Button[] utilButtons= utilBuildButtons.GetComponentsInChildren<Button>(includeInactive: true);
+        Button[] combatButtons= combatBuildButtons.GetComponentsInChildren<Button>(includeInactive: true);
+        foreach (Button button in techButtons)
+        {
+            allButtons.Add(button);
+        }
+        foreach (Button button in utilButtons)
+        {
+            allButtons.Add(button);
+        }
+        foreach(Button button in combatButtons)
+        {
+            allButtons.Add(button);
+        }
 
+
+
+    }
+    public void ChangeButtonsSpriteAll()
+    {
+        if(allButtons == null)
+        {
+            return;
+        }
+        if(allButtons.Count == 0)
+        {
+            return;
+        }
+
+        foreach( Button button in allButtons)
+        {
+            var tempScript = button.GetComponent<ButtonStringHolder>();
+            var tempBuildData = ConstructManager.Instance.AllBuildingDic[tempScript.BuildingID];
+            if(tempBuildData == null)
+            {
+                return;
+            }
+            if (tempBuildData.isBuildConstructed == true)//이미 건설되었으면 
+            {
+                button.gameObject.GetComponent<Image>().sprite=buildedSprite;
+            }
+            else
+            {
+                switch (tempBuildData)
+                {
+                    case TechBuildBase:
+                        if (tempBuildData.TryConstruct(ConstructManager.Instance.techConstructList) == false)//건물을 지을 수 없을때
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = cannotBuildSprite;
+                        }
+                        else//건물을 지을 수는 있을 때 이하 동일
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = canBuildSprite;
+                        }
+
+                            break;
+                    case UtilityBuildBase:
+                        if (tempBuildData.TryConstruct(ConstructManager.Instance.utilityConstructList) == false)
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = cannotBuildSprite;
+                        }
+                        else
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = canBuildSprite;
+                        }
+                            break;
+                    case CombatBuildBase:
+                        if (tempBuildData.TryConstruct(ConstructManager.Instance.combatConstructList) == false)
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = cannotBuildSprite;
+                        }
+                        else
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = canBuildSprite;
+                        }
+                            break;
+                    default:
+                        Debug.Log("non build type");
+                        return;
+
+                }
+            }
+
+
+
+
+
+        }
+
+
+
+    }
     
     public void DeactiveBasePanel()
     {
@@ -57,6 +166,11 @@ public class ConstructUIManager : MonoBehaviour
     {
         //Debug.Log("건설 화면 등장");
         basePanel.SetActive(true);
+        //Debug.Log(FirebaseDataBaseMgr.Blueprint);
+        //Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
+        ConstructManager.Instance.SetOwnCost();
+        //StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(10000));//실험용 임시 함수
+        //Debug.Log("실험용 임시 자원 추가");
     }
     public void EndConstructButtonPressed()
     {
@@ -136,6 +250,15 @@ public class ConstructUIManager : MonoBehaviour
     {
         panel.SetActive(false);
     }
+
+    public void DisappearButtons()
+    {
+        stationCanvasGroup.alpha = 0;
+    }
+    public void AppearButtons()
+    {
+        stationCanvasGroup.alpha = 1;
+    }
     public void BuildButtonPressed(string buildID)
     {
         foreach (var temp in ConstructManager.Instance.techConstructList)
@@ -186,11 +309,14 @@ public class ConstructUIManager : MonoBehaviour
         ConstructManager.Instance.DecideCanBuild(buildingInfo);
         buildInfoBuildButton.onClick.RemoveAllListeners();
         buildInfoBuildButton.onClick.AddListener(() => ConstructManager.Instance.TryConstruct(buildingInfo));
+        buildInfoBuildButton.onClick.AddListener(() => ConstructSuccessSoundPlay());
 
 
 
 
     }
+
+
     public void ConstructSuccessSoundPlay()
     {
         if (constructUIAudioSource != null)

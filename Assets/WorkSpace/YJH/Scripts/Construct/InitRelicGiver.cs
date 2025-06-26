@@ -62,7 +62,14 @@ namespace YJH
 
         public void AddRelicByCard()
         {
-            PlayerInventoryManager.AddRelic(selectedRelicCardScript.RelicData);
+            if (selectedRelicCardScript != null)
+            {
+                PlayerInventoryManager.AddRelic(selectedRelicCardScript.RelicData);
+            }
+            else
+            {
+                PlayerInventoryManager.AddRelic(relicCardScript1.RelicData);
+            }
             
         }
         public void SetRelicCard(RelicCard card)

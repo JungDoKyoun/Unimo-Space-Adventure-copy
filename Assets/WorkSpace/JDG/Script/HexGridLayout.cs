@@ -200,8 +200,9 @@ namespace JDG
             }
 
             Vector3 spawnPos = GetPositionForHexFromCoordinate(_playerCoord) + Vector3.up * 1f;
+            Quaternion spawnRo = Quaternion.Euler(0, 180, 0);
             _playerPrefab = Resources.Load<GameObject>("WorldMap/Player");
-            _playerInstance = Instantiate(_playerPrefab, spawnPos, Quaternion.identity);
+            _playerInstance = Instantiate(_playerPrefab, spawnPos, spawnRo);
 
             var player = _playerInstance.GetComponent<PlayerController>();
             player.Init(this);
@@ -744,7 +745,7 @@ namespace JDG
 
                 Vector3 tilePos = GetPositionForHexFromCoordinate(data.Coord);
                 tilePos += _offset;
-                Quaternion rotation = Quaternion.Euler(0, 90, 0);
+                Quaternion rotation = Quaternion.Euler(0, 180, 0);
                 GameObject instance = Instantiate(environmentPrefab, tilePos, rotation);
                 instance.transform.SetParent(_hexMap[coord].transform);
                 instance.SetActive(false);

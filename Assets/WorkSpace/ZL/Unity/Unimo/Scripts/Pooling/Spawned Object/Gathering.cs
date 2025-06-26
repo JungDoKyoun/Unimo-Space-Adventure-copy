@@ -37,6 +37,8 @@ namespace ZL.Unity.Unimo
 
         private GatheringData gatheringData = null;
 
+        [SerializeField] GameObject gatheringVFX;
+
         public GatheringData GatheringData
         {
             get => gatheringData;
@@ -65,7 +67,11 @@ namespace ZL.Unity.Unimo
                 currentHealth = 0f;
 
                 ++GatheringManager.Instance.GatheringCount;
-
+                if(gatheringVFX != null)
+                {
+                    gatheringVFX.SetActive(true);
+                    gatheringVFX.transform.SetParent(null, true);
+                }
                 Disappear();
             }
         }
