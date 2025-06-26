@@ -180,6 +180,7 @@ namespace JDG
         public void SetMaterial(Material material)
         {
             _material = new Material(material);
+            _material.renderQueue = 2000;
             if (_meshRenderer != null)
                 _meshRenderer.material = _material;
         }
