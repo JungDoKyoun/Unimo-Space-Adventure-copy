@@ -17,7 +17,7 @@ public partial class PlayerManager : IEnergizer
     [SerializeField]
 
     private GameObject gatheringAuraPlane;
-    
+
     [SerializeField]
 
     private GameObject gatheringEffect;
@@ -25,23 +25,23 @@ public partial class PlayerManager : IEnergizer
     [Header("채집 소리")]
 
     [SerializeField]
-    
+
     private AudioClip gatheringAudioClip;
 
     [SerializeField]
-    
+
     private AudioSource gatheringAudioSource;
 
     [Header("탐지할 오브젝트의 레이어")]
 
     [SerializeField]
-    
+
     private LayerMask itemLayerMask;
 
     [Header("탐지할 적의 레이어")]
 
     [SerializeField]
-    
+
     private LayerMask enemyLayerMask;
 
     private static GameObject attackPrefab;
@@ -52,13 +52,13 @@ public partial class PlayerManager : IEnergizer
 
     private static ISpellType playerSpellType = new Dash();
 
-    private int playerOwnEnergy = 0;
+    private int energy = 0;
 
     public int Energy
     {
-        get => playerOwnEnergy;
+        get => energy;
 
-        set => playerOwnEnergy = value;
+        set => energy = value;
     }
 
     private GameObject targetObject;
@@ -81,11 +81,11 @@ public partial class PlayerManager : IEnergizer
     }
 
     [SerializeField]
-    
+
     Image progressBarCircle;
 
     [SerializeField]
-    
+
     TMP_Text progressBarText;
 
     [SerializeField]
@@ -103,7 +103,7 @@ public partial class PlayerManager : IEnergizer
     public static event Action<float> OnEnergyChanged = null;
 
     private Coroutine gatheringCoroutine;
-    
+
     // 멀티용으로 리펙토링한거 나중에 다 해체하기
     public void ActionStart()
     {
@@ -131,7 +131,7 @@ public partial class PlayerManager : IEnergizer
             playerSpellType.InitSpell();
         }
     }
-
+   
     public void ActionUpdate()
     {
         if (playerSpellType != null)
@@ -161,11 +161,9 @@ public partial class PlayerManager : IEnergizer
 
                 case ICoolTimeSpell:
 
-                    // 나중에 쿨타임 스킬 필요하면 리펙토링
-
                     //progressBarCircle.fillAmount = (playerSpellType as ICoolTimeSpell).Timer / (playerSpellType as IStackSpell).ChargeTime;
 
-                    //progressBarText.text = (playerSpellType as ICoolTimeSpell).NowStack.ToString();
+                    //progressBarText.text = (playerSpellType as ICoolTimeSpell).NowStack.ToString(); 나중에 쿨타임 스킬 필요하면 리펙토링
 
                     break;
 
@@ -173,10 +171,22 @@ public partial class PlayerManager : IEnergizer
 
                     break;
             }
+
+            //progressBarCircle.fillAmount =
         }
 
         FindItemUpdate();
     }
+
+    //public void StartDetectItem()
+    //{
+    //    StartCoroutine(FindItem());
+    //}
+
+    //public void StartFindEnemy()
+    //{
+    //    StartCoroutine (FindEnemy());
+    //}
 
     public static void SetAttackType(GameObject attackType)
     {
@@ -184,11 +194,15 @@ public partial class PlayerManager : IEnergizer
 
         playerAttackType = attackPrefab.GetComponent<IAttackType>();
 
+        //Debug.Log("setAttack");
+
         playerAttackType.Damage = playerStatus.playerDamage;
     }
 
     public static void SetSpellType(ISpellType spellType)
     {
+        //Debug.Log("set spell");
+
         playerSpellType = spellType;
 
         playerSpellType.SetPlayer(selfManager);
@@ -199,11 +213,12 @@ public partial class PlayerManager : IEnergizer
         temp.UseItem();
     }
 
+    //멀티에서도 공격이 있나? -> 있음
     public void GetEnergy(int value)
     {
-        playerOwnEnergy += value;
+        Energy += value;
 
-        if (playerOwnEnergy >= playerAttackType.EnergyCost)
+        if (energy >= playerAttackType.EnergyCost)
         {
             FindEnemy();
 
@@ -229,7 +244,7 @@ public partial class PlayerManager : IEnergizer
 
             float spacing = 1.5f;
 
-            int fireCount = playerOwnEnergy / playerAttackType.EnergyCost;
+            int fireCount = energy / playerAttackType.EnergyCost;
 
             for (int i = 0; i < fireCount; i++)
             {
@@ -277,17 +292,17 @@ public partial class PlayerManager : IEnergizer
                 }
             }
 
-            playerOwnEnergy %= playerAttackType.EnergyCost;
+            energy %= playerAttackType.EnergyCost;
         }
 
-        OnEnergyChanged?.Invoke(playerOwnEnergy);
+        OnEnergyChanged?.Invoke(energy);
     }
 
     // 한번에 2개 이상 먹을 시 가로로 늘려서 발사하는 것으로
     public void PlayerAttack()
     {
-        playerOwnEnergy -= playerAttackType.EnergyCost;
-        
+        energy -= playerAttackType.EnergyCost;
+
         var bullet = Instantiate(attackPrefab, firePos, Quaternion.identity);
 
         //bullet.transform.LookAt(targetEnemyObject.transform);
@@ -307,7 +322,7 @@ public partial class PlayerManager : IEnergizer
 
     public void PlayerAttack(Vector3 firePosition)
     {
-        playerOwnEnergy -= playerAttackType.EnergyCost;
+        energy -= playerAttackType.EnergyCost;
 
         GameObject bullet;
 
@@ -333,7 +348,7 @@ public partial class PlayerManager : IEnergizer
             bullet.GetComponent<IAttackType>().Shoot(firePos - transform.position);
         }
     }
-   
+
     public void GatheringItem()
     {
         //Debug.Log("gathering2");
@@ -342,7 +357,7 @@ public partial class PlayerManager : IEnergizer
         {
             isGatheringCoroutineWork = true;
 
-            gatheringCoroutine= StartCoroutine(GatheringCoroutine());
+            gatheringCoroutine = StartCoroutine(GatheringCoroutine());
         }
 
         else
@@ -401,7 +416,7 @@ public partial class PlayerManager : IEnergizer
 
     private void FindItemUpdate()
     {
-       // Debug.Log("아이템 찾는중");
+        // Debug.Log("아이템 찾는중");
 
         if (targetObject == null)
         {
@@ -485,7 +500,7 @@ public partial class PlayerManager : IEnergizer
                 {
 
                     ActiveGatheringBeam();
-                    
+
                 }
                 GatheringItem();
                 //OnTargetObjectSet?.Invoke();
@@ -497,7 +512,7 @@ public partial class PlayerManager : IEnergizer
 
 
                 DeactiveGatheringBeam();
-                
+
 
                 targetObject = null;
             }
@@ -550,7 +565,7 @@ public partial class PlayerManager : IEnergizer
 
                 yield break;
             }
-            
+
         }
     }
 
@@ -605,7 +620,7 @@ public partial class PlayerManager : IEnergizer
     {
         Gizmos.color = Color.red;
 
-        Gizmos.DrawWireSphere(transform.position,playerStatus.itemDetectionRange);
+        Gizmos.DrawWireSphere(transform.position, playerStatus.itemDetectionRange);
     }
 
     public void OnUseSpell()
@@ -614,6 +629,6 @@ public partial class PlayerManager : IEnergizer
 
         playerSpellType.UseSpell();
 
-        DeactiveGatheringBeam() ;
+        DeactiveGatheringBeam();
     }
 }
