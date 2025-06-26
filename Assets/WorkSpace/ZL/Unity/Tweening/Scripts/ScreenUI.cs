@@ -65,10 +65,6 @@ namespace ZL.Unity.UI
 
         [SerializeField]
 
-        [UsingCustomProperty]
-
-        [GetComponentInParentOnly]
-
         private ScreenUIGroup screenGroup = null;
 
         public virtual void Appear()

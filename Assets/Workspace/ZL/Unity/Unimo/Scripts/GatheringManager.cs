@@ -43,19 +43,19 @@ namespace ZL.Unity.Unimo
             {
                 gatheringCount = MathEx.Clamp(value, 0, targetGatheringCount);
 
-                OnGatheringCountChanged?.Invoke(gatheringCount);
+                OnGatheringCountChangedAction?.Invoke(gatheringCount);
 
                 gatherProgressTextUI.text = $"목표 자원: {gatheringCount}/{targetGatheringCount}";
 
                 if (gatheringCount >= targetGatheringCount)
                 {
-                    OnGatherCompleted?.Invoke();
+                    OnGatherCompletedAction?.Invoke();
                 }
             }
         }
-        public event Action<int> OnGatheringCountChanged = null;
+        public event Action<int> OnGatheringCountChangedAction = null;
 
-        public event Action OnGatherCompleted = null;
+        public event Action OnGatherCompletedAction = null;
 
         private void Start()
         {

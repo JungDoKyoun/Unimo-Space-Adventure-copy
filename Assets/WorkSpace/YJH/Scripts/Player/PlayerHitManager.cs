@@ -48,7 +48,11 @@ public partial class PlayerManager : IDamageable
 
     private Collider mainCollider;
 
-    //public RelicData tempRelic;
+    public Collider MainCollider
+    {
+        get => mainCollider;
+    }
+
     public static float gainDamage;
     public float CurrentHealth
     {
@@ -119,8 +123,6 @@ public partial class PlayerManager : IDamageable
 
         if (collision.gameObject.TryGetComponent<IDamager>(out var damager) == true)
         {
-            //Debug.Log("데미지 받음?콜리젼");
-
             damager.GiveDamage(this, collision.GetContact(0).point);
         }
     }
@@ -129,23 +131,17 @@ public partial class PlayerManager : IDamageable
     {
         isOnHit = true;
 
-        //Debug.Log("데미지 받음");
-        
-        //PlayHitEffect(contact);
-
         hitVFX.transform.LookAt(contact, Axis.Y);
 
         hitVFX.SetActive(true);
 
-        CurrentHealth -= damage;//데미지 입음
+        CurrentHealth -= damage;
 
         gainDamage += damage;
 
-        //OnHealthChanged?.Invoke(playerStatus.currentHealth);
 
         if (PlayerStatus.currentHealth <= 0f)
         {
-            //Debug.Log("플레이어 사망");
             PlayerStatus.currentHealth = 0f;
 
             canMove = false;
@@ -157,22 +153,9 @@ public partial class PlayerManager : IDamageable
 
         else
         {
-            //Debug.Log("플레이어 데미지 로직 작동");
-
-            //StartCoroutine(PlayerBlink());
-
             StartPlayerBlink();
         }
     }
-
-    //public void PlayHitEffect(Vector3 contact)
-    //{
-    //    Vector3 forward = contact - mainCollider.bounds.center;
-
-    //    hitVFX.transform.rotation = Quaternion.LookRotation(forward);
-
-    //    hitVFX.SetActive(true);
-    //}
 
     public void StartPlayerBlink()
     {

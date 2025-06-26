@@ -227,6 +227,8 @@ namespace ZL.Unity.Unimo
 
             spawnedObject.transform.SetPositionAndRotation(position, rotation);
 
+            spawnedObject.OnDisappearedAction += Despawn;
+
             spawnedObject.LifeTime = lifeTime;
 
             spawnedObject.SpawnPosition = transform.position;
@@ -243,8 +245,7 @@ namespace ZL.Unity.Unimo
             spawnedObject.Appear();
         }
 
-
-        public void Despawn()
+        private void Despawn()
         {
             --objectCount;
         }

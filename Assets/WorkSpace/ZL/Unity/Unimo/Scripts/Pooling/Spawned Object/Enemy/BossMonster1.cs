@@ -26,20 +26,6 @@ namespace ZL.Unity.Unimo
 
         private GameObject hitVFX = null;
 
-        [SerializeField]
-
-        [UsingCustomProperty]
-
-        [Essential]
-
-        private Transform muzzle = null;
-
-        [Space]
-
-        [SerializeField]
-
-        private string projectileName = "";
-
         [Space]
 
         [SerializeField]
@@ -62,6 +48,8 @@ namespace ZL.Unity.Unimo
         }
 
         private SkillSequence<BossMonster1> skillSequence = null;
+
+        private NamedEnemyHealthBar healthBar = null;
 
         protected override void Awake()
         {
@@ -90,6 +78,8 @@ namespace ZL.Unity.Unimo
             base.OnAppeared();
 
             skillSequence.StartRoutine(this);
+
+            healthBar = EnemyUIScreen.Instance.AppearHealthBar(this);
         }
 
         public override void Disappear()
@@ -97,6 +87,10 @@ namespace ZL.Unity.Unimo
             base.Disappear();
 
             skillSequence.StopRoutine(this);
+
+            EnemyUIScreen.Instance.DisappearHealthBar(healthBar);
+
+            healthBar = null;
         }
 
         public override void TakeDamage(float damage, Vector3 contact)
@@ -124,17 +118,31 @@ namespace ZL.Unity.Unimo
 
         public sealed class DashSkill : Skill<BossMonster1>
         {
+            [Space]
+
+            [SerializeField]
+
+            [UsingCustomProperty]
+
+            [Essential]
+
+            private GameObject dashSFX = null;
+
             public override IEnumerator Routine()
             {
                 skillUser.rotationSpeed = 0f;
 
                 skillUser.movementSpeed *= skillData.Power;
 
+                dashSFX.SetActive(true);
+
                 yield return WaitForSecondsCache.Get(skillData.Duration);
 
                 skillUser.rotationSpeed = skillUser.enemyData.RotationSpeed;
 
                 skillUser.movementSpeed = skillUser.enemyData.MovementSpeed;
+
+                dashSFX.SetActive(false);
             }
         }
 
@@ -198,7 +206,9 @@ namespace ZL.Unity.Unimo
                     projectile = ObjectPoolManager.Instance.Clone<EnemyProjectile>(projectileName);
                 }
 
-                projectile.transform.SetPositionAndRotation(muzzle);
+                var muzzleRotation = muzzle.LookRotation(skillUser.Destination.position, Axis.Y);
+
+                projectile.transform.SetPositionAndRotation(muzzle.position, muzzleRotation);
 
                 projectile.LifeTime = skillData.Duration;
 

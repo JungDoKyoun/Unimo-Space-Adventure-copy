@@ -10,17 +10,11 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [GetComponent]
-
-        [Essential]
+        [GetComponentInChildren]
 
         [ReadOnly(true)]
 
-        #pragma warning disable CS0108
-
-        private Collider collider = null;
-
-        #pragma warning restore CS0108
+        protected AnimatorGroup animatorGroup = null;
 
         [Space]
 
@@ -28,15 +22,17 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
-        [GetComponentInChildren]
+        [GetComponent]
+
+        [Essential]
 
         [ReadOnly(true)]
 
-        protected AnimatorGroup animatorGroup = null;
+        protected Collider mainCollider = null;
 
         public override void OnAppeared()
         {
-            collider.enabled = true;
+            mainCollider.enabled = true;
 
             base.OnAppeared();
         }
@@ -45,7 +41,7 @@ namespace ZL.Unity.Unimo
         {
             base.Disappear();
 
-            collider.enabled = false;
+            mainCollider.enabled = false;
         }
 
         protected override void OnDisappear()
@@ -63,6 +59,8 @@ namespace ZL.Unity.Unimo
             }
         }
 
-        public abstract void GetItem<T>(T getter);
+        public abstract void GetItem<TMonoBehaviour>(TMonoBehaviour getter)
+            
+            where TMonoBehaviour : MonoBehaviour;
     }
 }

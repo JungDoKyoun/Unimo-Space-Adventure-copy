@@ -14,7 +14,7 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private ManagedObjectPool relicCardPool = null;
+        private HashSetObjectPool relicCardPool = null;
 
         private RelicCard selectedRelicCard = null;
 

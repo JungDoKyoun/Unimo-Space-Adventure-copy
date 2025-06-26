@@ -548,8 +548,6 @@ public partial class PlayerManager : ISingleton<PlayerManager>
             var contact = mainCollider.ClosestPoint(other);
 
             damager.GiveDamage(this, contact);
-
-            //Debug.Log("데미지 받음?trigger");
         }
     }
 }

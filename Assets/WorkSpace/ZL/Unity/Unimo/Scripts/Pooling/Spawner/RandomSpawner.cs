@@ -56,7 +56,7 @@ namespace ZL.Unity.Unimo
 
         protected override IEnumerator WaveRoutine()
         {
-            int spawnCount = Random.Range(minSpawnCount, maxSpawnCount);
+            int spawnCount = Random.Range(minSpawnCount, maxSpawnCount + 1);
 
             bool IsSpawnable()
             {

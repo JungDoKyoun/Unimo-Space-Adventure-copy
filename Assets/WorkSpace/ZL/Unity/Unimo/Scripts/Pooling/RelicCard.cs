@@ -115,10 +115,7 @@ namespace ZL.Unity.Unimo
         public void Initialize(RelicData relicData)
         {
             this.relicData = relicData;
-        }
 
-        public override void Appear()
-        {
             rarityHightlightImageUI.color = relicData.Rarity.GetColor();
 
             relicImageUI.sprite = relicImageTable[relicData.name];
@@ -126,10 +123,13 @@ namespace ZL.Unity.Unimo
             relicNameStringTable = relicStringTableSheet[relicData.name + " Name"];
 
             relicDescriptionStringTable = relicStringTableSheet[relicData.name + " Description"];
+        }
 
-            Refresh();
+        public override void Appear()
+        {
+            RefreshTexts();
 
-            StringTableManager.Instance.OnLanguageChanged += Refresh;
+            StringTableManager.Instance.OnLanguageChangedAction += RefreshTexts;
 
             base.Appear();
         }
@@ -144,13 +144,10 @@ namespace ZL.Unity.Unimo
 
             OnDeselectAction = null;
 
-            if (StringTableManager.Instance != null)
-            {
-                StringTableManager.Instance.OnLanguageChanged -= Refresh;
-            }
+            StringTableManager.Instance.OnLanguageChangedAction -= RefreshTexts;
         }
 
-        private void Refresh()
+        private void RefreshTexts()
         {
             relicNameTextUI.text = relicNameStringTable.Value;
 

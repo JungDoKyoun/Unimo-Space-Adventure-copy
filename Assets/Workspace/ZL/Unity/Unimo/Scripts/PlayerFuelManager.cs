@@ -24,13 +24,13 @@ namespace ZL.Unity.Unimo
             {
                 maxFuel = value;
 
-                Instance.OnMaxFuelChanged?.Invoke(maxFuel);
+                Instance.OnMaxFuelChangedAction?.Invoke(maxFuel);
 
                 Fuel = fuel;
             }
         }
 
-        public event Action<float> OnMaxFuelChanged = null;
+        
 
         private static float fuel = 0f;
 
@@ -42,7 +42,7 @@ namespace ZL.Unity.Unimo
             {
                 fuel = Mathf.Clamp(value, 0f, maxFuel);
 
-                Instance.OnFuelChanged?.Invoke(fuel);
+                Instance.OnFuelChangedAction?.Invoke(fuel);
 
                 if (fuel == 0f)
                 {
@@ -51,11 +51,13 @@ namespace ZL.Unity.Unimo
             }
         }
 
-        public event Action<float> OnFuelChanged = null;
-
         public Action OnFuelEmpty = null;
 
         private StageData stageData = null;
+
+        public event Action<float> OnMaxFuelChangedAction = null;
+
+        public event Action<float> OnFuelChangedAction = null;
 
         private void Start()
         {

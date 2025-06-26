@@ -114,11 +114,15 @@ namespace ZL.Unity
         public void Pause()
         {
             TimeEx.Pause();
+
+            timeScale = TimeEx.TimeScale;
         }
 
         public void Resume()
         {
             TimeEx.Resume();
+
+            timeScale = TimeEx.TimeScale;
         }
 
         public void Quit()

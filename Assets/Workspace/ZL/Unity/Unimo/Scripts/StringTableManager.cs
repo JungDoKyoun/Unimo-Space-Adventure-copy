@@ -33,7 +33,7 @@ namespace ZL.Unity.Unimo
             set => targetLanguagePref.Value = value;
         }
 
-        public event Action OnLanguageChanged = null;
+        public event Action OnLanguageChangedAction = null;
 
         private void OnValidate()
         {
@@ -46,7 +46,7 @@ namespace ZL.Unity.Unimo
 
             targetLanguagePref.OnValueChanged += (value) =>
             {
-                OnLanguageChanged?.Invoke();
+                OnLanguageChangedAction?.Invoke();
             };
 
             LoadLanguage();

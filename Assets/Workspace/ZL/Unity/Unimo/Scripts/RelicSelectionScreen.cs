@@ -46,7 +46,7 @@ namespace ZL.Unity.Unimo
 
         [SerializeField]
 
-        private ManagedObjectPool relicCardPool = null;
+        private HashSetObjectPool relicCardPool = null;
 
         private RelicCard selectedRelicCard = null;
 
@@ -68,28 +68,24 @@ namespace ZL.Unity.Unimo
         {
             if (selectedRelicCard == null)
             {
-                return;
+                selectedRelicCard.Toggle.isOn = false;
+
+                PlayerInventoryManager.AddRelic(selectedRelicCard.RelicData);
             }
-
-            PlayerInventoryManager.AddRelic(selectedRelicCard.RelicData);
-
-            selectedRelicCard.Toggle.isOn = false;
         }
 
         public void RerollRelics()
         {
             if (PlayerInventoryManager.RelicRerollableCount == 0)
             {
-                return;
+                PlayerInventoryManager.RelicRerollableCount--;
+
+                rerollRelicsButtonTextUI.text = PlayerInventoryManager.RelicRerollableCountText;
+
+                StageData.Instance.DropRelics();
+
+                DrawRelicCards();
             }
-
-            --PlayerInventoryManager.RelicRerollableCount;
-
-            rerollRelicsButtonTextUI.text = PlayerInventoryManager.RelicRerollableCountText;
-
-            StageData.Instance.DropRelics();
-
-            DrawRelicCards();
         }
 
         private void DrawRelicCards()

@@ -1,3 +1,5 @@
+using System;
+
 using UnityEngine;
 
 using UnityEngine.Animations;
@@ -18,11 +20,12 @@ namespace ZL.Unity.Unimo
 
         [ReadOnly(true)]
 
-        #pragma warning disable CS0108
+        private Collider mainCollider = null;
 
-        private Collider collider = null;
-
-        #pragma warning restore CS0108
+        public Collider MainCollider
+        {
+            get => mainCollider;
+        }
 
         [SerializeField]
 
@@ -40,15 +43,15 @@ namespace ZL.Unity.Unimo
 
         #pragma warning restore CS0108
 
-        [Space]
-
         [SerializeField]
 
         [UsingCustomProperty]
 
         [GetComponentInChildren]
 
-        [ReadOnlyWhenPlayMode]
+        [Essential]
+
+        [ReadOnly(true)]
 
         protected AnimatorGroup animatorGroup = null;
 
@@ -61,6 +64,20 @@ namespace ZL.Unity.Unimo
         [Essential]
 
         protected EnemyData enemyData = null;
+
+        public EnemyData EnemyData
+        {
+            get => enemyData;
+        }
+
+        [SerializeField]
+
+        private StringTable enemyNameTable = null;
+
+        public StringTable EnemyNameTable
+        {
+            get => enemyNameTable;
+        }
 
         [Space]
 
@@ -79,19 +96,28 @@ namespace ZL.Unity.Unimo
 
         public float MovementSpeedMultiplier
         {
-            set
-            {
-                movementSpeedMultiplier = value;
-
-                animatorGroup.SetFloat("movementSpeedMultiplier", movementSpeedMultiplier);
-            }
+            set => movementSpeedMultiplier = value;
         }
 
-        protected float currentHealth = 0f;
+        private float currentHealth = 0f;
 
-        public float CurrentHealth
+        public virtual float CurrentHealth
         {
             get => currentHealth;
+
+            set
+            {
+                currentHealth = Math.Clamp(value, 0f, enemyData.MaxHealth);
+
+                OnHealthChangedAction?.Invoke(currentHealth);
+
+                if (currentHealth == 0f)
+                {
+                    OnKiiledAction?.Invoke();
+
+                    Kill();
+                }
+            }
         }
 
         protected float rotationSpeed = 0f;
@@ -107,17 +133,9 @@ namespace ZL.Unity.Unimo
 
         protected bool isStoped = true;
 
-        private void OnValidate()
-        {
-            if (Application.isPlaying == false)
-            {
-                return;
-            }
+        public event Action<float> OnHealthChangedAction = null;
 
-            //RotationSpeedMultiplier = rotationSpeedMultiplier;
-
-            //MovementSpeedMultiplier = movementSpeedMultiplier;
-        }
+        public event Action OnKiiledAction = null;
 
         protected virtual void Awake()
         {
@@ -136,6 +154,11 @@ namespace ZL.Unity.Unimo
             Move();
 
             CheckDespawnCondition();
+        }
+
+        protected virtual void OnEnable()
+        {
+            animatorGroup.SetFloat(nameof(movementSpeedMultiplier), movementSpeedMultiplier);
         }
 
         protected virtual void Look()
@@ -178,7 +201,7 @@ namespace ZL.Unity.Unimo
 
         public override void OnAppeared()
         {
-            collider.enabled = true;
+            mainCollider.enabled = true;
 
             isStoped = false;
 
@@ -189,17 +212,18 @@ namespace ZL.Unity.Unimo
         {
             base.Disappear();
 
-            collider.enabled = false;
+            mainCollider.enabled = false;
 
             isStoped = true;
+
+            OnHealthChangedAction = null;
+            
+            OnKiiledAction = null;
         }
 
         protected override void OnDisappear()
         {
-            if (animatorGroup != null)
-            {
-                animatorGroup.SetTrigger("Disappear");
-            }
+            animatorGroup.SetTrigger("Disappear");
         }
 
         public override void OnDisappeared()
@@ -208,10 +232,7 @@ namespace ZL.Unity.Unimo
 
             rigidbody.velocity = Vector3.zero;
 
-            if (animatorGroup != null)
-            {
-                animatorGroup.Rebind();
-            }
+            animatorGroup.Rebind();
 
             rotationSpeedMultiplier = 1f;
 
@@ -220,17 +241,10 @@ namespace ZL.Unity.Unimo
 
         public virtual void TakeDamage(float damage, Vector3 contact)
         {
-            currentHealth -= damage;
-
-            if (currentHealth <= 0f)
-            {
-                currentHealth = 0f;
-
-                Killed();
-            }
+            CurrentHealth -= damage;
         }
 
-        protected virtual void Killed()
+        protected virtual void Kill()
         {
             Disappear();
         }

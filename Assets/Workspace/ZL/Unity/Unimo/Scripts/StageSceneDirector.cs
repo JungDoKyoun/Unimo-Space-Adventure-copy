@@ -220,7 +220,7 @@ namespace ZL.Unity.Unimo
 
             if (GatheringManager.Instance != null)
             {
-                GatheringManager.Instance.OnGatherCompleted += StageClear;
+                GatheringManager.Instance.OnGatherCompletedAction += StageClear;
             }
 
             PlayerManager.Instance.OnPlayerDead += StageFail;
@@ -243,9 +243,9 @@ namespace ZL.Unity.Unimo
 
             #if UNITY_EDITOR
 
-            //IsPlayerInvincible = isPlayerInvincible;
+            IsPlayerInvincible = isPlayerInvincible;
 
-            //IsConsumFuel = isConsumFuel;
+            IsConsumFuel = isConsumFuel;
 
             #endif
         }

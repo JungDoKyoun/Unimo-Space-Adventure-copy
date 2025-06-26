@@ -1,7 +1,5 @@
 using UnityEngine;
 
-using UnityEngine.Animations;
-
 using ZL.Unity.Pooling;
 
 namespace ZL.Unity.Unimo

@@ -8,6 +8,8 @@ namespace ZL.Unity.Pooling
 
     public class PooledObject : MonoBehaviour
     {
+        public event Action OnDisappearedAction = null;
+
         private event Action OnCollectedAction = null;
 
         public static TClone Instantiate<TClone>(ObjectPool<TClone> objectPool)
@@ -30,19 +32,19 @@ namespace ZL.Unity.Pooling
         {
             gameObject.SetActive(false);
 
-            if (OnCollectedAction != null)
+            OnDisappeared();
+        }
+
+        public virtual void OnDisappeared()
+        {
+            if (OnDisappearedAction != null)
             {
-                OnCollectedAction.Invoke();
+                OnDisappearedAction.Invoke();
+
+                OnDisappearedAction = null;
             }
 
-            #if UNITY_EDITOR
-
-            else
-            {
-                FixedDebug.LogWarning($"Game Object '{gameObject.name}' is a 'Pooled Object' but was not created from an 'Object Pool'.");
-            }
-
-            #endif
+            OnCollectedAction?.Invoke();
         }
     }
 }

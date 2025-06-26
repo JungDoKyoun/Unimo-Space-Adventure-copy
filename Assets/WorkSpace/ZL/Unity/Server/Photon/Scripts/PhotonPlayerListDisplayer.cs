@@ -16,7 +16,7 @@ namespace ZL.Unity.Server.Photon
 
         [SerializeField]
 
-        protected ManagedObjectPool<int> playerListItemPool = null;
+        protected DictionaryObjectPool<int> playerListItemPool = null;
 
         public void Refresh()
         {

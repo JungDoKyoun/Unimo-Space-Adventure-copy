@@ -51,7 +51,7 @@ namespace ZL.Unity.Unimo
 
         public virtual void OnDisappeared()
         {
-            base.Disappear();
+            gameObject.SetActive(false);
 
             lifeTime = -1f;
         }

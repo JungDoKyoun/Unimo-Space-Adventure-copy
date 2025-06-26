@@ -12,6 +12,25 @@ namespace ZL.Unity.Unimo
 
         [UsingCustomProperty]
 
+        [GetComponent]
+
+        [Essential]
+
+        [ReadOnly(true)]
+
+        private Collider mainCollider = null;
+
+        public Collider MainCollider
+        {
+            get => mainCollider;
+        }
+
+        [Space]
+
+        [SerializeField]
+
+        [UsingCustomProperty]
+
         [Essential]
 
         [ReadOnlyWhenPlayMode]

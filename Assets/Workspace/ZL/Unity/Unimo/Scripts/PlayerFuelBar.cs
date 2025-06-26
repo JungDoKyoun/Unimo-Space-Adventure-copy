@@ -18,7 +18,7 @@ namespace ZL.Unity.Unimo
 
         [Essential]
 
-        [ReadOnlyWhenPlayMode]
+        [ReadOnly(true)]
 
         private SliderValueDisplayer sliderValueDisplayer = null;
 
@@ -28,9 +28,9 @@ namespace ZL.Unity.Unimo
 
             sliderValueDisplayer.SetValue(PlayerFuelManager.Fuel);
 
-            PlayerFuelManager.Instance.OnMaxFuelChanged += sliderValueDisplayer.SetMaxValue;
+            PlayerFuelManager.Instance.OnMaxFuelChangedAction += sliderValueDisplayer.SetMaxValue;
 
-            PlayerFuelManager.Instance.OnFuelChanged += sliderValueDisplayer.SetValue;
+            PlayerFuelManager.Instance.OnFuelChangedAction += sliderValueDisplayer.SetValue;
         }
     }
 }

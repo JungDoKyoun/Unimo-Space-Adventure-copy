@@ -16,16 +16,16 @@ namespace ZL.Unity.Unimo
         {
             movementSpeed = 0f;
 
-            animatorGroup.SetFloat(nameof(chargeDashTime), chargeDashTime);
-
             base.Appear();
         }
 
-        public override void Disappear()
+        public override void OnAppeared()
         {
-            base.Disappear();
+            base.OnAppeared();
 
-            OnDisappeared();
+            animatorGroup.SetFloat(nameof(chargeDashTime), chargeDashTime);
+
+            animatorGroup.SetTrigger("ChargeDash");
         }
 
         public void GiveDamage(IDamageable damageable, Vector3 contact)
