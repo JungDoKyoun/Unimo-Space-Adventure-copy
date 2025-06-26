@@ -24,6 +24,16 @@ public class ConstructUIManager : MonoBehaviour
     public Button buildInfoBuildButton;
     public GameObject basePanel;
 
+    public Sprite buildedSprite;
+    public Sprite cannotBuildSprite;
+    public Sprite canBuildSprite;
+
+    public List<Button> allButtons;
+    
+    public GameObject techBuildButtons;
+    public GameObject utilBuildButtons;
+    public GameObject combatBuildButtons;
+    
 
     [Header("건설완료 화면 관련")]
     public Image buildStateImage;//건물 건설 현황을 나타낼 배경 이미지
@@ -33,8 +43,12 @@ public class ConstructUIManager : MonoBehaviour
     public static ConstructUIManager Instance { get; private set; }
     public Dictionary<int, int> imagePriority = new Dictionary<int, int>();
 
-    public GameObject constructManager;
+    public GameObject constructManager;//프리팹 
+    public AudioSource constructUIAudioSource;
+    public AudioClip buildSuccessClip;
 
+    public CanvasGroup stationCanvasGroup;
+    
     private void Awake()
     {
         Instance = this;
@@ -43,73 +57,106 @@ public class ConstructUIManager : MonoBehaviour
         {
             Instantiate(constructManager);
         }
+        SetAllButtons();
+        ChangeButtonsSpriteAll();
     }
 
-
-
-
-
-
-
-    /*<summary>
-         {
-    imagePriority.Add(i, 0);
-        }
-imagePriority.Add(-1, 999);
-    }
-    적용 완
-
-    private void SetAllDic()
-{
-@@ -210,9 + 211,9 @@ public class ConstructManager : MonoBehaviour
-    }
-    public void TrySetConstructImage(ConstructBase building)
-{
-    if (imagePriority[building.imageIndex] < building.imagePriority)
-        if (imagePriority[building.imageIndex - 1] < building.imagePriority)
+    public void SetAllButtons()
+    {
+        allButtons = new List<Button>();
+        Button[] techButtons= techBuildButtons.GetComponentsInChildren<Button>(includeInactive: true);
+        Button[] utilButtons= utilBuildButtons.GetComponentsInChildren<Button>(includeInactive: true);
+        Button[] combatButtons= combatBuildButtons.GetComponentsInChildren<Button>(includeInactive: true);
+        foreach (Button button in techButtons)
         {
-            buildingImages[building.imageIndex].sprite = building.buildingImage;
-            buildingImages[building.imageIndex - 1].sprite = building.buildingImage;
+            allButtons.Add(button);
         }
-}
+        foreach (Button button in utilButtons)
+        {
+            allButtons.Add(button);
+        }
+        foreach(Button button in combatButtons)
+        {
+            allButtons.Add(button);
+        }
 
-@@ -222,9 + 223,9 @@ public class ConstructManager : MonoBehaviour
-{
-            if (temp.isBuildConstructed == true)
+
+
+    }
+    public void ChangeButtonsSpriteAll()
+    {
+        if(allButtons == null)
+        {
+            return;
+        }
+        if(allButtons.Count == 0)
+        {
+            return;
+        }
+
+        foreach( Button button in allButtons)
+        {
+            var tempScript = button.GetComponent<ButtonStringHolder>();
+            var tempBuildData = ConstructManager.Instance.AllBuildingDic[tempScript.BuildingID];
+            if(tempBuildData == null)
             {
-                if (imagePriority[temp.imageIndex] < temp.imagePriority)
-                if (imagePriority[temp.imageIndex - 1] < temp.imagePriority)
+                return;
+            }
+            if (tempBuildData.isBuildConstructed == true)//이미 건설되었으면 
+            {
+                button.gameObject.GetComponent<Image>().sprite=buildedSprite;
+            }
+            else
+            {
+                switch (tempBuildData)
                 {
-                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
-                    buildingImages[temp.imageIndex - 1].sprite = temp.buildingImage;
+                    case TechBuildBase:
+                        if (tempBuildData.TryConstruct(ConstructManager.Instance.techConstructList) == false)//건물을 지을 수 없을때
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = cannotBuildSprite;
+                        }
+                        else//건물을 지을 수는 있을 때 이하 동일
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = canBuildSprite;
+                        }
+
+                            break;
+                    case UtilityBuildBase:
+                        if (tempBuildData.TryConstruct(ConstructManager.Instance.utilityConstructList) == false)
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = cannotBuildSprite;
+                        }
+                        else
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = canBuildSprite;
+                        }
+                            break;
+                    case CombatBuildBase:
+                        if (tempBuildData.TryConstruct(ConstructManager.Instance.combatConstructList) == false)
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = cannotBuildSprite;
+                        }
+                        else
+                        {
+                            button.gameObject.GetComponent<Image>().sprite = canBuildSprite;
+                        }
+                            break;
+                    default:
+                        Debug.Log("non build type");
+                        return;
+
                 }
             }
+
+
+
+
+
         }
-@@ -232,9 + 233,9 @@ public class ConstructManager : MonoBehaviour
-{
-            if (temp.isBuildConstructed == true)
-            {
-                if (imagePriority[temp.imageIndex] < temp.imagePriority)
-                if (imagePriority[temp.imageIndex - 1] < temp.imagePriority)
-                {
-                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
-                    buildingImages[temp.imageIndex - 1].sprite = temp.buildingImage;
-                }
-            }
-        }
-@@ -242,9 + 243,9 @@ public class ConstructManager : MonoBehaviour
-{
-            if (temp.isBuildConstructed == true)
-            {
-                if (imagePriority[temp.imageIndex] < temp.imagePriority)
-                if (imagePriority[temp.imageIndex - 1] < temp.imagePriority)
-                {
-                    buildingImages[temp.imageIndex].sprite = temp.buildingImage;
-                    buildingImages[temp.imageIndex - 1].sprite = temp.buildingImage;
-                }
-            }
-        }
-    */
+
+
+
+    }
     
     public void DeactiveBasePanel()
     {
@@ -117,8 +164,13 @@ imagePriority.Add(-1, 999);
     }
     public void ActiveBasePanel()
     {
-        Debug.Log("건설 화면 등장");
+        //Debug.Log("건설 화면 등장");
         basePanel.SetActive(true);
+        //Debug.Log(FirebaseDataBaseMgr.Blueprint);
+        //Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
+        ConstructManager.Instance.SetOwnCost();
+        //StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(10000));//실험용 임시 함수
+        //Debug.Log("실험용 임시 자원 추가");
     }
     public void EndConstructButtonPressed()
     {
@@ -149,10 +201,10 @@ imagePriority.Add(-1, 999);
     }
     public void GameStartButtonPressed()//현재 플레이어 사망 후 돌아가면 건설 UI가 열리지 않음 아마 오류로 인해서 그런듯?
     {
-        Debug.Log("플레이어에게 건설효과 적용 여부:" + ConstructManager.IsBuildEffectAplly);
+        //Debug.Log("플레이어에게 건설효과 적용 여부:" + ConstructManager.IsBuildEffectAplly);
         ConstructManager.Instance.SetPlayer();
         PlayerManager.ResetStatus();
-        Debug.Log("건설매니저가 스탯 초기화 시킴");
+        //Debug.Log("건설매니저가 스탯 초기화 시킴");
         InitRelicGiver.Instance.SetRelicData();
         //PlayerManager.SetSpellType(new Dash());//나중에 combat계열 제작시 변경 필요
         if (ConstructManager.Instance.isGiveStartRellic == true)
@@ -197,6 +249,15 @@ imagePriority.Add(-1, 999);
     public void DeactivePanel(GameObject panel)
     {
         panel.SetActive(false);
+    }
+
+    public void DisappearButtons()
+    {
+        stationCanvasGroup.alpha = 0;
+    }
+    public void AppearButtons()
+    {
+        stationCanvasGroup.alpha = 1;
     }
     public void BuildButtonPressed(string buildID)
     {
@@ -248,12 +309,27 @@ imagePriority.Add(-1, 999);
         ConstructManager.Instance.DecideCanBuild(buildingInfo);
         buildInfoBuildButton.onClick.RemoveAllListeners();
         buildInfoBuildButton.onClick.AddListener(() => ConstructManager.Instance.TryConstruct(buildingInfo));
+        buildInfoBuildButton.onClick.AddListener(() => ConstructSuccessSoundPlay());
 
 
 
 
     }
 
+
+    public void ConstructSuccessSoundPlay()
+    {
+        if (constructUIAudioSource != null)
+        {
+            constructUIAudioSource.clip = buildSuccessClip;
+
+            constructUIAudioSource.Play();
+        }
+        else
+        {
+            return;
+        }
+    }
     
 
 

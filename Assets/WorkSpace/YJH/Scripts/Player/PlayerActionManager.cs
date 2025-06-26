@@ -121,6 +121,7 @@ public partial class PlayerManager
 
     public static event Action<float> OnEnergyChanged = null;
     private Coroutine gatheringCoroutine;
+    
     // 멀티용으로 리펙토링한거 나중에 다 해체하기
     public void ActionStart()
     {
@@ -175,7 +176,7 @@ public partial class PlayerManager
 
        // Debug.Log("actionstart끝");
     }
-
+   
     public void ActionUpdate()
     {
         

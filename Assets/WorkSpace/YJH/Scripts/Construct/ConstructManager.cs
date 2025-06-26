@@ -74,7 +74,7 @@ public class ConstructManager : MonoBehaviour
         }
             
         OnConstructCostChange += SetConstructCostText;
-        SetOwnCost();
+        
         //DecideProgress();//나중에 이미지 변경 시스템 완벽하게 바꾸면 변경하기
         ToDictionary();
         SetAllDic();
@@ -88,6 +88,7 @@ public class ConstructManager : MonoBehaviour
         PlayerManager.OnStageFail += YJH.MethodCollection.DelinkHealPlayer;
         PlayerManager.OnStageFail += ResetApplyBuildEffect;
         SceneManager.sceneLoaded += OnSceneLoaded;
+        
         DontDestroyOnLoad(gameObject);  
     }
 
@@ -100,7 +101,9 @@ public class ConstructManager : MonoBehaviour
     }
     private void Start()
     {
-
+        StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(0));
+        StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardBluePrint(0));
+        
         if (GameStateManager.IsClear == true)
         {
             Debug.Log("스테이지 클리어");
@@ -114,18 +117,18 @@ public class ConstructManager : MonoBehaviour
             PlayerManager.ResetStatus();
             //SetFinalStatusToPlayer();
         }
-
+        
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (GameStateManager.IsClear == true)
         {
-            Debug.Log("스테이지 클리어");
+            //Debug.Log("스테이지 클리어");
             return;
         }
         else
         {
-            Debug.Log("스테이지 클리어 실패");
+            //Debug.Log("스테이지 클리어 실패");
             PlayerManager.gainDemage = 0;
             isBuildEffectAplly = false;
             PlayerManager.ResetStatus();
@@ -503,21 +506,39 @@ public class ConstructManager : MonoBehaviour
 
         if (FirebaseDataBaseMgr.Instance == null)
         {
-            //Debug.Log("firenull!");
+            Debug.Log("데이터베이스 없음");
             return;
         }
         else
         {
-            
-            FirebaseDataBaseMgr.Instance.StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(0));
 
-            ownBuildCostDic.Add("Blueprint", FirebaseDataBaseMgr.Blueprint);
-            ownBuildCostDic.Add("MetaCurrency", FirebaseDataBaseMgr.MetaCurrency);
+
+            //Debug.Log(FirebaseDataBaseMgr.Blueprint);
+            //Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
+            if (ownBuildCostDic.ContainsKey("Blueprint"))
+            {
+                ownBuildCostDic["Blueprint"] = FirebaseDataBaseMgr.Blueprint;
+            }
+            else
+            {
+                ownBuildCostDic.Add("Blueprint", FirebaseDataBaseMgr.Blueprint);
+            }
+            if (ownBuildCostDic.ContainsKey("MetaCurrency"))
+            {
+                ownBuildCostDic["MetaCurrency"] = FirebaseDataBaseMgr.MetaCurrency;
+            }
+            else
+            {
+                ownBuildCostDic.Add("MetaCurrency", FirebaseDataBaseMgr.MetaCurrency);
+            }
+            
+            
+            
+            //Debug.Log("파이어 베이스에서 받아옴");
             OnConstructCostChange.Invoke();
 
         }
-        //Debug.Log(FirebaseDataBaseMgr.Blueprint);
-        //Debug.Log(FirebaseDataBaseMgr.MetaCurrency);
+        
         
         
     }

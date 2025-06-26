@@ -97,7 +97,7 @@ namespace YJH
         {
             if (scene.name == "Station")
             {
-                HealPlayer(2);
+                HealPlayer(1);
             }
         }
 
@@ -110,7 +110,7 @@ namespace YJH
         {
             if (scene.name == "Station")
             {
-                HealPlayer(3);
+                HealPlayer(1);
             }
         }
 

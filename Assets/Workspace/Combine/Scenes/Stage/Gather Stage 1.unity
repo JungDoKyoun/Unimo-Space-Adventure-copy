@@ -1567,28 +1567,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5368692537607707091, guid: ea130d4b4197ce7459193320828fbee5, type: 3}
   m_PrefabInstance: {fileID: 567514081}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &567514083 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8749539083813466327, guid: ea130d4b4197ce7459193320828fbee5, type: 3}
-  m_PrefabInstance: {fileID: 567514081}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &567514084 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 872458040239576819, guid: ea130d4b4197ce7459193320828fbee5, type: 3}
-  m_PrefabInstance: {fileID: 567514081}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &569838296
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2295,17 +2273,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 107019838}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &882283615 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2582979806966515143, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
-  m_PrefabInstance: {fileID: 3409879531882657974}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74ca3d3bd9e44584e8abcac310cc3f86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &883109812
 GameObject:
   m_ObjectHideFlags: 0
@@ -3928,17 +3895,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1115221096}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1522659249 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3876220739838552668, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
-  m_PrefabInstance: {fileID: 3409879531882657974}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74ca3d3bd9e44584e8abcac310cc3f86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1557245072
 GameObject:
   m_ObjectHideFlags: 0
@@ -5065,6 +5021,10 @@ PrefabInstance:
       propertyPath: relicDropTable
       value: 
       objectReference: {fileID: 11400000, guid: 6d624b9da4551414dbdc6e468c281701, type: 2}
+    - target: {fileID: 1804249748648724, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
+      propertyPath: alwaysDropRelics
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 218292215920234307, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5141,14 +5101,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1175111157535935401, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
-      propertyPath: progressBarText
-      value: 
-      objectReference: {fileID: 567514083}
-    - target: {fileID: 1175111157535935401, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
-      propertyPath: progressBarCircle
-      value: 
-      objectReference: {fileID: 567514084}
     - target: {fileID: 1276237522598896112, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5180,10 +5132,6 @@ PrefabInstance:
     - target: {fileID: 2167560385732847304, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2348411780190574329, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
-      propertyPath: sceneViewId
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2418924853725617131, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
       propertyPath: m_AnchorMax.y
@@ -5301,10 +5249,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3952227539891220343, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4082017837543653918, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5369,10 +5313,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5782197632518813661, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
-      propertyPath: animatorGroup
-      value: 
-      objectReference: {fileID: 882283615}
     - target: {fileID: 5936554077765308719, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5477,10 +5417,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7737202111875578024, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
-      propertyPath: animatorGroup
-      value: 
-      objectReference: {fileID: 1522659249}
     - target: {fileID: 7852812908694265298, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5503,14 +5439,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7852812908694265298, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8065331922158513091, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8065331922158513091, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
-      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8096642175916356889, guid: cfb53b8af251d7645a829c8cd416a527, type: 3}
