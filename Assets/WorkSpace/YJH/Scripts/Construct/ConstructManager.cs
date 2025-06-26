@@ -1,17 +1,7 @@
-using System.Collections;
+using JDG;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using Firebase.Database;
-using Firebase.Extensions;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
-using ZL.Unity.Unimo;
-using JDG;
-using ZL.CS.Singleton;
-using YJH;
 
 public class ConstructManager : MonoBehaviour
 {
@@ -19,12 +9,12 @@ public class ConstructManager : MonoBehaviour
     public List<TechBuildBase> techConstructList = new List<TechBuildBase>();
     public List<UtilityBuildBase> utilityConstructList = new List<UtilityBuildBase>();
     public List<CombatBuildBase> combatConstructList = new List<CombatBuildBase>();
-    private Dictionary<string,ConstructBase> allBuildingDic = new Dictionary<string,ConstructBase>();
-    
+    private Dictionary<string, ConstructBase> allBuildingDic = new Dictionary<string, ConstructBase>();
 
-    
+
+
     //[SerializeField] List<Sprite> buildStateImageList= new List<Sprite>();//나중에 건설 이미지 방식 바뀌면 삭제할 것 
-    
+
     //private float buildStateProgress = 0;
     //[SerializeField] List<Button> buildButtons = new List<Button>();
     //[SerializeField] GameObject BuildPanel;
@@ -35,17 +25,17 @@ public class ConstructManager : MonoBehaviour
 
 
     //public List<ConstructBase> ConstructList { get { return constructList;  } private set { constructList = value; } }
-    public static List<string> buildedList= new List<string>();    
+    public static List<string> buildedList = new List<string>();
     public static ConstructManager Instance { get; private set; }
 
     public delegate void onConstructCostChange();
     public event onConstructCostChange OnConstructCostChange;
 
-    private static bool isBuildEffectAplly=false;
+    private static bool isBuildEffectAplly = false;
     public static bool IsBuildEffectAplly { get { return isBuildEffectAplly; } }
     private static bool isDelinkON = false;
     public bool isGiveStartRellic = false;
-    
+
     private Dictionary<string, int> ownBuildCostDic = new Dictionary<string, int>();
     public Dictionary<string, int> OwnBuildCostDic { get { return ownBuildCostDic; } }
     //private PlayerManager playerManager;
@@ -55,16 +45,16 @@ public class ConstructManager : MonoBehaviour
         get { return allBuildingDic; }
     }
     public PlayerStatus OriginPlayerStatus { get { return originPlayerStatus; } }
-    
-    public static ISpellType[] playerSpells = { null,new Dash() };
-    
+
+    public static ISpellType[] playerSpells = { null, new Dash() };
+
     [SerializeField] GameObject[] attackPrefabs;
 
     //public RelicData tempRelic;
-    
+
     private void Awake()
     {
-        if(Instance != null)
+        if (Instance != null)
         {
             Destroy(gameObject);
         }
@@ -72,14 +62,14 @@ public class ConstructManager : MonoBehaviour
         {
             Instance = this;
         }
-            
+
         OnConstructCostChange += SetConstructCostText;
-        
+
         //DecideProgress();//나중에 이미지 변경 시스템 완벽하게 바꾸면 변경하기
         ToDictionary();
         SetAllDic();
-       
-        
+
+
         SetAllConstructImages();
         //GameStateManager.IsClear = true;// 버그 터짐 이거 말고 다른 방법 써야 할듯
         playerStatus = PlayerManager.OriginStatus.Clone();
@@ -88,8 +78,8 @@ public class ConstructManager : MonoBehaviour
         PlayerManager.OnStageFail += YJH.MethodCollection.DelinkHealPlayer;
         PlayerManager.OnStageFail += ResetApplyBuildEffect;
         SceneManager.sceneLoaded += OnSceneLoaded;
-        
-        DontDestroyOnLoad(gameObject);  
+
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Update()
@@ -103,7 +93,7 @@ public class ConstructManager : MonoBehaviour
     {
         StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(0));
         StartCoroutine(FirebaseDataBaseMgr.Instance.UpdateRewardBluePrint(0));
-        
+
         if (GameStateManager.IsClear == true)
         {
             Debug.Log("스테이지 클리어");
@@ -113,11 +103,11 @@ public class ConstructManager : MonoBehaviour
         {
             Debug.Log("스테이지 클리어 실패");
             isBuildEffectAplly = false;
-            PlayerManager.gainDemage = 0;
+            PlayerManager.gainDamage = 0;
             PlayerManager.ResetStatus();
             //SetFinalStatusToPlayer();
         }
-        
+
     }
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -129,7 +119,7 @@ public class ConstructManager : MonoBehaviour
         else
         {
             //Debug.Log("스테이지 클리어 실패");
-            PlayerManager.gainDemage = 0;
+            PlayerManager.gainDamage = 0;
             isBuildEffectAplly = false;
             PlayerManager.ResetStatus();
         }
@@ -143,7 +133,7 @@ public class ConstructManager : MonoBehaviour
     }
     public void ToDictionary()
     {
-        foreach(var temp in techConstructList)
+        foreach (var temp in techConstructList)
         {
             temp.ToDictionary();
         }
@@ -156,7 +146,7 @@ public class ConstructManager : MonoBehaviour
             temp.ToDictionary();
         }
     }
-    
+
     private void SetAllDic()
     {
         foreach (var temp in techConstructList)
@@ -188,29 +178,29 @@ public class ConstructManager : MonoBehaviour
 
     public void TryConstruct(ConstructBase building)
     {
-        if(building == null)
+        if (building == null)
         {
             return;
         }
-        else  
+        else
         {
             switch (building)
             {
                 case TechBuildBase:
-                    if (building.TryConstruct(techConstructList)==false)
+                    if (building.TryConstruct(techConstructList) == false)
                     {
                         return;
                     }
 
                     break;
                 case UtilityBuildBase:
-                    if(building.TryConstruct(utilityConstructList)==false)
+                    if (building.TryConstruct(utilityConstructList) == false)
                     {
                         return;
                     }
                     break;
                 case CombatBuildBase:
-                    if(building.TryConstruct(combatConstructList) == false)
+                    if (building.TryConstruct(combatConstructList) == false)
                     {
                         return;
                     }
@@ -218,32 +208,32 @@ public class ConstructManager : MonoBehaviour
                 default:
                     Debug.Log("non build type");
                     return;
-                    
+
             }
-            
+
         }
-        
-            //Debug.Log("buildcom");
-            building.ConstructEnd();
-            ConstructUIManager.Instance.TrySetConstructImage(building);
-            //spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
-            ConstructUIManager.Instance.buildInfoBuildButton.interactable = false;
-            int costNum;
-            CoroutineRunner.Instance.Run(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
-            
-        
+
+        //Debug.Log("buildcom");
+        building.ConstructEnd();
+        ConstructUIManager.Instance.TrySetConstructImage(building);
+        //spawnPoints[building.spawnIndex].GetComponent<Image>().sprite = building.buildingImage;
+        ConstructUIManager.Instance.buildInfoBuildButton.interactable = false;
+        int costNum;
+        CoroutineRunner.Instance.Run(FirebaseDataBaseMgr.Instance.UpdateRewardMetaCurrency(building.BuildCostDic.TryGetValue("MetaCurrency", out costNum) ? -costNum : 0));
+
+
     }
-    
+
 
     public void SetAllConstructImages()
     {
-        foreach(var temp in techConstructList)
+        foreach (var temp in techConstructList)
         {
             if (temp.isBuildConstructed == true)
             {
-                if (ConstructUIManager.Instance.imagePriority[temp.imageIndex-1] < temp.imagePriority)
+                if (ConstructUIManager.Instance.imagePriority[temp.imageIndex - 1] < temp.imagePriority)
                 {
-                    ConstructUIManager.Instance.buildingImages[temp.imageIndex-1].sprite = temp.buildingImage;
+                    ConstructUIManager.Instance.buildingImages[temp.imageIndex - 1].sprite = temp.buildingImage;
                 }
             }
         }
@@ -283,14 +273,14 @@ public class ConstructManager : MonoBehaviour
             if (building.isBuildConstructed == true)
             {
                 buildedBuildingNum++;
-                if (buildedList.Contains(building.buildID)==false)
+                if (buildedList.Contains(building.buildID) == false)
                 {
                     buildedList.Add(building.buildID);
                 }
-                
+
             }
-            
-            
+
+
         }
         foreach (var building in utilityConstructList)
         {
@@ -320,7 +310,7 @@ public class ConstructManager : MonoBehaviour
         }
 
         //buildStateProgress =(float)buildedBuildingNum/buildingNum;
-       // Debug.Log(buildStateProgress);
+        // Debug.Log(buildStateProgress);
         //DebugBuildedList();
         //ChangeBuildStateImage();
     }
@@ -331,17 +321,17 @@ public class ConstructManager : MonoBehaviour
             //Debug.Log(building);
         }
     }
-    
-   public void ResetApplyBuildEffect()
+
+    public void ResetApplyBuildEffect()
     {
         isBuildEffectAplly = false;
     }
-    
 
-    
-   
 
-    
+
+
+
+
 
 
 
@@ -353,7 +343,7 @@ public class ConstructManager : MonoBehaviour
     //{
     //    BuildPanel.SetActive(false);
     //}
-    
+
 
     public void DecideCanBuild(ConstructBase buildingInfo)
     {
@@ -390,10 +380,10 @@ public class ConstructManager : MonoBehaviour
                 }
                 break;
         }
-        
+
     }
 
-    
+
     public void SetPlayer()// 게임 종료시 스테이터스 초기화 필요
     {
         if (isBuildEffectAplly == false)//static 변수를 통해서 초기화 조절
@@ -413,7 +403,7 @@ public class ConstructManager : MonoBehaviour
         //SetFinalStatusToPlayer();
     }
 
-   
+
     public void ModifieStat(BuildEffect buildeffect)
     {
         float speedSum = 0;
@@ -424,36 +414,36 @@ public class ConstructManager : MonoBehaviour
         float gatherRangeSum = 0;
 
 
-     
-                    switch (buildeffect)
-                    {
-                        case Speed speed:
-                            speedSum += buildeffect.ReturnFinalStat(originPlayerStatus.moveSpeed);
 
-                            break;
-                        case MaxHp maxHP:
-                            maxHPSum += buildeffect.ReturnFinalStat(originPlayerStatus.maxHealth);
+        switch (buildeffect)
+        {
+            case Speed speed:
+                speedSum += buildeffect.ReturnFinalStat(originPlayerStatus.moveSpeed);
 
-                            break;
-                        case GatheringSpeed gatheringSpeed:
-                            gatherSpeedSum += buildeffect.ReturnFinalStat(originPlayerStatus.gatheringSpeed);
-                            break;
-                        case GatheringDelay gatheringDelay:
-                            gatherDelaySum += buildeffect.ReturnFinalStat(originPlayerStatus.gatheringDelay);
-                            break;
-                        case Damage damage:
-                           // Debug.Log("adddmg");
-                            damageSum += buildeffect.ReturnFinalStat(originPlayerStatus.playerDamage);
-                            break;
-                        case ItemDetectionRange itemDetectionRange:
-                            gatherRangeSum += buildeffect.ReturnFinalStat(originPlayerStatus.itemDetectionRange);
-                            break;
-                        default:
+                break;
+            case MaxHp maxHP:
+                maxHPSum += buildeffect.ReturnFinalStat(originPlayerStatus.maxHealth);
 
-                            break;
+                break;
+            case GatheringSpeed gatheringSpeed:
+                gatherSpeedSum += buildeffect.ReturnFinalStat(originPlayerStatus.gatheringSpeed);
+                break;
+            case GatheringDelay gatheringDelay:
+                gatherDelaySum += buildeffect.ReturnFinalStat(originPlayerStatus.gatheringDelay);
+                break;
+            case Damage damage:
+                // Debug.Log("adddmg");
+                damageSum += buildeffect.ReturnFinalStat(originPlayerStatus.playerDamage);
+                break;
+            case ItemDetectionRange itemDetectionRange:
+                gatherRangeSum += buildeffect.ReturnFinalStat(originPlayerStatus.itemDetectionRange);
+                break;
+            default:
 
-                    }
-          
+                break;
+
+        }
+
 
         //playerStatus = PlayerManager.OriginStatus.Clone();// 이거 그냥 더할 양만큼 준비하는게 나을지도? 갈아끼는 식 말고-> 클리어 실패시 초기화 필요하니 오리진에서 더하는 방식으로 하자
         playerStatus.moveSpeed += speedSum;
@@ -469,7 +459,7 @@ public class ConstructManager : MonoBehaviour
         //Debug.Log(playerStatus.playerDamage);
 
     }
-    
+
 
     public void ActiveBuildEffect()
     {
@@ -499,7 +489,7 @@ public class ConstructManager : MonoBehaviour
 
         //SetFinalStatusToPlayer();
     }
-    
+
     public void SetOwnCost()
     {
 
@@ -531,24 +521,24 @@ public class ConstructManager : MonoBehaviour
             {
                 ownBuildCostDic.Add("MetaCurrency", FirebaseDataBaseMgr.MetaCurrency);
             }
-            
-            
-            
+
+
+
             //Debug.Log("파이어 베이스에서 받아옴");
             OnConstructCostChange.Invoke();
 
         }
-        
-        
-        
+
+
+
     }
     public static void SetFinalStatusToPlayer()//이거 하나 확인
     {
-        PlayerManager.PlayerStatus=playerStatus+PlayerManager.OriginStatus.Clone();//후일 초기화 생각하면 대입이 맞을듯
+        PlayerManager.PlayerStatus = playerStatus + PlayerManager.OriginStatus.Clone();//후일 초기화 생각하면 대입이 맞을듯
         Debug.Log("건설매니저 효과 적용");
 
     }
-    
-    
+
+
 
 }

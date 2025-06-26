@@ -136,6 +136,7 @@ public partial class PlayerManager : ISingleton<PlayerManager>
 
         debnum++;
     }
+
     private void Update()
     {
         ActionUpdate();
