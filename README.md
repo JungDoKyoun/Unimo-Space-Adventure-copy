@@ -12,6 +12,8 @@ VR 환경에서 즐기는 로그라이크 기반 닷지 액션 게임입니다. 
 ### 🗺️ 육각형 타일 시스템
 
 #### 1. **절차적 육각형 맵 생성**
+<img width="344" height="279" alt="캡처_2025_08_30_15_18_12_902" src="https://github.com/user-attachments/assets/871ff7e9-b123-4ef0-88ef-08fb62cce42b" />
+
 ```csharp
 // 연결된 육각형 맵 자동 생성
 public void GenerateConnectedMap()
@@ -24,6 +26,8 @@ public List<Vector2Int> GetNeighbors(Vector2Int coord)
 - **난이도 시스템**: 중앙에서 거리에 따른 9단계 난이도 자동 설정
 
 #### 2. **타일 역할 분배 알고리즘**
+<img width="643" height="472" alt="캡처_2025_09_22_16_26_01_265" src="https://github.com/user-attachments/assets/1137adcd-d5b6-4030-90c4-d87f697fa84e" />
+
 ```csharp
 private void AssignTileRoles() {
     AssignBossTiles(candidateCoords);  // 거리별 보스 배치
@@ -39,6 +43,8 @@ private void AssignTileRoles() {
 ### 🎪 이벤트 시스템
 
 #### 3. **상점 이벤트 시스템**
+![유니모 물건 구매](https://github.com/user-attachments/assets/d1cfe651-b3ff-4f1b-b30d-3bbd35ea3610)
+
 ```csharp
 public void OpenShopUI(List<RelicData> relics, Vector3 worldPos)
 // 동적 상점 생성 및 거래 시스템
@@ -49,6 +55,8 @@ public void OpenShopUI(List<RelicData> relics, Vector3 worldPos)
 - **즉시 구매 피드백**: 구매 성공/실패 팝업 표시
 
 #### 4. **스크립트 이벤트 시스템**
+<img width="902" height="478" alt="캡처_2025_09_22_23_20_34_378" src="https://github.com/user-attachments/assets/6ad0606e-151e-4be0-890c-302d02fc4e63" />
+
 ```csharp
 public class ProbabilisticEffect {
     public float _probability;
@@ -63,6 +71,8 @@ public class ProbabilisticEffect {
 ### 💾 데이터 관리 시스템
 
 #### 5. **게임 상태 저장/복원**
+![유니모 맵복구](https://github.com/user-attachments/assets/a7bf1569-181e-481d-9c05-c36b0269a37f)
+
 ```csharp
 public class GameStateManager : MonoBehaviour {
     Dictionary<Vector2Int, TileData> _tileSaveData;
@@ -76,6 +86,8 @@ public class GameStateManager : MonoBehaviour {
 - **Singleton 패턴**: DontDestroyOnLoad로 영구 보존
 
 #### 6. **IEffect 인터페이스 효과 시스템**
+<img width="524" height="223" alt="유니모 이펙트 drawio" src="https://github.com/user-attachments/assets/9d43da9e-ab56-4a06-8d6a-c59a9724432b" />
+
 ```csharp
 public interface IEffect {
     void Execute(EventEffect eventEffect);
@@ -87,19 +99,9 @@ public interface IEffect {
 - **비동기 처리**: Coroutine으로 Firebase 연동 및 UI 업데이트
 - **확장 용이성**: 새로운 효과 추가 시 IEffect 구현만으로 가능
 
-## 🎮 조작법
-
-| 키/버튼 | 동작 |
-|---------|------|
-| 마우스 좌클릭 | 타일 선택 |
-| 타일 클릭 | 이동/이벤트 실행 |
-| ESC | UI 닫기 |
-
 ## 🛠 기술 스택
 - **엔진**: Unity 2021.3 LTS
 - **언어**: C# (.NET Framework)
-- **디자인 패턴**: Singleton, Factory Pattern
-- **알고리즘**: Flood Fill, A* Pathfinding, Hexagonal Grid
 - **도구**: Visual Studio 2022, Git
 
 ## 🎯 시스템 특징
@@ -110,17 +112,9 @@ public interface IEffect {
 
 ## 📚 주요 학습 내용
 - 육각형 그리드 수학 및 좌표계 변환
-- Mesh 생성을 통한 프로시저럴 타일 렌더링
-- ScriptableObject를 활용한 데이터 드리븐 설계
+- ScriptableObject를 활용한 데이터 설계
 - 확률 기반 이벤트 시스템 구현
 - Dictionary와 HashSet을 활용한 효율적인 타일 관리
 
-## 🔧 개선 예정 사항
-- 턴 기반 전투 시스템 통합
-- 타일별 특수 효과 (버프/디버프)
-- 미니맵 UI 구현
-- 세이브/로드 시스템
+## 🔧 개선하고 싶은 부분
 - 멀티플레이어 지원
-
-## 📄 라이선스
-This project is licensed under the MIT License
